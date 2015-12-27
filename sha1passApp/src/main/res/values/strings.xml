@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SHA1 Pass</string>
 
+    <string name="app_name">Name</string>
     <string name="about">About</string>
     <string name="description">A sentence based password generation program.\nEnter a sentence and a word, then click an
         encoding button to generate a strong, secure password based on your input.\nUse different sentences and words to
@@ -10,6 +11,9 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
 
+    <string name="long_text">asdasdasdafsdfg</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -17,3 +21,4 @@
 
     <string name="action_settings">Settings</string>
 </resources>
+
