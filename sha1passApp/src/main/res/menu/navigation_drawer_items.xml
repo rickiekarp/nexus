@@ -3,26 +3,15 @@
 	<group android:checkableBehavior="single">
 		<item
 				android:id="@+id/nav_first_fragment"
-				android:icon="@drawable/ic_launcher"
-				android:title="First" />
+				android:icon="@drawable/ic_main_48"
+				android:title="@string/app_name" />
 		<item
 				android:id="@+id/nav_second_fragment"
-				android:icon="@drawable/ic_launcher"
-				android:title="Second" />
+				android:icon="@drawable/ic_preferences_48"
+				android:title="@string/settings" />
 		<item
 				android:id="@+id/nav_third_fragment"
-				android:icon="@drawable/ic_launcher"
-				android:title="Third" />
-
-		<item android:title="Sub items">
-			<menu>
-				<item
-						android:icon="@drawable/ic_launcher"
-						android:title="Sub item 1" />
-				<item
-						android:icon="@drawable/ic_launcher"
-						android:title="Sub item 2" />
-			</menu>
-		</item>
+				android:icon="@drawable/ic_info_48"
+				android:title="@string/about" />
 	</group>
 </menu>

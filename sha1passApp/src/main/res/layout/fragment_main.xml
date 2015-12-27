@@ -7,7 +7,8 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent" android:layout_marginLeft="3dp" android:layout_marginTop="3dp"
+            android:layout_marginRight="3dp" android:layout_marginBottom="0dp">
         <TextView android:id="@+id/textView1" android:layout_width="fill_parent" android:text="Sentence: " android:layout_height="wrap_content"
                   android:textSize="18dp"></TextView>
         <TableRow
@@ -40,27 +41,33 @@
         </LinearLayout>
         <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="250dp" android:weightSum="1" android:orientation="vertical">
-            <android.support.v7.widget.AppCompatCheckBox
+                android:layout_height="250dp" android:weightSum="1" android:orientation="vertical"
+                android:paddingTop="10dp">
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Preferences:"
+                    android:id="@+id/textView4" android:textSize="18dp"/>
+            <android.support.v7.widget.SwitchCompat
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:text="View"
                     android:id="@+id/viewMode" android:checked="false"
-                    android:layout_marginLeft="40dp" android:layout_marginRight="40dp" android:layout_marginTop="15dp"
+                    android:layout_marginLeft="40dp" android:layout_marginRight="40dp"
             />
-            <android.support.v7.widget.AppCompatCheckBox
+            <android.support.v7.widget.SwitchCompat
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:text="Secure mode"
                     android:id="@+id/secureMode" android:checked="false" android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"/>
-            <android.support.v7.widget.AppCompatCheckBox
+            <android.support.v7.widget.SwitchCompat
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:text="HMAC"
                     android:id="@+id/hmacMode" android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="40dp" android:layout_marginRight="40dp" android:checked="false"/>
-            <android.support.v7.widget.AppCompatCheckBox
+            <android.support.v7.widget.SwitchCompat
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:text="Complex"
@@ -71,7 +78,7 @@
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:layout_gravity="bottom" android:layout_marginBottom="2dp">
+            android:layout_height="wrap_content" android:layout_gravity="bottom" android:layout_margin="5dp">
         <android.support.v7.widget.AppCompatEditText android:id="@+id/editText2" android:layout_width="wrap_content" android:text="Peek" android:layout_height="wrap_content"
                   android:layout_weight="1" android:layout_gravity="bottom" android:focusableInTouchMode="true"
                   android:focusable="false"></android.support.v7.widget.AppCompatEditText>

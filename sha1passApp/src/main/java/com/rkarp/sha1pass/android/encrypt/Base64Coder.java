@@ -1,4 +1,4 @@
-package com.rkarp.sha1pass.android;
+package com.rkarp.sha1pass.android.encrypt;
 
 
 public class Base64Coder {

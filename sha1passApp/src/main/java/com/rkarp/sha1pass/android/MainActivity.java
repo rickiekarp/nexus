@@ -1,5 +1,7 @@
 package com.rkarp.sha1pass.android;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import com.rkarp.sha1pass.android.fragments.AboutFragment;
+import com.rkarp.sha1pass.android.fragments.MainFragment;
+import com.rkarp.sha1pass.android.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
@@ -27,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Show menu icon
         final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+        ab.setHomeAsUpIndicator(R.drawable.ic_menu_36);
         ab.setDisplayHomeAsUpEnabled(true);
 
         // Find our drawer view
@@ -38,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup drawer view
         setupDrawerContent(nvDrawer);
-
     }
 
     @Override
@@ -49,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -72,26 +75,34 @@ public class MainActivity extends AppCompatActivity {
 
         //select the first entry
         navigationView.getMenu().getItem(0).setChecked(true);
+        selectDrawerItem(navigationView.getMenu().getItem(0));
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the planet to show based on
-        // position
+    public void selectDrawerItem(final MenuItem menuItem) {
         Fragment fragment = null;
-
         Class fragmentClass;
+
         switch(menuItem.getItemId()) {
             case R.id.nav_first_fragment:
-                fragmentClass = ArticleFragment.class;
+                fragmentClass = MainFragment.class;
                 break;
             case R.id.nav_second_fragment:
-                fragmentClass = HeadlinesFragment.class;
+                fragmentClass = SettingsFragment.class;
+//                Snackbar.make(mDrawer, "Item One", Snackbar.LENGTH_INDEFINITE)
+//                        .setAction("HOME", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                nvDrawer.getMenu().getItem(0).setChecked(true);
+//                                selectDrawerItem(nvDrawer.getMenu().getItem(0));
+//                            }
+//                        })
+//                        .show();
                 break;
             case R.id.nav_third_fragment:
-                fragmentClass = ArticleFragment.class;
+                fragmentClass = AboutFragment.class;
                 break;
             default:
-                fragmentClass = HeadlinesFragment.class;
+                fragmentClass = MainFragment.class;
         }
 
         try {
@@ -109,6 +120,4 @@ public class MainActivity extends AppCompatActivity {
         setTitle(menuItem.getTitle());
         mDrawer.closeDrawers();
     }
-
-
 }
