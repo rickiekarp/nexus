@@ -1,20 +1,5 @@
 package com.rkarp.reddit.common;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpException;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.Notification;
@@ -41,6 +26,10 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.rkarp.reddit.R;
 import com.rkarp.reddit.browser.BrowserActivity;
 import com.rkarp.reddit.captcha.CaptchaException;
@@ -52,6 +41,18 @@ import com.rkarp.reddit.settings.RedditSettings;
 import com.rkarp.reddit.threads.ThreadsListActivity;
 import com.rkarp.reddit.user.ProfileActivity;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpException;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Common {
 	
 	private static final String TAG = "Common";
@@ -60,7 +61,7 @@ public class Common {
 	private static final Pattern COMMENT_LINK = Pattern.compile(Constants.COMMENT_PATH_PATTERN_STRING);
 	private static final Pattern REDDIT_LINK = Pattern.compile(Constants.REDDIT_PATH_PATTERN_STRING);
 	private static final Pattern USER_LINK = Pattern.compile(Constants.USER_PATH_PATTERN_STRING);
-	private static final ObjectMapper mObjectMapper = new ObjectMapper();
+	private static final ObjectMapper mObjectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	
 	public static void showErrorToast(String error, int duration, Context context) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -545,12 +546,12 @@ public class Common {
     
     public static String getSubredditId(String mSubreddit){
     	String subreddit_id = null;
-    	JsonNode subredditInfo = 
+    	JsonNode subredditInfo =
     	RestJsonClient.connect(Constants.REDDIT_BASE_URL + "/r/" + mSubreddit + "/.json?count=1");
     	    	
     	if(subredditInfo != null){
     		ArrayNode children = (ArrayNode) subredditInfo.path("data").path("children");
-    		subreddit_id = children.get(0).get("data").get("subreddit_id").getTextValue();
+    		subreddit_id = children.get(0).get("data").get("subreddit_id").asText();
     	}
     	return subreddit_id;
     }

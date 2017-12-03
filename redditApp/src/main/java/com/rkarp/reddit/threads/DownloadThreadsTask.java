@@ -1,22 +1,11 @@
 package com.rkarp.reddit.threads;
 
-import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkarp.reddit.common.CacheInfo;
 import com.rkarp.reddit.common.Common;
 import com.rkarp.reddit.common.Constants;
@@ -26,6 +15,17 @@ import com.rkarp.reddit.things.Listing;
 import com.rkarp.reddit.things.ListingData;
 import com.rkarp.reddit.things.ThingInfo;
 import com.rkarp.reddit.things.ThingListing;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Given a subreddit name string, starts the threadlist-download-thread going.

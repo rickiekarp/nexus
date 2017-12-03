@@ -1,20 +1,5 @@
 package com.rkarp.reddit.comments;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.LinkedList;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Spanned;
@@ -22,6 +7,8 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkarp.reddit.comments.ProcessCommentsTask.DeferredCommentProcessing;
 import com.rkarp.reddit.common.CacheInfo;
 import com.rkarp.reddit.common.Common;
@@ -38,6 +25,19 @@ import com.rkarp.reddit.things.ThingInfo;
 import com.rkarp.reddit.things.ThingListing;
 import com.rkarp.reddit.threads.ShowThumbnailsTask;
 import com.rkarp.reddit.threads.ShowThumbnailsTask.ThumbnailLoadAction;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Task takes in a subreddit name string and thread id, downloads its data, parses

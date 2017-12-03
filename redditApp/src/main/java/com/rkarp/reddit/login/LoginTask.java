@@ -1,9 +1,19 @@
 package com.rkarp.reddit.login;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.webkit.CookieSyncManager;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.rkarp.reddit.common.CacheInfo;
+import com.rkarp.reddit.common.Common;
+import com.rkarp.reddit.common.Constants;
+import com.rkarp.reddit.common.RedditHttpClientFactory;
+import com.rkarp.reddit.common.util.StringUtils;
+import com.rkarp.reddit.settings.RedditSettings;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
@@ -17,21 +27,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
 
-import com.rkarp.reddit.common.CacheInfo;
-import com.rkarp.reddit.common.Common;
-import com.rkarp.reddit.common.Constants;
-import com.rkarp.reddit.common.RedditHttpClientFactory;
-import com.rkarp.reddit.common.util.StringUtils;
-import com.rkarp.reddit.settings.RedditSettings;
-
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.webkit.CookieSyncManager;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginTask extends AsyncTask<Void, Void, Boolean> {
 	

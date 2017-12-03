@@ -1,22 +1,5 @@
 package com.rkarp.reddit.user;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -53,6 +36,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkarp.reddit.R;
 import com.rkarp.reddit.captcha.CaptchaCheckRequiredTask;
 import com.rkarp.reddit.captcha.CaptchaDownloadTask;
@@ -80,6 +65,21 @@ import com.rkarp.reddit.threads.ThreadClickDialog;
 import com.rkarp.reddit.threads.ThreadClickDialogOnClickListenerFactory;
 import com.rkarp.reddit.threads.ThreadsListActivity;
 import com.rkarp.reddit.threads.ThumbnailOnClickListenerFactory;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Activity to view user submissions and comments.
@@ -674,7 +674,7 @@ public final class ProfileActivity extends ListActivity
     	}
     	
     	private void parseThingsJSON(InputStream in) throws IOException,
-		    	JsonParseException, IllegalStateException {
+				JsonParseException, IllegalStateException {
 		
     		String genericListingError = "Not a user page listing";
     		try {

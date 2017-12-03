@@ -1,13 +1,12 @@
 package com.rkarp.reddit.user;
 
-import java.io.InputStream;
-
-import org.codehaus.jackson.map.JsonMappingException;
-
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.rkarp.reddit.common.Common;
 import com.rkarp.reddit.common.Constants;
+
+import java.io.InputStream;
 
 public class UserInfoParser {
 	

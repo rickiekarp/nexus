@@ -1,17 +1,16 @@
 package com.rkarp.reddit.things;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import org.codehaus.jackson.annotate.JsonAnySetter;
-
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Html;
 import android.text.SpannableString;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.rkarp.reddit.markdown.MarkdownURL;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Class representing a thread posting in reddit API.

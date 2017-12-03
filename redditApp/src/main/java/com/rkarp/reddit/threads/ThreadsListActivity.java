@@ -1,14 +1,5 @@
 package com.rkarp.reddit.threads;
 
-import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.http.client.HttpClient;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -50,6 +41,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkarp.reddit.R;
 import com.rkarp.reddit.comments.CommentsListActivity;
 import com.rkarp.reddit.common.CacheInfo;
@@ -74,6 +66,14 @@ import com.rkarp.reddit.submit.SubmitLinkActivity;
 import com.rkarp.reddit.things.ThingInfo;
 import com.rkarp.reddit.threads.ShowThumbnailsTask.ThumbnailLoadAction;
 import com.rkarp.reddit.user.ProfileActivity;
+
+import org.apache.http.client.HttpClient;
+
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Main Activity class representing a Subreddit, i.e., a ThreadsList.
