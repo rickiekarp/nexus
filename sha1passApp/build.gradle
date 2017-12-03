@@ -19,7 +19,7 @@ android {
     def versionBaseName = "1.0"
 
     defaultConfig {
-        applicationId "${applicationBaseId}p"
+        applicationId "${applicationBaseId}"
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 1
