@@ -16,7 +16,7 @@ android {
     compileSdkVersion 27
 
     def applicationBaseId = "com.rkarp.sha1pass.android"
-    def versionBaseName = "1.0"
+    def versionBaseName = "2.0"
 
     defaultConfig {
         applicationId "${applicationBaseId}"
