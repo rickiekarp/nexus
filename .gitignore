@@ -1,14 +1,8 @@
-.gradle
+.gradle/
 .idea/
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
 /captures
 
-.iml
-sha1passApp.iml
-src/androidTest/
-src/main/res/drawable-xhdpi/
-src/main/res/drawable-xxhdpi/
+*.iml
