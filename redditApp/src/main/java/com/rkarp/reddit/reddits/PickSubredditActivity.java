@@ -33,6 +33,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.CookieSyncManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -119,7 +120,10 @@ public final class PickSubredditActivity extends ListActivity {
     	setRequestedOrientation(mSettings.getRotation());
     	requestWindowFeature(Window.FEATURE_PROGRESS);
     	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-    	
+
+		// do not open keyboard automatically
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     	setTheme(mSettings.getTheme());
     	setContentView(R.layout.pick_subreddit_view);
         registerForContextMenu(getListView());
