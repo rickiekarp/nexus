@@ -1,1 +1,1 @@
-include ':sha1passApp', ':redditApp'
+include ':assistantApp', ':sha1passApp', ':redditApp'

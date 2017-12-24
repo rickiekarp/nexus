@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 27
+
+    def applicationBaseId = "com.projekt.assistantapp"
+    def versionBaseName = "1.0"
+
+    flavorDimensions "default"
+
+    defaultConfig {
+        applicationId "${applicationBaseId}p"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "${versionBaseName}"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+
+        production {
+
+            applicationId "${applicationBaseId}"
+
+            // authority
+            resValue "string", "provider_authority", "\"${applicationId}.data\""
+            buildConfigField "String", "PROVIDER_AUTHORITY", "\"${applicationId}.data\""
+            buildConfigField "String", "FILEPROVIDER_AUTHORITY", "\"com.example.sebastian.fileprovider\""
+            resValue "string", "fileprovider_authority", "\"com.example.sebastian.fileprovider\""
+
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.0.1'
+    implementation 'com.android.support:design:27.0.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "android.arch.lifecycle:extensions:1.0.0"
+    implementation "android.arch.persistence.room:runtime:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+
+    //Server communication
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.android.support:cardview-v7:27.0.1'
+}
+repositories {
+    maven { url 'https://maven.google.com' }
+}

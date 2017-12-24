@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Assistant</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_info">Info</string>
+    <string name="action_notes">Notes</string>
+    <string name="action_encrypt">Encrypt</string>
+
+    <string name="app_description">App für den täglichen Gebrauch.\nErmöglicht das Erstellen von Notizen oder das Generieren von Passwörtern. </string>
+
+    <string-array name="navigation_drawer_items_array">
+        <item>Notes</item>
+        <item>Info</item>
+        <item>Logout</item>
+    </string-array>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_register">Register</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+</resources>
