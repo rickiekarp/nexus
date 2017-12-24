@@ -38,9 +38,9 @@ import android.util.Log;
 import com.rkarp.reddit.R;
 import com.rkarp.reddit.RedditApplication;
 
-public class RedditHttpClientFactory {
+public class RedditIsFunHttpClientFactory {
 	
-	private static final String TAG = "RedditHttpClientFactory";
+	private static final String TAG = "RedditIsFunHttpClientFactory";
 	
 	private static final DefaultHttpClient mGzipHttpClient = createGzipHttpClient();
 	private static final CookieStore mCookieStore = mGzipHttpClient.getCookieStore();

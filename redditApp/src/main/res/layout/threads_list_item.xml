@@ -86,7 +86,7 @@
 			        android:layout_height="wrap_content"
 			        android:layout_marginRight="5dip"
 			        android:textAppearance="?android:attr/textAppearanceSmall"
-			        android:text="nsfw"
+			        android:text="@string/nsfw"
 			        android:textColor="@color/red"
 			    />
 			    
@@ -106,7 +106,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 			    android:layout_marginRight="4dip"
-			    android:text="very recently"
+			    android:text="@string/just_now"
 		        android:visibility="gone"
 		        
 		        android:singleLine="true"
@@ -142,6 +142,7 @@
                     android:src="@drawable/go_arrow"
                     android:scaleType="fitCenter"
                     android:contentDescription="@string/thumbnail_content_description"
+                    android:visibility="gone"
                 />
                 
                 <ProgressBar android:id="@+id/indeterminate_progress"
@@ -149,7 +150,7 @@
                     android:layout_height="?android:attr/listPreferredItemHeight"
                     android:paddingRight="5dp"
                     android:indeterminate="true"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     />
             </com.rkarp.reddit.threads.DontPressWithParentFrameLayout>
             

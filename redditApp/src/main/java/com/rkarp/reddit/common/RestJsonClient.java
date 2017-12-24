@@ -19,7 +19,7 @@ public class RestJsonClient {
     public static JsonNode connect(String url)
     {
 
-        HttpClient httpclient = RedditHttpClientFactory.getGzipHttpClient();
+        HttpClient httpclient = RedditIsFunHttpClientFactory.getGzipHttpClient();
 
         // Prepare a request object
         HttpGet httpget = new HttpGet(url); 

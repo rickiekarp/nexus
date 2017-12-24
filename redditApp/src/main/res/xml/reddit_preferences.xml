@@ -31,7 +31,7 @@
         <ListPreference
        		android:key="theme"
        		android:title="@string/pref_theme"
-       		android:defaultValue="THEME_DARK"
+       		android:defaultValue="THEME_LIGHT"
        		android:entries="@array/pref_theme_choices"
        		android:entryValues="@array/pref_theme_values"
        		android:dialogTitle="@string/pref_theme_dialogtitle" />
@@ -60,6 +60,18 @@
       		android:entryValues="@array/pref_rotation_values"
       		android:dialogTitle="@string/pref_rotation_dialogtitle" />
         		
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="@string/pref_filters_category">
+
+        <CheckBoxPreference
+            android:title="@string/show_nsfw"
+            android:key="SHOW_NSFW"/>
+
+        <Preference
+            android:title="@string/pref_title_filter"
+            android:key="REDDIT_FILTERS"
+            />
 	</PreferenceCategory>
 	
 	<PreferenceCategory android:title="@string/pref_mail_category">
@@ -93,5 +105,31 @@
 			android:defaultValue="false"
 			android:dependency="load_thumbnails" />
 	</PreferenceCategory>
+
+ <PreferenceCategory android:title="@string/pref_browser">
+
+     <CheckBoxPreference
+         android:key="overwrite_useragent"
+         android:defaultValue="false"
+         android:title="@string/pref_overwrite_useragent" />
+
+    <EditTextPreference
+        android:key="useragent"
+        android:title="@string/pref_useragent"
+        android:inputType="text"
+        android:defaultValue="@string/pref_useragent_string"
+        android:singleLine="true"
+        android:dependency="overwrite_useragent" />
+    </PreferenceCategory>
+
+    <CheckBoxPreference
+        android:key="load_javascript"
+        android:defaultValue="true"
+        android:title="@string/pref_load_javascript" />
+
+    <CheckBoxPreference
+        android:key="imgur_direct"
+        android:defaultValue="true"
+        android:title="@string/pref_imgur_direct" />
 
 </PreferenceScreen>

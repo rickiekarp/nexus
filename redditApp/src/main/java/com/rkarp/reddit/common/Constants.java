@@ -3,44 +3,50 @@ package com.rkarp.reddit.common;
 import android.app.Activity;
 
 public class Constants {
-	
-	public static final boolean LOGGING = true;
-	
-	public static final boolean USE_COMMENTS_CACHE = false;
-	public static final boolean USE_THREADS_CACHE = false;
-	public static final boolean USE_SUBREDDITS_CACHE = true;
-	
-	// File containing the serialized variables of last subreddit viewed
-	public static final String FILENAME_SUBREDDIT_CACHE = "subreddit.dat";
-	// File containing the serialized variables of last comments viewed
-	public static final String FILENAME_THREAD_CACHE = "thread.dat";
-	// File containing a long integer System.currentTimeMillis(). Timestamp is shared among caches.
-	public static final String FILENAME_CACHE_INFO = "cacheinfo.dat";
-	public static final String[] FILENAMES_CACHE = {
-		FILENAME_SUBREDDIT_CACHE, FILENAME_THREAD_CACHE, FILENAME_CACHE_INFO
-	};
-	
+
+    public static final boolean LOGGING = true;
+
+    public static final boolean USE_COMMENTS_CACHE = false;
+    public static final boolean USE_THREADS_CACHE = false;
+    public static final boolean USE_SUBREDDITS_CACHE = true;
+
+    // File containing the serialized variables of last subreddit viewed
+    public static final String FILENAME_SUBREDDIT_CACHE = "subreddit.dat";
+    // File containing the serialized variables of last comments viewed
+    public static final String FILENAME_THREAD_CACHE = "thread.dat";
+    // File containing a long integer System.currentTimeMillis(). Timestamp is shared among caches.
+    public static final String FILENAME_CACHE_INFO = "cacheinfo.dat";
+    public static final String[] FILENAMES_CACHE = {
+            FILENAME_SUBREDDIT_CACHE, FILENAME_THREAD_CACHE, FILENAME_CACHE_INFO
+    };
+
     public static final long MESSAGE_CHECK_MINIMUM_INTERVAL_MILLIS = 5 * 60 * 1000;  // 5 minutes
     public static final String LAST_MAIL_CHECK_TIME_MILLIS_KEY = "LAST_MAIL_CHECK_TIME_MILLIS_KEY";
-	
-	// 1:subreddit 2:threadId 3:commentId
-	// The following commented-out one is good, but tough to get right, e.g.,
-	// http://www.reddit.com/eorhm vs. http://www.reddit.com/prefs, mobile, store, etc.
-	// So, for now require the captured URLs to have /comments or /tb prefix.
+
+    // 1:subreddit 2:threadId 3:commentId
+    // The following commented-out one is good, but tough to get right, e.g.,
+    // http://www.reddit.com/eorhm vs. http://www.reddit.com/prefs, mobile, store, etc.
+    // So, for now require the captured URLs to have /comments or /tb prefix.
 //	public static final String COMMENT_PATH_PATTERN_STRING
 //		= "(?:/r/([^/]+)/comments|/comments|/tb)?/([^/]+)(?:/?$|/[^/]+/([a-zA-Z0-9]+)?)?";
-	public static final String COMMENT_PATH_PATTERN_STRING
-		= "(?:/r/([^/]+)/comments|/comments|/tb)/([^/]+)(?:/?$|/[^/]+/([a-zA-Z0-9]+)?)?";
-	public static final String REDDIT_PATH_PATTERN_STRING = "(?:/r/([^/]+))?/?$";
-	public static final String USER_PATH_PATTERN_STRING = "/user/([^/]+)/?$";
-	
-	public static final String COMMENT_KIND = "t1";
-	public static final String THREAD_KIND = "t3";
-	public static final String MESSAGE_KIND = "t4";
-	public static final String SUBREDDIT_KIND = "t5";
-	public static final String MORE_KIND = "more";
-    
-	public static final int DEFAULT_THREAD_DOWNLOAD_LIMIT = 25;
+    public static final String COMMENT_PATH_PATTERN_STRING
+            = "(?:/r/([^/]+)/comments|/comments|/tb)/([^/]+)(?:/?$|/[^/]+/([a-zA-Z0-9]+)?)?";
+    public static final String REDDIT_PATH_PATTERN_STRING = "(?:/r/([^/]+))?/?$";
+    public static final String USER_PATH_PATTERN_STRING = "/user/([^/]+)/?$";
+
+
+    public static final String COMMENT_KIND = "t1";
+    public static final String THREAD_KIND = "t3";
+    public static final String MESSAGE_KIND = "t4";
+    public static final String SUBREDDIT_KIND = "t5";
+    public static final String MORE_KIND = "more";
+
+    public static final String DISTINGUISHED_MODERATOR = "moderator";
+    public static final String DISTINGUISHED_ADMIN = "admin";
+    // TODO: Not sure exactly how to handle the "special" case.
+    public static final String DISTINGUISHED_SPECIAL = "special";
+
+    public static final int DEFAULT_THREAD_DOWNLOAD_LIMIT = 25;
     public static final int DEFAULT_COMMENT_DOWNLOAD_LIMIT = 200;
     public static final long DEFAULT_FRESH_DURATION = 1800000;  // 30 minutes
     public static final long DEFAULT_FRESH_SUBREDDIT_LIST_DURATION = 86400000;  // 24 hours
@@ -48,13 +54,14 @@ public class Constants {
     // startActivityForResult request codes
     public static final int ACTIVITY_PICK_SUBREDDIT = 0;
     public static final int ACTIVITY_SUBMIT_LINK = 1;
-    
+    public static final int ACTIVITY_SEARCH_REDDIT = 2;
+
     // notifications
     public static final int NOTIFICATION_HAVE_MAIL = 0;
-    
+
     // services
     public static final int SERVICE_ENVELOPE = 0;
-    
+
     // --- Intent extras ---
     // Tell PickSubredditActivity to hide the fake subreddits string
     public static final String EXTRA_HIDE_FAKE_SUBREDDITS_STRING = "hideFakeSubreddits";
@@ -67,10 +74,11 @@ public class Constants {
     public static final String EXTRA_SUBREDDIT = "subreddit";
     public static final String EXTRA_THREAD_URL = "thread_url";
     public static final String EXTRA_TITLE = "title";
-    
+    public static final String EXTRA_FORCE_UA_STRING = "forceUA";
+
     // User-defined result codes
     public static final int RESULT_LOGIN_REQUIRED = Activity.RESULT_FIRST_USER;
-    
+
     // Menu and dialog actions
     public static final int DIALOG_LOGIN = 2;
     public static final int DIALOG_LOGOUT = 3;
@@ -84,7 +92,7 @@ public class Constants {
     public static final int DIALOG_SORT_BY_TOP = 23;
     public static final int DIALOG_COMMENT_CLICK = 24;
     public static final int DIALOG_MESSAGE_CLICK = 25;
-    public static final int DIALOG_GOTO_PARENT = 28;
+    public static final int DIALOG_FOCUS_PARENT = 28;
     public static final int DIALOG_EDIT = 29;
     public static final int DIALOG_DELETE = 30;
     public static final int DIALOG_COMPOSE = 31;
@@ -92,6 +100,12 @@ public class Constants {
     public static final int DIALOG_REPORT = 33;
     public static final int DIALOG_THREAD_CLICK = 34;
     public static final int DIALOG_VIEW_PROFILE = 35;
+    public static final int DIALOG_SAVED_COMMENTS = 36;
+    public static final int DIALOG_SAVE_COMMENT = 37;
+    public static final int DIALOG_UNSAVE_COMMENT = 38;
+    public static final int DIALOG_FULL_CONTEXT = 40;
+    public static final int DIALOG_VIEW_CONTEXT = 41;
+    public static final int DIALOG_LINKS = 42;
 
     // progress dialogs
     public static final int DIALOG_LOGGING_IN = 1000;
@@ -101,36 +115,47 @@ public class Constants {
     public static final int DIALOG_DELETING = 1008;
     public static final int DIALOG_EDITING = 1009;
     public static final int DIALOG_COMPOSING = 1012;
-    
-	public static final int SHARE_CONTEXT_ITEM = 1013;
-	public static final int OPEN_IN_BROWSER_CONTEXT_ITEM = 1014;
-	public static final int OPEN_COMMENTS_CONTEXT_ITEM = 1015;
-	public static final int SAVE_CONTEXT_ITEM = 1016;
-	public static final int UNSAVE_CONTEXT_ITEM = 1017;
-	public static final int HIDE_CONTEXT_ITEM = 1018;
-	public static final int UNHIDE_CONTEXT_ITEM = 1019;
-	public static final int VIEW_SUBREDDIT_CONTEXT_ITEM = 1020;
 
-    
+    public static final int SHARE_CONTEXT_ITEM = 1013;
+    public static final int OPEN_IN_BROWSER_CONTEXT_ITEM = 1014;
+    public static final int OPEN_COMMENTS_CONTEXT_ITEM = 1015;
+    public static final int SAVE_CONTEXT_ITEM = 1016;
+    public static final int UNSAVE_CONTEXT_ITEM = 1017;
+    public static final int HIDE_CONTEXT_ITEM = 1018;
+    public static final int UNHIDE_CONTEXT_ITEM = 1019;
+    public static final int VIEW_SUBREDDIT_CONTEXT_ITEM = 1020;
+    public static final int COPY_CONTEXT_ITEM = 1021;
+    public static final int COPY_TEXT_CONTEXT_ITEM = 1022;
+    public static final int SHARE_COMMENTS = 1023;
+
+
     // Special CSS for webviews to match themes
     public static final String CSS_DARK = "<style>body{color:#c0c0c0;background-color:#000000}a:link{color:#ffffff}</style>";
 
     // Colors for markdown
     public static final int MARKDOWN_LINK_COLOR = 0xff2288cc;
-    
+
     // States for StateListDrawables
-    public static final int[] STATE_CHECKED = new int[]{android.R.attr.state_checked};
+    public static final int[] STATE_CHECKED = new int[] {android.R.attr.state_checked};
     public static final int[] STATE_NONE = new int[0];
-    
+
     // Strings
     public static final String NO_STRING = "no";
-    
+
     public static final String FRONTPAGE_STRING = "reddit front page";
-    
+
+    public static final String REDDIT_SEARCH_STRING = "search";
+    /* Subreddits can't have / or - characters in their name, ensure we don't confuse the /r/saved subreddit
+     * for the special saved.json
+     */
+    public static final String REDDIT_SAVED_STRING = "/saved-posts/";
+    public static final String DEFAULT_REDDIT_SEARCH = "bacon";
+    public static final String DEFAULT_SEARCH_SORT = "relevant";
+
     public static final String HAVE_MAIL_TICKER = "reddit mail";
-    public static final String HAVE_MAIL_TITLE = "reddit is fun";
+    public static final String HAVE_MAIL_TITLE = "diode";
     public static final String HAVE_MAIL_TEXT = "You have reddit mail.";
-    
+
     // save instance state Bundle keys
     public static final String AFTER_KEY = "after";
     public static final String BEFORE_KEY = "before";
@@ -151,86 +176,97 @@ public class Constants {
     public static final String USERNAME_KEY = "username";
     public static final String VOTE_TARGET_THING_INFO_KEY = "vote_target_thing_info";
     public static final String WHICH_INBOX_KEY = "which_inbox";
-    
+    public static final String QUERY_KEY = "search_query";
+    public static final String CONTEXT_OP_ID_KEY = "context_op";
+    public static final String CONTEXT_COUNT_KEY = "context_count";
+
     public static final String SUBMIT_KIND_LINK = "link";
     public static final String SUBMIT_KIND_SELF = "self";
     public static final String SUBMIT_KIND_POLL = "poll";
-    
+
+    public static final String DEFAULT_STRING   = "default";
+
     // Sorting things
     public static final class ThreadsSort {
-	    public static final String SORT_BY_KEY = "threads_sort_by";
-	    public static final String SORT_BY_HOT = "hot";
-	    public static final String SORT_BY_NEW = "new";
-	    public static final String SORT_BY_CONTROVERSIAL = "controversial";
-	    public static final String SORT_BY_TOP = "top";
-	    public static final String SORT_BY_HOT_URL = "";
-	    public static final String SORT_BY_NEW_URL = "new/";
-	    public static final String SORT_BY_CONTROVERSIAL_URL = "controversial/";
-	    public static final String SORT_BY_TOP_URL = "top/";
-	    public static final String[] SORT_BY_CHOICES = {SORT_BY_HOT, SORT_BY_NEW, SORT_BY_CONTROVERSIAL, SORT_BY_TOP};
-	    public static final String[] SORT_BY_URL_CHOICES = {SORT_BY_HOT_URL, SORT_BY_NEW_URL, SORT_BY_CONTROVERSIAL_URL, SORT_BY_TOP_URL};
-	    public static final String SORT_BY_NEW_NEW = "new";
-	    public static final String SORT_BY_NEW_RISING = "rising";
-	    public static final String SORT_BY_NEW_NEW_URL = "sort=new";
-	    public static final String SORT_BY_NEW_RISING_URL = "sort=rising";
-	    public static final String[] SORT_BY_NEW_CHOICES = {SORT_BY_NEW_NEW, SORT_BY_NEW_RISING};
-	    public static final String[] SORT_BY_NEW_URL_CHOICES = {SORT_BY_NEW_NEW_URL, SORT_BY_NEW_RISING_URL};
-	    public static final String SORT_BY_CONTROVERSIAL_HOUR = "this hour";
-	    public static final String SORT_BY_CONTROVERSIAL_DAY = "today";
-	    public static final String SORT_BY_CONTROVERSIAL_WEEK = "this week";
-	    public static final String SORT_BY_CONTROVERSIAL_MONTH = "this month";
-	    public static final String SORT_BY_CONTROVERSIAL_YEAR = "this year";
-	    public static final String SORT_BY_CONTROVERSIAL_ALL = "all time";
-	    public static final String SORT_BY_CONTROVERSIAL_HOUR_URL = "t=hour";
-	    public static final String SORT_BY_CONTROVERSIAL_DAY_URL = "t=day";
-	    public static final String SORT_BY_CONTROVERSIAL_WEEK_URL = "t=week";
-	    public static final String SORT_BY_CONTROVERSIAL_MONTH_URL = "t=month";
-	    public static final String SORT_BY_CONTROVERSIAL_YEAR_URL = "t=year";
-	    public static final String SORT_BY_CONTROVERSIAL_ALL_URL = "t=all";
-	    public static final String[] SORT_BY_CONTROVERSIAL_CHOICES = {SORT_BY_CONTROVERSIAL_HOUR, SORT_BY_CONTROVERSIAL_DAY,
-	    	SORT_BY_CONTROVERSIAL_WEEK, SORT_BY_CONTROVERSIAL_MONTH, SORT_BY_CONTROVERSIAL_YEAR, SORT_BY_CONTROVERSIAL_ALL};
-	    public static final String[] SORT_BY_CONTROVERSIAL_URL_CHOICES = {SORT_BY_CONTROVERSIAL_HOUR_URL, SORT_BY_CONTROVERSIAL_DAY_URL,
-	    	SORT_BY_CONTROVERSIAL_WEEK_URL, SORT_BY_CONTROVERSIAL_MONTH_URL, SORT_BY_CONTROVERSIAL_YEAR_URL, SORT_BY_CONTROVERSIAL_ALL_URL};
-	    public static final String SORT_BY_TOP_HOUR = "this hour";
-	    public static final String SORT_BY_TOP_DAY = "today";
-	    public static final String SORT_BY_TOP_WEEK = "this week";
-	    public static final String SORT_BY_TOP_MONTH = "this month";
-	    public static final String SORT_BY_TOP_YEAR = "this year";
-	    public static final String SORT_BY_TOP_ALL = "all time";
-	    public static final String SORT_BY_TOP_HOUR_URL = "t=hour";
-	    public static final String SORT_BY_TOP_DAY_URL = "t=day";
-	    public static final String SORT_BY_TOP_WEEK_URL = "t=week";
-	    public static final String SORT_BY_TOP_MONTH_URL = "t=month";
-	    public static final String SORT_BY_TOP_YEAR_URL = "t=year";
-	    public static final String SORT_BY_TOP_ALL_URL = "t=all";
-	    public static final String[] SORT_BY_TOP_CHOICES = {SORT_BY_TOP_HOUR, SORT_BY_TOP_DAY,
-	    	SORT_BY_TOP_WEEK, SORT_BY_TOP_MONTH, SORT_BY_TOP_YEAR, SORT_BY_TOP_ALL};
-	    public static final String[] SORT_BY_TOP_URL_CHOICES = {SORT_BY_TOP_HOUR_URL, SORT_BY_TOP_DAY_URL,
-	    	SORT_BY_TOP_WEEK_URL, SORT_BY_TOP_MONTH_URL, SORT_BY_TOP_YEAR_URL, SORT_BY_TOP_ALL_URL};
+        public static final String SORT_BY_KEY = "threads_sort_by";
+        public static final String SORT_BY_HOT = "hot";
+        public static final String SORT_BY_NEW = "new";
+        public static final String SORT_BY_CONTROVERSIAL = "controversial";
+        public static final String SORT_BY_TOP = "top";
+        public static final String SORT_BY_HOT_URL = "";
+        public static final String SORT_BY_NEW_URL = "new/";
+        public static final String SORT_BY_CONTROVERSIAL_URL = "controversial/";
+        public static final String SORT_BY_TOP_URL = "top/";
+        public static final String[] SORT_BY_CHOICES = {SORT_BY_HOT, SORT_BY_NEW, SORT_BY_CONTROVERSIAL, SORT_BY_TOP};
+        public static final String[] SORT_BY_URL_CHOICES = {SORT_BY_HOT_URL, SORT_BY_NEW_URL, SORT_BY_CONTROVERSIAL_URL, SORT_BY_TOP_URL};
+        public static final String SORT_BY_NEW_NEW = "new";
+        public static final String SORT_BY_NEW_RISING = "rising";
+        public static final String SORT_BY_NEW_NEW_URL = "sort=new";
+        public static final String SORT_BY_NEW_RISING_URL = "sort=rising";
+        public static final String[] SORT_BY_NEW_CHOICES = {SORT_BY_NEW_NEW, SORT_BY_NEW_RISING};
+        public static final String[] SORT_BY_NEW_URL_CHOICES = {SORT_BY_NEW_NEW_URL, SORT_BY_NEW_RISING_URL};
+        public static final String SORT_BY_CONTROVERSIAL_HOUR = "this hour";
+        public static final String SORT_BY_CONTROVERSIAL_DAY = "today";
+        public static final String SORT_BY_CONTROVERSIAL_WEEK = "this week";
+        public static final String SORT_BY_CONTROVERSIAL_MONTH = "this month";
+        public static final String SORT_BY_CONTROVERSIAL_YEAR = "this year";
+        public static final String SORT_BY_CONTROVERSIAL_ALL = "all time";
+        public static final String SORT_BY_CONTROVERSIAL_HOUR_URL = "t=hour";
+        public static final String SORT_BY_CONTROVERSIAL_DAY_URL = "t=day";
+        public static final String SORT_BY_CONTROVERSIAL_WEEK_URL = "t=week";
+        public static final String SORT_BY_CONTROVERSIAL_MONTH_URL = "t=month";
+        public static final String SORT_BY_CONTROVERSIAL_YEAR_URL = "t=year";
+        public static final String SORT_BY_CONTROVERSIAL_ALL_URL = "t=all";
+        public static final String[] SORT_BY_CONTROVERSIAL_CHOICES = {SORT_BY_CONTROVERSIAL_HOUR, SORT_BY_CONTROVERSIAL_DAY,
+                SORT_BY_CONTROVERSIAL_WEEK, SORT_BY_CONTROVERSIAL_MONTH, SORT_BY_CONTROVERSIAL_YEAR, SORT_BY_CONTROVERSIAL_ALL
+        };
+        public static final String[] SORT_BY_CONTROVERSIAL_URL_CHOICES = {SORT_BY_CONTROVERSIAL_HOUR_URL, SORT_BY_CONTROVERSIAL_DAY_URL,
+                SORT_BY_CONTROVERSIAL_WEEK_URL, SORT_BY_CONTROVERSIAL_MONTH_URL, SORT_BY_CONTROVERSIAL_YEAR_URL, SORT_BY_CONTROVERSIAL_ALL_URL
+        };
+        public static final String SORT_BY_TOP_HOUR = "this hour";
+        public static final String SORT_BY_TOP_DAY = "today";
+        public static final String SORT_BY_TOP_WEEK = "this week";
+        public static final String SORT_BY_TOP_MONTH = "this month";
+        public static final String SORT_BY_TOP_YEAR = "this year";
+        public static final String SORT_BY_TOP_ALL = "all time";
+        public static final String SORT_BY_TOP_HOUR_URL = "t=hour";
+        public static final String SORT_BY_TOP_DAY_URL = "t=day";
+        public static final String SORT_BY_TOP_WEEK_URL = "t=week";
+        public static final String SORT_BY_TOP_MONTH_URL = "t=month";
+        public static final String SORT_BY_TOP_YEAR_URL = "t=year";
+        public static final String SORT_BY_TOP_ALL_URL = "t=all";
+        public static final String[] SORT_BY_TOP_CHOICES = {SORT_BY_TOP_HOUR, SORT_BY_TOP_DAY,
+                SORT_BY_TOP_WEEK, SORT_BY_TOP_MONTH, SORT_BY_TOP_YEAR, SORT_BY_TOP_ALL
+        };
+        public static final String[] SORT_BY_TOP_URL_CHOICES = {SORT_BY_TOP_HOUR_URL, SORT_BY_TOP_DAY_URL,
+                SORT_BY_TOP_WEEK_URL, SORT_BY_TOP_MONTH_URL, SORT_BY_TOP_YEAR_URL, SORT_BY_TOP_ALL_URL
+        };
     }
     public static final class CommentsSort {
-	    public static final String SORT_BY_KEY = "comments_sort_by";
-	    public static final String SORT_BY_BEST = "best";
-	    public static final String SORT_BY_HOT = "hot";
-	    public static final String SORT_BY_NEW = "new";
-	    public static final String SORT_BY_CONTROVERSIAL = "controversial";
-	    public static final String SORT_BY_TOP = "top";
-	    public static final String SORT_BY_OLD = "old";
-	    public static final String SORT_BY_BEST_URL = "sort=confidence";
-	    public static final String SORT_BY_HOT_URL = "sort=hot";
-	    public static final String SORT_BY_NEW_URL = "sort=new";
-	    public static final String SORT_BY_CONTROVERSIAL_URL = "sort=controversial";
-	    public static final String SORT_BY_TOP_URL = "sort=top";
-	    public static final String SORT_BY_OLD_URL = "sort=old";
-	    public static final String[] SORT_BY_CHOICES =
-	    	{SORT_BY_BEST, SORT_BY_HOT, SORT_BY_NEW,
-	    	SORT_BY_CONTROVERSIAL, SORT_BY_TOP, SORT_BY_OLD};
-	    public static final String[] SORT_BY_URL_CHOICES =
-	    	{SORT_BY_BEST_URL, SORT_BY_HOT_URL, SORT_BY_NEW_URL,
-	    	SORT_BY_CONTROVERSIAL_URL, SORT_BY_TOP_URL, SORT_BY_OLD_URL};
+        public static final String SORT_BY_KEY = "comments_sort_by";
+        public static final String SORT_BY_BEST = "best";
+        public static final String SORT_BY_HOT = "hot";
+        public static final String SORT_BY_NEW = "new";
+        public static final String SORT_BY_CONTROVERSIAL = "controversial";
+        public static final String SORT_BY_TOP = "top";
+        public static final String SORT_BY_OLD = "old";
+        public static final String SORT_BY_BEST_URL = "sort=confidence";
+        public static final String SORT_BY_HOT_URL = "sort=hot";
+        public static final String SORT_BY_NEW_URL = "sort=new";
+        public static final String SORT_BY_CONTROVERSIAL_URL = "sort=controversial";
+        public static final String SORT_BY_TOP_URL = "sort=top";
+        public static final String SORT_BY_OLD_URL = "sort=old";
+        public static final String[] SORT_BY_CHOICES =
+                {   SORT_BY_BEST, SORT_BY_HOT, SORT_BY_NEW,
+                        SORT_BY_CONTROVERSIAL, SORT_BY_TOP, SORT_BY_OLD
+                };
+        public static final String[] SORT_BY_URL_CHOICES =
+                {   SORT_BY_BEST_URL, SORT_BY_HOT_URL, SORT_BY_NEW_URL,
+                        SORT_BY_CONTROVERSIAL_URL, SORT_BY_TOP_URL, SORT_BY_OLD_URL
+                };
     }
-    
-    
+
+    public static final String DELETED_USER = "[deleted]";
     // JSON values
     public static final String JSON_AFTER = "after";
     public static final String JSON_AUTHOR = "author";
@@ -249,19 +285,28 @@ public class Constants {
     public static final String JSON_NUM_COMMENTS = "num_comments";
     public static final String JSON_TITLE = "title";
     public static final String JSON_SUBREDDIT = "subreddit";
-	public static final String JSON_REPLIES = "replies";
-	public static final String JSON_SELFTEXT = "selftext";
-	public static final String JSON_SELFTEXT_HTML = "selftext_html";
-	public static final String JSON_SUBJECT = "subject";
-    
+    public static final String JSON_REPLIES = "replies";
+    public static final String JSON_SELFTEXT = "selftext";
+    public static final String JSON_SELFTEXT_HTML = "selftext_html";
+    public static final String JSON_SUBJECT = "subject";
+
     // TabSpec tags
     public static final String TAB_LINK = "tab_link";
     public static final String TAB_TEXT = "tab_text";
-    
+
     // Preference keys and values
     public static final String PREF_HOMEPAGE = "homepage";
     public static final String PREF_USE_EXTERNAL_BROWSER = "use_external_browser";
+
     public static final String PREF_CONFIRM_QUIT = "confirm_quit";
+
+    public static final String PREF_OVERWRITE_UA = "overwrite_useragent";
+    public static final String BROWSER_UA_STRING = "Mozilla/5.0 AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile";
+    public static final String BROWSER_UA = "useragent";
+    public static final String PREF_LOAD_JS = "load_javascript";
+    public static final String PREF_LOAD_PLUGINS = "load_plugins";
+    public static final String PREF_IMGUR_DIRECT = "imgur_direct";
+
     public static final String PREF_SAVE_HISTORY = "save_history";
     public static final String PREF_ALWAYS_SHOW_NEXT_PREVIOUS = "always_show_next_previous";
     public static final String PREF_COMMENTS_SORT_BY_URL = "sort_by_url";
@@ -291,12 +336,17 @@ public class Constants {
     public static final String PREF_MAIL_NOTIFICATION_SERVICE_1HOUR = "MAIL_NOTIFICATION_SERVICE_1HOUR";
     public static final String PREF_MAIL_NOTIFICATION_SERVICE_6HOURS = "MAIL_NOTIFICATION_SERVICE_6HOURS";
     public static final String PREF_MAIL_NOTIFICATION_SERVICE_1DAY = "MAIL_NOTIFICATION_SERVICE_1DAY";
-    
+    public static final String PREF_SHOW_NSFW = "SHOW_NSFW";
+    public static final String PREF_FILTER_DELIM = "\n";
+    public static final boolean PREF_SHOW_NSFW_DEFAULT = true;
+    public static final String PREF_REDDIT_FILTERS = "REDDIT_FILTERS";
+
     // Reddit's base URL, without trailing slash
-    public static final String REDDIT_BASE_URL = "http://www.reddit.com";
-    public static final String REDDIT_SSL_BASE_URL = "https://pay.reddit.com";
-	public static final String REDDIT_LOGIN_URL = "https://ssl.reddit.com/api/login";
-	
+    public static final String REDDIT_BASE_URL = "https://www.reddit.com";
+    public static final String REDDIT_SSL_BASE_URL = "https://www.reddit.com";
+    public static final String REDDIT_LOGIN_URL = "https://www.reddit.com/api/login";
+
     // A short HTML file returned by reddit, so we can get the modhash
     public static final String MODHASH_URL = REDDIT_BASE_URL + "/r";
+    public static final String NSFW_STRING = "nsfw";
 }

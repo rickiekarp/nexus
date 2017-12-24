@@ -18,20 +18,22 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.rkarp.reddit.R;
+import com.rkarp.reddit.common.Constants;
 import com.rkarp.reddit.common.util.StringUtils;
 import com.rkarp.reddit.things.ThingInfo;
 import com.rkarp.reddit.threads.ShowThumbnailsTask.ThumbnailLoadAction;
 
 public class ShowThumbnailsTask extends AsyncTask<ThumbnailLoadAction, ThumbnailLoadAction, Void> {
-	
-	private ListActivity mActivity;
-	private HttpClient mClient;
-	private Integer mDefaultThumbnailResource;
-	
-	private static HashMap<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();
-	
+
+	private final ListActivity mActivity;
+	private final HttpClient mClient;
+	private final Integer mDefaultThumbnailResource;
+
+	private static final HashMap<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();
+
 	private static final String TAG = "ShowThumbnailsTask";
 
 	public ShowThumbnailsTask(ListActivity activity, HttpClient client, Integer defaultThumbnailResource) {
@@ -39,18 +41,23 @@ public class ShowThumbnailsTask extends AsyncTask<ThumbnailLoadAction, Thumbnail
 		this.mClient = client;
 		this.mDefaultThumbnailResource = defaultThumbnailResource;
 	}
-	
+
 	public static class ThumbnailLoadAction {
-    	public ThingInfo thingInfo;
-    	public ImageView imageView;  // prefer imageView; if it's null, use threadIndex
-    	public int threadIndex;
-    	public ThumbnailLoadAction(ThingInfo thingInfo, ImageView imageView, int threadIndex) {
-    		this.thingInfo = thingInfo;
-    		this.imageView = imageView;
-    		this.threadIndex = threadIndex;
-    	}
-    }
-	
+		public final ThingInfo thingInfo;
+		public final ImageView imageView;  // prefer imageView; if it's null, use threadIndex
+		public final int threadIndex;
+		public ProgressBar loadBar;
+		public ThumbnailLoadAction(ThingInfo thingInfo, ImageView imageView, int threadIndex) {
+			this.thingInfo = thingInfo;
+			this.imageView = imageView;
+			this.threadIndex = threadIndex;
+		}
+		public ThumbnailLoadAction(ThingInfo thingInfo, ImageView imageView, int threadIndex, ProgressBar progressBar) {
+			this(thingInfo, imageView, threadIndex);
+			this.loadBar = progressBar;
+		}
+	}
+
 	@Override
 	protected Void doInBackground(ThumbnailLoadAction... thumbnailLoadActions) {
 		for (ThumbnailLoadAction thumbnailLoadAction : thumbnailLoadActions) {
@@ -59,16 +66,16 @@ public class ShowThumbnailsTask extends AsyncTask<ThumbnailLoadAction, Thumbnail
 		}
 		return null;
 	}
-	
+
 	// TODO use external storage cache if present
 	private void loadThumbnail(ThingInfo thingInfo) {
-		if ("default".equals(thingInfo.getThumbnail()) || "self".equals(thingInfo.getThumbnail()) || StringUtils.isEmpty(thingInfo.getThumbnail())) {
+		if (Constants.NSFW_STRING.equalsIgnoreCase(thingInfo.getThumbnail()) || Constants.DEFAULT_STRING.equals(thingInfo.getThumbnail()) || Constants.SUBMIT_KIND_SELF.equals(thingInfo.getThumbnail()) || StringUtils.isEmpty(thingInfo.getThumbnail())) {
 			thingInfo.setThumbnailResource(mDefaultThumbnailResource);
 		}
 		else {
 			SoftReference<Bitmap> ref;
 			Bitmap bitmap;
-			
+
 			ref = cache.get(thingInfo.getThumbnail());
 			if (ref != null) {
 				bitmap = ref.get();
@@ -77,25 +84,25 @@ public class ShowThumbnailsTask extends AsyncTask<ThumbnailLoadAction, Thumbnail
 					return;
 				}
 			}
-			
+
 			bitmap = readBitmapFromNetwork(thingInfo.getThumbnail());
-			
+
 			ref = new SoftReference<Bitmap>(bitmap);
 			cache.put(thingInfo.getThumbnail(), ref);
 			thingInfo.setThumbnailBitmap(ref.get());
 		}
 	}
-	
-    private InputStream fetch(String urlString) throws MalformedURLException, IOException {
-    	HttpGet request = new HttpGet(urlString);
-    	HttpResponse response = mClient.execute(request);
-    	return response.getEntity().getContent();
-    }
-    
+
+	private InputStream fetch(String urlString) throws MalformedURLException, IOException {
+		HttpGet request = new HttpGet(urlString);
+		HttpResponse response = mClient.execute(request);
+		return response.getEntity().getContent();
+	}
+
 	private Bitmap readBitmapFromNetwork( String url ) {
-		if (url == null)
+		if (url == null || Constants.NSFW_STRING.equalsIgnoreCase(url))
 			return null;
-		
+
 		InputStream is = null;
 		BufferedInputStream bis = null;
 		Bitmap bmp = null;
@@ -103,14 +110,14 @@ public class ShowThumbnailsTask extends AsyncTask<ThumbnailLoadAction, Thumbnail
 			// http://blog.donnfelker.com/2010/04/29/android-odd-error-in-defaulthttpclient/
 			if (!url.startsWith("http://") && !url.startsWith("https://"))
 				url = "http://" + url;
-			
+
 			is = fetch(url);
 			bis = new BufferedInputStream(is);
 			bmp = BitmapFactory.decodeStream(bis);
 		} catch (MalformedURLException e) {
 			Log.e(TAG, "Bad ad URL", e);
 		} catch (IOException e) {
-			Log.e(TAG, "Could not get remote ad image", e);
+			Log.e(TAG, "Could not get remote ad image: " + url, e);
 		} finally {
 			try {
 				if( is != null )
@@ -123,15 +130,16 @@ public class ShowThumbnailsTask extends AsyncTask<ThumbnailLoadAction, Thumbnail
 		}
 		return bmp;
 	}
-	
+
 	@Override
 	protected void onProgressUpdate(ThumbnailLoadAction... thumbnailLoadActions) {
 		for (ThumbnailLoadAction thumbnailLoadAction : thumbnailLoadActions)
 			refreshThumbnailUI(thumbnailLoadAction);
 	}
-	
+
 	private void refreshThumbnailUI(ThumbnailLoadAction thumbnailLoadAction) {
 		ImageView imageView = null;
+		ProgressBar progressBar = thumbnailLoadAction.loadBar;
 		if (thumbnailLoadAction.imageView != null) {
 			imageView = thumbnailLoadAction.imageView;
 		}
@@ -147,19 +155,27 @@ public class ShowThumbnailsTask extends AsyncTask<ThumbnailLoadAction, Thumbnail
 				}
 			}
 		}
-		if (imageView != null) {
-			ThingInfo thingInfo = thumbnailLoadAction.thingInfo;
+		ThingInfo thingInfo = thumbnailLoadAction.thingInfo;
+		// The ImageView element will have its tag set to the id that it is currently displaying.
+		// When the app reaches this code, the indeterminate progress bar should be visible, and will
+		// need to be hidden when the 'proper' image is loaded.
+		if (imageView != null && thingInfo.getId().equals(imageView.getTag())) {
+			if (progressBar != null) {
+				progressBar.setVisibility(View.GONE);
+			}
+			imageView.setVisibility(View.VISIBLE);
+
 			if (thingInfo.getThumbnailBitmap() != null)
 				imageView.setImageBitmap(thingInfo.getThumbnailBitmap());
 			else if (thingInfo.getThumbnailResource() != null)
 				imageView.setImageResource(thingInfo.getThumbnailResource());
 		}
 	}
-	
+
 	private boolean isCurrentlyOnScreenUI(int position) {
 		return position >= mActivity.getListView().getFirstVisiblePosition() &&
 				position <= mActivity.getListView().getLastVisiblePosition();
 	}
-	
+
 }
 

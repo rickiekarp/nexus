@@ -51,7 +51,7 @@ import com.rkarp.reddit.captcha.CaptchaDownloadTask;
 import com.rkarp.reddit.comments.CommentsListActivity;
 import com.rkarp.reddit.common.Common;
 import com.rkarp.reddit.common.Constants;
-import com.rkarp.reddit.common.RedditHttpClientFactory;
+import com.rkarp.reddit.common.RedditIsFunHttpClientFactory;
 import com.rkarp.reddit.common.util.StringUtils;
 import com.rkarp.reddit.common.util.Util;
 import com.rkarp.reddit.login.LoginDialog;
@@ -75,7 +75,7 @@ public class SubmitLinkActivity extends TabActivity {
 	TabHost mTabHost;
 	
 	private RedditSettings mSettings = new RedditSettings();
-	private final HttpClient mClient = RedditHttpClientFactory.getGzipHttpClient();
+	private final HttpClient mClient = RedditIsFunHttpClientFactory.getGzipHttpClient();
 
 	private String mSubmitUrl;
 	

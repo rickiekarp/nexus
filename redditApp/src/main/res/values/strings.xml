@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_label">reddit</string>
     <string name="app_name">reddit</string>
     <string name="user_agent">reddit (Android) %s</string>
+
+    <!-- Searches -->
+    <string name="menu_search">[beta] Search</string>
+    <string name="search_title_prefix">[beta] Search: </string>
+    <string name="search_hint">[beta] Search reddit</string>
+    <string name="search_sort_label">Sort results by </string>
+ 	<string-array name="search_results_sorting">
+        <item>relevant</item>
+        <item>new</item>
+        <item>top</item>
+    </string-array>
+    <string name="search_tips_text">reddit:\'{name}\' find things posted in {name} only
+        							author:\'{username}\' return things submitted by {username} only
+									site:\'{domain}\' get links to pages on {domain} only
+									url:\'{text}\' search for {text} in url
+									selftext:\'{text}\' search for {text} in self post contents
+									is_self:{1|0} include (1) or exclude (0) self posts over18:{1|0} include (1) or exclude (0) results tagged NSFW</string>
+    
     
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -18,12 +37,18 @@
     
     <string name="loading_splash_text">Loading…</string>
     
+    <string name="subscriber_count_format" formatted="false">%s subs.</string>
+    <string name="second_age_format" formatted="false">%d second</string>
+    <string name="minute_age_format" formatted="false">%d minute</string>
+    <string name="hour_age_format" formatted="false">%d hour</string>
+    <string name="day_age_format" formatted="false">%d day</string>
+    <string name="month_age_format" formatted="false">%d month</string>
+    <string name="year_age_format" formatted="false">%d year</string>
     <string name="pick_subreddit_label">Subreddit name:</string>
     <string name="pick_subreddit_button">Go</string>
     <string name="frontpage">reddit front page</string>
     
     <string name="subreddit_layout_srtext_text">Android</string>
-    <string name="subreddit_layout_statustext_text"></string>
     <string name="subreddit_layout_download_text">Download</string>
     
 	<string name="login_username_label">Username:</string>
@@ -36,10 +61,11 @@
 	
 	<string name="thread_link_button">link</string>
 	<string name="thread_comments_button">comments</string>
-	<string name="thread_time_submitter">%1$s by %2$s</string>
+	<string name="thread_time_submitter">%1$s by</string>
 	
 	<string name="comment_links_button">links</string>
 	<string name="comment_reply_button">reply</string>
+	<string name="comment_save_button">save</string>
 	<string name="reply_save_button">save</string>
 	<string name="reply_cancel_button">cancel</string>
 	
@@ -53,9 +79,16 @@
 	
 	<string name="comment_hidden">[+]</string>
 	<string name="more_comments">load more comments</string>
+	<string name="context_warning">You are viewing a single comment\'s thread.</string>
+	<string name="click_to_view_all">Click here to view the rest of the comments.</string>
+	<string name="locked_thread_warning">This post is locked.</string>
+	<string name="unable_to_comment">You won\'t be able to comment.</string>
+	<string name="archived_thread_warning">This is an archived post.</string>
+	<string name="unable_to_vote_or_comment">You won\'t be able to vote or comment.</string>
 	<string name="next_threads">next</string>
 	<string name="previous_threads">prev</string>
-	
+
+	<string name="load_in_progress_toast">Please wait, still loading.</string>
 	<string name="error_voting_toast">Error voting. Please try again.</string>
 	<string name="mail_notification_unscheduled">Reddit mail notification service disabled.</string>
 	<string name="mail_notification_scheduled_5min">Reddit mail set to check every 5 minutes.</string>
@@ -80,6 +113,7 @@
 	<!--  === Menus === -->
 	
 	<string name="compose_message">Compose message</string>
+	<string name="view_saved_posts">View saved posts</string>
 	<string name="dark_theme">Use dark theme</string>
 	<string name="subscribe">+ Frontpage</string>
 	<string name="unsubscribe">- Frontpage</string>
@@ -105,6 +139,7 @@
 	<string name="open_browser">Open in browser</string>
 	<string name="pick_subreddit">Pick subreddit</string>
 	<string name="refresh">Refresh</string>
+	<string name="random_subreddit">Random subreddit</string>
 	<string name="share">Share</string>
 	<string name="sort_by_best">Sort by: best</string>
 	<string name="sort_by_hot">Sort by: hot</string>
@@ -118,14 +153,38 @@
 	<string name="view_comments">View comments</string>
 	<string name="view_subreddit">View subreddit</string>
 	<string name="close_browser">Close browser</string>
-	
+	<string name="saved_content">Saved Comments</string>
+	<string name="author">Author</string>
+	<string name="body">Body</string>
+	<string name="save_comment">save</string>
+	<string name="unsave_comment">unsave</string>
+	<string name="view_saved_comment">view</string>
+	<string name="focus_parent_comment">Focus parent</string>
+	<string name="show_comment">Show comment</string>
+	<string name="hide_comment">Hide comment</string>
+	<string name="view_full_context">View the full context</string>
+	<string name="view_context">View context</string>
+	<string name="goto_thread">Go to full comments</string>
+	<string name="links_menu_item">Links</string>
+	<string name="share_comments">Share Comments</string>
+
 	
 	<!-- === Preferences === -->
 	<string name="pref_general_category">General settings</string>
 	<string name="pref_appearance_category">Appearance</string>
 	<string name="pref_mail_category">Reddit mail</string>
-	
+
+    <!-- === Browser settings === -->
+    <string name="pref_browser">Browser settings</string>
+    <string name="pref_useragent">User-Agent string</string>
+    <string name="pref_useragent_string">Mozilla/5.0 AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile</string>
+    <string name="pref_overwrite_useragent">Overwrite User-Agent</string>
+    <string name="pref_load_javascript">Load Javascript</string>
+    <string name="pref_load_plugins">Load Plugins</string>
+    <string name="pref_imgur_direct">Open Imgur Images Directly</string>
+
 	<string name="pref_homepage">Default starting reddit</string>
+
 	<string name="pref_homepage_hint">Leave blank to use default</string>
 	
 	<string name="pref_use_external_browser">Use external browser</string>
@@ -140,12 +199,12 @@
 	<string name="pref_theme_dialogtitle">Theme</string>
 	<!-- Settings text size options; appear in Text size dialog box -->
 	<string-array name="pref_theme_choices">
-		<item>Dark</item>
-		<item>Light</item>
+        <item>Light</item>
+        <item>Dark</item>
     </string-array>
 	<string-array name="pref_theme_values" translatable="false">
-		<item>THEME_DARK</item>
-		<item>THEME_LIGHT</item>
+        <item>THEME_LIGHT</item>
+        <item>THEME_DARK</item>
     </string-array>
     
     <string name="pref_text_size">Text size</string>
@@ -213,6 +272,7 @@
    	
    	<string name="pref_load_thumbnails">Show thumbnails</string>
    	
+	<string name="search_button">Search</string>
     <string name="pref_load_thumbnails_only_wifi">Only on WiFi</string>
     <string name="pref_thumbnail_category">Thumbnail Settings</string>
     
@@ -221,6 +281,45 @@
     <string name="vote_up_arrow_content_description">upvote arrow</string>
     <string name="vote_down_arrow_content_description">downvote arrow</string>
     <string name="thumbnail_content_description">thumbnail (click to view link)</string>
-    
-    
+    <string name="show_nsfw">Show NSFW Links</string>
+
+    <!-- filters -->
+    <string name="save">Save</string>
+    <string name="edit_filter">Edit filter</string>
+    <string name="delete_filter">Delete filter</string>
+    <string name="filter_name">Filter name</string>
+    <string name="subreddit_name">Subreddit name</string>
+    <string name="filter_text">Filter text</string>
+    <string name="clear_filters">Delete All</string>
+    <string name="filter_help_text">Links with titles that contain filter text will not be displayed.</string>
+    <string name="filter_add_button">new filter</string>
+    <string name="filter_clear_confirm_title">Delete all filters?</string>
+    <string name="filter_clear_confirm_yes">Delete</string>
+    <string name="filter_clear_confirm_no">Cancel</string>
+
+    <string name="pref_filters_category">Link filtering</string>
+    <string name="pref_title_filter">Edit title filters</string>
+    <string name="nsfw">nsfw</string>
+    <string name="copy">Copy Url</string>
+
+	<!-- 'When' strings -->
+	<string name="just_now">just now</string>
+	<string name="one_second_ago">1 second ago</string>
+	<string name="n_seconds_ago">%d seconds ago</string>
+	<string name="one_minute_ago">1 minute ago</string>
+	<string name="n_minutes_ago">%d minutes ago</string>
+	<string name="one_hour_ago">1 hour ago</string>
+	<string name="n_hours_ago">%d hours ago</string>
+	<string name="one_day_ago">1 day ago</string>
+	<string name="n_days_ago">%d days ago</string>
+	<string name="one_week_ago">1 week ago</string>
+	<string name="n_weeks_ago">%d weeks ago</string>
+	<string name="one_month_ago">1 month ago</string>
+	<string name="n_months_ago">%d months ago</string>
+	<string name="one_year_ago">1 year ago</string>
+	<string name="n_years_ago">%d years ago</string>
+
+	<!-- Miscellaneous Strings -->
+	<string name="comment_by_string">Comment by %s</string>
+
 </resources>

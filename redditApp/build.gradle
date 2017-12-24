@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 15
 
     def applicationBaseId = "com.rkarp.reddit"
     def versionBaseName = "1.0"
@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "${applicationBaseId}"
         minSdkVersion 14
-        targetSdkVersion 21
+        targetSdkVersion 15
         versionCode 1
         versionName "${versionBaseName}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

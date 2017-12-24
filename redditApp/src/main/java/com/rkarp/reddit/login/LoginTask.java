@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.rkarp.reddit.common.CacheInfo;
 import com.rkarp.reddit.common.Common;
 import com.rkarp.reddit.common.Constants;
-import com.rkarp.reddit.common.RedditHttpClientFactory;
+import com.rkarp.reddit.common.RedditIsFunHttpClientFactory;
 import com.rkarp.reddit.common.util.StringUtils;
 import com.rkarp.reddit.settings.RedditSettings;
 
@@ -102,7 +102,7 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
         	
         	if (Constants.LOGGING) Common.logDLong(TAG, line);
         	
-        	if (RedditHttpClientFactory.getCookieStore().getCookies().isEmpty())
+        	if (RedditIsFunHttpClientFactory.getCookieStore().getCookies().isEmpty())
         		throw new HttpException("Failed to login: No cookies");
         	
         	final JsonFactory jsonFactory = new JsonFactory();
@@ -134,7 +134,7 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
         	settings.setModhash(jp.getText());
 
         	// Could grab cookie from JSON too, but it lacks expiration date and stuff. So grab from HttpClient.
-			List<Cookie> cookies = RedditHttpClientFactory.getCookieStore().getCookies();
+			List<Cookie> cookies = RedditIsFunHttpClientFactory.getCookieStore().getCookies();
         	for (Cookie c : cookies) {
         		if (c.getName().equals("reddit_session")) {
         			settings.setRedditSessionCookie(c);

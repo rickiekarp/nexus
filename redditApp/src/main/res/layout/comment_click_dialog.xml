@@ -93,4 +93,5 @@
    		android:singleLine="true"
    		android:text="@string/comment_reply_button"
    		/>
+
 </RelativeLayout>

@@ -30,14 +30,14 @@ import com.rkarp.reddit.captcha.CaptchaDownloadTask;
 import com.rkarp.reddit.common.Common;
 import com.rkarp.reddit.common.Constants;
 import com.rkarp.reddit.common.FormValidation;
-import com.rkarp.reddit.common.RedditHttpClientFactory;
+import com.rkarp.reddit.common.RedditIsFunHttpClientFactory;
 import com.rkarp.reddit.settings.RedditSettings;
 import com.rkarp.reddit.things.ThingInfo;
 
 public class InboxActivity extends TabActivity {
 	
 	private final RedditSettings mSettings = new RedditSettings();
-	private final HttpClient mClient = RedditHttpClientFactory.getGzipHttpClient();
+	private final HttpClient mClient = RedditIsFunHttpClientFactory.getGzipHttpClient();
 	
 	private static final String[] whichInboxes = {"inbox", "moderator"};
 	

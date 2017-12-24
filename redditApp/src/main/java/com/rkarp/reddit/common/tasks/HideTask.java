@@ -17,7 +17,7 @@ import org.apache.http.protocol.HTTP;
 
 import com.rkarp.reddit.common.Common;
 import com.rkarp.reddit.common.Constants;
-import com.rkarp.reddit.common.RedditHttpClientFactory;
+import com.rkarp.reddit.common.RedditIsFunHttpClientFactory;
 import com.rkarp.reddit.common.util.StringUtils;
 import com.rkarp.reddit.settings.RedditSettings;
 import com.rkarp.reddit.things.ThingInfo;
@@ -37,7 +37,7 @@ public class HideTask extends AsyncTask<Void, Void, Boolean> {
 	private Context mContext;
 	protected boolean mHide;
 	
-	private final HttpClient mClient = RedditHttpClientFactory.getGzipHttpClient();
+	private final HttpClient mClient = RedditIsFunHttpClientFactory.getGzipHttpClient();
 	
 	public HideTask(boolean hide, ThingInfo mVoteTargetThreadInfo, RedditSettings mSettings, Context mContext){
 		this.mTargetThreadInfo = mVoteTargetThreadInfo;
