@@ -27,11 +27,11 @@
 	</PreferenceCategory>
 	
 	<PreferenceCategory android:title="@string/pref_appearance_category">
-	    
+
         <ListPreference
        		android:key="theme"
        		android:title="@string/pref_theme"
-       		android:defaultValue="THEME_LIGHT"
+       		android:defaultValue="THEME_DARK"
        		android:entries="@array/pref_theme_choices"
        		android:entryValues="@array/pref_theme_values"
        		android:dialogTitle="@string/pref_theme_dialogtitle" />

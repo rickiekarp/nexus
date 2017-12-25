@@ -199,12 +199,12 @@
 	<string name="pref_theme_dialogtitle">Theme</string>
 	<!-- Settings text size options; appear in Text size dialog box -->
 	<string-array name="pref_theme_choices">
-        <item>Light</item>
-        <item>Dark</item>
+		<item>Dark</item>
+		<item>Light</item>
     </string-array>
 	<string-array name="pref_theme_values" translatable="false">
-        <item>THEME_LIGHT</item>
-        <item>THEME_DARK</item>
+		<item>THEME_DARK</item>
+		<item>THEME_LIGHT</item>
     </string-array>
     
     <string name="pref_text_size">Text size</string>

@@ -55,7 +55,7 @@ public class RedditSettings {
 	private boolean showNSFW = false;
 
 	// --- Themes ---
-	private int theme = R.style.Reddit_Light_Medium;
+	private int theme = R.style.Reddit_Dark_Medium;
 	private int rotation = -1;  // -1 means unspecified
 	private boolean loadThumbnails = true;
 	private boolean loadThumbnailsOnlyWifi = false;
@@ -234,7 +234,7 @@ public class RedditSettings {
 
 		// Theme and text size
 		this.setTheme(Util.getThemeResourceFromPrefs(
-				sessionPrefs.getString(Constants.PREF_THEME, Constants.PREF_THEME_LIGHT),
+				sessionPrefs.getString(Constants.PREF_THEME, Constants.PREF_THEME_DARK),
 				sessionPrefs.getString(Constants.PREF_TEXT_SIZE, Constants.PREF_TEXT_SIZE_MEDIUM)));
 
 		// Comment guide lines
