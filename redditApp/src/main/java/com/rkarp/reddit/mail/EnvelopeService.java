@@ -13,8 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.Parcel;
-import android.os.RemoteException;
 import android.os.SystemClock;
 
 /**
@@ -57,14 +55,8 @@ public class EnvelopeService extends Service {
      * This is the object that receives interactions from clients.  See RemoteService
      * for a more complete example.
      */
-    private final IBinder mBinder = new Binder() {
-        @Override
-		protected boolean onTransact(int code, Parcel data, Parcel reply,
-		        int flags) throws RemoteException {
-            return super.onTransact(code, data, reply, flags);
-        }
-    };
-    
+    private final IBinder mBinder = new Binder();
+
     public static void resetAlarm(Context context, long interval) {
         // Create an IntentSender that will launch our service, to be scheduled
         // with the alarm manager.

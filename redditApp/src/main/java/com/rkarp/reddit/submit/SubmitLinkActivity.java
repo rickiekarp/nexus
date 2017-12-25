@@ -2,8 +2,11 @@ package com.rkarp.reddit.submit;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -78,20 +81,20 @@ public class SubmitLinkActivity extends TabActivity {
 	private final HttpClient mClient = RedditIsFunHttpClientFactory.getGzipHttpClient();
 
 	private String mSubmitUrl;
-	
+
 	private volatile String mCaptchaIden = null;
 	private volatile String mCaptchaUrl = null;
-	
+
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		
+
 		CookieSyncManager.createInstance(getApplicationContext());
-		
+
 		mSettings.loadRedditPreferences(this, mClient);
 		setRequestedOrientation(mSettings.getRotation());
 		setTheme(mSettings.getTheme());
-		
+
 		setContentView(R.layout.submit_link_main);
 
 		final FrameLayout fl = (FrameLayout) findViewById(android.R.id.tabcontent);
@@ -100,7 +103,7 @@ public class SubmitLinkActivity extends TabActivity {
 		} else {
 			fl.setBackgroundResource(R.color.black);
 		}
-		
+
 		mTabHost = getTabHost();
 		mTabHost.addTab(mTabHost.newTabSpec(Constants.TAB_LINK).setIndicator("link").setContent(R.id.submit_link_view));
 		mTabHost.addTab(mTabHost.newTabSpec(Constants.TAB_TEXT).setIndicator("text").setContent(R.id.submit_text_view));
@@ -141,6 +144,11 @@ public class SubmitLinkActivity extends TabActivity {
     	mSettings.saveRedditPreferences(this);
 		CookieSyncManager.getInstance().stopSync();
     }
+
+    private class SubmissionProperties {
+        private String title = "";
+        private String url = "";
+    }
     
 	/**
 	 * Enable the UI after user is logged in.
@@ -151,16 +159,20 @@ public class SubmitLinkActivity extends TabActivity {
         if (Intent.ACTION_SEND.equals(intentAction)) {
         	// Share
 	        Bundle extras = getIntent().getExtras();
-	        if (extras != null) {
-	        	String url = extras.getString(Intent.EXTRA_TEXT);
-	        	final EditText submitLinkUrl = (EditText) findViewById(R.id.submit_link_url);
-	        	final EditText submitLinkReddit = (EditText) findViewById(R.id.submit_link_reddit);
-	        	final EditText submitTextReddit = (EditText) findViewById(R.id.submit_text_reddit);
-	        	submitLinkUrl.setText(url);
-	        	submitLinkReddit.setText("");
-        		submitTextReddit.setText("");
-        		mSubmitUrl = Constants.REDDIT_BASE_URL + "/submit";
-	        }
+            SubmissionProperties submissionProperties = new SubmissionProperties();
+
+            boolean ignored = defaultExtractProperties(extras, submissionProperties) ||
+                    lastDitchExtractProperties(extras, submissionProperties);
+
+            final EditText submitLinkUrl = (EditText) findViewById(R.id.submit_link_url);
+            final EditText submitLinkReddit = (EditText) findViewById(R.id.submit_link_reddit);
+            final EditText submitLinkTitle = (EditText) findViewById(R.id.submit_link_title);
+            final EditText submitTextReddit = (EditText) findViewById(R.id.submit_text_reddit);
+            submitLinkUrl.setText(submissionProperties.url);
+            submitLinkReddit.setText("");
+            submitTextReddit.setText("");
+            submitLinkTitle.setText(submissionProperties.title);
+            mSubmitUrl = Constants.REDDIT_BASE_URL + "/submit";
         } else {
         	String submitPath = null;
         	Uri data = getIntent().getData();
@@ -168,10 +180,10 @@ public class SubmitLinkActivity extends TabActivity {
         		submitPath = data.getPath();
         	if (submitPath == null)
     			submitPath = "/submit";
-        	
+
         	// the URL to do HTTP POST to
         	mSubmitUrl = Util.absolutePathToURL(submitPath);
-        	
+
         	// Put the subreddit in the text field
         	final EditText submitLinkReddit = (EditText) findViewById(R.id.submit_link_reddit);
         	final EditText submitTextReddit = (EditText) findViewById(R.id.submit_text_reddit);
@@ -187,7 +199,7 @@ public class SubmitLinkActivity extends TabActivity {
 		    	}
         	}
         }
-        
+
         final Button submitLinkButton = (Button) findViewById(R.id.submit_link_button);
         submitLinkButton.setOnClickListener(new OnClickListener() {
         	public void onClick(View v) {
@@ -220,29 +232,86 @@ public class SubmitLinkActivity extends TabActivity {
         		}
         	}
         });
-        
+
         // Check the CAPTCHA
         new MyCaptchaCheckRequiredTask().execute();
 	}
-	
+
+	private boolean defaultExtractProperties(Bundle extras, SubmitLinkActivity.SubmissionProperties properties) {
+		if (null == extras) {
+			return false;
+		}
+
+		String url = extras.getString(Intent.EXTRA_TEXT);
+		String title = extras.getString(Intent.EXTRA_SUBJECT);
+
+		if ((null == url) || (null == title)) {
+			return false;
+		}
+
+		try {
+			new URL(url);
+		}
+		catch (MalformedURLException e) {
+			return false;
+		}
+
+		properties.url = url;
+		properties.title = title;
+
+		return true;
+	}
+
+	private boolean lastDitchExtractProperties(Bundle extras, SubmitLinkActivity.SubmissionProperties properties) {
+		if (extras != null) {
+			// find the most likely submission URL since some
+			// programs share more than the URL
+			// the most likely is considered to be the longest
+			// string token with a URI scheme of http or https
+			StringBuilder titleBuilder = new StringBuilder();
+			String rawText = extras.getString(Intent.EXTRA_TEXT);
+			StringTokenizer extraTextTokenizer = new StringTokenizer(rawText);
+			Uri bestUri = Uri.parse("");
+			while (extraTextTokenizer.hasMoreTokens()) {
+				Uri uri = Uri.parse(extraTextTokenizer.nextToken());
+				if (!"http".equalsIgnoreCase(uri.getScheme()) &&
+						!"https".equalsIgnoreCase(uri.getScheme())) {
+					titleBuilder.append(uri.toString()).append(' ');
+					continue;
+				}
+				if (uri.toString().length() > bestUri.toString().length()) {
+					bestUri = uri;
+				}
+			}
+
+			properties = new SubmitLinkActivity.SubmissionProperties();
+			properties.url = bestUri.toString();
+			properties.title = titleBuilder.toString();
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private void returnStatus(int status) {
 		Intent i = new Intent();
 		setResult(status, i);
 		finish();
 	}
 
-	
-	
+
+
 	private class MyLoginTask extends LoginTask {
     	public MyLoginTask(String username, String password) {
     		super(username, password, mSettings, mClient, getApplicationContext());
     	}
-    	
+
     	@Override
     	protected void onPreExecute() {
     		showDialog(Constants.DIALOG_LOGGING_IN);
     	}
-    	
+
     	@Override
     	protected void onPostExecute(Boolean success) {
     		removeDialog(Constants.DIALOG_LOGGING_IN);
@@ -258,13 +327,13 @@ public class SubmitLinkActivity extends TabActivity {
         	}
     	}
     }
-    
-    
+
+
 
 	private class SubmitLinkTask extends AsyncTask<Void, Void, ThingInfo> {
     	String _mTitle, _mUrlOrText, _mSubreddit, _mKind, _mCaptcha;
 		String _mUserError = "Error creating submission. Please try again.";
-    	
+
     	SubmitLinkTask(String title, String urlOrText, String subreddit, String kind, String captcha) {
     		_mTitle = title;
     		_mUrlOrText = urlOrText;
@@ -272,12 +341,12 @@ public class SubmitLinkActivity extends TabActivity {
     		_mKind = kind;
     		_mCaptcha = captcha;
     	}
-    	
+
     	@Override
         public ThingInfo doInBackground(Void... voidz) {
         	ThingInfo newlyCreatedThread = null;
         	HttpEntity entity = null;
-        	
+
         	String status = "";
         	if (!mSettings.isLoggedIn()) {
         		_mUserError = "Not logged in";
@@ -294,7 +363,7 @@ public class SubmitLinkActivity extends TabActivity {
         		}
         		mSettings.setModhash(modhash);
         	}
-        	
+
         	try {
         		// Construct data
     			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
@@ -312,24 +381,24 @@ public class SubmitLinkActivity extends TabActivity {
     				nvps.add(new BasicNameValuePair("iden", mCaptchaIden));
     				nvps.add(new BasicNameValuePair("captcha", _mCaptcha.toString()));
     			}
-    			// Votehash is currently unused by reddit 
+    			// Votehash is currently unused by reddit
 //    				nvps.add(new BasicNameValuePair("vh", "0d4ab0ffd56ad0f66841c15609e9a45aeec6b015"));
-    			
+
     			HttpPost httppost = new HttpPost(Constants.REDDIT_BASE_URL + "/api/submit");
     	        httppost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
     	        // The progress dialog is non-cancelable, so set a shorter timeout than system's
     	        HttpParams params = httppost.getParams();
     	        HttpConnectionParams.setConnectionTimeout(params, 30000);
     	        HttpConnectionParams.setSoTimeout(params, 30000);
-    	        
+
     	        if (Constants.LOGGING) Log.d(TAG, nvps.toString());
-    	        
+
                 // Perform the HTTP POST request
     	    	HttpResponse response = mClient.execute(httppost);
     	    	status = response.getStatusLine().toString();
             	if (!status.contains("OK"))
             		throw new HttpException(status);
-            	
+
             	entity = response.getEntity();
 
             	BufferedReader in = new BufferedReader(new InputStreamReader(entity.getContent()));
@@ -354,7 +423,7 @@ public class SubmitLinkActivity extends TabActivity {
             		_mUserError = "You are not allowed to post to that subreddit.";
             		throw new Exception("SUBREDDIT_NOTALLOWED: " + _mSubreddit);
             	}
-            	
+
             	if (Constants.LOGGING) Common.logDLong(TAG, line);
 
             	String newId, newSubreddit;
@@ -378,18 +447,18 @@ public class SubmitLinkActivity extends TabActivity {
             		}
                 	throw new Exception("No id returned by reply POST.");
             	}
-            	
+
             	entity.consumeContent();
-            	
+
             	// Getting here means success. Create a new ThingInfo.
             	newlyCreatedThread = new ThingInfo();
             	// We only need to fill in a few fields.
             	newlyCreatedThread.setId(newId);
             	newlyCreatedThread.setSubreddit(newSubreddit);
             	newlyCreatedThread.setTitle(_mTitle.toString());
-            	
+
             	return newlyCreatedThread;
-            	
+
         	} catch (Exception e) {
         		if (entity != null) {
         			try {
@@ -402,13 +471,13 @@ public class SubmitLinkActivity extends TabActivity {
         	}
         	return null;
         }
-    	
+
     	@Override
     	public void onPreExecute() {
     		showDialog(Constants.DIALOG_SUBMITTING);
     	}
-    	
-    	
+
+
     	@Override
     	public void onPostExecute(ThingInfo newlyCreatedThread) {
     		removeDialog(Constants.DIALOG_SUBMITTING);
@@ -426,12 +495,12 @@ public class SubmitLinkActivity extends TabActivity {
     		}
     	}
     }
-	
+
 	private class MyCaptchaCheckRequiredTask extends CaptchaCheckRequiredTask {
 		public MyCaptchaCheckRequiredTask() {
 			super(mSubmitUrl, mClient);
 		}
-		
+
 		@Override
 		protected void saveState() {
 			SubmitLinkActivity.this.mCaptchaIden = _mCaptchaIden;
@@ -451,7 +520,7 @@ public class SubmitLinkActivity extends TabActivity {
 			loadingLinkCaptcha.setVisibility(View.VISIBLE);
 			loadingTextCaptcha.setVisibility(View.VISIBLE);
 		}
-		
+
 		@Override
 		public void onPostExecute(Boolean required) {
 			final TextView linkCaptchaLabel = (TextView) findViewById(R.id.submit_link_captcha_label);
@@ -491,7 +560,7 @@ public class SubmitLinkActivity extends TabActivity {
 			submitTextButton.setVisibility(View.VISIBLE);
 		}
 	}
-	
+
 	private class MyCaptchaDownloadTask extends CaptchaDownloadTask {
 		public MyCaptchaDownloadTask() {
 			super(mCaptchaUrl, mClient);
@@ -511,7 +580,7 @@ public class SubmitLinkActivity extends TabActivity {
 			textCaptchaView.setVisibility(View.VISIBLE);
 		}
 	}
-    
+
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog = null;
@@ -547,11 +616,11 @@ public class SubmitLinkActivity extends TabActivity {
 		}
 		return dialog;
 	}
-	
+
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
     	super.onPrepareDialog(id, dialog);
-    	
+
     	switch (id) {
     	case Constants.DIALOG_LOGIN:
     		if (mSettings.getUsername() != null) {
@@ -561,12 +630,12 @@ public class SubmitLinkActivity extends TabActivity {
     		final TextView loginPasswordInput = (TextView) dialog.findViewById(R.id.login_password_input);
     		loginPasswordInput.setText("");
     		break;
-    		
+
 		default:
 			break;
     	}
     }
-	
+
 	private boolean validateLinkForm() {
 		final EditText titleText = (EditText) findViewById(R.id.submit_link_title);
 		final EditText urlText = (EditText) findViewById(R.id.submit_link_url);
@@ -598,8 +667,8 @@ public class SubmitLinkActivity extends TabActivity {
 		}
 		return true;
 	}
-	
-	
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -609,19 +678,19 @@ public class SubmitLinkActivity extends TabActivity {
 
         return true;
     }
-    
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	super.onPrepareOptionsMenu(menu);
-    	
+
     	if (mCaptchaUrl == null)
     		menu.findItem(R.id.update_captcha_menu_id).setVisible(false);
     	else
     		menu.findItem(R.id.update_captcha_menu_id).setVisible(true);
-    	
+
     	return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
@@ -639,14 +708,14 @@ public class SubmitLinkActivity extends TabActivity {
     	default:
     		throw new IllegalArgumentException("Unexpected action value "+item.getItemId());
     	}
-    	
+
     	return true;
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
     	super.onActivityResult(requestCode, resultCode, intent);
-    	
+
     	switch(requestCode) {
     	case Constants.ACTIVITY_PICK_SUBREDDIT:
     		if (resultCode == Activity.RESULT_OK) {
@@ -671,7 +740,7 @@ public class SubmitLinkActivity extends TabActivity {
     		break;
     	}
     }
-    
+
     @Override
     protected void onRestoreInstanceState(Bundle state) {
     	super.onRestoreInstanceState(state);

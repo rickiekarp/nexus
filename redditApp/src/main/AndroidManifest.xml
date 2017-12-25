@@ -17,7 +17,7 @@
 
     <supports-screens />
     
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".RedditApplication">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".RedditIsFunApplication">
         <activity android:name=".threads.ThreadsListActivity"
                   android:label="@string/app_name">
             <intent-filter>

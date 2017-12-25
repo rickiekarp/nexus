@@ -11,6 +11,7 @@ public class UserInfo implements Serializable, Parcelable {
 	
 	private Boolean has_mail;
 	private String name;
+    private boolean is_friend;
 	private long created;
 	private String modhash;
 	private long created_utc;
@@ -20,7 +21,8 @@ public class UserInfo implements Serializable, Parcelable {
 	private boolean is_mod;
 	private String id;
 	private Boolean has_mod_mail;
-	
+    private boolean over_18;
+
 	public UserInfo() {
 		super();
 	}
@@ -44,23 +46,25 @@ public class UserInfo implements Serializable, Parcelable {
 		dest.writeInt(comment_karma);
 		dest.writeString(id);
 		dest.writeValue(has_mod_mail);
-		
-		boolean booleans[] = new boolean[2];
+
+		boolean booleans[] = new boolean[4];
 		booleans[0] = is_gold;
 		booleans[1] = is_mod;
+        booleans[2] = is_friend;
+        booleans[3] = over_18;
 		dest.writeBooleanArray(booleans);
 	}
-	
+
 	public static final Parcelable.Creator<UserInfo> CREATOR = new Parcelable.Creator<UserInfo>() {
 		public UserInfo createFromParcel(Parcel in) {
 		    return new UserInfo(in);
 		}
-		
+
 		public UserInfo[] newArray(int size) {
 		    return new UserInfo[size];
 		}
 	};
-		
+
 	private UserInfo(Parcel in) {
 		has_mail      = (Boolean) in.readValue(null);
 		name          = in.readString();
@@ -71,11 +75,13 @@ public class UserInfo implements Serializable, Parcelable {
 		comment_karma = in.readInt();
 		id            = in.readString();
 		has_mod_mail  = (Boolean) in.readValue(null);
-		
-		boolean booleans[] = new boolean[2];
+
+		boolean booleans[] = new boolean[4];
 		in.readBooleanArray(booleans);
 		is_gold = booleans[0];
 		is_mod  = booleans[1];
+        is_friend = booleans[2];
+        over_18 = booleans[3];
 	}
 
 	public boolean isHas_mail() {
@@ -165,5 +171,21 @@ public class UserInfo implements Serializable, Parcelable {
 	public void setHas_mod_mail(boolean has_mod_mail) {
 		this.has_mod_mail = has_mod_mail;
 	}
-	
+
+    public void setIs_friend(boolean input) {
+        this.is_friend = input;
+    }
+
+    public boolean isIs_friend() {
+        return is_friend;
+    }
+
+    public void setOver_18(boolean input) {
+        this.over_18 = input;
+    }
+
+    public boolean isOver_18() {
+        return over_18;
+    }
+
 }

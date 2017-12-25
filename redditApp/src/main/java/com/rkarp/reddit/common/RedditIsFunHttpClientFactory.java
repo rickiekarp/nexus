@@ -36,7 +36,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
 import com.rkarp.reddit.R;
-import com.rkarp.reddit.RedditApplication;
+import com.rkarp.reddit.RedditIsFunApplication;
 
 public class RedditIsFunHttpClientFactory {
 	
@@ -73,7 +73,7 @@ public class RedditIsFunHttpClientFactory {
 		    protected SocketFactory getHttpsSocketFactory(){
 				try {
 					Class<?> sslSessionCacheClass = Class.forName("android.net.SSLSessionCache");
-			    	Object sslSessionCache = sslSessionCacheClass.getConstructor(Context.class).newInstance(RedditApplication.getApplication());
+			    	Object sslSessionCache = sslSessionCacheClass.getConstructor(Context.class).newInstance(RedditIsFunApplication.getApplication());
 			    	Method getHttpSocketFactory = Class.forName("android.net.SSLCertificateSocketFactory").getMethod("getHttpSocketFactory", new Class<?>[]{int.class, sslSessionCacheClass});
 			    	return (SocketFactory) getHttpSocketFactory.invoke(null, SOCKET_OPERATION_TIMEOUT, sslSessionCache);
 				}catch(Exception e){
@@ -88,7 +88,7 @@ public class RedditIsFunHttpClientFactory {
                     final HttpRequest request,
                     final HttpContext context
             ) throws HttpException, IOException {
-                RedditApplication app = RedditApplication.getApplication();
+                RedditIsFunApplication app = RedditIsFunApplication.getApplication();
             	String version;
 				try {
 					version = app.getPackageManager().getPackageInfo(app.getPackageName(), 0).versionName;

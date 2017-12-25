@@ -2,6 +2,7 @@ package com.rkarp.reddit.settings;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -12,49 +13,50 @@ import android.widget.Toast;
 import com.rkarp.reddit.R;
 import com.rkarp.reddit.common.Constants;
 import com.rkarp.reddit.common.util.Util;
+import com.rkarp.reddit.filters.FilterListActivity;
 import com.rkarp.reddit.mail.EnvelopeService;
 
 public class RedditPreferencesPage extends PreferenceActivity
-        implements Preference.OnPreferenceChangeListener, 
+        implements Preference.OnPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
-	
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         // Load the XML preferences file
         addPreferencesFromResource(R.xml.reddit_preferences);
 
         Preference e;
-        
+
         e = findPreference(Constants.PREF_HOMEPAGE);
         e.setOnPreferenceChangeListener(this);
         e.setSummary(getPreferenceScreen().getSharedPreferences().getString(Constants.PREF_HOMEPAGE, null));
-        
+
         e = findPreference(Constants.PREF_THEME);
         e.setOnPreferenceChangeListener(this);
         e.setSummary(getVisualThemeName(
         		getPreferenceScreen().getSharedPreferences()
                 .getString(Constants.PREF_THEME, null)));
-        
+
         e = findPreference(Constants.PREF_TEXT_SIZE);
         e.setOnPreferenceChangeListener(this);
         e.setSummary(getVisualTextSizeName(
         		getPreferenceScreen().getSharedPreferences()
                 .getString(Constants.PREF_TEXT_SIZE, null)));
-        
+
         e = findPreference(Constants.PREF_ROTATION);
         e.setOnPreferenceChangeListener(this);
         e.setSummary(getVisualRotationName(
         		getPreferenceScreen().getSharedPreferences()
                 .getString(Constants.PREF_ROTATION, null)));
-        
+
         e = findPreference(Constants.PREF_MAIL_NOTIFICATION_STYLE);
         e.setOnPreferenceChangeListener(this);
         e.setSummary(getVisualMailNotificationStyleName(
         		getPreferenceScreen().getSharedPreferences()
         		.getString(Constants.PREF_MAIL_NOTIFICATION_STYLE, null)));
-        
+
         e = findPreference(Constants.PREF_MAIL_NOTIFICATION_SERVICE);
         e.setOnPreferenceChangeListener(this);
         e.setSummary(getVisualMailNotificationServiceName(
@@ -66,9 +68,17 @@ public class RedditPreferencesPage extends PreferenceActivity
         		.equals(Constants.PREF_MAIL_NOTIFICATION_STYLE_OFF)) {
         	e.setEnabled(false);
         }
-        
+
+        e = findPreference(Constants.PREF_REDDIT_FILTERS);
+        e.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference pref) {
+                Intent nextActivity = new Intent(RedditPreferencesPage.this, FilterListActivity.class);
+                startActivity(nextActivity);
+                return true;
+            }
+        });
     }
-    
+
     @Override
     protected void onResume() {
     	super.onResume();
@@ -137,7 +147,7 @@ public class RedditPreferencesPage extends PreferenceActivity
         }
         return false;
     }
-    
+
     public boolean onPreferenceClick(Preference pref) {
 //        if (pref.getKey().equals(BrowserSettings.PREF_GEARS_SETTINGS)) {
 //            List<Plugin> loadedPlugins = WebView.getPluginList().getList();
@@ -147,7 +157,7 @@ public class RedditPreferencesPage extends PreferenceActivity
 //                    return true;
 //                }
 //            }
-//            
+//
 //        }
         return true;
     }
@@ -168,7 +178,7 @@ public class RedditPreferencesPage extends PreferenceActivity
         }
         return "";
     }
-    
+
     private CharSequence getVisualTextSizeName(String enumName) {
         CharSequence[] visualNames = getResources().getTextArray(
                 R.array.pref_text_size_choices);
@@ -185,7 +195,7 @@ public class RedditPreferencesPage extends PreferenceActivity
         }
         return "";
     }
-    
+
     private CharSequence getVisualRotationName(String enumName) {
         CharSequence[] visualNames = getResources().getTextArray(
                 R.array.pref_rotation_choices);
@@ -202,7 +212,7 @@ public class RedditPreferencesPage extends PreferenceActivity
         }
         return "";
     }
-    
+
     private CharSequence getVisualMailNotificationStyleName(String enumName) {
         CharSequence[] visualNames = getResources().getTextArray(
                 R.array.pref_mail_notification_style_choices);
