@@ -21,6 +21,6 @@ public abstract class Constants {
 
     public static abstract class URL {
         public static final String BASE_URL_LOGIN = "http://" + Configuration.host + ":8080/LoginServer/api/";
-        public static final String BASE_URL_APPSERVER = "http://" + Configuration.host + ":8080/AppServer/api/";
+        public static final String BASE_URL_APPSERVER = "http://" + Configuration.host + ":8080/AssistantServer/api/";
     }
 }
