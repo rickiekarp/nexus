@@ -1,0 +1,45 @@
+group 'com.rkarp.filelistcreator'
+
+def minorVersion = 0
+
+dependencies {
+    compile project(':AppCore')
+}
+
+build {
+    println 'Building ' + project.name
+
+    ext {
+        if (project.hasProperty('privateBuildDate')) {
+            privateBuildDate = project.property('privateBuildDate')
+        } else {
+            privateBuildDate = new Date().format('yyMMddHHmm')
+        }
+
+        if (project.hasProperty('publicVersion')) {
+            publicVersion = project.property('publicVersion')
+        } else {
+            if (minorVersion > 0) {
+                publicVersion = new Date().format('yy.MM') + '.' + minorVersion
+            } else {
+                publicVersion = new Date().format('yy.MM')
+            }
+        }
+    }
+
+    jar {
+        baseName = 'filelist-creator'
+        libsDirName = new File(rootProject.projectDir, "build/app")
+
+        manifest {
+            attributes 'Version': build.ext.publicVersion
+            attributes 'Build-Time': build.ext.privateBuildDate
+            attributes 'Main-Class': 'com.rkarp.flc.MainApp'
+        }
+
+        // Include dependent libraries in archive.
+        from {
+            configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+    }
+}

@@ -1,0 +1,128 @@
+group 'com.rkarp.appbox'
+
+buildscript {
+    ext {
+        kotlin_version = '1.2.41'
+    }
+
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.1"
+    }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    sourceCompatibility = JavaVersion.VERSION_1_10
+    targetCompatibility = JavaVersion.VERSION_1_10
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+
+    compileJava {
+        dependsOn(':compileKotlin')
+        doFirst {
+            options.compilerArgs = [
+                    '--module-path', classpath.asPath,
+            ]
+            classpath = files()
+        }
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+        destinationDir = compileJava.destinationDir
+    }
+
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
+    jar { duplicatesStrategy = "exclude" }
+}
+
+subprojects {
+//    apply plugin: 'com.github.spotbugs'
+//    spotbugs {
+//        reportsDir = file("$project.buildDir/reports/findbugs")
+//        reportLevel = "high"
+//        ignoreFailures = true
+//    }
+}
+
+subprojects {
+//SOURCE SETS
+    sourceSets {
+        main {
+            java {
+                srcDirs = ["Sources"]
+            }
+            resources {
+                srcDirs =  ["Resources"]
+            }
+        }
+        test {
+            java {
+                srcDirs =  ["TestSources"]
+            }
+            resources {
+                srcDirs =  ["TestResources"]
+            }
+        }
+    }
+}
+
+project(':AppCore') {
+    project.ext {
+        okhttpVersion = '3.9.0'
+        jsonVersion = '20170516'
+        jacksonVersion = '2.9.0'
+    }
+
+    dependencies {
+        compile group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
+//        compile group: 'com.squareup.okhttp3', name: 'okhttp', version: project.ext.okhttpVersion
+        compile group: 'org.json', name: 'json', version: project.ext.jsonVersion
+        compile group: 'commons-io', name: 'commons-io', version: '2.5'
+        compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jacksonVersion
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+//SOURCE SETS
+sourceSets {
+    main {
+        java {
+            srcDirs = []
+        }
+        resources {
+            srcDirs =  []
+        }
+    }
+    test {
+        java {
+            srcDirs =  []
+        }
+        resources {
+            srcDirs =  []
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
+}

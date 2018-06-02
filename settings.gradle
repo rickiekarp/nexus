@@ -1,0 +1,15 @@
+rootProject.name = 'JavaFXApps'
+
+include 'AppCore'
+project(':AppCore').projectDir = new File(rootDir, 'AppCore')
+
+include 'AppUpdater'
+
+include 'BotManager';           project(':BotManager').projectDir = new File(rootDir, 'BotManager')
+include 'BotLib';               project(':BotLib').projectDir = new File(rootDir, 'BotManager/BotLib')
+
+include 'FilelistCreator'
+
+include 'QAAccountManager'
+
+include 'SHA1Pass'
