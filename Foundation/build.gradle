@@ -1,0 +1,21 @@
+ext {
+    jettisonVersion = '1.3.8'
+    okhttpVersion = '3.10.0'
+    geoipVersion = '2.9.0'
+}
+
+dependencies {
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: project.ext.log4jVersion
+    compile group: 'org.json', name: 'json', version: '20170516'
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: project.ext.springBootVersion
+
+
+    compile group: 'com.google.code.gson', name: 'gson', version: project.ext.gsonVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jacksonVersion
+
+    compile group: 'org.postgresql', name: 'postgresql', version: project.ext.postgresqlVersion
+    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: project.ext.okhttpVersion
+    compile group: 'com.maxmind.geoip2', name: 'geoip2', version: project.ext.geoipVersion
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.3'
+}
