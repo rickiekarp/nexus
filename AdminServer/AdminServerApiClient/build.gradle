@@ -1,0 +1,27 @@
+plugins {
+    id 'org.springframework.boot' version '1.5.8.RELEASE'
+}
+
+group 'com.rkarp.adminserver'
+
+build {
+    println 'Building ' + project.name
+
+    ext {
+        if (project.hasProperty('privateBuildDate')) {
+            privateBuildDate = project.property('privateBuildDate')
+        } else {
+            privateBuildDate = new Date().format('yyMMddHHmm')
+        }
+    }
+
+    war {
+        libsDirName = new File(rootProject.projectDir, "build")
+
+        manifest {
+            attributes 'Build-Time': build.ext.privateBuildDate
+        }
+
+        archiveName 'AdminServer.war'
+    }
+}

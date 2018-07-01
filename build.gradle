@@ -1,0 +1,104 @@
+//import com.github.spotbugs.SpotBugsTask
+
+buildscript {
+    ext {
+        kotlinVersion = '1.2.50'
+        dokkaVersion = '0.9.17'
+    }
+
+    repositories {
+        mavenCentral()
+        maven {
+            url = "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion"
+//        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.1"
+        classpath "com.devsoap.plugin:gradle-vaadin-plugin:1.3.1"
+    }
+}
+
+group = 'com.rkarp.backend'
+version = '1.0.0'
+
+allprojects {
+
+    ext {
+        jUnitVersion = '4.12'
+        log4jVersion = '2.8.1'
+        guavaVersion = '23.0'
+
+        gsonVersion = '2.8.2'
+
+        //foundation
+        postgresqlVersion = '42.2.2'
+        jacksonVersion = '2.9.3'
+
+        springBootVersion = '2.0.2.RELEASE'
+        flywayVersion = '5.0.7'
+        vaadinVersion = '8.4.3'
+
+    }
+
+    apply plugin: "java"
+    apply plugin: "org.jetbrains.kotlin.jvm"
+    apply plugin: 'org.jetbrains.dokka'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: project.ext.jUnitVersion
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
+        compile group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flywayVersion
+        compile group: 'org.postgresql', name: 'postgresql', version: project.ext.postgresqlVersion
+
+        compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+    }
+
+//    project.apply plugin: "com.github.spotbugs"
+//    project.spotbugs {
+//        it.sourceSets = [sourceSets.main]
+//        ignoreFailures = true
+//        toolVersion = '3.1.3'
+//        effort = 'max'
+//        reportLevel = "high"
+//        reportsDir = file("$project.rootDir.absolutePath/Reports/spotbugs/$project.name")
+//    }
+//
+//    // filter out any class that does not live in the rkarp package
+//    project.tasks.withType(SpotBugsTask) {
+//        description = 'Run spotbugs'
+//        group = 'verification'
+//
+//        dependsOn 'classes'
+//        classes = fileTree('build/classes/')
+//
+//        doFirst {
+//            classes = classes.filter {
+//                it.path.contains('/com/rkarp/')
+//            }
+//            pluginClasspath = project.configurations.spotbugsPlugins
+//        }
+//    }
+
+    dokka {
+        outputFormat = 'html'
+        outputDirectory = "$it.project.buildDir/dokka"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
+}

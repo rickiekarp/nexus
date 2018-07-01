@@ -1,0 +1,19 @@
+group 'com.rkarp.homeserver'
+
+dependencies {
+    compile project(':Foundation')
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: project.ext.springBootVersion
+
+}
+
+apply plugin: 'war'
+build {
+    war {
+        libsDirName = new File(projectDir, "/../Deployment/service-application/webapps")
+        manifest {
+            attributes 'Build-Time': new Date().format('yyMMddHHmm')
+        }
+        archiveName 'HomeServer.war'
+    }
+}

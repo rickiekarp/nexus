@@ -1,0 +1,3 @@
+CREATE DATABASE login;
+CREATE DATABASE data_admin;
+CREATE DATABASE data_home;

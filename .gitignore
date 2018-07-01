@@ -1,0 +1,18 @@
+#Project files
+.gradle/
+.idea/
+build/
+out/
+
+*.war
+*.war.original
+*.setup
+
+Deployment/logs
+
+#Vaadin files
+gwt-unitCache/
+widgetsets/
+styles.css
+addons.scss
+*.css.gz

@@ -1,0 +1,66 @@
+plugins {
+    // Use the maven plugin to generate to addon pom.xml for the Vaadin Directory
+    id "maven"
+
+    // Uncomment this if Vaadin plugin is not applied in the parent module
+    // id "com.devsoap.plugin.vaadin" version "1.3.1"
+}
+
+// Apply the Vaadin plugin
+apply plugin: 'com.devsoap.plugin.vaadin'
+vaadin {
+    /**
+     * Vaadin version. Defaults to latest Vaadin 8
+     */
+    version = project.ext.vaadinVersion
+
+    /**
+     * Should the plugin handle the Vaadin dependencies.
+     */
+    manageDependencies = true   //Should the plugin manage the Vaadin dependencies for you. Default is true.
+
+    /**
+     * Should the plugin add repositories such as maven central and vaadin addons to the project.
+     */
+    manageRepositories = true
+
+    /**
+     * Output server logs to console instead of to file. Might be useful while developing.
+     */
+    logToConsole = false
+}
+
+// Specify a version for the addon, this can also be done in the
+// parent build.gradle if you want the version to be the same for all projects
+version = '1.0-SNAPSHOT'
+
+// We are only interested in the addon jar
+artifacts {
+    archives jar
+}
+
+// Vaadin configuration
+vaadinAddon {
+    // Addon metadata for the Vaadin Directory
+    author 'Rickie Karp'
+    title 'MyComponent'
+}
+
+// Creates the addon POM for the directory
+task createAddonPom {
+    pom { artifactId = 'mycomponent' }.writeTo(
+            "${sourceSets.main.output.resourcesDir}/META-INF/maven/server/mycomponent/pom.xml"
+    )
+}
+
+jar {
+    // Addon artifact name
+    baseName = 'mycomponent'
+
+    // Include the addon pom.xml for the Vaadin Directory
+    dependsOn createAddonPom
+
+    // Usually it is a good idea to include the sources of the addon so the
+    // addon user can compile their widgetset
+    sourceSets.main.java.srcDirs.each {from it }
+}

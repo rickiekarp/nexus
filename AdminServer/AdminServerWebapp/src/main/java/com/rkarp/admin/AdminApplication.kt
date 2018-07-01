@@ -1,0 +1,96 @@
+package com.rkarp.admin
+
+import com.rkarp.foundation.config.ServerContext
+import com.rkarp.foundation.config.Config
+import com.rkarp.foundation.logger.Log
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Configuration
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+
+@SpringBootApplication
+@ComponentScan(value = ["com.rkarp.foundation", "com.rkarp.admin"])
+open class AdminApplication: SpringBootServletInitializer() {
+
+    override fun configure(springApplicationBuilder: SpringApplicationBuilder): SpringApplicationBuilder {
+        return springApplicationBuilder
+                .sources(AdminApplication::class.java)
+                .properties(getProperties())
+    }
+}
+
+fun main(args: Array<String>) {
+    SpringApplicationBuilder(AdminApplication::class.java)
+            .sources(AdminApplication::class.java)
+            .properties(getProperties())
+            .run(*args)
+}
+
+fun getProperties(): Properties {
+    loadConfiguration("AdminServerWebapp")
+    ServerContext.serverVersion = evaluateServerVersion()
+
+    Config.get().setupDirectory = setupPath()
+    val props = Properties()
+    props["spring.config.location"] = "file:${Config.get().setupDirectory}/"
+    return props
+}
+
+/**
+ * Creates the Config and loads the settings
+ */
+private fun loadConfiguration(applicationName: String) {
+    val configBuilder = Config.ConfigBuilder()
+            .setApplicationIdentifier(applicationName)
+
+    // set up Config
+    Config.create(configBuilder)
+}
+
+fun setupPath(): String {
+    return findSetupDirectory(Config.get().applicationIdentifier)
+}
+
+
+/**
+ * Determines the setup directory given the name for this app.
+ * In development mode this simply returns the given path.
+ * In non-development it will search the current working directory of the user for the setup directory
+ */
+private fun findSetupDirectory(aSetupDirectoryName: String): String {
+    val workingDirectory = System.getProperty("user.dir")
+    if (ServerContext.developerEnvironment) {
+        return "$workingDirectory.setup"
+    } else {
+        val directories = File(System.getProperty("user.dir")).listFiles().filter { it.isDirectory }
+        for (directory in directories) {
+            if (directory.name == "${Config.get().applicationIdentifier}.setup") {
+                Log.DEBUG.trace("Setup directory ${directory.name} found in ${directory.path}")
+                return "${System.getProperty("user.dir")}/${directory.name}"
+            }
+        }
+        Log.DEBUG.error("Setup directory could not be found in current path ${System.getProperty("user.dir")}")
+    }
+    return aSetupDirectoryName
+}
+
+fun evaluateServerVersion() : String {
+    val version = AdminApplication::class.java.`package`.implementationVersion
+    // if the implementation version is null (because there is no manifest file),
+    // it is assumed that the application is running in a development environment
+    if (version == null) {
+        Log.DEBUG.debug("Implementation version could not be found, assuming developer environment!")
+        ServerContext.developerEnvironment = true
+        val format = SimpleDateFormat("yyMMddHHmm")
+        return format.format(Date())
+    }
+    return version
+}
+
+@Configuration
+@ComponentScan("com.rkarp.foundation")
+open class DatabaseConfiguration

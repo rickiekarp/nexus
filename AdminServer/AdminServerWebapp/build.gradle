@@ -1,0 +1,56 @@
+buildscript {
+    repositories {
+        maven {
+            url = "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$project.ext.springBootVersion"
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+
+apply plugin: 'com.devsoap.plugin.vaadin'
+vaadin {
+    /**
+     * Vaadin version. Defaults to latest Vaadin 8
+     */
+    version = project.ext.vaadinVersion
+
+    /**
+     * Should the plugin handle the Vaadin dependencies.
+     */
+    manageDependencies = true   //Should the plugin manage the Vaadin dependencies for you. Default is true.
+
+    /**
+     * Should the plugin add repositories such as maven central and vaadin addons to the project.
+     */
+    manageRepositories = true
+
+    /**
+     * Output server logs to console instead of to file. Might be useful while developing.
+     */
+    logToConsole = false
+}
+
+// Webapp depends on the addon
+dependencies {
+    compile project(':Foundation')
+    compile project(':AdminServerAddon')
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: project.ext.springBootVersion
+
+    compile group: 'com.google.guava', name: 'guava', version: project.ext.guavaVersion
+}
+
+apply plugin: 'war'
+build {
+    war {
+        libsDirName = new File(projectDir, "/../../Deployment/service-application/webapps")
+        manifest {
+            attributes 'Build-Time': new Date().format('yyMMddHHmm')
+        }
+        archiveName 'AdminTool.war'
+    }
+}

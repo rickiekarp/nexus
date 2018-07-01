@@ -1,0 +1,32 @@
+debug: false
+
+server:
+  port: 8080
+
+spring:
+  profiles: default
+  application:
+    name: HomeServer
+
+vaadin:
+  servlet:
+    productionMode: false
+
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate: INFO
+
+db:
+  driver: org.postgresql.Driver
+  url: jdbc:postgresql://database:5432/data_home
+  username: postgres
+  password: root
+
+hibernate:
+  dialect: org.hibernate.dialect.PostgreSQL92Dialect
+  show_sql: true
+  hbm2ddl.auto: update
+
+entitymanager:
+  packagesToScan: com.rkarp.homeserver
