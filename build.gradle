@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlinVersion = '1.2.50'
+        kotlinVersion = '1.2.51'
         dokkaVersion = '0.9.17'
     }
 
@@ -27,18 +27,18 @@ allprojects {
 
     ext {
         jUnitVersion = '4.12'
-        log4jVersion = '2.8.1'
-        guavaVersion = '23.0'
+        log4jVersion = '2.11.1'
+        guavaVersion = '26.0-jre'
 
-        gsonVersion = '2.8.2'
+        gsonVersion = '2.8.5'
 
         //foundation
-        postgresqlVersion = '42.2.2'
-        jacksonVersion = '2.9.3'
+        postgresqlVersion = '42.2.4'
+        jacksonVersion = '2.9.6'
 
-        springBootVersion = '2.0.2.RELEASE'
-        flywayVersion = '5.0.7'
-        vaadinVersion = '8.4.3'
+        springBootVersion = '2.0.4.RELEASE'
+        flywayVersion = '5.1.4'
+        vaadinVersion = '8.5.1'
 
     }
 
