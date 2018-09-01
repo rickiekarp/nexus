@@ -16,24 +16,27 @@ plugins {
 group 'com.rkarp'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'kotlin'
+allprojects {
+    apply plugin: 'kotlin'
 
-sourceCompatibility = 1.10
+    sourceCompatibility = 1.10
 
-repositories {
-    mavenCentral()
-}
+    repositories {
+        mavenCentral()
+    }
 
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.10"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.10"
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.10"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.10"
+    }
+
 }
 
 task wrapper(type: Wrapper) {

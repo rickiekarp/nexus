@@ -1,2 +1,5 @@
 rootProject.name = 'uni'
 
+include 'CodeChallenge'
+
+project(':CodeChallenge').projectDir = "$rootDir/CodeChallenge" as File
