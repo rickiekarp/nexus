@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.41'
+    ext.kotlin_version = '1.2.51'
 
     repositories {
         mavenCentral()
@@ -16,10 +16,12 @@ plugins {
 group 'com.rkarp'
 version '1.0-SNAPSHOT'
 
+def javaVersion = JavaVersion.VERSION_1_10
+
 allprojects {
     apply plugin: 'kotlin'
 
-    sourceCompatibility = 1.10
+    sourceCompatibility = javaVersion
 
     repositories {
         mavenCentral()
@@ -31,10 +33,10 @@ allprojects {
     }
 
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.10"
+        kotlinOptions.jvmTarget = javaVersion
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.10"
+        kotlinOptions.jvmTarget = javaVersion
     }
 
 }
