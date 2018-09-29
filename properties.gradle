@@ -1,3 +1,4 @@
 ext {
     kotlinVersion = '1.2.60'
+    dokkaVersion = '0.9.17'
 }
