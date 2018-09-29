@@ -2,4 +2,7 @@ ext {
     kotlinVersion = '1.2.71'
     dokkaVersion = '0.9.17'
     junit4Version = '4.12'
+    
+    gradleWrapper = '4.9'
 }
+
