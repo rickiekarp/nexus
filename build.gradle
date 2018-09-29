@@ -23,7 +23,6 @@ version = '1.0.0'
 allprojects {
 
     ext {
-        jUnitVersion = '4.12'
         log4jVersion = '2.11.1'
         guavaVersion = '26.0-jre'
 
@@ -53,7 +52,7 @@ allprojects {
 
 subprojects {
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: project.ext.jUnitVersion
+        testCompile group: 'junit', name: 'junit', version: junit4Version
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
