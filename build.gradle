@@ -3,10 +3,6 @@
 buildscript {
     apply from: 'module-base/properties.gradle'
 
-    ext {
-        dokkaVersion = '0.9.17'
-    }
-
     repositories {
         mavenCentral()
         maven {
