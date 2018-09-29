@@ -1,0 +1,3 @@
+[submodule "module-base"]
+	path = module-base
+	url = git@gitlab.com:rickie.karp/module-base.git

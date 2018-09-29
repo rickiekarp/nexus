@@ -1,8 +1,9 @@
 //import com.github.spotbugs.SpotBugsTask
 
 buildscript {
+    apply from: 'module-base/properties.gradle'
+
     ext {
-        kotlinVersion = '1.2.51'
         dokkaVersion = '0.9.17'
     }
 
