@@ -1,8 +1,12 @@
 ext {
+    gradleWrapper = '4.9'
+
     kotlinVersion = '1.2.71'
     dokkaVersion = '0.9.17'
+    detektVersion = '1.0.0.RC9.2'
+
+    spotbugsVersion = '1.6.4'
+
     junit4Version = '4.12'
-    
-    gradleWrapper = '4.9'
 }
 
