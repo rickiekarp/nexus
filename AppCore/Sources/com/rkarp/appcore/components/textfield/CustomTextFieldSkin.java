@@ -1,4 +1,4 @@
-package com.rkarp.sha1pass.components;
+package com.rkarp.appcore.components.textfield;
 
 import com.rkarp.appcore.components.textfield.CustomTextField;
 import javafx.scene.control.TextField;

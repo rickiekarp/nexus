@@ -1,4 +1,4 @@
-package com.rkarp.sha1pass.components;
+package com.rkarp.appcore.components.button;
 
 import javafx.animation.*;
 import javafx.scene.control.Button;
