@@ -56,25 +56,6 @@ subprojects {
 //        ignoreFailures = true
 //    }
 
-    //SOURCE SETS
-    sourceSets {
-        main {
-            java {
-                srcDirs = ["Sources", "src"]
-            }
-            resources {
-                srcDirs =  ["Resources"]
-            }
-        }
-        test {
-            java {
-                srcDirs =  ["TestSources"]
-            }
-            resources {
-                srcDirs =  ["TestResources"]
-            }
-        }
-    }
 }
 
 repositories {
