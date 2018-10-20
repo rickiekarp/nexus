@@ -1,6 +1,6 @@
 package net.rickiekarp.core;
 
-//import daggerok.api.HelloService;
+//import net.rickiekarp.api.HelloService;
 //import net.rickiekarp.core.HelloFactory;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -27,7 +27,7 @@ public class AppStarter extends Application {
         AppStarter.configClazz = configClazz;
     }
 
-    public static void setLayout(Node node) {
+    protected static void setLayout(Node node) {
         AppStarter.node = node;
     }
 

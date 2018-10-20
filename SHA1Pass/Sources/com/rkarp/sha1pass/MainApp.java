@@ -2,7 +2,7 @@ package com.rkarp.sha1pass;
 
 import com.rkarp.sha1pass.settings.AppConfiguration;
 import com.rkarp.sha1pass.view.MainLayout;
-import daggerok.api.HelloService;
+import net.rickiekarp.api.HelloService;
 import net.rickiekarp.core.AppStarter;
 import net.rickiekarp.core.HelloFactory;
 
