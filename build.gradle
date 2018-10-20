@@ -82,6 +82,6 @@ sourceSets {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = gradleWrapper
+wrapper {
+    gradleVersion = gradleWrapperVersion
 }
