@@ -1,7 +1,7 @@
 group 'com.rkarp.appbox'
 
 buildscript {
-    apply from: 'module-base/properties.gradle'
+    apply from: 'module-base/base.gradle'
 
     repositories {
         mavenCentral()
