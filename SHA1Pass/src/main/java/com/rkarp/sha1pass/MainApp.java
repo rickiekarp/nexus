@@ -18,8 +18,9 @@ public class MainApp extends AppStarter {
 
         setMainClazz(MainApp.class);
         setConfigClazz(AppConfiguration.class);
-        setLayout(new MainLayout().getMainLayout());
+        setLayout(new MainLayout());
 
         launch(args);
+
     }
 }

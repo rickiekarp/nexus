@@ -1,6 +1,6 @@
 package com.rkarp.botter.components.listcell;
 
-import com.rkarp.appcore.debug.DebugHelper;
+import net.rickiekarp.core.debug.DebugHelper;
 import com.rkarp.botlib.plugin.BotSetting;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

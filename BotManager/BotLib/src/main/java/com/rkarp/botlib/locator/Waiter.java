@@ -1,6 +1,6 @@
 package com.rkarp.botlib.locator;
 
-import com.rkarp.appcore.debug.LogFileHandler;
+import net.rickiekarp.core.debug.LogFileHandler;
 import com.rkarp.botlib.BotLauncher;
 import com.rkarp.botlib.PluginConfig;
 import io.appium.java_client.android.AndroidDriver;

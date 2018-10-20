@@ -1,13 +1,13 @@
 package com.rkarp.qaacc.view;
 
-import com.rkarp.appcore.components.textfield.CustomTextField;
-import com.rkarp.appcore.controller.LanguageController;
-import com.rkarp.appcore.debug.DebugHelper;
-import com.rkarp.appcore.debug.ExceptionHandler;
-import com.rkarp.appcore.debug.LogFileHandler;
-import com.rkarp.appcore.util.CommonUtil;
-import com.rkarp.appcore.util.ImageLoader;
-import com.rkarp.appcore.view.MessageDialog;
+import net.rickiekarp.core.components.textfield.CustomTextField;
+import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.debug.DebugHelper;
+import net.rickiekarp.core.debug.ExceptionHandler;
+import net.rickiekarp.core.debug.LogFileHandler;
+import net.rickiekarp.core.util.CommonUtil;
+import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.view.MessageDialog;
 import com.rkarp.qaacc.factory.AccountXmlFactory;
 import com.rkarp.qaacc.model.Account;
 import com.rkarp.qaacc.settings.AppConfiguration;

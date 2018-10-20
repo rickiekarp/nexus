@@ -1,6 +1,6 @@
 package com.rkarp.flc.model;
 
-import com.rkarp.appcore.controller.LanguageController;
+import net.rickiekarp.core.controller.LanguageController;
 import com.rkarp.flc.controller.FilelistController;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;

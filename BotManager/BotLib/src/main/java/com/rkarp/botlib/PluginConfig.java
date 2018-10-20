@@ -1,6 +1,6 @@
 package com.rkarp.botlib;
 
-import com.rkarp.appcore.settings.LoadSave;
+import net.rickiekarp.core.settings.LoadSave;
 import com.rkarp.botlib.enums.BotPlatforms;
 import com.rkarp.botlib.enums.BotType;
 import com.rkarp.botlib.plugin.BotSetting;

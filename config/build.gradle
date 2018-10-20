@@ -4,10 +4,23 @@ plugins {
 
 javaModule.name = "config"
 
+project.ext {
+  okhttpVersion = '3.9.0'
+  jsonVersion = '20170516'
+  jacksonVersion = '2.9.7'
+}
+
+
 dependencies {
   compile "org.openjfx:javafx-controls:11:linux"
   compile "org.openjfx:javafx-graphics:11:linux"
   compile "org.openjfx:javafx-base:11:linux"
+
+  compile group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
+//        compile group: 'com.squareup.okhttp3', name: 'okhttp', version: project.ext.okhttpVersion
+  compile group: 'org.json', name: 'json', version: project.ext.jsonVersion
+  compile group: 'commons-io', name: 'commons-io', version: '2.5'
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jacksonVersion
   
   api project(":api")
   implementation project(":impl")

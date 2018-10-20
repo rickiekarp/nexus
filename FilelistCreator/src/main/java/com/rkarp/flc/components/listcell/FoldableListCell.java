@@ -1,10 +1,10 @@
 package com.rkarp.flc.components.listcell;
 
-import com.rkarp.appcore.controller.LanguageController;
-import com.rkarp.appcore.debug.DebugHelper;
-import com.rkarp.appcore.debug.LogFileHandler;
-import com.rkarp.appcore.view.AboutScene;
-import com.rkarp.appcore.view.SettingsScene;
+import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.debug.DebugHelper;
+import net.rickiekarp.core.debug.LogFileHandler;
+import net.rickiekarp.core.view.AboutScene;
+import net.rickiekarp.core.view.SettingsScene;
 import com.rkarp.flc.controller.FilelistController;
 import com.rkarp.flc.model.FilelistSettings;
 import com.rkarp.flc.settings.AppConfiguration;

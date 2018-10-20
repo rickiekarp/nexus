@@ -1,9 +1,9 @@
 package com.rkarp.qaacc.factory;
 
-import com.rkarp.appcore.debug.DebugHelper;
-import com.rkarp.appcore.debug.ExceptionHandler;
-import com.rkarp.appcore.debug.LogFileHandler;
-import com.rkarp.appcore.settings.Configuration;
+import net.rickiekarp.core.debug.DebugHelper;
+import net.rickiekarp.core.debug.ExceptionHandler;
+import net.rickiekarp.core.debug.LogFileHandler;
+import net.rickiekarp.core.settings.Configuration;
 import com.rkarp.qaacc.model.Projects;
 import com.rkarp.qaacc.settings.AppConfiguration;
 import com.rkarp.qaacc.view.BugReportSettings;

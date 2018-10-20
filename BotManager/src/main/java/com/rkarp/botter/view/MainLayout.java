@@ -1,15 +1,15 @@
 package com.rkarp.botter.view;
 
-import com.rkarp.appcore.controller.LanguageController;
-import com.rkarp.appcore.debug.DebugHelper;
-import com.rkarp.appcore.debug.ExceptionHandler;
-import com.rkarp.appcore.debug.LogFileHandler;
-import com.rkarp.appcore.util.parser.JsonParser;
-import com.rkarp.appcore.settings.Configuration;
-import com.rkarp.appcore.view.ChangelogScene;
-import com.rkarp.appcore.view.MainScene;
-import com.rkarp.appcore.view.MessageDialog;
-import com.rkarp.appcore.view.SettingsScene;
+import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.debug.DebugHelper;
+import net.rickiekarp.core.debug.ExceptionHandler;
+import net.rickiekarp.core.debug.LogFileHandler;
+import net.rickiekarp.core.util.parser.JsonParser;
+import net.rickiekarp.core.settings.Configuration;
+import net.rickiekarp.core.view.ChangelogScene;
+import net.rickiekarp.core.view.MainScene;
+import net.rickiekarp.core.view.MessageDialog;
+import net.rickiekarp.core.view.SettingsScene;
 import com.rkarp.botlib.BotConfig;
 import com.rkarp.botlib.BotLauncher;
 import com.rkarp.botlib.PluginConfig;

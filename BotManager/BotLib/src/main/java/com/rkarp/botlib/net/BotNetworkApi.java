@@ -1,8 +1,8 @@
 package com.rkarp.botlib.net;
 
-import com.rkarp.appcore.net.NetworkAction;
-import com.rkarp.appcore.net.NetworkApi;
-import com.rkarp.appcore.net.provider.NetworkParameterProvider;
+import net.rickiekarp.core.net.NetworkAction;
+import net.rickiekarp.core.net.NetworkApi;
+import net.rickiekarp.core.net.provider.NetworkParameterProvider;
 import com.rkarp.botlib.model.PluginData;
 
 public class BotNetworkApi extends NetworkApi {

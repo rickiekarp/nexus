@@ -1,6 +1,6 @@
 package com.rkarp.botlib.runner;
 
-import com.rkarp.appcore.view.MainScene;
+import net.rickiekarp.core.view.MainScene;
 import com.rkarp.botlib.BotLauncher;
 import com.rkarp.botlib.PluginConfig;
 import com.rkarp.botlib.model.PluginData;

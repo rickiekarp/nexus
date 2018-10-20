@@ -1,6 +1,6 @@
 package com.rkarp.flc.settings;
 
-import com.rkarp.appcore.settings.LoadSave;
+import net.rickiekarp.core.settings.LoadSave;
 import com.rkarp.flc.model.Directorylist;
 import com.rkarp.flc.model.Filelist;
 import javafx.collections.FXCollections;

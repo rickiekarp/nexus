@@ -1,9 +1,9 @@
 package com.rkarp.flc.tasks;
 
-import com.rkarp.appcore.controller.LanguageController;
-import com.rkarp.appcore.debug.DebugHelper;
-import com.rkarp.appcore.debug.LogFileHandler;
-import com.rkarp.appcore.view.MessageDialog;
+import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.debug.DebugHelper;
+import net.rickiekarp.core.debug.LogFileHandler;
+import net.rickiekarp.core.view.MessageDialog;
 import com.rkarp.flc.controller.FilelistController;
 import com.rkarp.flc.view.layout.MainLayout;
 import javafx.concurrent.Task;

@@ -1,11 +1,11 @@
 package com.rkarp.botlib;
 
-import com.rkarp.appcore.AppContext;
-import com.rkarp.appcore.account.Account;
-import com.rkarp.appcore.net.NetResponse;
-import com.rkarp.appcore.net.NetworkAction;
-import com.rkarp.appcore.settings.Configuration;
-import com.rkarp.appcore.settings.LoadSave;
+import net.rickiekarp.core.AppContext;
+import net.rickiekarp.core.account.Account;
+import net.rickiekarp.core.net.NetResponse;
+import net.rickiekarp.core.net.NetworkAction;
+import net.rickiekarp.core.settings.Configuration;
+import net.rickiekarp.core.settings.LoadSave;
 import com.rkarp.botlib.model.PluginData;
 import com.rkarp.botlib.net.BotNetworkApi;
 import org.junit.Before;

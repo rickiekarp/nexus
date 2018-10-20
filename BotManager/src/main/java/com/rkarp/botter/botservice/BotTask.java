@@ -1,13 +1,13 @@
 package com.rkarp.botter.botservice;
 
-import com.rkarp.appcore.AppContext;
-import com.rkarp.appcore.debug.DebugHelper;
-import com.rkarp.appcore.debug.ExceptionHandler;
-import com.rkarp.appcore.debug.LogFileHandler;
-import com.rkarp.appcore.net.NetResponse;
-import com.rkarp.appcore.settings.Configuration;
-import com.rkarp.appcore.ui.tray.ToolTrayIcon;
-import com.rkarp.appcore.view.MainScene;
+import net.rickiekarp.core.AppContext;
+import net.rickiekarp.core.debug.DebugHelper;
+import net.rickiekarp.core.debug.ExceptionHandler;
+import net.rickiekarp.core.debug.LogFileHandler;
+import net.rickiekarp.core.net.NetResponse;
+import net.rickiekarp.core.settings.Configuration;
+import net.rickiekarp.core.ui.tray.ToolTrayIcon;
+import net.rickiekarp.core.view.MainScene;
 import com.rkarp.botlib.BotLauncher;
 import com.rkarp.botlib.PluginConfig;
 import com.rkarp.botlib.model.PluginData;

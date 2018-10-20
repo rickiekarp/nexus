@@ -1,9 +1,9 @@
 package com.rkarp.flc.controller;
 
-import com.rkarp.appcore.controller.LanguageController;
-import com.rkarp.appcore.model.ConsoleCommands;
-import com.rkarp.appcore.settings.AppCommands;
-import com.rkarp.appcore.util.CommonUtil;
+import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.model.ConsoleCommands;
+import net.rickiekarp.core.settings.AppCommands;
+import net.rickiekarp.core.util.CommonUtil;
 import com.rkarp.flc.view.layout.MainLayout;
 
 /**

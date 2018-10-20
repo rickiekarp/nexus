@@ -1,8 +1,8 @@
 package com.rkarp.botter.botservice;
 
-import com.rkarp.appcore.controller.LanguageController;
-import com.rkarp.appcore.model.ConsoleCommands;
-import com.rkarp.appcore.settings.AppCommands;
+import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.model.ConsoleCommands;
+import net.rickiekarp.core.settings.AppCommands;
 import com.rkarp.botter.settings.AppConfiguration;
 import com.rkarp.botter.view.MainLayout;
 

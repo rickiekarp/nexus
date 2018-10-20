@@ -1,7 +1,7 @@
 package com.rkarp.botlib;
 
-import com.rkarp.appcore.settings.Configuration;
-import com.rkarp.appcore.settings.LoadSave;
+import net.rickiekarp.core.settings.Configuration;
+import net.rickiekarp.core.settings.LoadSave;
 
 import java.io.File;
 

@@ -1,6 +1,6 @@
 package com.rkarp.botlib.model;
 
-import com.rkarp.appcore.controller.LanguageController;
+import net.rickiekarp.core.controller.LanguageController;
 import com.rkarp.botlib.enums.BotPlatforms;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;

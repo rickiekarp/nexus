@@ -1,16 +1,16 @@
 package com.rkarp.qaacc;
 
-import com.rkarp.appcore.AppContext;
-import com.rkarp.appcore.components.button.SidebarButton;
-import com.rkarp.appcore.controller.LanguageController;
-import com.rkarp.appcore.debug.DebugHelper;
-import com.rkarp.appcore.debug.ExceptionHandler;
-import com.rkarp.appcore.settings.Configuration;
-import com.rkarp.appcore.settings.LoadSave;
-import com.rkarp.appcore.ui.tray.ToolTrayIcon;
-import com.rkarp.appcore.util.ImageLoader;
-import com.rkarp.appcore.view.MainScene;
-import com.rkarp.appcore.view.MessageDialog;
+import net.rickiekarp.core.AppContext;
+import net.rickiekarp.core.components.button.SidebarButton;
+import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.debug.DebugHelper;
+import net.rickiekarp.core.debug.ExceptionHandler;
+import net.rickiekarp.core.settings.Configuration;
+import net.rickiekarp.core.settings.LoadSave;
+import net.rickiekarp.core.ui.tray.ToolTrayIcon;
+import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.view.MainScene;
+import net.rickiekarp.core.view.MessageDialog;
 import com.rkarp.qaacc.factory.ProjectXmlFactory;
 import com.rkarp.qaacc.settings.AppConfiguration;
 import com.rkarp.qaacc.settings.MyCommands;

@@ -1,9 +1,9 @@
 package com.rkarp.flc.controller;
 
-import com.rkarp.appcore.controller.LanguageController;
-import com.rkarp.appcore.debug.DebugHelper;
-import com.rkarp.appcore.debug.ExceptionHandler;
-import com.rkarp.appcore.util.CommonUtil;
+import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.debug.DebugHelper;
+import net.rickiekarp.core.debug.ExceptionHandler;
+import net.rickiekarp.core.util.CommonUtil;
 import com.rkarp.flc.settings.AppConfiguration;
 import com.rkarp.flc.view.layout.MainLayout;
 

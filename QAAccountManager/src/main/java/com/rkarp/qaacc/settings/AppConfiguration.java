@@ -1,8 +1,8 @@
 package com.rkarp.qaacc.settings;
 
-import com.rkarp.appcore.settings.Configuration;
-import com.rkarp.appcore.settings.LoadSave;
-import com.rkarp.appcore.util.CommonUtil;
+import net.rickiekarp.core.settings.Configuration;
+import net.rickiekarp.core.settings.LoadSave;
+import net.rickiekarp.core.util.CommonUtil;
 import com.rkarp.qaacc.model.Account;
 import com.rkarp.qaacc.model.Projects;
 import javafx.collections.FXCollections;

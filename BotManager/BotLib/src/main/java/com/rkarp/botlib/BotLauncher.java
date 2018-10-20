@@ -1,8 +1,8 @@
 package com.rkarp.botlib;
 
-import com.rkarp.appcore.debug.LogFileHandler;
-import com.rkarp.appcore.util.OSValidator;
-import com.rkarp.appcore.view.MessageDialog;
+import net.rickiekarp.core.debug.LogFileHandler;
+import net.rickiekarp.core.util.OSValidator;
+import net.rickiekarp.core.view.MessageDialog;
 import com.rkarp.botlib.model.PluginData;
 import com.rkarp.botlib.plugin.PluginExecutor;
 import com.rkarp.botlib.runner.BotRunner;

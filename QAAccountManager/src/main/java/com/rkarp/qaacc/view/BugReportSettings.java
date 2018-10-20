@@ -1,13 +1,13 @@
 package com.rkarp.qaacc.view;
 
-import com.rkarp.appcore.controller.LanguageController;
-import com.rkarp.appcore.debug.DebugHelper;
-import com.rkarp.appcore.debug.ExceptionHandler;
-import com.rkarp.appcore.ui.windowmanager.WindowScene;
-import com.rkarp.appcore.ui.windowmanager.WindowStage;
-import com.rkarp.appcore.util.CommonUtil;
-import com.rkarp.appcore.util.ImageLoader;
-import com.rkarp.appcore.view.MessageDialog;
+import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.debug.DebugHelper;
+import net.rickiekarp.core.debug.ExceptionHandler;
+import net.rickiekarp.core.ui.windowmanager.WindowScene;
+import net.rickiekarp.core.ui.windowmanager.WindowStage;
+import net.rickiekarp.core.util.CommonUtil;
+import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.view.MessageDialog;
 import com.rkarp.qaacc.factory.AccountXmlFactory;
 import com.rkarp.qaacc.settings.AppConfiguration;
 import javafx.geometry.Insets;
