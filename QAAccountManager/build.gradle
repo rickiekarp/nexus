@@ -1,9 +1,9 @@
-group 'com.rkarp.qaaccountmanager'
+group 'net.rickiekarp.qaaccountmanager'
 
 def minorVersion = 0
 
 dependencies {
-    compile project(':AppCore')
+    compile project(':core')
 }
 
 build {
@@ -34,12 +34,12 @@ build {
         manifest {
             attributes 'Version': build.ext.publicVersion
             attributes 'Build-Time': build.ext.privateBuildDate
-            attributes 'Main-Class': 'com.rkarp.qaacc.MainApp'
+            attributes 'Main-Class': 'net.rickiekarp.qaacc.MainApp'
         }
 
         // Include dependent libraries in archive.
-        from {
-            configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-        }
+//        from {
+//            configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+//        }
     }
 }

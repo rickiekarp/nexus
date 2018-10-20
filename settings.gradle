@@ -1,8 +1,5 @@
 rootProject.name = 'JavaFXApps'
 
-include 'AppCore'
-project(':AppCore').projectDir = new File(rootDir, 'AppCore')
-
 include 'AppUpdater'
 
 include 'BotManager';           project(':BotManager').projectDir = new File(rootDir, 'BotManager')
@@ -16,4 +13,4 @@ include 'SHA1Pass'
 
 include 'api'
 include 'impl'
-include 'config'
+include 'core'

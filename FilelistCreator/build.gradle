@@ -1,9 +1,9 @@
-group 'com.rkarp.filelistcreator'
+group 'net.rickiekarp.filelistcreator'
 
 def minorVersion = 0
 
 dependencies {
-    compile project(':AppCore')
+    compile project(':core')
 }
 
 build {
@@ -34,7 +34,7 @@ build {
         manifest {
             attributes 'Version': build.ext.publicVersion
             attributes 'Build-Time': build.ext.privateBuildDate
-            attributes 'Main-Class': 'com.rkarp.flc.MainApp'
+            attributes 'Main-Class': 'net.rickiekarp.flc.MainApp'
         }
 
         // Include dependent libraries in archive.

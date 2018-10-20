@@ -1,4 +1,4 @@
-group 'com.rkarp.botmanager'
+group 'net.rickiekarp.botmanager'
 
 def minorVersion = 0
 
@@ -9,7 +9,7 @@ configurations {
 }
 
 dependencies {
-    compile project(':AppCore')
+    compile project(':core')
     compile project(':BotLib')
 }
 
@@ -41,7 +41,7 @@ build {
         manifest {
             attributes 'Version': build.ext.publicVersion
             attributes 'Class-Path': 'corelib.jar botlib.jar'
-            attributes 'Main-Class': 'com.rkarp.botter.MainApp'
+            attributes 'Main-Class': 'net.rickiekarp.botter.MainApp'
             attributes 'Build-Time': build.ext.privateBuildDate
         }
 

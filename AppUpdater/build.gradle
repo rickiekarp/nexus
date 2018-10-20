@@ -1,4 +1,8 @@
-group 'com.rkarp.appupdater'
+plugins {
+    id "org.gradle.java.experimental-jigsaw" version "0.1.1"
+}
+
+group 'net.rickiekarp.appupdater'
 
 def minorVersion = 0
 
@@ -7,6 +11,14 @@ configurations {
     // Make compile extend from our provided configuration so that things added to bundled end up on the compile classpath
     compile.extendsFrom(provided)
 }
+
+dependencies {
+    compile project (':core')
+}
+
+apply plugin: 'application'
+
+mainClassName='net.rickiekarp.appupdater.UpdateMain'
 
 build {
     println 'Building ' + project.name
@@ -34,7 +46,7 @@ build {
         libsDirName = new File(rootProject.projectDir, "build/app")
 
         manifest {
-            attributes 'Main-Class': 'com.rkarp.appupdater.UpdateMain'
+            attributes 'Main-Class': 'net.rickiekarp.appupdater.UpdateMain'
             attributes 'Version': build.ext.publicVersion
             attributes 'Build-Time': build.ext.privateBuildDate
         }

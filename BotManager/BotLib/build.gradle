@@ -1,4 +1,4 @@
-group 'com.rkarp.botlib'
+group 'net.rickiekarp.botlib'
 
 def minorVersion = 0
 
@@ -9,7 +9,7 @@ configurations {
 }
 
 dependencies {
-    compile project (':AppCore')
+    compile project (':core')
     provided group: 'io.appium', name: 'java-client', version: '4.1.2'
 }
 
