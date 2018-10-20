@@ -1,5 +1,6 @@
 ext {
     gradleWrapper = '4.9'
+    gradleVersion = '5.0-milestone-1'
 
     kotlinVersion = '1.2.71'
     dokkaVersion = '0.9.17'
