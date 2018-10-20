@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" as Object
     }
 }
 
@@ -28,7 +28,7 @@ allprojects {
     }
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion" as Object
         testCompile group: 'junit', name: 'junit', version: junit4Version
     }
 
@@ -41,6 +41,6 @@ allprojects {
 
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = gradleWrapper
+wrapper {
+    gradleVersion = gradleWrapperVersion
 }
