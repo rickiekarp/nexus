@@ -13,3 +13,7 @@ include 'FilelistCreator'
 include 'QAAccountManager'
 
 include 'SHA1Pass'
+
+include 'api'
+include 'impl'
+include 'config'

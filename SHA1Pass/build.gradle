@@ -1,9 +1,28 @@
+plugins {
+    id "org.gradle.java.experimental-jigsaw" version "0.1.1"
+}
+
 group 'com.rkarp.sha1pass'
 
 def minorVersion = 0
 
+apply plugin: 'java'
+apply plugin: 'application'
+repositories {
+    mavenCentral()
+}
+
+javaModule.name = "sha1pass"
+mainClassName='com.rkarp.sha1pass.MainApp'
+
+
 dependencies {
-    compile project(':AppCore')
+    compile "org.openjfx:javafx-controls:11:linux"
+    compile "org.openjfx:javafx-graphics:11:linux"
+    compile "org.openjfx:javafx-base:11:linux"
+
+    api project(":api")
+    implementation project(":config")
 }
 
 build {
@@ -38,8 +57,8 @@ build {
         }
 
         // Include dependent libraries in archive.
-        from {
-            configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-        }
+//        from {
+//            configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+//        }
     }
 }

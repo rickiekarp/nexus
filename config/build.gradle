@@ -1,0 +1,14 @@
+plugins {
+  id "org.gradle.java.experimental-jigsaw" version "0.1.1"
+}
+
+javaModule.name = "config"
+
+dependencies {
+  compile "org.openjfx:javafx-controls:11:linux"
+  compile "org.openjfx:javafx-graphics:11:linux"
+  compile "org.openjfx:javafx-base:11:linux"
+  
+  api project(":api")
+  implementation project(":impl")
+}

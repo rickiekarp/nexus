@@ -28,16 +28,6 @@ allprojects {
         testCompile group: 'junit', name: 'junit', version: junit4Version
     }
 
-    compileJava {
-        dependsOn(':compileKotlin')
-        doFirst {
-            options.compilerArgs = [
-                    '--module-path', classpath.asPath,
-            ]
-            classpath = files()
-        }
-    }
-
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
         destinationDir = compileJava.destinationDir
@@ -51,20 +41,26 @@ allprojects {
 }
 
 subprojects {
+    apply plugin: "java-library"
+
+    clean {
+        doFirst {
+            delete "$project.projectDir/out"
+        }
+    }
+
 //    apply plugin: 'com.github.spotbugs'
 //    spotbugs {
 //        reportsDir = file("$project.buildDir/reports/findbugs")
 //        reportLevel = "high"
 //        ignoreFailures = true
 //    }
-}
 
-subprojects {
-//SOURCE SETS
+    //SOURCE SETS
     sourceSets {
         main {
             java {
-                srcDirs = ["Sources"]
+                srcDirs = ["Sources", "src"]
             }
             resources {
                 srcDirs =  ["Resources"]
@@ -78,22 +74,6 @@ subprojects {
                 srcDirs =  ["TestResources"]
             }
         }
-    }
-}
-
-project(':AppCore') {
-    project.ext {
-        okhttpVersion = '3.9.0'
-        jsonVersion = '20170516'
-        jacksonVersion = '2.9.0'
-    }
-
-    dependencies {
-        compile group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
-//        compile group: 'com.squareup.okhttp3', name: 'okhttp', version: project.ext.okhttpVersion
-        compile group: 'org.json', name: 'json', version: project.ext.jsonVersion
-        compile group: 'commons-io', name: 'commons-io', version: '2.5'
-        compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jacksonVersion
     }
 }
 
