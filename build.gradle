@@ -10,10 +10,10 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" as Object
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion" as Object
 //        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.1"
-        classpath "com.devsoap.plugin:gradle-vaadin-plugin:1.3.1"
+        classpath "com.devsoap.plugin:gradle-vaadin-plugin:1.4.1"
     }
 }
 
@@ -32,18 +32,17 @@ allprojects {
         postgresqlVersion = '42.2.4'
         jacksonVersion = '2.9.6'
 
-        springBootVersion = '2.0.4.RELEASE'
+        springBootVersion = '2.0.6.RELEASE'
         flywayVersion = '5.1.4'
-        vaadinVersion = '8.5.1'
-
+        vaadinVersion = '8.5.2'
     }
 
     apply plugin: "java"
     apply plugin: "org.jetbrains.kotlin.jvm"
     apply plugin: 'org.jetbrains.dokka'
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_1_10
+    targetCompatibility = JavaVersion.VERSION_1_10
 
     repositories {
         mavenCentral()
@@ -53,9 +52,9 @@ allprojects {
 subprojects {
     dependencies {
         testCompile group: 'junit', name: 'junit', version: junit4Version
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-        compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as Object
+        compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
+        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion" as Object
 
         compile group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flywayVersion
         compile group: 'org.postgresql', name: 'postgresql', version: project.ext.postgresqlVersion
@@ -95,6 +94,6 @@ subprojects {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = gradleWrapper
+wrapper {
+    gradleVersion = gradleWrapperVersion
 }

@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:$project.ext.springBootVersion"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$project.ext.springBootVersion" as Object
     }
 }
 
