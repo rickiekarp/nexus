@@ -9,5 +9,6 @@ ext {
     spotbugsVersion = '1.6.4'
 
     junit4Version = '4.12'
+    junit5Version = '5.3.1'
 }
 
