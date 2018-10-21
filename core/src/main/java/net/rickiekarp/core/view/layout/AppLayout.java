@@ -4,4 +4,5 @@ import javafx.scene.Node;
 
 public interface AppLayout {
     Node getLayout();
+    void postInit();
 }

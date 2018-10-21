@@ -68,7 +68,7 @@ public class AppStarter extends Application {
 
         //set up the Client Area to display
         MainScene.mainScene.getBorderPane().setCenter(node.getLayout());
-//        mainLayout.getSentenceMaskTextField().requestFocus();
+        node.postInit();
 
         //post launch settings
         if (Configuration.showTrayIcon) {

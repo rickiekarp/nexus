@@ -23,8 +23,6 @@ import net.rickiekarp.core.util.crypt.*;
 import net.rickiekarp.core.view.AboutScene;
 import net.rickiekarp.core.view.layout.AppLayout;
 
-import java.security.SignatureException;
-
 public class MainLayout implements AppLayout {
     private boolean isSecure = false;
     private boolean hmac = false;
@@ -33,14 +31,11 @@ public class MainLayout implements AppLayout {
     private HBox wordBox;
     private Rectangle color;
     private CustomTextField sentence_tf_mask, sentence_tf, word_tf;
-    public CustomTextField getSentenceMaskTextField() {
-        return sentence_tf_mask;
-    }
     private TextField peek_tf;
 
     private int colorPos = -1;
 
-    public Node getMainLayout() {
+    private Node getMainLayout() {
         BorderPane mainContent = new BorderPane();
 
         GridPane mainGrid = new GridPane();
@@ -211,29 +206,17 @@ public class MainLayout implements AppLayout {
         });
 
         hexBtn.setOnAction(actionEvent -> {
-            try {
-                calcHex();
-            } catch (SignatureException e) {
-                e.printStackTrace();
-            }
+            calcHex();
             status.setText(LanguageController.getString("hex_password_copied"));
         });
 
         b64Btn.setOnAction(actionEvent -> {
-            try {
-                calcBase64();
-            } catch (SignatureException e) {
-                e.printStackTrace();
-            }
+            calcBase64();
             status.setText(LanguageController.getString("b64_password_copied"));
         });
 
         bcryptBtn.setOnAction(actionEvent -> {
-            try {
-                calcBCrypt();
-            } catch (SignatureException e) {
-                e.printStackTrace();
-            }
+            calcBCrypt();
             status.setText(LanguageController.getString("bcrypt_password_copied"));
         });
 
@@ -312,7 +295,7 @@ public class MainLayout implements AppLayout {
         return mainContent;
     }
 
-    private void calcHex() throws SignatureException {
+    private void calcHex() {
         String data = checkInputData();
         byte[] sha1 = SHA1Coder.getSHA1Bytes(data, hmac);
 
@@ -324,7 +307,7 @@ public class MainLayout implements AppLayout {
         }
     }
 
-    private void calcBase64() throws SignatureException {
+    private void calcBase64() {
         String data = checkInputData();
         byte[] sha1 = SHA1Coder.getSHA1Bytes(data, hmac);
 
@@ -336,7 +319,7 @@ public class MainLayout implements AppLayout {
         }
     }
 
-    private void calcBCrypt() throws SignatureException {
+    private void calcBCrypt() {
         String data = checkInputData();
         byte[] sha1 = SHA1Coder.getSHA1Bytes(data, hmac);
         String salt = "$2a$10$" + SHA1Coder.getSHA1String(sha1);
@@ -411,5 +394,10 @@ public class MainLayout implements AppLayout {
     @Override
     public Node getLayout() {
         return getMainLayout();
+    }
+
+    @Override
+    public void postInit() {
+        sentence_tf_mask.requestFocus();
     }
 }
