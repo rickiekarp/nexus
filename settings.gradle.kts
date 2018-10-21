@@ -1,16 +1,22 @@
-rootProject.name = 'JavaFXApps'
+rootProject.name = "JavaFXApps"
 
-include 'AppUpdater'
+include("AppUpdater")
+include("BotManager")
+include("BotLib")
+include("FilelistCreator")
+include("QAAccountManager")
+include("SHA1Pass")
+include("api")
+include("impl")
+include("core")
 
-include 'BotManager';           project(':BotManager').projectDir = new File(rootDir, 'BotManager')
-include 'BotLib';               project(':BotLib').projectDir = new File(rootDir, 'BotManager/BotLib')
-
-include 'FilelistCreator'
-
-include 'QAAccountManager'
-
-include 'SHA1Pass'
-
-include 'api'
-include 'impl'
-include 'core'
+for (project in rootProject.children) {
+    when (project.name) {
+        "BotLib" -> {
+            project.apply {
+                projectDir = file("BotManager/$name")
+                buildFileName = "$name.gradle.kts"
+            }
+        }
+    }
+}
