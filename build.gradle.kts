@@ -24,7 +24,6 @@ apply {
 plugins {
     java
     application
-    idea
 }
 
 application {
@@ -54,28 +53,14 @@ allprojects {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
-    }
-
-//    compileKotlin {
-//        kotlinOptions.jvmTarget = "1.8"
 //        destinationDir = compileJava.destinationDir
-//    }
-//
-//    compileTestKotlin {
-//        kotlinOptions.jvmTarget = "1.8"
-//    }
+    }
 }
 
 subprojects {
     apply {
         plugin("java-library")
     }
-
-//    clean {
-//        doFirst {
-//            delete("$project.projectDir/out")
-//        }
-//    }
 
 //    apply plugin: 'com.github.spotbugs'
 //    spotbugs {
@@ -86,10 +71,6 @@ subprojects {
 
 }
 
-//repositories {
-//    mavenCentral()
-//}
-//
-//wrapper {
-//    gradleVersion = gradleWrapperVersion
-//}
+tasks.withType<Wrapper> {
+    gradleVersion = rootProject.extra.get("gradleWrapperVersion") as String
+}
