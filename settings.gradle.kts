@@ -15,8 +15,10 @@ for (project in rootProject.children) {
         "BotLib" -> {
             project.apply {
                 projectDir = file("BotManager/$name")
-                buildFileName = "$name.gradle.kts"
             }
         }
+    }
+    project.apply {
+        buildFileName = "build.gradle.kts"
     }
 }

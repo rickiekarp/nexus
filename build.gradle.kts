@@ -16,11 +16,6 @@ buildscript {
     }
 }
 
-apply {
-    plugin("java")
-    plugin("kotlin")
-}
-
 plugins {
     java
     application
@@ -32,14 +27,15 @@ application {
     group = "net.rickiekarp.toolbox"
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_10
-    targetCompatibility = JavaVersion.VERSION_1_10
-}
-
 allprojects {
     apply {
         plugin("java")
+        plugin("kotlin")
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_10
+        targetCompatibility = JavaVersion.VERSION_1_10
     }
 
     repositories {
@@ -53,7 +49,7 @@ allprojects {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
-//        destinationDir = compileJava.destinationDir
+//        setDestinationDir(File("$projectDir/build", "classes/java"))
     }
 }
 
