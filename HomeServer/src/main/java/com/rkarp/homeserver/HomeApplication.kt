@@ -1,12 +1,13 @@
 package com.rkarp.homeserver
 
 import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
 
-@org.springframework.boot.autoconfigure.SpringBootApplication
+@SpringBootApplication
+@ComponentScan(value = ["com.rkarp.foundation", "com.rkarp.homeserver"])
 open class HomeApplication { }
 
 fun main(args: Array<String>) {
@@ -18,7 +19,3 @@ class ApplicationServletInitializer : SpringBootServletInitializer() {
         return builder.sources(HomeApplication::class.java)
     }
 }
-
-@Configuration
-@ComponentScan("com.rkarp.foundation")
-open class DatabaseConfiguration

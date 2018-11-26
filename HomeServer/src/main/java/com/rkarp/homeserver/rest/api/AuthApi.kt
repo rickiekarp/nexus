@@ -2,7 +2,6 @@ package com.rkarp.homeserver.rest.api
 
 import com.rkarp.foundation.config.Configuration
 import com.rkarp.foundation.parser.PropertiesParser
-import org.json.JSONObject
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,10 +18,9 @@ class AuthApi {
      * @param pluginIdentifierJson Plugin to check
      * @return True if user is allowed, false otherwise
      */
-    @RequestMapping(value = ["/validate"], method = arrayOf(RequestMethod.POST))
-    fun validatePlugin(pluginIdentifierJson: String): ResponseEntity<String> {
-        val requestJson = JSONObject(pluginIdentifierJson)
-        val result = Configuration.properties.getProperty(requestJson.getString("plugin") + ".enable")
+    @RequestMapping(value = ["/validate"], method = [RequestMethod.POST])
+    fun validatePlugin(pluginIdentifier: String): ResponseEntity<String> {
+        val result = Configuration.properties.getProperty(pluginIdentifier + ".enable")
         return if (result == null) {
             throw RuntimeException("asdasd")
         } else {
@@ -32,7 +30,7 @@ class AuthApi {
 
     @RequestMapping(
             value = ["/validateProperties"],
-            method = arrayOf(RequestMethod.GET)
+            method = [RequestMethod.GET]
     )
     fun validateProperties(pluginIdentifier: String): ResponseEntity<HashMap<String, HashMap<Any, Any>>> {
         val filteredProperties = PropertiesParser.filterPropertiesAndReplaceIdentifier(Configuration.properties, pluginIdentifier)
