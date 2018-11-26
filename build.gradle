@@ -32,8 +32,7 @@ allprojects {
         postgresqlVersion = '42.2.4'
         jacksonVersion = '2.9.6'
 
-        springBootVersion = '2.0.6.RELEASE'
-        flywayVersion = '5.1.4'
+        springBootVersion = '2.1.0.RELEASE'
         vaadinVersion = '8.5.2'
     }
 
@@ -56,7 +55,6 @@ subprojects {
         compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion" as Object
 
-        compile group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flywayVersion
         compile group: 'org.postgresql', name: 'postgresql', version: project.ext.postgresqlVersion
 
         compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
