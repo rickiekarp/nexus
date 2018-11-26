@@ -1,4 +1,4 @@
-group 'com.rkarp.loginserver'
+group 'net.rickiekarp.loginserver'
 
 dependencies {
     compile project(':Foundation')

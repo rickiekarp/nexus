@@ -16,7 +16,7 @@ buildscript {
     }
 }
 
-group = 'com.rkarp.backend'
+group = 'net.rickiekarp.backend'
 version = '1.0.0'
 
 allprojects {

@@ -1,4 +1,4 @@
-group 'com.rkarp.homeserver'
+group 'net.rickiekarp.homeserver'
 
 dependencies {
     compile project(':Foundation')

@@ -29,4 +29,4 @@ hibernate:
   hbm2ddl.auto: update
 
 entitymanager:
-  packagesToScan: com.rkarp.homeserver
+  packagesToScan: net.rickiekarp.homeserver
