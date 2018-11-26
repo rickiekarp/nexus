@@ -1,13 +1,12 @@
 package net.rickiekarp.homeserver.rest.api
 
-import net.rickiekarp.foundation.config.Configuration
 import net.rickiekarp.foundation.parser.PropertiesParser
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import java.util.HashMap
+import java.util.*
 
 @RestController
 @RequestMapping("auth")

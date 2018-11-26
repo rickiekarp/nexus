@@ -3,12 +3,6 @@ package net.rickiekarp.foundation.config;
 import net.rickiekarp.foundation.core.types.OutputType;
 import net.rickiekarp.foundation.logger.Log;
 import net.rickiekarp.foundation.parser.properties.PropertiesFileParser;
-import net.rickiekarp.foundation.core.types.OutputType;
-import net.rickiekarp.foundation.logger.Log;
-import net.rickiekarp.foundation.parser.properties.PropertiesFileParser;
-import net.rickiekarp.foundation.core.types.OutputType;
-import net.rickiekarp.foundation.logger.Log;
-import net.rickiekarp.foundation.parser.properties.PropertiesFileParser;
 
 import java.util.HashMap;
 import java.util.Properties;

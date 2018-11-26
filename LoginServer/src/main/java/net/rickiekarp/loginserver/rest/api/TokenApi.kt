@@ -1,8 +1,8 @@
 package net.rickiekarp.loginserver.rest.api
 
-import net.rickiekarp.loginserver.controller.TokenController
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
+import net.rickiekarp.loginserver.controller.TokenController
 import net.rickiekarp.loginserver.dto.TokenDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

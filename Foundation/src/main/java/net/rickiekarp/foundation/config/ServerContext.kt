@@ -1,8 +1,5 @@
 package net.rickiekarp.foundation.config
 
-import net.rickiekarp.foundation.dao.UserDAO
-import net.rickiekarp.foundation.dao.UserDaoImpl
-
 object ServerContext {
     var serverVersion: String? = null
     val loginDao: net.rickiekarp.foundation.dao.UserDAO

@@ -1,7 +1,6 @@
 package net.rickiekarp.foundation.config.database
 
 import com.mysql.cj.jdbc.MysqlDataSource
-import net.rickiekarp.foundation.config.Configuration
 import org.springframework.context.ApplicationContext
 import java.sql.Connection
 import java.sql.SQLException

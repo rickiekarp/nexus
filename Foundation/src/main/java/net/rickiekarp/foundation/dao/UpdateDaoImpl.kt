@@ -1,13 +1,11 @@
 package net.rickiekarp.foundation.dao
 
-import net.rickiekarp.foundation.config.database.DataSourceFactory
 import net.rickiekarp.foundation.utils.DatabaseUtil
-import net.rickiekarp.foundation.dao.entity.ApplicationEntity
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.SQLException
 import java.sql.Statement
-import java.util.ArrayList
+import java.util.*
 
 class UpdateDaoImpl : net.rickiekarp.foundation.dao.UpdateDAO {
     companion object {

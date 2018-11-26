@@ -1,7 +1,5 @@
 package net.rickiekarp.loginserver
 
-import net.rickiekarp.foundation.config.ServerContext
-import net.rickiekarp.foundation.config.Config
 import net.rickiekarp.foundation.logger.Log
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder

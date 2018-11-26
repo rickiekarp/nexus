@@ -1,7 +1,5 @@
 package net.rickiekarp.foundation.logger
 
-import net.rickiekarp.foundation.config.Config
-import net.rickiekarp.foundation.core.types.OutputType
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.core.Filter
 import org.apache.logging.log4j.core.appender.ConsoleAppender

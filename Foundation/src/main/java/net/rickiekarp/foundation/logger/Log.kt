@@ -1,6 +1,5 @@
 package net.rickiekarp.foundation.logger
 
-import net.rickiekarp.foundation.config.Config
 import org.apache.logging.log4j.core.Logger
 import org.apache.logging.log4j.core.LoggerContext
 import org.apache.logging.log4j.core.config.Configuration

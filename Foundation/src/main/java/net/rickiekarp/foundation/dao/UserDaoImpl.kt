@@ -1,6 +1,5 @@
 package net.rickiekarp.foundation.dao
 
-import net.rickiekarp.foundation.config.database.DataSourceFactory
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
 import net.rickiekarp.foundation.utils.DatabaseUtil

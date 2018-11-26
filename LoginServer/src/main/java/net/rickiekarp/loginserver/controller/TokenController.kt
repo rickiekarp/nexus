@@ -1,8 +1,7 @@
 package net.rickiekarp.loginserver.controller
 
-import net.rickiekarp.foundation.config.ServerContext
-import net.rickiekarp.loginserver.dto.TokenDTO
 import net.rickiekarp.foundation.model.User
+import net.rickiekarp.loginserver.dto.TokenDTO
 import org.apache.commons.lang3.RandomStringUtils
 import java.util.*
 

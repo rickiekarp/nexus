@@ -1,7 +1,5 @@
 package net.rickiekarp.foundation.dao
 
-import net.rickiekarp.foundation.dao.entity.ApplicationEntity
-
 interface UpdateDAO {
     fun findAll(): List<net.rickiekarp.foundation.dao.entity.ApplicationEntity>
     fun findById(): List<net.rickiekarp.foundation.dao.entity.ApplicationEntity>
