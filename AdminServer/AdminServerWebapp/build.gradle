@@ -17,7 +17,7 @@ vaadin {
     /**
      * Vaadin version. Defaults to latest Vaadin 8
      */
-    version = project.ext.vaadinVersion
+    version = '8.5.2'
 
     /**
      * Should the plugin handle the Vaadin dependencies.

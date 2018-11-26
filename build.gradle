@@ -13,7 +13,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" as Object
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion" as Object
 //        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.1"
-        classpath "com.devsoap.plugin:gradle-vaadin-plugin:1.4.1"
     }
 }
 
@@ -33,7 +32,6 @@ allprojects {
         jacksonVersion = '2.9.6'
 
         springBootVersion = '2.1.0.RELEASE'
-        vaadinVersion = '8.5.2'
     }
 
     apply plugin: "java"

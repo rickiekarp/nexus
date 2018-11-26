@@ -5,9 +5,9 @@ include 'HomeServer'
 include 'LoginServer'
 
 //include ':AdminServerApiClient'
-include ':AdminServerAddon'
-include ':AdminServerWebapp'
+//include ':AdminServerAddon'
+//include ':AdminServerWebapp'
 
 //project(':AdminServerApiClient').projectDir = "$rootDir/AdminServer/AdminServerApiClient" as File
-project(':AdminServerAddon').projectDir = "$rootDir/AdminServer/AdminServerAddon" as File
-project(':AdminServerWebapp').projectDir = "$rootDir/AdminServer/AdminServerWebapp" as File
+//project(':AdminServerAddon').projectDir = "$rootDir/AdminServer/AdminServerAddon" as File
+//project(':AdminServerWebapp').projectDir = "$rootDir/AdminServer/AdminServerWebapp" as File
