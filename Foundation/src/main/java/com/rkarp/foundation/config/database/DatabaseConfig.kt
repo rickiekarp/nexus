@@ -37,10 +37,10 @@ open class DatabaseConfig {
     @Bean(name = ["dataSource"])
     open fun dataSource(): DataSource {
         val dataSource = DriverManagerDataSource()
-        dataSource.setDriverClassName(env!!.getProperty("spring.datasource.driver")!!)
-        dataSource.url = env.getProperty("spring.datasource.url")
-        dataSource.username = env.getProperty("spring.datasource.username")
-        dataSource.password = env.getProperty("spring.datasource.password")
+        dataSource.setDriverClassName(env!!.getProperty("db.driver")!!)
+        dataSource.url = env.getProperty("db.url")
+        dataSource.username = env.getProperty("db.username")
+        dataSource.password = env.getProperty("db.password")
         return dataSource
     }
 

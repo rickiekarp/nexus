@@ -19,7 +19,7 @@ logging:
 
 db:
   driver: org.postgresql.Driver
-  url: jdbc:postgresql://database:5432/data_home
+  url: jdbc:postgresql://localhost:5432/data_home
   username: postgres
   password: root
 
