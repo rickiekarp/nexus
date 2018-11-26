@@ -19,7 +19,7 @@ logging:
 
 db:
   driver: com.mysql.jdbc.Driver
-  url: jdbc:mysql://localhost:3306/data_home
+  url: jdbc:mysql://database:3306/data_home
   username: root
   password: root
 
