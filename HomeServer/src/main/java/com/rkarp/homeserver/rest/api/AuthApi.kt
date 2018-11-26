@@ -19,7 +19,7 @@ class AuthApi {
      * @param pluginIdentifierJson Plugin to check
      * @return True if user is allowed, false otherwise
      */
-    @RequestMapping(value = "/validate", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/validate"], method = arrayOf(RequestMethod.POST))
     fun validatePlugin(pluginIdentifierJson: String): ResponseEntity<String> {
         val requestJson = JSONObject(pluginIdentifierJson)
         val result = Configuration.properties.getProperty(requestJson.getString("plugin") + ".enable")
@@ -31,7 +31,7 @@ class AuthApi {
     }
 
     @RequestMapping(
-            value = "/validateProperties",
+            value = ["/validateProperties"],
             method = arrayOf(RequestMethod.GET)
     )
     fun validateProperties(pluginIdentifier: String): ResponseEntity<HashMap<String, HashMap<Any, Any>>> {

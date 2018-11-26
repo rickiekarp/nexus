@@ -14,7 +14,8 @@ services:
     container_name: database
     build: service-database
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=root
+      - MYSQL_USER=postgres
+      - MYSQL_PASSWORD=postgres
+      - MYSQL_ROOT_PASSWORD=root
     ports:
-      - "5432:5432"
+      - "3306:3306"

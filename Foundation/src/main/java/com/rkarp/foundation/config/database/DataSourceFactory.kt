@@ -1,7 +1,7 @@
 package com.rkarp.foundation.config.database
 
+import com.mysql.cj.jdbc.MysqlDataSource
 import com.rkarp.foundation.config.Configuration
-import org.postgresql.ds.PGSimpleDataSource
 import org.springframework.context.ApplicationContext
 import java.sql.Connection
 import java.sql.SQLException
@@ -29,7 +29,7 @@ object DataSourceFactory {
     }
 
     private fun createLoginDataSource(props: Properties): DataSource {
-        val mysqlDS = PGSimpleDataSource()
+        val mysqlDS = MysqlDataSource()
         mysqlDS.setServerName(props.getProperty("LOGINDB_URL"))
         mysqlDS.user = props.getProperty("LOGINDB_USER")
         mysqlDS.setPassword(props.getProperty("LOGINDB_PASSWORD"))
@@ -37,7 +37,7 @@ object DataSourceFactory {
     }
 
     private fun createAppDataSource(applicationName: String, props: Properties): DataSource {
-        val mysqlDS = PGSimpleDataSource()
+        val mysqlDS = MysqlDataSource()
         val databaseConnectionPrefix = getDatabaseConnectionPrefixStringFromContext(applicationName)
         mysqlDS.setServerName(props.getProperty(databaseConnectionPrefix + "_URL"))
         mysqlDS.user = props.getProperty(databaseConnectionPrefix + "_USER")

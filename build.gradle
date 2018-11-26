@@ -27,8 +27,9 @@ allprojects {
 
         gsonVersion = '2.8.5'
 
+        flywayVersion = '5.2.1'
+
         //foundation
-        postgresqlVersion = '42.2.4'
         jacksonVersion = '2.9.6'
 
         springBootVersion = '2.1.0.RELEASE'
@@ -53,7 +54,8 @@ subprojects {
         compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion" as Object
 
-        compile group: 'org.postgresql', name: 'postgresql', version: project.ext.postgresqlVersion
+        compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.13'
+        compile group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flywayVersion
 
         compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
     }
