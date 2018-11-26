@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,8 +43,7 @@ fun getProperties(): Properties {
  * Creates the Config and loads the settings
  */
 private fun loadConfiguration(applicationName: String) {
-    val configBuilder = Config.ConfigBuilder()
-            .setApplicationIdentifier(applicationName)
+    val configBuilder = Config.ConfigBuilder().setApplicationIdentifier(applicationName)
 
     // set up Config
     Config.create(configBuilder)
@@ -62,8 +60,8 @@ fun setupPath(): String {
  * In non-development it will search the current working directory of the user for the setup directory
  */
 private fun findSetupDirectory(aSetupDirectoryName: String): String {
-    val workingDirectory = System.getProperty("user.dir")
     if (ServerContext.developerEnvironment) {
+        val workingDirectory = System.getProperty("user.dir")
         return "$workingDirectory.setup"
     } else {
         val directories = File(System.getProperty("user.dir")).listFiles().filter { it.isDirectory }
