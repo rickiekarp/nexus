@@ -8,6 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 @SpringBootApplication
@@ -82,7 +83,8 @@ fun evaluateServerVersion() : String {
     if (version == null) {
         Log.DEBUG.debug("Implementation version could not be found, assuming developer environment!")
         ServerContext.developerEnvironment = true
-        return version
+        val format = SimpleDateFormat("yyMMddHHmm")
+        return format.format(Date())
     }
     return version
 }
