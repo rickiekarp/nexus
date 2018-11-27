@@ -77,13 +77,13 @@ open class UserRepo : UserDAO {
 
     }
 
-    override fun registerUser(credentials: Credentials): User? {
+    override fun registerUser(user: Credentials): User? {
         var newUser: User? = null
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)
-            stmt!!.setString(1, credentials.username)
-            stmt.setString(2, credentials.password)
+            stmt!!.setString(1, user.username)
+            stmt.setString(2, user.password)
 
             stmt.execute()
 

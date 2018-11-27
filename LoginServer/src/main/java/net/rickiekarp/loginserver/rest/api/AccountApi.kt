@@ -1,5 +1,6 @@
 package net.rickiekarp.loginserver.rest.api
 
+import net.rickiekarp.foundation.dto.exception.ResultDTO
 import net.rickiekarp.loginserver.dao.UserDAO
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
@@ -25,7 +26,7 @@ class AccountApi {
      * @param pluginIdentifierJson Plugin to check
      * @return True if user is allowed, false otherwise
      */
-    @PostMapping(value = ["/authorize"])
+    @PostMapping(value = ["authorize"])
     fun authenticateUser(@RequestBody credentialsDTO: Credentials): ResponseEntity<TokenDTO> {
 
         try {
@@ -43,14 +44,6 @@ class AccountApi {
         }
     }
 
-    @RequestMapping(
-            value = ["validateProperties"],
-            method = [RequestMethod.GET]
-    )
-    fun validateProperties(): ResponseEntity<String> {
-        return ResponseEntity("asdasd", HttpStatus.OK)
-    }
-
     @Throws(RuntimeException::class)
     private fun authenticate(username: String?, password: String?): User {
         // Authenticate against a database, LDAP, file or whatever
@@ -66,10 +59,7 @@ class AccountApi {
         throw RuntimeException("unauthorized")
     }
 
-    @RequestMapping(
-            value = ["login"],
-            method = arrayOf(RequestMethod.POST)
-    )
+    @PostMapping(value = ["login"])
     fun login(): ResponseEntity<AppObjectDTO> {
         return try {
             val dto = AppObjectDTO(AppObjectBuilder())
@@ -81,25 +71,17 @@ class AccountApi {
         }
     }
 
-    @RequestMapping(
-            value = ["create"],
-            method = arrayOf(RequestMethod.POST)
-    )
-    fun create(@RequestBody credentials: Credentials): ResponseEntity<TokenDTO> {
+    @PostMapping(value = ["create"])
+    fun create(@RequestBody credentials: Credentials): ResponseEntity<Any> {
         val user = repo!!.registerUser(credentials)
-        val token: TokenDTO
-        if (user != null) {
-
+        return if (user != null) {
             // Issue a token for the user
-            token = issueToken(user)
-
-            return ResponseEntity(token, HttpStatus.OK)
+            val token: TokenDTO = issueToken(user)
+            ResponseEntity(token, HttpStatus.OK)
         } else {
-            token = TokenDTO("null")
+            val result = ResultDTO("User could not be created!")
+            ResponseEntity(result, HttpStatus.OK)
         }
-
-        return ResponseEntity(token, HttpStatus.OK)
-        //return ResponseEntity(ErrorDTO("User already registered!"), HttpStatus.NOT_FOUND)
     }
 
     private fun issueToken(user: User): TokenDTO {

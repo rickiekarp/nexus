@@ -1,6 +1,6 @@
 CREATE TABLE credentials(
    id 		   int(11)          auto_increment   PRIMARY KEY,
-   username    varchar(50)      NOT NULL,
+   username    varchar(50)      NOT NULL UNIQUE,
    password    varchar(255)     NOT NULL,
    enabled     bool             NOT NULL,
    token       varchar(50)

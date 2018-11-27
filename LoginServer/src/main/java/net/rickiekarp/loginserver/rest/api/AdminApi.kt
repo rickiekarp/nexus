@@ -1,5 +1,6 @@
 package net.rickiekarp.loginserver.rest.api
 
+import net.rickiekarp.foundation.config.Configuration
 import net.rickiekarp.loginserver.dto.KeyValuePairDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,11 +20,11 @@ class AdminApi {
     fun getFeatureFlags(): ResponseEntity<ArrayList<KeyValuePairDTO>> {
         val keyValueList = ArrayList<KeyValuePairDTO>()
 
-        for (key in net.rickiekarp.foundation.config.Configuration.properties.stringPropertyNames()) {
-            val value = net.rickiekarp.foundation.config.Configuration.properties.getProperty(key)
+        for (key in Configuration.properties.stringPropertyNames()) {
+            val value = Configuration.properties.getProperty(key)
             val keyValuePair = KeyValuePairDTO(key, value)
             keyValueList.add(keyValuePair)
-            println(key + ": " + value)
+            println("$key: $value")
         }
 
         return ResponseEntity(keyValueList, HttpStatus.OK)
@@ -34,8 +35,8 @@ class AdminApi {
             method = arrayOf(RequestMethod.POST)
     )
     fun updateFeatureFlag(keyValue: KeyValuePairDTO): ResponseEntity<net.rickiekarp.foundation.dto.exception.ResultDTO> {
-        if (net.rickiekarp.foundation.config.Configuration.properties.containsKey(keyValue.key)) {
-            net.rickiekarp.foundation.config.Configuration.properties.setProperty(keyValue.key, keyValue.value)
+        if (Configuration.properties.containsKey(keyValue.key)) {
+            Configuration.properties.setProperty(keyValue.key, keyValue.value)
         } else {
             return ResponseEntity(net.rickiekarp.foundation.dto.exception.ResultDTO("Key not found!"), HttpStatus.NOT_FOUND)
         }
