@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 class MainController {
 
     @RequestMapping(
-            value = "info",
+            value = ["info"],
             method = arrayOf(RequestMethod.GET)
     )
     fun validateProperties(): ResponseEntity<String> {

@@ -1,5 +1,6 @@
 package net.rickiekarp.loginserver
 
+import net.rickiekarp.foundation.config.ServerContext
 import net.rickiekarp.foundation.logger.Log
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
@@ -80,7 +81,7 @@ fun evaluateServerVersion() : String {
     // it is assumed that the application is running in a development environment
     if (version == null) {
         Log.DEBUG.debug("Implementation version could not be found, assuming developer environment!")
-        net.rickiekarp.foundation.config.ServerContext.developerEnvironment = true
+        ServerContext.developerEnvironment = true
         val format = SimpleDateFormat("yyMMddHHmm")
         return format.format(Date())
     }

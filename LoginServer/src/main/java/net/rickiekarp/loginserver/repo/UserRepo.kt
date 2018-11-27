@@ -1,24 +1,29 @@
-package net.rickiekarp.foundation.dao
+package net.rickiekarp.loginserver.repo
 
+import net.rickiekarp.loginserver.dao.UserDAO
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
 import net.rickiekarp.foundation.utils.DatabaseUtil
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Repository
 import java.sql.*
 
-class UserDaoImpl : net.rickiekarp.foundation.dao.UserDAO {
-    companion object {
-        private val FIND_BY_TOKEN = "SELECT * FROM credentials WHERE token = ?"
-        private val FIND_BY_NAME = "SELECT * FROM credentials WHERE username = ?"
-        private val INSERT = "INSERT INTO credentials(username, password, enabled) VALUES(?, ?, true)"
-    }
+import javax.sql.DataSource
+
+@Repository
+open class UserRepo : UserDAO {
+    private val FIND_BY_TOKEN = "SELECT * FROM credentials WHERE token = ?"
+    private val FIND_BY_NAME = "SELECT * FROM credentials WHERE username = ?"
+    private val INSERT = "INSERT INTO credentials(username, password, enabled) VALUES(?, ?, true)"
+
+    @Autowired
+    private val dataSource: DataSource? = null
 
     override fun getUserFromToken(token: String): User? {
         var userVO: User? = null
-        var conn: Connection? = null
         var stmt: PreparedStatement? = null
         try {
-            conn = net.rickiekarp.foundation.config.database.DataSourceFactory.getLoginConnection()
-            stmt = conn!!.prepareStatement(net.rickiekarp.foundation.dao.UserDaoImpl.Companion.FIND_BY_TOKEN, Statement.RETURN_GENERATED_KEYS)
+            stmt = dataSource!!.connection.prepareStatement(FIND_BY_TOKEN, Statement.RETURN_GENERATED_KEYS)
             stmt!!.setString(1, token)
 
             val rs = stmt.executeQuery()
@@ -32,18 +37,15 @@ class UserDaoImpl : net.rickiekarp.foundation.dao.UserDAO {
             e.printStackTrace()
         } finally {
             DatabaseUtil.close(stmt)
-            DatabaseUtil.close(conn)
         }
         return userVO
     }
 
     override fun getUserByName(username: String): User? {
-        val conn: Connection
         val stmt: PreparedStatement
         var userVO: User? = null
         try {
-            conn = net.rickiekarp.foundation.config.database.DataSourceFactory.getLoginConnection()
-            stmt = conn.prepareStatement(net.rickiekarp.foundation.dao.UserDaoImpl.Companion.FIND_BY_NAME, Statement.RETURN_GENERATED_KEYS)
+            stmt = dataSource!!.connection.prepareStatement(FIND_BY_NAME, Statement.RETURN_GENERATED_KEYS)
             stmt.setString(1, username)
             val rs = stmt.executeQuery()
             if (rs.next()) {
@@ -67,7 +69,7 @@ class UserDaoImpl : net.rickiekarp.foundation.dao.UserDAO {
 
     override fun updateUserToken(user: User, token: String) {
         try {
-            val ps = net.rickiekarp.foundation.config.database.DataSourceFactory.getLoginConnection().prepareStatement("UPDATE credentials SET token = '" + token + "' WHERE id = " + user.userId)
+            val ps = dataSource!!.connection.prepareStatement("UPDATE credentials SET token = '" + token + "' WHERE id = " + user.userId)
             ps.executeUpdate()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -76,20 +78,10 @@ class UserDaoImpl : net.rickiekarp.foundation.dao.UserDAO {
     }
 
     override fun registerUser(credentials: Credentials): User? {
-        return createUser(credentials)
-    }
-
-    /**
-     * @param credentials Registration credentials
-     * @return User ID of the new user
-     */
-    private fun createUser(credentials: Credentials): User? {
         var newUser: User? = null
-        var conn: Connection? = null
         var stmt: PreparedStatement? = null
         try {
-            conn = net.rickiekarp.foundation.config.database.DataSourceFactory.getLoginConnection()
-            stmt = conn!!.prepareStatement(net.rickiekarp.foundation.dao.UserDaoImpl.Companion.INSERT, Statement.RETURN_GENERATED_KEYS)
+            stmt = dataSource!!.connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)
             stmt!!.setString(1, credentials.username)
             stmt.setString(2, credentials.password)
 
@@ -106,7 +98,6 @@ class UserDaoImpl : net.rickiekarp.foundation.dao.UserDAO {
             e.printStackTrace()
         } finally {
             DatabaseUtil.close(stmt)
-            DatabaseUtil.close(conn)
         }
         return newUser
     }

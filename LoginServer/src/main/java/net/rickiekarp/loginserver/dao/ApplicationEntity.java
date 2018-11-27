@@ -1,4 +1,4 @@
-package net.rickiekarp.foundation.dao.entity;
+package net.rickiekarp.loginserver.dao;
 
 public class ApplicationEntity {
 

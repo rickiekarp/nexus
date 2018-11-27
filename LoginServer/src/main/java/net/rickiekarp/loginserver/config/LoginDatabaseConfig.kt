@@ -1,4 +1,4 @@
-package net.rickiekarp.foundation.config.database
+package net.rickiekarp.loginserver.config
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -20,11 +20,11 @@ import javax.sql.DataSource
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "entityManager",
-        transactionManagerRef = "transactionManager",
-        basePackages = ["net.rickiekarp.foundation.data"]
+        entityManagerFactoryRef = "loginEntityManager",
+        transactionManagerRef = "loginTransactionManager",
+        basePackages = ["net.rickiekarp.loginserver.database"]
 )
-open class DatabaseConfig {
+open class LoginDatabaseConfig {
 
     @Autowired
     private val env: Environment? = null
@@ -34,7 +34,7 @@ open class DatabaseConfig {
      * the application.yml file (using the env object).
      */
     @Primary
-    @Bean(name = ["dataSource"])
+    @Bean(name = ["loginDataSource"])
     open fun dataSource(): DataSource {
         val dataSource = DriverManagerDataSource()
         dataSource.setDriverClassName(env!!.getProperty("db.driver")!!)
@@ -45,8 +45,8 @@ open class DatabaseConfig {
     }
 
     @Primary
-    @Bean(name = ["entityManager"])
-    open fun entityManagerFactory(builder: EntityManagerFactoryBuilder, @Qualifier("dataSource") dataSource: DataSource): LocalContainerEntityManagerFactoryBean {
+    @Bean(name = ["loginEntityManager"])
+    open fun entityManagerFactory(builder: EntityManagerFactoryBuilder, @Qualifier("loginDataSource") dataSource: DataSource): LocalContainerEntityManagerFactoryBean {
 
         //TODO: remove additional property once https://hibernate.atlassian.net/browse/HHH-12368 is resolved
         val additionalProperties = HashMap<String, Any>()
@@ -54,15 +54,15 @@ open class DatabaseConfig {
 
         return builder
                 .dataSource(dataSource)
-                .packages("net.rickiekarp.foundation.data")
+                .packages("net.rickiekarp.loginserver.database")
                 .persistenceUnit("applicationPU")
                 .properties(additionalProperties)
                 .build()
     }
 
     @Primary
-    @Bean(name = ["transactionManager"])
-    open fun transactionManager(@Qualifier("entityManager") entityManagerFactory: EntityManagerFactory
+    @Bean(name = ["loginTransactionManager"])
+    open fun transactionManager(@Qualifier("loginEntityManager") entityManagerFactory: EntityManagerFactory
     ): PlatformTransactionManager {
         return JpaTransactionManager(entityManagerFactory)
     }
@@ -75,7 +75,7 @@ open class DatabaseConfig {
      * DataAccessException).
      */
     @Primary
-    @Bean(name = ["exceptionTranslation"])
+    @Bean(name = ["loginExceptionTranslation"])
     open fun exceptionTranslation(): PersistenceExceptionTranslationPostProcessor {
         return PersistenceExceptionTranslationPostProcessor()
     }

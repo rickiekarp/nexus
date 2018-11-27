@@ -2,11 +2,10 @@ package net.rickiekarp.foundation.config
 
 object ServerContext {
     var serverVersion: String? = null
-    val loginDao: net.rickiekarp.foundation.dao.UserDAO
     var developerEnvironment: Boolean = false
 
     init {
-        net.rickiekarp.foundation.config.ServerContext.loginDao = net.rickiekarp.foundation.dao.UserDaoImpl()
+        println("init:${ServerContext}")
     }
 
     fun getHomeDirPath(clazz: Class<*>): String {

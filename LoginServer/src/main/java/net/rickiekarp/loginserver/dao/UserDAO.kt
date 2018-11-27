@@ -1,4 +1,4 @@
-package net.rickiekarp.foundation.dao
+package net.rickiekarp.loginserver.dao
 
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User

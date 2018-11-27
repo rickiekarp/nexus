@@ -13,7 +13,7 @@ import java.util.*
 class AdminApi {
 
     @RequestMapping(
-            value = "getFeatureFlags",
+            value = ["getFeatureFlags"],
             method = arrayOf(RequestMethod.POST)
     )
     fun getFeatureFlags(): ResponseEntity<ArrayList<KeyValuePairDTO>> {
@@ -30,7 +30,7 @@ class AdminApi {
     }
 
     @RequestMapping(
-            value = "updateFeatureFlag",
+            value = ["updateFeatureFlag"],
             method = arrayOf(RequestMethod.POST)
     )
     fun updateFeatureFlag(keyValue: KeyValuePairDTO): ResponseEntity<net.rickiekarp.foundation.dto.exception.ResultDTO> {
