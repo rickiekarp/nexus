@@ -44,7 +44,7 @@ public abstract class ApiInterfaces {
     }
 
     public interface LoginApi {
-        @POST("auth/token/")
+        @POST("account/authorize/")
         Call<VOToken> doGetToken(@Body VOCredentials credentials);
 
 
