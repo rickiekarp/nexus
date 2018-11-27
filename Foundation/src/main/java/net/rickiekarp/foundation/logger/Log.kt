@@ -1,5 +1,6 @@
 package net.rickiekarp.foundation.logger
 
+import net.rickiekarp.foundation.config.Config
 import org.apache.logging.log4j.core.Logger
 import org.apache.logging.log4j.core.LoggerContext
 import org.apache.logging.log4j.core.config.Configuration
@@ -20,13 +21,13 @@ class Log private constructor() {
         fun setupLogging() {
             // Get context instance
             val context = LoggerContext("LoggerContext")
-            val debugConfig = createConfiguration("log.debug", net.rickiekarp.foundation.config.Config.get().foundation().getProperty("LogLevelDebug"))
+            val debugConfig = createConfiguration("log.debug", Config.get().foundation().getProperty("LogLevelDebug"))
             DEBUG = context.getLogger("log.debug")
             context.start(debugConfig)
         }
 
         private fun createConfiguration(loggerName: String, logLevel: String): Configuration {
-            val builder = net.rickiekarp.foundation.logger.CustomLoggerConfigurationFactory().createConfiguration(loggerName, logLevel, DefaultConfigurationBuilder())
+            val builder = CustomLoggerConfigurationFactory().createConfiguration(loggerName, logLevel, DefaultConfigurationBuilder())
             return builder.build()
         }
     }

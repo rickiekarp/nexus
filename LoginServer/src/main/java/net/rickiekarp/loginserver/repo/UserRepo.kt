@@ -37,12 +37,13 @@ open class UserRepo : UserDAO {
             e.printStackTrace()
         } finally {
             DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
         }
         return userVO
     }
 
     override fun getUserByName(username: String): User? {
-        val stmt: PreparedStatement
+        var stmt: PreparedStatement? = null
         var userVO: User? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(FIND_BY_NAME, Statement.RETURN_GENERATED_KEYS)
@@ -53,6 +54,9 @@ open class UserRepo : UserDAO {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
         }
 
         return userVO
@@ -68,11 +72,15 @@ open class UserRepo : UserDAO {
     }
 
     override fun updateUserToken(user: User, token: String) {
+        var stmt: PreparedStatement? = null
         try {
-            val ps = dataSource!!.connection.prepareStatement("UPDATE credentials SET token = '" + token + "' WHERE id = " + user.userId)
-            ps.executeUpdate()
+            stmt = dataSource!!.connection.prepareStatement("UPDATE credentials SET token = '" + token + "' WHERE id = " + user.userId)
+            stmt.executeUpdate()
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
         }
 
     }
@@ -98,6 +106,7 @@ open class UserRepo : UserDAO {
             e.printStackTrace()
         } finally {
             DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
         }
         return newUser
     }

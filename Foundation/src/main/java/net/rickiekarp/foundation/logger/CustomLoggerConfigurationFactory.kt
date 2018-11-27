@@ -1,5 +1,7 @@
 package net.rickiekarp.foundation.logger
 
+import net.rickiekarp.foundation.config.Config
+import net.rickiekarp.foundation.core.types.OutputType
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.core.Filter
 import org.apache.logging.log4j.core.appender.ConsoleAppender
@@ -23,7 +25,7 @@ class CustomLoggerConfigurationFactory {
 
         val rootLoggerComponentBuilder = builder.newRootLogger(logLevel)
         val loggerComponentBuilder = builder.newLogger("org.apache.logging.log4j", logLevel).addAttribute("additivity", false)
-        val showInConsole = net.rickiekarp.foundation.config.Config.get().getConnectionPropertyAs("Log.debug.showInConsole", net.rickiekarp.foundation.core.types.OutputType.BOOLEAN)
+        val showInConsole = Config.get().getConnectionPropertyAs("Log.debug.showInConsole", OutputType.BOOLEAN)
         when (name) {
             "log.debug" -> {
                 if (showInConsole) {
@@ -32,7 +34,7 @@ class CustomLoggerConfigurationFactory {
                     loggerComponentBuilder.add(builder.newAppenderRef(stdout))
                     builder.add(getFilterComponentBuilder(builder, logLevel))
                 }
-                if (net.rickiekarp.foundation.config.Config.get().getConnectionPropertyAs("Log.debug.writeLogFile", net.rickiekarp.foundation.core.types.OutputType.BOOLEAN)) {
+                if (Config.get().getConnectionPropertyAs("Log.debug.writeLogFile", OutputType.BOOLEAN)) {
                     val fileRef = "fileRef"
                     setupFileAppender(name, builder, rootLoggerComponentBuilder)
                     loggerComponentBuilder.add(builder.newAppenderRef(fileRef))
@@ -49,7 +51,7 @@ class CustomLoggerConfigurationFactory {
     private fun setupConsoleAppender(builder: ConfigurationBuilder<BuiltConfiguration>, rootBuilder: RootLoggerComponentBuilder) {
         val appenderBuilder = builder.newAppender("Stdout", ConsoleAppender.PLUGIN_NAME).addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT)
 
-        appenderBuilder.add(builder.newLayout("PatternLayout").addAttribute("pattern", net.rickiekarp.foundation.config.Config.get().foundation().getProperty("LogPattern")))
+        appenderBuilder.add(builder.newLayout("PatternLayout").addAttribute("pattern", Config.get().foundation().getProperty("LogPattern")))
         appenderBuilder.add(builder.newFilter("MarkerFilter", Filter.Result.DENY, Filter.Result.NEUTRAL).addAttribute("marker", "FLOW"))
 
         builder.add(appenderBuilder)
@@ -60,9 +62,9 @@ class CustomLoggerConfigurationFactory {
         val appenderBuilder = builder.newAppender("fileRef", FileAppender.PLUGIN_NAME)
 
         appenderBuilder.addAttribute("fileName",
-                System.getProperty("user.dir") + File.separator + net.rickiekarp.foundation.config.Config.get().foundation().getProperty("Log.path") + File.separator + name + ".log"
+                System.getProperty("user.dir") + File.separator + Config.get().foundation().getProperty("Log.path") + File.separator + name + ".log"
         )
-        appenderBuilder.add(builder.newLayout("PatternLayout").addAttribute("pattern", net.rickiekarp.foundation.config.Config.get().foundation().getProperty("LogPattern")))
+        appenderBuilder.add(builder.newLayout("PatternLayout").addAttribute("pattern", Config.get().foundation().getProperty("LogPattern")))
         appenderBuilder.add(builder.newFilter("MarkerFilter", Filter.Result.DENY, Filter.Result.NEUTRAL).addAttribute("marker", "FLOW"))
 
         builder.add(appenderBuilder)

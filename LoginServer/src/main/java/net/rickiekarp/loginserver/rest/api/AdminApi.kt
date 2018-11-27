@@ -1,6 +1,7 @@
 package net.rickiekarp.loginserver.rest.api
 
 import net.rickiekarp.foundation.config.Configuration
+import net.rickiekarp.foundation.dto.exception.ResultDTO
 import net.rickiekarp.loginserver.dto.KeyValuePairDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -34,12 +35,12 @@ class AdminApi {
             value = ["updateFeatureFlag"],
             method = arrayOf(RequestMethod.POST)
     )
-    fun updateFeatureFlag(keyValue: KeyValuePairDTO): ResponseEntity<net.rickiekarp.foundation.dto.exception.ResultDTO> {
+    fun updateFeatureFlag(keyValue: KeyValuePairDTO): ResponseEntity<ResultDTO> {
         if (Configuration.properties.containsKey(keyValue.key)) {
             Configuration.properties.setProperty(keyValue.key, keyValue.value)
         } else {
-            return ResponseEntity(net.rickiekarp.foundation.dto.exception.ResultDTO("Key not found!"), HttpStatus.NOT_FOUND)
+            return ResponseEntity(ResultDTO("Key not found!"), HttpStatus.NOT_FOUND)
         }
-        return ResponseEntity(net.rickiekarp.foundation.dto.exception.ResultDTO("success"), HttpStatus.OK)
+        return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
     }
 }

@@ -1,19 +1,24 @@
-package net.rickiekarp.loginserver.dao
+package net.rickiekarp.loginserver.repo
 
 import net.rickiekarp.foundation.utils.DatabaseUtil
-import java.sql.Connection
+import net.rickiekarp.loginserver.dao.ApplicationEntity
+import net.rickiekarp.loginserver.dao.UpdateDAO
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
 import java.sql.SQLException
 import java.sql.Statement
 import java.util.*
+import javax.sql.DataSource
 
-class UpdateDaoImpl : UpdateDAO {
-    companion object {
-        private val FIND_BY_IDENTIFIER = "SELECT * FROM application WHERE identifier=? OR identifier='appupdater'"
+@Repository
+class UpdateRepo : UpdateDAO {
+    private val FIND_BY_IDENTIFIER = "SELECT * FROM application WHERE identifier=? OR identifier='appupdater'"
+    private val INSERT = "INSERT INTO application(identifier, version, updateEnable) VALUES(?, ?, ?)"
+    private val UPDATE = "UPDATE application SET version=?, updateEnable=? WHERE identifier=?"
 
-        private val INSERT = "INSERT INTO application(identifier, version, updateEnable) VALUES(?, ?, ?)"
-        private val UPDATE = "UPDATE application SET version=?, updateEnable=? WHERE identifier=?"
-    }
+    @Autowired
+    private val dataSource: DataSource? = null
 
     override fun findAll(): List<ApplicationEntity> {
         return ArrayList()
@@ -24,12 +29,10 @@ class UpdateDaoImpl : UpdateDAO {
     }
 
     override fun findByName(identifier: String, updateChannel: Int): List<ApplicationEntity> {
-        var conn: Connection? = null
         var stmt: PreparedStatement? = null
         val list = ArrayList<ApplicationEntity>()
         try {
-            conn = net.rickiekarp.foundation.config.database.DataSourceFactory.getAppConnection()
-            stmt = conn!!.prepareStatement(FIND_BY_IDENTIFIER)
+            stmt = dataSource!!.connection.prepareStatement(FIND_BY_IDENTIFIER)
             stmt!!.setString(1, identifier)
 
             val rs = stmt.executeQuery()
@@ -47,18 +50,16 @@ class UpdateDaoImpl : UpdateDAO {
             throw RuntimeException(e)
         } finally {
             DatabaseUtil.close(stmt)
-            DatabaseUtil.close(conn)
+            DatabaseUtil.close(dataSource!!.connection)
         }
 
         return list
     }
 
     override fun insert(application: ApplicationEntity): Int {
-        var conn: Connection? = null
         var stmt: PreparedStatement? = null
         try {
-            conn = net.rickiekarp.foundation.config.database.DataSourceFactory.getAppConnection()
-            stmt = conn!!.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)
+            stmt = dataSource!!.connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)
             stmt!!.setString(1, application.identifier)
             stmt.setInt(2, application.version)
             stmt.setBoolean(3, application.isUpdateEnable)
@@ -69,16 +70,14 @@ class UpdateDaoImpl : UpdateDAO {
             throw RuntimeException(e)
         } finally {
             DatabaseUtil.close(stmt)
-            DatabaseUtil.close(conn)
+            DatabaseUtil.close(dataSource!!.connection)
         }
     }
 
     override fun update(application: ApplicationEntity): Int {
-        var conn: Connection? = null
         var stmt: PreparedStatement? = null
         try {
-            conn = net.rickiekarp.foundation.config.database.DataSourceFactory.getAppConnection()
-            stmt = conn!!.prepareStatement(UPDATE)
+            stmt = dataSource!!.connection.prepareStatement(UPDATE)
             stmt!!.setInt(1, application.version)
             stmt.setBoolean(2, application.isUpdateEnable)
             stmt.setString(3, application.identifier)
@@ -89,7 +88,7 @@ class UpdateDaoImpl : UpdateDAO {
             throw RuntimeException(e)
         } finally {
             DatabaseUtil.close(stmt)
-            DatabaseUtil.close(conn)
+            DatabaseUtil.close(dataSource!!.connection)
         }
     }
 }
