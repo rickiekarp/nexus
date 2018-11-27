@@ -22,7 +22,7 @@ import javax.sql.DataSource
 @EnableJpaRepositories(
         entityManagerFactoryRef = "loginEntityManager",
         transactionManagerRef = "loginTransactionManager",
-        basePackages = ["net.rickiekarp.loginserver.database"]
+        basePackages = ["net.rickiekarp.loginserver.config"]
 )
 open class LoginDatabaseConfig {
 
@@ -34,7 +34,7 @@ open class LoginDatabaseConfig {
      * the application.yml file (using the env object).
      */
     @Primary
-    @Bean(name = ["loginDataSource"])
+    @Bean(name = ["dataSource"])
     open fun dataSource(): DataSource {
         val dataSource = DriverManagerDataSource()
         dataSource.setDriverClassName(env!!.getProperty("db.driver")!!)
@@ -46,7 +46,7 @@ open class LoginDatabaseConfig {
 
     @Primary
     @Bean(name = ["loginEntityManager"])
-    open fun entityManagerFactory(builder: EntityManagerFactoryBuilder, @Qualifier("loginDataSource") dataSource: DataSource): LocalContainerEntityManagerFactoryBean {
+    open fun entityManagerFactory(builder: EntityManagerFactoryBuilder, @Qualifier("dataSource") dataSource: DataSource): LocalContainerEntityManagerFactoryBean {
 
         //TODO: remove additional property once https://hibernate.atlassian.net/browse/HHH-12368 is resolved
         val additionalProperties = HashMap<String, Any>()

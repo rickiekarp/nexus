@@ -12,7 +12,7 @@ build {
     war {
         libsDirName = new File(projectDir, "/../Deployment/service-application/webapps")
         manifest {
-            attributes 'Build-Time': new Date().format('yyMMddHHmm')
+            attributes 'Implementation-Version': new Date().format('yyMMddHHmm')
         }
         archiveName 'LoginServer.war'
     }

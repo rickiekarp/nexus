@@ -1,5 +1,6 @@
 package net.rickiekarp.loginserver
 
+import net.rickiekarp.foundation.config.Config
 import net.rickiekarp.foundation.config.ServerContext
 import net.rickiekarp.foundation.logger.Log
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -7,7 +8,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 @SpringBootApplication
@@ -30,11 +30,11 @@ fun main(args: Array<String>) {
 
 fun getProperties(): Properties {
     loadConfiguration("LoginServer")
-    net.rickiekarp.foundation.config.ServerContext.serverVersion = evaluateServerVersion()
+    ServerContext.serverVersion = evaluateServerVersion()
 
-    net.rickiekarp.foundation.config.Config.get().setupDirectory = setupPath()
+    Config.get().setupDirectory = setupPath()
     val props = Properties()
-    props["spring.config.location"] = "file:${net.rickiekarp.foundation.config.Config.get().setupDirectory}/"
+    props["spring.config.location"] = "file:${Config.get().setupDirectory}/"
     return props
 }
 
@@ -42,14 +42,14 @@ fun getProperties(): Properties {
  * Creates the Config and loads the settings
  */
 private fun loadConfiguration(applicationName: String) {
-    val configBuilder = net.rickiekarp.foundation.config.Config.ConfigBuilder().setApplicationIdentifier(applicationName)
+    val configBuilder = Config.ConfigBuilder().setApplicationIdentifier(applicationName)
 
     // set up Config
-    net.rickiekarp.foundation.config.Config.create(configBuilder)
+    Config.create(configBuilder)
 }
 
 fun setupPath(): String {
-    return findSetupDirectory(net.rickiekarp.foundation.config.Config.get().applicationIdentifier)
+    return findSetupDirectory(Config.get().applicationIdentifier)
 }
 
 
@@ -59,13 +59,13 @@ fun setupPath(): String {
  * In non-development it will search the current working directory of the user for the setup directory
  */
 private fun findSetupDirectory(aSetupDirectoryName: String): String {
-    if (net.rickiekarp.foundation.config.ServerContext.developerEnvironment) {
+    if (ServerContext.developerEnvironment) {
         val workingDirectory = System.getProperty("user.dir")
         return "$workingDirectory.setup"
     } else {
         val directories = File(System.getProperty("user.dir")).listFiles().filter { it.isDirectory }
         for (directory in directories) {
-            if (directory.name == "${net.rickiekarp.foundation.config.Config.get().applicationIdentifier}.setup") {
+            if (directory.name == "${Config.get().applicationIdentifier}.setup") {
                 Log.DEBUG.trace("Setup directory ${directory.name} found in ${directory.path}")
                 return "${System.getProperty("user.dir")}/${directory.name}"
             }
@@ -82,8 +82,7 @@ fun evaluateServerVersion() : String {
     if (version == null) {
         Log.DEBUG.debug("Implementation version could not be found, assuming developer environment!")
         ServerContext.developerEnvironment = true
-        val format = SimpleDateFormat("yyMMddHHmm")
-        return format.format(Date())
+        return version
     }
     return version
 }
