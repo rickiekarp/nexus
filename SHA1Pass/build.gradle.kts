@@ -17,6 +17,10 @@ application {
     group = "net.rickiekarp.sha1pass"
 }
 
+javaModule {
+    setName("sha1pass")
+}
+
 
 dependencies {
     implementation("org.openjfx:javafx-controls:11:linux")
