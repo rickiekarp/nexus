@@ -1,5 +1,5 @@
 extra.set("gradleWrapper", "4.10.2")
-extra.set("gradleWrapperVersion", "5.0-milestone-1")
+extra.set("gradleVersion", "5.0")
 
 extra.set("kotlinVersion", "1.3.10")
 
