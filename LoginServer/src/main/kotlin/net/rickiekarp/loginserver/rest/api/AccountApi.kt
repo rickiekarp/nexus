@@ -3,9 +3,9 @@ package net.rickiekarp.loginserver.rest.api
 import net.rickiekarp.foundation.config.Configuration
 import net.rickiekarp.foundation.config.ServerContext
 import net.rickiekarp.foundation.dto.exception.ResultDTO
-import net.rickiekarp.loginserver.dao.UserDAO
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
+import net.rickiekarp.loginserver.dao.UserDAO
 import net.rickiekarp.loginserver.dto.AppObjectDTO
 import net.rickiekarp.loginserver.dto.TokenDTO
 import net.rickiekarp.loginserver.factory.AppObjectBuilder
@@ -13,7 +13,10 @@ import org.apache.commons.lang3.RandomStringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController

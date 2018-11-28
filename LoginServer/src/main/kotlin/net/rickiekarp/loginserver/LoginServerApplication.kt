@@ -32,8 +32,9 @@ fun main(args: Array<String>) {
 fun getProperties(): Properties {
     loadConfiguration("LoginServer")
     ServerContext.serverVersion = evaluateServerVersion()
+    Config.get().setupDirectory = findSetupDirectory(Config.get().applicationIdentifier)
+    Log.DEBUG.debug("Current setup directory: ${Config.get().setupDirectory}")
 
-    Config.get().setupDirectory = setupPath()
     val props = Properties()
     props["spring.config.location"] = "file:${Config.get().setupDirectory}/"
     return props
@@ -47,10 +48,6 @@ private fun loadConfiguration(applicationName: String) {
 
     // set up Config
     Config.create(configBuilder)
-}
-
-fun setupPath(): String {
-    return findSetupDirectory(Config.get().applicationIdentifier)
 }
 
 
@@ -67,7 +64,7 @@ private fun findSetupDirectory(aSetupDirectoryName: String): String {
         val directories = File(System.getProperty("user.dir")).listFiles().filter { it.isDirectory }
         for (directory in directories) {
             if (directory.name == "${Config.get().applicationIdentifier}.setup") {
-                Log.DEBUG.trace("Setup directory ${directory.name} found in ${directory.path}")
+                Log.DEBUG.info("Setup directory ${directory.name} found in ${directory.path}")
                 return "${System.getProperty("user.dir")}/${directory.name}"
             }
         }

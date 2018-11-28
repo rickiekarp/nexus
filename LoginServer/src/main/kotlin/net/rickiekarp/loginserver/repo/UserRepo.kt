@@ -1,13 +1,15 @@
 package net.rickiekarp.loginserver.repo
 
-import net.rickiekarp.loginserver.dao.UserDAO
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
 import net.rickiekarp.foundation.utils.DatabaseUtil
+import net.rickiekarp.loginserver.dao.UserDAO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.sql.*
-
+import java.sql.PreparedStatement
+import java.sql.ResultSet
+import java.sql.SQLException
+import java.sql.Statement
 import javax.sql.DataSource
 
 @Repository

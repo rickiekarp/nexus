@@ -9,8 +9,6 @@ import java.util.Properties;
 
 /**
  * Main config class
- * It is used in the support tool and test automation and holds all settings defined in the .properties files
- * of the respective application (applicationPropertyIdentifier).
  */
 public class Config {
     private static Config config;
@@ -18,19 +16,13 @@ public class Config {
     private String applicationPropertyIdentifier;
     private String setupDirectory;
 
-    // ===========================================================
-    // - - - - - - - - Game Configuration  - - - - - - - - - - - -
-    // ===========================================================
-
     private Config(ConfigBuilder builder) {
         applicationPropertyIdentifier = builder.applicationIdentifier;
-
         applicationProperties = new HashMap<>(2);
     }
 
     public static void create(String applicationPropertyIdentifier) {
-        ConfigBuilder builder = new ConfigBuilder()
-                .setApplicationIdentifier(applicationPropertyIdentifier);
+        ConfigBuilder builder = new ConfigBuilder().setApplicationIdentifier(applicationPropertyIdentifier);
         create(builder);
     }
 
@@ -49,8 +41,6 @@ public class Config {
     /**
      * Load all properties for the current application.
      * By default it will first load all Foundation properties defined in foundation.properties
-     * Afterwards it will try to load the .properties file of the given applicationIdentifier, so in case of the support tool
-     * it will try to load the AdminServerWebapp.properties file
      * @param builder Current ConfigBuilder
      */
     private void loadProperties(ConfigBuilder builder) {
@@ -126,7 +116,7 @@ public class Config {
             return this;
         }
 
-        public Config build() {
+        Config build() {
             if (this.clazz == null) {
                 // Using fallback location for application related property loading in case no class has been specified
                 this.clazz = Config.class;

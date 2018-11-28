@@ -22,7 +22,7 @@ class ApplicationReadyListener : ApplicationListener<ApplicationReadyEvent> {
      * the application is ready to service requests.
      */
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        println("startup: " + appName)
+        println("Started: $appName")
 
         //        loadConfiguration();
 
