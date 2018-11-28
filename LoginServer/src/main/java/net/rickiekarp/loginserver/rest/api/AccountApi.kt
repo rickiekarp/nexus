@@ -21,7 +21,7 @@ import java.util.*
 class AccountApi {
 
     @Autowired
-    private val repo: UserDAO? = null
+    var repo: UserDAO? = null
 
     /**
      * Checks whether the user is allowed to execute the requested plugin

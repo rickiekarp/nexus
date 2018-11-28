@@ -53,6 +53,7 @@ subprojects {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as Object
         compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion" as Object
+        testCompile "org.mockito:mockito-core:2.1.0"
     }
 
 //    project.apply plugin: "com.github.spotbugs"
