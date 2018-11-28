@@ -68,5 +68,5 @@ subprojects {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = rootProject.extra.get("gradleWrapperVersion") as String
+    gradleVersion = rootProject.extra.get("gradleVersion") as String
 }
