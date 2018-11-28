@@ -49,10 +49,10 @@ allprojects {
 
 subprojects {
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: junit4Version
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as Object
-        compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion" as Object
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
+        testCompile group: 'junit', name: 'junit', version: junit4Version
         testCompile "org.mockito:mockito-core:2.1.0"
     }
 
