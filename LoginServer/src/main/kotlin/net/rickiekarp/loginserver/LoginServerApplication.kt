@@ -1,6 +1,6 @@
 package net.rickiekarp.loginserver
 
-import net.rickiekarp.foundation.config.Config
+import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.config.ServerContext
 import net.rickiekarp.foundation.logger.Log
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -32,22 +32,22 @@ fun main(args: Array<String>) {
 fun getProperties(): Properties {
     loadConfiguration("LoginServer")
     ServerContext.serverVersion = evaluateServerVersion()
-    Config.get().setupDirectory = findSetupDirectory(Config.get().applicationIdentifier)
-    Log.DEBUG.debug("Current setup directory: ${Config.get().setupDirectory}")
+    BaseConfig.get().setupDirectory = findSetupDirectory(BaseConfig.get().applicationIdentifier)
+    Log.DEBUG.debug("Current setup directory: ${BaseConfig.get().setupDirectory}")
 
     val props = Properties()
-    props["spring.config.location"] = "file:${Config.get().setupDirectory}/"
+    props["spring.config.location"] = "file:${BaseConfig.get().setupDirectory}/"
     return props
 }
 
 /**
- * Creates the Config and loads the settings
+ * Creates the BaseConfig and loads the settings
  */
 private fun loadConfiguration(applicationName: String) {
-    val configBuilder = Config.ConfigBuilder().setApplicationIdentifier(applicationName)
+    val configBuilder = BaseConfig.ConfigBuilder().setApplicationIdentifier(applicationName)
 
-    // set up Config
-    Config.create(configBuilder)
+    // set up BaseConfig
+    BaseConfig.create(configBuilder)
 }
 
 
@@ -63,7 +63,7 @@ private fun findSetupDirectory(aSetupDirectoryName: String): String {
     } else {
         val directories = File(System.getProperty("user.dir")).listFiles().filter { it.isDirectory }
         for (directory in directories) {
-            if (directory.name == "${Config.get().applicationIdentifier}.setup") {
+            if (directory.name == "${BaseConfig.get().applicationIdentifier}.setup") {
                 Log.DEBUG.info("Setup directory ${directory.name} found in ${directory.path}")
                 return "${System.getProperty("user.dir")}/${directory.name}"
             }

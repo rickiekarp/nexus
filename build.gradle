@@ -56,6 +56,11 @@ subprojects {
         testCompile "org.mockito:mockito-core:2.1.0"
     }
 
+    sourceSets {
+        main.kotlin.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
 //    project.apply plugin: "com.github.spotbugs"
 //    project.spotbugs {
 //        it.sourceSets = [sourceSets.main]

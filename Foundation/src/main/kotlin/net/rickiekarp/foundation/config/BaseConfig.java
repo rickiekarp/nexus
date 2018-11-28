@@ -8,15 +8,15 @@ import java.util.HashMap;
 import java.util.Properties;
 
 /**
- * Main config class
+ * Main baseConfig class
  */
-public class Config {
-    private static Config config;
+public class BaseConfig {
+    private static BaseConfig baseConfig;
     private HashMap<String, Properties> applicationProperties;
     private String applicationPropertyIdentifier;
     private String setupDirectory;
 
-    private Config(ConfigBuilder builder) {
+    private BaseConfig(ConfigBuilder builder) {
         applicationPropertyIdentifier = builder.applicationIdentifier;
         applicationProperties = new HashMap<>(2);
     }
@@ -27,15 +27,15 @@ public class Config {
     }
 
     /**
-     * Main entry point when instantiating Config
-     * When creating the config, it will first load all the settings from the .properties files and
+     * Main entry point when instantiating BaseConfig
+     * When creating the baseConfig, it will first load all the settings from the .properties files and
      * set up all the needed services (like loggers)
      * @param builder
      */
     public static void create(ConfigBuilder builder) {
-        config = builder.build();
-        config.loadProperties(builder);
-        config.configureServices();
+        baseConfig = builder.build();
+        baseConfig.loadProperties(builder);
+        baseConfig.configureServices();
     }
 
     /**
@@ -44,7 +44,7 @@ public class Config {
      * @param builder Current ConfigBuilder
      */
     private void loadProperties(ConfigBuilder builder) {
-        addConfigProperties(Config.class, "foundation");
+        addConfigProperties(BaseConfig.class, "foundation");
     }
 
     /**
@@ -56,8 +56,8 @@ public class Config {
         printProperties();
     }
 
-    public static Config get() {
-        return config;
+    public static BaseConfig get() {
+        return baseConfig;
     }
 
     public Properties foundation() {
@@ -116,12 +116,12 @@ public class Config {
             return this;
         }
 
-        Config build() {
+        BaseConfig build() {
             if (this.clazz == null) {
                 // Using fallback location for application related property loading in case no class has been specified
-                this.clazz = Config.class;
+                this.clazz = BaseConfig.class;
             }
-            return new Config(this);
+            return new BaseConfig(this);
         }
     }
 }
