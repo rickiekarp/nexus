@@ -94,5 +94,5 @@ subprojects {
 }
 
 wrapper {
-    gradleVersion = gradleWrapperVersion
+    gradleVersion = project.ext.gradleVersion
 }
