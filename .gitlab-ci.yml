@@ -1,6 +1,7 @@
 image: openjdk:10.0.2-jdk
 
 variables:
+  GIT_SUBMODULE_STRATEGY: "recursive"
   TEST_VARIABLE: "Test"
 
 before_script:
