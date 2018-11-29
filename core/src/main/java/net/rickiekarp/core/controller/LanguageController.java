@@ -13,7 +13,6 @@ import java.util.Properties;
 
 public final class LanguageController {
     private static Properties prop;
-    public static final LanguageController INSTANCE;
 
     /** @deprecated */
     // $FF: synthetic method
@@ -65,11 +64,10 @@ public final class LanguageController {
     }
 
     @JvmStatic
-    public static final void loadLangFile() {
+    public static final void loadLangFile(InputStream utf8in) {
         try {
+            System.out.println(utf8in);
             System.out.println("Locale: " + Configuration.CURRENT_LOCALE);
-            InputStream utf8in = LanguageController.class.getResourceAsStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties");
-
             try {
                 prop.load(utf8in);
             } catch (IOException var2) {
@@ -77,9 +75,7 @@ public final class LanguageController {
             }
 
             utf8in.close();
-        } catch (NullPointerException var3) {
-            LogFileHandler.logger.warning("Error");
-        } catch (IOException var4) {
+        } catch (NullPointerException | IOException var3) {
             LogFileHandler.logger.warning("Error");
         }
 
@@ -114,12 +110,7 @@ public final class LanguageController {
 
     }
 
-    private LanguageController() {
-    }
-
     static {
-        LanguageController var0 = new LanguageController();
-        INSTANCE = var0;
         prop = new Properties();
     }
 }

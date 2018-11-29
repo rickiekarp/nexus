@@ -7,6 +7,8 @@ import net.rickiekarp.core.view.SettingsScene;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 
+import java.net.URL;
+
 public class ThemeSelector {
 
     public final static String DARK_THEME_CSS = "ui/themes/DarkTheme.css";
@@ -19,12 +21,14 @@ public class ThemeSelector {
     public static void setTheme(Scene scene) {
         switch (Configuration.themeState) {
             case 0:
+                URL darkStyle = ThemeSelector.class.getResource(DARK_THEME_CSS);
                 if(!scene.getStylesheets().contains(DARK_THEME_CSS)) { scene.getStylesheets().clear(); }
-                scene.getStylesheets().add(DARK_THEME_CSS);
+                scene.getStylesheets().add(darkStyle.toString());
                 break;
             case 1:
+                URL lightStyle = ThemeSelector.class.getResource(LIGHT_THEME_CSS);
                 if(!scene.getStylesheets().contains(LIGHT_THEME_CSS)) { scene.getStylesheets().clear(); }
-                scene.getStylesheets().add(LIGHT_THEME_CSS);
+                scene.getStylesheets().add(lightStyle.toString());
                 break;
         }
     }

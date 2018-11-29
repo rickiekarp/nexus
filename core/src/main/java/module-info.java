@@ -1,4 +1,4 @@
-module config {
+module core {
   opens net.rickiekarp.core;
   exports net.rickiekarp.core;
   exports net.rickiekarp.core.components.textfield;
