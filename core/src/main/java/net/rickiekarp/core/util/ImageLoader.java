@@ -1,6 +1,8 @@
 package net.rickiekarp.core.util;
 
 import javafx.scene.image.Image;
+import net.rickiekarp.api.HelloService;
+import net.rickiekarp.core.HelloFactory;
 
 public class ImageLoader {
     private static Image appIcon;
@@ -10,28 +12,32 @@ public class ImageLoader {
 
     public static Image getAppIcon() {
         if (appIcon == null) {
-            appIcon = new Image("ui/icons/app_icon_big.png");
+            final HelloService service = HelloFactory.createService();
+            appIcon = new Image(service.getStream("icons/app_icon_big.png"));
         }
         return appIcon;
     }
 
     public static Image getAppIconSmall() {
         if (appIconSmall == null) {
-            appIconSmall = new Image("ui/icons/app_icon_small.png");
+            final HelloService service = HelloFactory.createService();
+            appIconSmall = new Image(service.getStream("icons/app_icon_small.png"));
         }
         return appIconSmall;
     }
 
     public static Image getMenu() {
         if (menu == null) {
-            menu = new Image("ui/components/titlebar/menu.png");
+            final HelloService service = HelloFactory.createService();
+            menu = new Image(service.getStream("ui/components/titlebar/menu.png"));
         }
         return menu;
     }
 
     public static Image getMenuHover() {
         if (menuHover == null) {
-            menuHover = new Image("ui/components/titlebar/menu-hover.png");
+            final HelloService service = HelloFactory.createService();
+            menuHover = new Image(service.getStream("ui/components/titlebar/menu-hover.png"));
         }
         return menuHover;
     }

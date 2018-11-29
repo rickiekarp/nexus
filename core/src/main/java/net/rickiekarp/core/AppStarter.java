@@ -10,6 +10,7 @@ import net.rickiekarp.core.debug.ExceptionHandler;
 import net.rickiekarp.core.settings.Configuration;
 import net.rickiekarp.core.settings.LoadSave;
 import net.rickiekarp.core.ui.tray.ToolTrayIcon;
+import net.rickiekarp.core.util.ImageLoader;
 import net.rickiekarp.core.view.MainScene;
 import net.rickiekarp.core.view.MessageDialog;
 import net.rickiekarp.core.view.layout.AppLayout;
@@ -63,7 +64,7 @@ public class AppStarter extends Application {
 
         //application related configuration
         stage.setTitle(AppContext.getContext().getApplicationName());
-//        stage.getIcons().add(ImageLoader.getAppIconSmall());
+        stage.getIcons().add(ImageLoader.getAppIconSmall());
         stage.setResizable(false);
         stage.setMinWidth(440); stage.setMinHeight(145);
         stage.setWidth(475); stage.setHeight(205);
