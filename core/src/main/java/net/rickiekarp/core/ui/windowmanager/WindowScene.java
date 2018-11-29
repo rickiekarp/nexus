@@ -7,6 +7,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 
+import java.net.URL;
+
 public class WindowScene extends Scene {
 
     private Window window;
@@ -35,7 +37,8 @@ public class WindowScene extends Scene {
         super(root);
 
         //add custom button style for settings/about scene button
-        root.getStylesheets().add("ui/components/button/ButtonStyle.css");
+        URL buttonStyle = WindowScene.class.getResource("ui/components/button/ButtonStyle.css");
+        root.getStylesheets().add(buttonStyle.toString());
 
         // behaviour when using system borders instead of custom implementation
         if(Configuration.useSystemBorders) {

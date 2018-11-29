@@ -30,6 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.stage.*;
 
+import java.net.URL;
 import java.util.logging.Level;
 
 /**
@@ -253,7 +254,8 @@ public class Window extends StackPane {
      **/
     private AnchorPane getStageDecoration(Stage stage, String title, int type) {
         AnchorPane menuAnchor = new AnchorPane();
-        menuAnchor.getStylesheets().add("ui/components/titlebar/TitleBarStyle.css");
+        URL titlebarStyle = WindowScene.class.getResource("ui/components/titlebar/TitleBarStyle.css");
+        menuAnchor.getStylesheets().add(titlebarStyle.toString());
         menuAnchor.setStyle("-fx-background-color: " + ThemeSelector.getColorHexString(Configuration.decorationColor));
         menuAnchor.setMaxHeight(TITLEBAR_HEIGHT);
 
