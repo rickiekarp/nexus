@@ -11,7 +11,7 @@ apply {
 
 //javaModule.name = "sha1pass"
 application {
-    applicationName = "JavaFxApp"
+    applicationName = "SHA1Pass"
     mainClassName="net.rickiekarp.sha1pass.MainApp"
     version = "1.0-SNAPSHOT"
     group = "net.rickiekarp.sha1pass"
