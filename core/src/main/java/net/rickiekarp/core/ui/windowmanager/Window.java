@@ -289,10 +289,9 @@ public class Window extends StackPane {
                 leftBox.getChildren().add(imageView);
                 break;
             case 1:
-                System.out.println("stub -> getStageDecoration");
-//                ImageView logo = new ImageView(stage.getIcons().get(0)); logo.fitHeightProperty().setValue(20); logo.fitWidthProperty().setValue(20);
-//                HBox.setMargin(logo, new Insets(5, 0, 0, 4));
-//                leftBox.getChildren().add(logo);
+                ImageView logo = new ImageView(stage.getIcons().get(0)); logo.fitHeightProperty().setValue(20); logo.fitWidthProperty().setValue(20);
+                HBox.setMargin(logo, new Insets(5, 0, 0, 4));
+                leftBox.getChildren().add(logo);
                 break;
         }
 
