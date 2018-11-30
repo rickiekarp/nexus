@@ -1,26 +1,25 @@
+import java.util.Date
+import java.text.SimpleDateFormat
+
 plugins {
     id("org.gradle.java.experimental-jigsaw") version "0.1.1"
     application
 }
 
-val minorVersion = 0
-
 apply {
     plugin("java")
 }
 
-//javaModule.name = "sha1pass"
 application {
     applicationName = "SHA1Pass"
     mainClassName="net.rickiekarp.sha1pass.MainApp"
-    version = "1.0-SNAPSHOT"
     group = "net.rickiekarp.sha1pass"
+    version = "1.0-SNAPSHOT"
 }
 
 javaModule {
     setName("sha1pass")
 }
-
 
 dependencies {
     implementation("org.openjfx:javafx-controls:11:linux")
@@ -30,40 +29,24 @@ dependencies {
     compile(project(":core"))
 }
 
-//build {
-//    println 'Building ' + project.name
-//
-//    ext {
-//        if (project.hasProperty('privateBuildDate')) {
-//            privateBuildDate = project.property('privateBuildDate')
-//        } else {
-//            privateBuildDate = new Date().format('yyMMddHHmm')
-//        }
-//
-//        if (project.hasProperty('publicVersion')) {
-//            publicVersion = project.property('publicVersion')
-//        } else {
-//            if (minorVersion > 0) {
-//                publicVersion = new Date().format('yy.MM') + '.' + minorVersion
-//            } else {
-//                publicVersion = new Date().format('yy.MM')
-//            }
-//        }
-//    }
-//
-//    jar {
-//        baseName = 'sha1pass'
-//        libsDirName = new File(rootProject.projectDir, "build/app")
-//
-//        manifest {
-//            attributes 'Version': build.ext.publicVersion
-//            attributes 'Build-Time': build.ext.privateBuildDate
-//            attributes 'Main-Class': 'net.rickiekarp.sha1pass.MainApp'
-//        }
-//
-//        // Include dependent libraries in archive.
-////        from {
-////            configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-////        }
-//    }
-//}
+tasks {
+    withType<Jar> {
+        println("Building " + project.name)
+
+        val minorVersion = 0
+
+        val publicVersion = if (minorVersion > 0) {
+            SimpleDateFormat("yy.MM").format(Date()) + '.' + minorVersion
+        } else {
+            SimpleDateFormat("yy.MM").format(Date())
+        }
+
+        manifest {
+            attributes["Main-Class"] = application.mainClassName
+            attributes["Build-Time"] = SimpleDateFormat("yyMMddHHmm").format(Date())
+            attributes["Version"] = publicVersion
+        }
+
+        archiveName = "${javaModule.geName()}-$publicVersion.jar"
+    }
+}
