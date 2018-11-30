@@ -33,7 +33,7 @@ public class AboutScene {
     private GridPane grid;
     private GridPane grid2;
     private HBox controls;
-    private final String WEBSITE = "www.rickiekarp.xyz";
+    private final String WEBSITE = "www.rickiekarp.net";
 
     public AboutScene() {
         create();
