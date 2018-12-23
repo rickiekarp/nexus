@@ -4,4 +4,4 @@
 
 [submodule "module-deployment"]
 	path = module-deployment
-	url = ../module-deployment.git
+	url = git@rickiekarp.net:module-deployment
