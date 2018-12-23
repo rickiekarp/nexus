@@ -8,6 +8,8 @@ out/
 *.war.original
 *.setup
 
+module-deployment/service-application/setup
+module-deployment/service-application/webapps
 module-deployment/logs
 
 #Vaadin files
