@@ -10,7 +10,7 @@ dependencies {
 apply plugin: 'war'
 build {
     war {
-        libsDirName = new File(projectDir, "/../module-module-deployment/service-application/webapps")
+        libsDirName = new File(projectDir, "/../module-deployment/service-application/webapps")
         manifest {
             attributes 'Implementation-Version': new Date().format('yyMMddHHmm')
         }
