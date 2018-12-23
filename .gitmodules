@@ -1,3 +1,7 @@
 [submodule "module-base"]
 	path = module-base
 	url = ../module-base.git
+
+[submodule "module-deployment"]
+	path = module-deployment
+	url = ../module-deployment.git
