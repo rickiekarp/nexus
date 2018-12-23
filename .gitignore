@@ -8,7 +8,7 @@ out/
 *.war.original
 *.setup
 
-Deployment/logs
+module-deployment/logs
 
 #Vaadin files
 gwt-unitCache/

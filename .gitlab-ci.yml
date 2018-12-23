@@ -17,7 +17,7 @@ build:
     - ./gradlew clean :LoginServer:build :HomeServer:build
   artifacts:
     paths:
-    - Deployment/service-application/webapps/
+    - module-deployment/service-application/webapps/
 
 unitTests:
   stage: test
