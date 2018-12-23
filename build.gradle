@@ -42,5 +42,5 @@ allprojects {
 }
 
 wrapper {
-    gradleVersion = gradleWrapperVersion
+    gradleVersion = project.gradleVersion
 }
