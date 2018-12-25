@@ -13,13 +13,13 @@ open class HomeServerApplication: SpringBootServletInitializer() {
     override fun configure(springApplicationBuilder: SpringApplicationBuilder): SpringApplicationBuilder {
         return springApplicationBuilder
                 .sources(HomeServerApplication::class.java)
-                .properties(Application().getProperties(HomeServerApplication::class.java))
+                .properties(Application().getProperties(HomeServerApplication::class.java, "HomeServer"))
     }
 }
 
 fun main(args: Array<String>) {
     SpringApplicationBuilder(HomeServerApplication::class.java)
             .sources(HomeServerApplication::class.java)
-            .properties(Application().getProperties(HomeServerApplication::class.java))
+            .properties(Application().getProperties(HomeServerApplication::class.java, "HomeServer"))
             .run(*args)
 }

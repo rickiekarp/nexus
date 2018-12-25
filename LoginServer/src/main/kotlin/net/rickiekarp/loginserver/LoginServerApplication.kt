@@ -13,13 +13,13 @@ open class LoginServerApplication: SpringBootServletInitializer() {
     override fun configure(springApplicationBuilder: SpringApplicationBuilder): SpringApplicationBuilder {
         return springApplicationBuilder
                 .sources(LoginServerApplication::class.java)
-                .properties(Application().getProperties(LoginServerApplication::class.java))
+                .properties(Application().getProperties(LoginServerApplication::class.java, "LoginServer"))
     }
 }
 
 fun main(args: Array<String>) {
     SpringApplicationBuilder(LoginServerApplication::class.java)
             .sources(LoginServerApplication::class.java)
-            .properties(Application().getProperties(LoginServerApplication::class.java))
+            .properties(Application().getProperties(LoginServerApplication::class.java, "LoginServer"))
             .run(*args)
 }

@@ -7,10 +7,11 @@ import java.util.*
 
 open class Application {
 
-    fun getProperties(clazz: Class<*>): Properties {
-        loadConfiguration("LoginServer")
-        val version = clazz.`package`.implementationVersion
-        ServerContext.serverVersion = evaluateServerVersion(version)
+    fun getProperties(clazz: Class<*>, applicationName: String): Properties {
+        val configBuilder = BaseConfig.ConfigBuilder().setApplicationIdentifier(applicationName)
+        BaseConfig.create(configBuilder)
+
+        ServerContext.serverVersion = evaluateServerVersion(clazz.`package`.implementationVersion)
         BaseConfig.get().setupDirectory = findSetupDirectory(BaseConfig.get().applicationIdentifier)
         Log.DEBUG.debug("Current setup directory: ${BaseConfig.get().setupDirectory}")
 
@@ -19,17 +20,7 @@ open class Application {
         return props
     }
 
-    /**
-     * Creates the BaseConfig and loads the settings
-     */
-    private fun loadConfiguration(applicationName: String) {
-        val configBuilder = BaseConfig.ConfigBuilder().setApplicationIdentifier(applicationName)
-
-        // set up BaseConfig
-        BaseConfig.create(configBuilder)
-    }
-
-    fun evaluateServerVersion(version: String?) : String {
+    private fun evaluateServerVersion(version: String?) : String {
         // if the implementation version is null (because there is no manifest file),
         // it is assumed that the application is running in a development environment
         if (version == null) {
