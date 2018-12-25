@@ -1,5 +1,6 @@
 package net.rickiekarp.qaacc.settings;
 
+import net.rickiekarp.core.debug.LogFileHandler;
 import net.rickiekarp.core.settings.Configuration;
 import net.rickiekarp.core.settings.LoadSave;
 import net.rickiekarp.core.util.CommonUtil;
@@ -10,8 +11,10 @@ import javafx.collections.ObservableList;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
+import java.util.logging.Logger;
+
+//import java.awt.*;
+//import java.awt.datatransfer.StringSelection;
 
 public class AppConfiguration {
 
@@ -70,8 +73,9 @@ public class AppConfiguration {
 
     /** sets string to clipboard **/
     public static void setStringToClipboard(String stringContent) {
-        StringSelection stringSelection = new StringSelection(stringContent);
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+        LogFileHandler.logger.warning("stub: setStringToClipboard()");
+//        StringSelection stringSelection = new StringSelection(stringContent);
+//        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
     }
 
     public static void readProjectData() {

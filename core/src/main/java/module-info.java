@@ -7,6 +7,10 @@ module core {
   exports net.rickiekarp.core.view;
   exports net.rickiekarp.core.view.layout;
   exports net.rickiekarp.core.util.crypt;
+  exports net.rickiekarp.core.util;
+  exports net.rickiekarp.core.settings;
+  exports net.rickiekarp.core.ui.windowmanager;
+  exports net.rickiekarp.core.model;
 
   requires kotlin.stdlib;
   requires java.logging;

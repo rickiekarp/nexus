@@ -7,7 +7,6 @@ import net.rickiekarp.core.settings.Configuration;
 import net.rickiekarp.qaacc.model.Projects;
 import net.rickiekarp.qaacc.settings.AppConfiguration;
 import net.rickiekarp.qaacc.view.BugReportSettings;
-import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -119,7 +118,7 @@ public class ProjectXmlFactory {
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-                transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "2");
+//                transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "2");
                 DOMSource source = new DOMSource(doc);
                 StreamResult result = new StreamResult(datafile.getPath() + File.separator + "project.xml");
 
@@ -291,7 +290,7 @@ public class ProjectXmlFactory {
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-                transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "2");
+//                transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "2");
                 DOMSource source = new DOMSource(doc);
                 StreamResult result = new StreamResult(Configuration.config.getJarFile().getPath() + File.separator + "project.xml");
                 transformer.transform(source, result);

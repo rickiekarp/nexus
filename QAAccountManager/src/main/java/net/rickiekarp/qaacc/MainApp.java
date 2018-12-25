@@ -2,6 +2,7 @@ package net.rickiekarp.qaacc;
 
 import net.rickiekarp.core.AppStarter;
 import net.rickiekarp.qaacc.settings.AppConfiguration;
+import net.rickiekarp.qaacc.view.MainLayout;
 
 public class MainApp extends AppStarter {
 
@@ -16,7 +17,7 @@ public class MainApp extends AppStarter {
         setWidth(750);
         setHeight(335);
 
-        //setLayout(new MainLayout());
+        setLayout(new MainLayout());
 
         launch(args);
     }

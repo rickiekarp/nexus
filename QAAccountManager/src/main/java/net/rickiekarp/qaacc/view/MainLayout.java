@@ -8,6 +8,7 @@ import net.rickiekarp.core.debug.LogFileHandler;
 import net.rickiekarp.core.util.CommonUtil;
 import net.rickiekarp.core.util.ImageLoader;
 import net.rickiekarp.core.view.MessageDialog;
+import net.rickiekarp.core.view.layout.AppLayout;
 import net.rickiekarp.qaacc.factory.AccountXmlFactory;
 import net.rickiekarp.qaacc.model.Account;
 import net.rickiekarp.qaacc.settings.AppConfiguration;
@@ -25,7 +26,7 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class MainLayout {
+public class MainLayout implements AppLayout {
     public static MainLayout mainLayout;
     private Button findAccount;
     private Button saveAccount;
@@ -310,5 +311,15 @@ public class MainLayout {
             outputGrid.setStyle(null);
             controls.setStyle(null);
         }
+    }
+
+    @Override
+    public Node getLayout() {
+        return getMainLayout();
+    }
+
+    @Override
+    public void postInit() {
+
     }
 }
