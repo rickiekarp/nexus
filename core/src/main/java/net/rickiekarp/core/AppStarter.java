@@ -18,6 +18,11 @@ import net.rickiekarp.core.view.layout.AppLayout;
 public class AppStarter extends Application {
     private static Class mainClazz;
     private static Class configClazz;
+    private static byte winType;
+    private static int minWidth;
+    private static int minHeight;
+    private static int width;
+    private static int height;
 
     private static AppLayout node;
 
@@ -33,10 +38,10 @@ public class AppStarter extends Application {
 
     @Override
     public void start(Stage stage) {
-        AppContext.create("sha1pass");
+        AppContext.create(mainClazz.getModule().getName());
 
         final HelloService service = HelloFactory.createService();
-        System.out.println(service.hi("hello"));
+        System.out.println(service.hi("hello " + AppContext.getContext().getApplicationName()));
 
         //load config file
         Configuration.config = new Configuration("config.xml", mainClazz);
@@ -66,10 +71,10 @@ public class AppStarter extends Application {
         stage.setTitle(AppContext.getContext().getApplicationName());
         stage.getIcons().add(ImageLoader.getAppIconSmall());
         stage.setResizable(false);
-        stage.setMinWidth(440); stage.setMinHeight(145);
-        stage.setWidth(475); stage.setHeight(205);
+        stage.setMinWidth(minWidth); stage.setMinHeight(minHeight);
+        stage.setWidth(width); stage.setHeight(height);
 
-        new MainScene(stage, 1);
+        new MainScene(stage, winType);
 
         //set up the Client Area to display
         MainScene.mainScene.getBorderPane().setCenter(node.getLayout());
@@ -85,6 +90,26 @@ public class AppStarter extends Application {
             new MessageDialog(0, LanguageController.getString("config_not_found"), 500, 250);
             MainScene.mainScene.getWindowScene().getWin().getSidebarButtonBox().getChildren().get(0).setDisable(true);
         }
+    }
+
+    protected static void setWinType(byte type) {
+        winType = type;
+    }
+
+    public static void setMinWidth(final int width) {
+        minWidth = width;
+    }
+
+    public static void setMinHeight(final int height) {
+        minHeight = height;
+    }
+
+    public static void setWidth(final int defWidth) {
+        width = defWidth;
+    }
+
+    public static void setHeight(final int defHeight) {
+        height = defHeight;
     }
 
 }

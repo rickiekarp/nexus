@@ -1,7 +1,6 @@
 package net.rickiekarp.appupdater.ui;
 
 import net.rickiekarp.appupdater.UpdateMain;
-import net.rickiekarp.appupdater.settings.UpdateConstants;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

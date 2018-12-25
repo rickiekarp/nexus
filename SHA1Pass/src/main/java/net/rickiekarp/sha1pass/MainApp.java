@@ -13,6 +13,14 @@ public class MainApp extends AppStarter {
     public static void main(String[] args) {
         setMainClazz(MainApp.class);
         setConfigClazz(AppConfiguration.class);
+
+        setWinType((byte) 1);
+
+        setMinWidth(440);
+        setMinHeight(145);
+        setWidth(475);
+        setHeight(205);
+
         setLayout(new MainLayout());
 
         launch(args);

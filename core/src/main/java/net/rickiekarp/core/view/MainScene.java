@@ -17,22 +17,19 @@ public class MainScene {
         return windowScene;
     }
     private Region layoutRegion;
-    public Region getLayoutRegion() {
-        return layoutRegion;
-    }
     public BorderPane getBorderPane() {
         return (BorderPane) layoutRegion;
     }
 
     public MainScene(Stage stage) {
-        createScene(stage, 0);
+        createScene(stage, (byte) 0);
     }
 
-    public MainScene(Stage stage, int winType) {
+    public MainScene(Stage stage, byte winType) {
         createScene(stage, winType);
     }
 
-    private void createScene(Stage stage, int winType) {
+    private void createScene(Stage stage, byte winType) {
         WindowStage mainStage = new WindowStage("main", stage);
         mainScene = this;
         layoutRegion = new BorderPane();
