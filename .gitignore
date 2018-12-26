@@ -12,9 +12,18 @@ module-deployment/service-application/setup
 module-deployment/service-application/webapps
 module-deployment/logs
 
-#Vaadin files
-gwt-unitCache/
-widgetsets/
-styles.css
-addons.scss
-*.css.gz
+# Front End Dependency Generated
+AdminServer/AdminServerFrontend/.sass-cache/
+AdminServer/AdminServerFrontend/bower_components/
+AdminServer/AdminServerFrontend/npm-debug.log
+AdminServer/AdminServerFrontend/.tscache/
+AdminServer/AdminServerFrontend/scss/.tmp/
+AdminServer/AdminServerFrontend/js/lib/
+AdminServer/AdminServerFrontend/typings/
+AdminServer/AdminServerFrontend/coverage/
+
+AdminServer/AdminServerFrontend/dist/
+AdminServer/AdminServerFrontend/node/
+AdminServer/AdminServerFrontend/node_modules/
+
+AdminServer/AdminServerBackend/src/main/resources/static

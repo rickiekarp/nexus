@@ -1,0 +1,78 @@
+buildscript {
+    ext {
+        springBootVersion = project.ext.springBootVersion
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/milestone" }
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+    }
+}
+
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Plugins - Application
+//------------------------------------------------------------------------------------------------------------------------
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'java'
+apply plugin: 'war'
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Plugins - Configuration
+//------------------------------------------------------------------------------------------------------------------------
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+war {
+    baseName = 'spring5_angular4_demo'
+    version =  '1.0'
+    manifest {
+        attributes 'Main-Class': 'angularboot.AngularBootApplication'
+    }
+}
+
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Tasks - Standalone backend
+//------------------------------------------------------------------------------------------------------------------------
+
+task bootStandaloneBackend {
+    group 'application'
+    dependsOn bootRun
+}
+
+jar.dependsOn ':AdminServerFrontend:buildClientToSpring'
+war.dependsOn ':AdminServerFrontend:buildClientToSpring'
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Tasks - Full Application
+//------------------------------------------------------------------------------------------------------------------------
+
+task bootFullApplication(type: GradleBuild) {
+    group 'application'
+    setTasks([':AdminServerFrontend:npmUpdate', ':AdminServerFrontend:cleanFrontend', ':AdminServerFrontend:buildClientToSpring', ':AdminServerBackend:bootRun'])
+}
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Dependencies
+//------------------------------------------------------------------------------------------------------------------------
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-data-neo4j'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
