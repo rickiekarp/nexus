@@ -35,7 +35,7 @@ war {
     baseName = 'spring5_angular4_demo'
     version =  '1.0'
     manifest {
-        attributes 'Main-Class': 'angularboot.AngularBootApplication'
+        attributes 'Main-Class': 'net.rickiekarp.admin.AngularBootApplication'
     }
 }
 

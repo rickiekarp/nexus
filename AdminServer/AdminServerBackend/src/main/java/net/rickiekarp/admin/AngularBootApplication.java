@@ -1,7 +1,7 @@
-package angularboot;
+package net.rickiekarp.admin;
 
-import angularboot.domain.Greeting;
-import angularboot.domain.Hero;
+import net.rickiekarp.admin.domain.Greeting;
+import net.rickiekarp.admin.domain.Hero;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
