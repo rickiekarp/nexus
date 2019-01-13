@@ -1,0 +1,80 @@
+buildscript {
+    ext {
+        springBootVersion = project.ext.springBootVersion
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/milestone" }
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+    }
+}
+
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Plugins - Application
+//------------------------------------------------------------------------------------------------------------------------
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Plugins - Configuration
+//------------------------------------------------------------------------------------------------------------------------
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+bootWar {
+    baseName = 'Website'
+    libsDirName = new File(projectDir, "/../../module-deployment/service-application/webapps")
+    version =  '1.0'
+    manifest {
+        attributes 'Main-Class': 'net.rickiekarp.admin.AngularBootApplication'
+        attributes 'Implementation-Version': new Date().format('yyMMddHHmm')
+    }
+    archiveName baseName + ".war"
+}
+
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Tasks - Standalone backend
+//------------------------------------------------------------------------------------------------------------------------
+
+task bootStandaloneBackend {
+    group 'application'
+    dependsOn bootRun
+}
+
+jar.dependsOn ':WebsiteFrontend:buildClientToSpring'
+war.dependsOn ':WebsiteFrontend:buildClientToSpring'
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Tasks - Full Application
+//------------------------------------------------------------------------------------------------------------------------
+
+task bootFullApplication(type: GradleBuild) {
+    group 'application'
+    setTasks([':WebsiteFrontend:npmUpdate', ':WebsiteFrontend:cleanFrontend', ':WebsiteFrontend:buildClientToSpring', ':WebsiteBackend:bootRun'])
+}
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Dependencies
+//------------------------------------------------------------------------------------------------------------------------
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-data-neo4j'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}

@@ -1,0 +1,60 @@
+package net.rickiekarp.admin;
+
+import net.rickiekarp.admin.domain.Greeting;
+import net.rickiekarp.admin.domain.Hero;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("api")
+@SpringBootApplication
+public class AngularBootApplication extends SpringBootServletInitializer {
+
+    private static final List<Hero> HEROES;
+
+    static {
+        Random r = new Random();
+
+        final String[] NAMES = {
+                "A",
+                "B",
+                "C"};
+
+        HEROES = Arrays.stream(NAMES)
+                .map(name -> new Hero(r.ints(0,20).findFirst().orElse(0), name))
+                .collect(Collectors.toList());
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(AngularBootApplication.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(AngularBootApplication.class);
+    }
+
+    @RequestMapping("/resource")
+    public Greeting home() {
+        Greeting greeting = new Greeting();
+        greeting.setId(UUID.randomUUID().toString());
+        greeting.setContent("Hello World");
+        return greeting;
+    }
+
+    @RequestMapping("/heroes")
+    public List<Hero> getHeroes() {
+        return HEROES;
+    }
+
+}
