@@ -1,5 +1,5 @@
 html {
-   overflow-y: scroll;
+   overflow-y: scroll; 
 }
 
 body{
@@ -8,12 +8,12 @@ body{
    font-size:16px;
    background: #1a1c1f;
 }
-
+   
 body.active{
    overflow:hidden;
    z-index:-1
 }
-
+  
 .inputCopy {
   color: white;
   background-color: transparent;
@@ -54,7 +54,7 @@ h1 {
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
 #snackbar.show {
    visibility: visible; /* Show the snackbar */
-   /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+   /* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
   However, delay the fade out process for 2.5 seconds */
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
@@ -62,7 +62,7 @@ h1 {
 
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
-   from {bottom: 0; opacity: 0;}
+   from {bottom: 0; opacity: 0;} 
    to {bottom: 30px; opacity: 1;}
 }
 
@@ -72,7 +72,7 @@ h1 {
 }
 
 @-webkit-keyframes fadeout {
-   from {bottom: 30px; opacity: 1;}
+   from {bottom: 30px; opacity: 1;} 
    to {bottom: 0; opacity: 0;}
 }
 
@@ -99,7 +99,7 @@ h1 {
         color:#7e8890;
         margin:0 0 15px 0
     }
-
+    
 .no-js #experience-timeline>div p {
     color:#a3a9ad;
     font-size:0.9em;
@@ -151,7 +151,7 @@ header{
     animation-name:dropHeader;
     animation-iteration-count:1;
     animation-timing-function:ease;
-    animation-duration:0.75s
+    animation-duration:0.75s 
 }
 header ul{
     display:inline-block;
@@ -160,28 +160,28 @@ header ul{
     padding:10px;
     margin:0;
     border-bottom-right-radius:4px;
-    border-bottom-left-radius:4px
+    border-bottom-left-radius:4px 
 }
 header li{
-    display:inline-block
+    display:inline-block 
 }
 header a{
     display:block;
     color:#3498db;
-    padding:10px
+    padding:10px 
 }
 header a:hover{
     color:#217dbb;
     text-decoration:none;
     background:#eee;
-    border-radius:4px
+    border-radius:4px 
 }
 header a:focus{
     color:#3498db;
-    text-decoration:none
+    text-decoration:none 
 }
 header.active{
-    display:block
+    display:block 
 }
 header.sticky{
     position:fixed;
@@ -716,7 +716,7 @@ footer{
 }
 #contact-form input:focus,#contact-form textarea:focus{
    outline:none;
-   background:#2f3133;
+   background:#2f3133; 
    border:1px solid #1d6fa5;
 }
 #contact-form textarea{
@@ -907,7 +907,7 @@ main {
     margin: 0 auto;
     background: #111111;
   }
-
+  
   section {
     display: none;
     padding: 20px 0 0;
@@ -927,37 +927,37 @@ main {
     color: #bbb;
     border: 1px solid transparent;
   }
-
+  
   label:before {
     font-family: fontawesome;
     font-weight: normal;
     margin-right: 10px;
     color: white;
   }
-
+  
   label[for*='1']:before {
     content: '\f121';
   }
-
+  
   label[for*='2']:before {
     content: '\f007';
   }
-
+  
   label[for*='3']:before {
     content: '\f2c2';
   }
-
+  
   label[for*='4']:before {
     content: '\f0e0';
   }
-
+  
   label:hover {
     color: #fff;
     cursor: pointer;
     border: 0px solid #ddd;
     background: #171717
   }
-
+  
   input:checked + label {
     border: 0px solid #ddd;
     border-top: 0px solid #fff;
@@ -979,12 +979,12 @@ main {
   #tab4:checked ~ #content4 {
     display: block;
   }
-
+  
   @media screen and (max-width: 650px) {
     label {
       font-size: 0;
     }
-
+  
     label:before {
       margin: 0;
       font-size: 18px;

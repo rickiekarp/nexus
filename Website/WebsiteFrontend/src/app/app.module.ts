@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProjectsComponent } from './projects/projects.component';
 import { HeroService } from './hero.service';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +19,8 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    ProjectsComponent
   ],
   providers: [ HeroService ],
   bootstrap: [ AppComponent ]
