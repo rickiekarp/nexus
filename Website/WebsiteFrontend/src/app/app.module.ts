@@ -23,6 +23,6 @@ import { AppRoutingModule } from './app-routing.module';
     ProjectsComponent
   ],
   providers: [ HeroService ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent, DashboardComponent ]
 })
 export class AppModule { }

@@ -20,7 +20,7 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "styles.less"
+        "style.less"
       ],
       "scripts": [
         "../src/assets/js/copy.js",
