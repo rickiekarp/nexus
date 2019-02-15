@@ -14,7 +14,7 @@ stages:
 build:
   stage: build
   script:
-    - ./gradlew clean :LoginServer:build :HomeServer:build :AdminServerFrontend:buildClientToSpring :AdminServerBackend:bootWar
+    - ./gradlew clean :LoginServer:build :HomeServer:build :WebsiteFrontend:buildClientToSpring :WebsiteBackend:bootWar
   artifacts:
     paths:
     - module-deployment/service-application/webapps/
