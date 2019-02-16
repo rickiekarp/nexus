@@ -26,8 +26,8 @@ apply plugin: 'com.github.node-gradle.node'
 //------------------------------------------------------------------------------------------------------------------------
 
 node {
-    version = '9.11.2'
-    npmVersion = '6.8.0'
+    version = '8.5.0'
+    npmVersion = '5.4.2'
     download = true
     workDir = file("${rootDir}/Website/WebsiteFrontend/node")
     nodeModulesDir = file("${rootDir}/Website/WebsiteFrontend")
