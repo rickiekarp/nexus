@@ -1,0 +1,79 @@
+.centerDiv
+{
+   color: white;
+   max-width: 900px;
+   margin: 0 auto;
+   background-color:#1a1c1f ;
+}
+.card-image-left
+{
+   width: 30%;
+   height: 100%;
+   background-color:#1a1c1f ;
+   float:left;
+}
+.card-content-right
+{
+   width: 70%;
+   background-color:#1a1c1f ;
+   float:right;
+   flex: 1 1 auto;
+   padding: 1rem;
+}
+
+.card {
+   color: #ffffff;
+   background: #1a1c1f;
+   min-width: 900px;
+}
+
+.card-img-top {
+   height: auto;
+   min-height: 100%;
+}
+
+
+#education {
+   width: 100%;
+   padding:50px 15px 20px 15px;
+   border-bottom:0px solid #dcd9d9;
+   text-align:center;
+   background: #111111;
+}
+#education h2 {
+   color:#dcd9d9;
+   margin-bottom:50px
+}
+
+.education-block{
+   max-width:900px;
+   margin:0 auto 30px auto;
+   padding:15px;
+   border:1px solid #131313;
+   text-align:left;
+   background:#1a1c1f
+}
+.education-block h3{
+   font-weight:500;
+   float:left;
+   margin:0;
+   color:#a3a9ad
+}
+.education-block span{
+   color:#a3a9ad;
+   float:right
+}
+.education-block h4{
+   color:#a3a9ad;
+   clear:both;
+   font-weight:500;
+   margin:0 0 15px 0
+}
+.education-block p,.education-block ul{
+   margin:0;
+   color:#ffffff;
+   font-size:1.1em
+}
+.education-block ul{
+   padding:0 0 0 15px
+}
