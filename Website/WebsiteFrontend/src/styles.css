@@ -230,6 +230,7 @@ footer{
 }
 .copyright p {
    margin:0;
+   color: #a3a9ad
 }
 .row-back {
     color:#a3a9ad;
@@ -348,76 +349,6 @@ footer{
 .background-alt{
    background:#111111;
 }
-#lead{
-   position:relative;
-   height:100vh;
-   min-height:500px;
-   max-height:1080px;
-   background-size:cover;
-   padding:15px;
-   overflow:hidden
-}
-#lead-content{
-   position:absolute;
-   z-index:10;
-   top:50%;
-   left:50%;
-   transform:translate(-50%, -50%);
-   text-align:center
-}
-#lead-content h1,#lead-content h2{
-   margin:0
-}
-#lead-content h1{
-   color:#fff;
-   font-weight:900;
-   font-size:5em;
-   text-transform:uppercase;
-   letter-spacing:0.05em;
-   line-height:0.9em
-}
-#lead-content h2{
-   color:#a0cfee;
-   font-weight:500;
-   font-size:2.25em;
-   margin-bottom:15px
-}
-#lead-overlay{
-   position:absolute;
-   height:100%;
-   width:100%;
-   top:0;
-   right:0;
-   bottom:0;
-   left:0;
-   background:rgba(33,125,187,0.8);
-   z-index:1
-}
-#lead-down{
-   position:absolute;
-   left:0;
-   right:0;
-   width:100%;
-   text-align:center;
-   z-index:10;
-   bottom:15px;
-   color:#fff
-}
-#lead-down span{
-   cursor:pointer;
-   display:block;
-   margin:0 auto;
-   width:35px;
-   height:35px;
-   border-radius:50%;
-   border:3px solid #a0cfee;
-   text-align:center
-}
-#lead-down i{
-   animation:pulsate 1.5s ease;
-   animation-iteration-count:infinite;
-   padding-top:5px
-}
 @keyframes pulsate{
    0%{
        transform:scale(1, 1)
@@ -446,90 +377,6 @@ footer{
    border-bottom:0px solid #dcd9d9
 }
 #experience h2{
-   color:#fff
-}
-#experience-timeline{
-   margin:30px auto 0 auto;
-   position:relative;
-   max-width:1000px
-}
-#experience-timeline:before{
-   position:absolute;
-   content:'';
-   top:0;
-   bottom:0;
-   left:303px;
-   right:auto;
-   height:100%;
-   width:3px;
-   background:#3498db;
-   z-index:0
-}
-#experience-timeline:after{
-   position:absolute;
-   content:'';
-   width:3px;
-   height:40px;
-   background:#3498db;
-   background:linear-gradient(to bottom, #3498db, rgba(52,152,219,0));
-   top:100%;
-   left:303px
-}
-.vtimeline-content{
-   margin-left:350px;
-   background:#2c3c49;
-   border:1px solid #e6e6e6;
-   color: white;
-   padding:15px;
-   border-radius:3px;
-   text-align:left
-}
-.vtimeline-content h3{
-   font-size:1.5em;
-   font-weight:300;
-   color:#fff;
-   display:inline-block;
-   margin:0
-}
-.vtimeline-content h4{
-   font-size:1.2em;
-   font-weight:300;
-   color:#fff;
-   margin:0 0 15px 0
-}
-.vtimeline-content p{
-   color:#fff;
-   font-size:0.9em;
-   margin:0
-}
-.vtimeline-point{
-   position:relative;
-   display:block;
-   margin-bottom:30px
-}
-.vtimeline-icon{
-   position:relative;
-   color:#fff;
-   width:50px;
-   height:50px;
-   background:#3498db;
-   border-radius:50%;
-   float:left;
-   z-index:99;
-   margin-left:280px
-}
-.vtimeline-icon i{
-   display:block;
-   font-size:2em;
-   margin-top:10px
-}
-.vtimeline-date{
-   width:260px;
-   text-align:right;
-   position:absolute;
-   left:0;
-   top:10px;
-   font-weight:300;
    color:#fff
 }
 #education {
@@ -786,51 +633,6 @@ footer{
 .optional-section-block ul{
    padding:0 0 0 15px
 }
-@media only screen and (max-width: 750px){
-   #experience-timeline:before,#experience-timeline:after{
-       left:23px
-   }
-   .vtimeline-date{
-       width:auto;
-       text-align:left;
-       position:relative;
-       margin-bottom:15px;
-       display:block;
-       margin-left:70px
-   }
-   .vtimeline-icon{
-       margin-left:0
-   }
-   .vtimeline-content{
-       margin-left:70px
-   }
-}
-@media only screen and (max-width: 992px){
-   #lead{
-       height:auto;
-       min-height:auto;
-       max-height:auto;
-       padding:100px 15px
-   }
-   #lead-content{
-       position:relative;
-       transform:none;
-       left:auto;
-       top:auto
-   }
-   #lead-content h1{
-       font-size:3em
-   }
-   #lead-content h2{
-       font-size:1.75em
-   }
-   #about{
-       text-align:center
-   }
-   #about p{
-       text-align:left
-   }
-}
 @media only screen and (max-width: 768px){
    header{
        position:fixed;
@@ -854,18 +656,6 @@ footer{
        display:block;
        margin-bottom:10px
    }
-   #lead-content h1{
-       font-size:2em
-   }
-   #lead-content h2{
-       font-size:1.3em
-   }
-   #lead-content a{
-       padding:10px 20px
-   }
-   #lead-down{
-       display:none
-   }
    .education-block h3,.education-block span{
        float:none
    }
@@ -884,18 +674,6 @@ footer{
    }
    .social{
        text-align:center
-   }
-}
-@media only screen and (max-width: 480px){
-   #lead-content h1{
-       font-size:1.5em
-   }
-   #lead-content h2{
-       font-size:1em
-   }
-   #lead-content a{
-       font-size:0.9em;
-       padding:5px 10px
    }
 }
 
