@@ -9,7 +9,7 @@ before_script:
 
 stages:
   - test
-  - package
+  - build
 
 unitTests:
   stage: test
@@ -19,7 +19,7 @@ unitTests:
 buildLogin:
   stage: build
   script:
-    - :LoginServer:build :HomeServer:build :WebsiteFrontend:buildClientToSpring :WebsiteBackend:bootWar
+    - ./gradlew :LoginServer:build :HomeServer:build :WebsiteFrontend:buildClientToSpring :WebsiteBackend:bootWar
   artifacts:
     paths:
     - module-deployment/service-application/webapps/LoginServer.war
