@@ -10,6 +10,7 @@ before_script:
 stages:
   - test
   - build
+  - deploy
 
 unitTests:
   stage: test
@@ -22,7 +23,7 @@ buildLogin:
     - ./gradlew :LoginServer:build :HomeServer:build :WebsiteFrontend:buildClientToSpring :WebsiteBackend:bootWar
   artifacts:
     paths:
-    - module-deployment/service-application/webapps/LoginServer.war
+    - module-deployment/service-application/webapps/
     expire_in: 1 week
 
 buildHome:
@@ -42,3 +43,7 @@ buildWebsite:
     paths:
       - module-deployment/service-application/webapps/
     expire_in: 1 week
+
+deploy:
+  stage: deploy
+  script: echo This is the deployment
