@@ -11,6 +11,7 @@ stages:
   - test
   - build
   - deploy
+  - report
 
 unitTests:
   stage: test
@@ -47,3 +48,25 @@ buildWebsite:
 deploy:
   stage: deploy
   script: echo This is the deployment
+
+dokka:
+  stage: report
+  script:
+    - ./gradlew :Foundation:dokka
+    - ./gradlew :LoginServer:dokka
+    - ./gradlew :HomeServer:dokka
+  artifacts:
+    paths:
+      - Foundation/build/dokka/
+      - LoginServer/build/dokka/
+      - HomeServer/build/dokka/
+    expire_in: 1 week
+
+javadoc:
+  stage: report
+  script:
+    - ./gradlew :WebsiteBackend:javadoc
+  artifacts:
+    paths:
+      - WebsiteBackend/build/docs/javadoc/
+    expire_in: 1 week
