@@ -8,18 +8,37 @@ before_script:
   - echo This is a $TEST_VARIABLE
 
 stages:
-  - build
   - test
-
-build:
-  stage: build
-  script:
-    - ./gradlew clean :LoginServer:build :HomeServer:build :WebsiteFrontend:buildClientToSpring :WebsiteBackend:bootWar
-  artifacts:
-    paths:
-    - module-deployment/service-application/webapps/
+  - package
 
 unitTests:
   stage: test
   script:
-    - ./gradlew test
+    - ./gradlew clean test
+
+buildLogin:
+  stage: build
+  script:
+    - :LoginServer:build :HomeServer:build :WebsiteFrontend:buildClientToSpring :WebsiteBackend:bootWar
+  artifacts:
+    paths:
+    - module-deployment/service-application/webapps/LoginServer.war
+    expire_in: 1 week
+
+buildHome:
+  stage: build
+  script:
+    - ./gradlew :HomeServer:build
+  artifacts:
+    paths:
+      - module-deployment/service-application/webapps/
+    expire_in: 1 week
+
+buildWebsite:
+  stage: build
+  script:
+    - ./gradlew :WebsiteFrontend:buildClientToSpring :WebsiteBackend:bootWar
+  artifacts:
+    paths:
+      - module-deployment/service-application/webapps/
+    expire_in: 1 week
