@@ -68,5 +68,5 @@ javadoc:
     - ./gradlew :WebsiteBackend:javadoc
   artifacts:
     paths:
-      - WebsiteBackend/build/docs/javadoc/
+      - Website/WebsiteBackend/build/docs/javadoc/
     expire_in: 1 week
