@@ -36,7 +36,7 @@ export class ProjectsComponent implements OnInit {
         this.project.projectImage = 'images/LordsandKnights-Logo.jpg'
         this.project.company = 'XYRALITY GmbH'
         this.project.projectDuration = 'February 2016 - June 2018'
-        this.project.text = "During my time at Xyrality I mainly worked on the Lords & Knights game. This is a strategy game where players build up castles, recruit units and battle/conquer other players castles. My responsibility as a software engineer was to support the development/testing process by implementing a good test automation strategy. This includes writing UI tests for Android/Browser/iOS and improving the continuous integration process during development. Additionally to the test automation I was also working on the design and implementation of a new web application to support the development process even further."
+        this.project.text = "During my time at Xyrality I mainly worked on the Lords & Knights game. This is a strategy game where players build up castles, recruit units and battle/conquer other players castles. My responsibility as a software engineering trainee was to support the development/testing process by implementing a good test automation strategy. This includes writing UI tests for Android/Browser/iOS and improving the continuous integration process during development. Additionally to the test automation I was also working on the design and implementation of a new web application."
         this.project.trailerUrl = 'https://www.youtube.com/embed/Le2zUxS1cH8'
         break;
       case 'bigfarm':
