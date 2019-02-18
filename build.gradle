@@ -28,15 +28,15 @@ allprojects {
     }
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion" as Object
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
         testCompile group: 'junit', name: 'junit', version: junit4Version
     }
 
     compileKotlin {
-        kotlinOptions.jvmTarget = javaVersion
+        kotlinOptions.jvmTarget = "1.8"
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = javaVersion
+        kotlinOptions.jvmTarget = "1.8"
     }
 
 }
