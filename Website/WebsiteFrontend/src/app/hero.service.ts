@@ -5,7 +5,7 @@ import { Hero } from './hero';
 
 @Injectable()
 export class HeroService {
-  private greetingUrl = 'api/heroes';
+  private greetingUrl = 'api/contact';
 
   constructor(private http: Http) { }
 

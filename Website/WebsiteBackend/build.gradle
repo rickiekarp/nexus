@@ -74,6 +74,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-neo4j'
     compile 'org.springframework.boot:spring-boot-starter-web'
 
+    compile project(':Foundation')
+
     compileOnly 'org.projectlombok:lombok'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
