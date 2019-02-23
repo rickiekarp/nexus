@@ -4,11 +4,6 @@ include 'Foundation'
 include 'HomeServer'
 include 'LoginServer'
 
-//include 'AdminServerBackend'
-//project(':AdminServerBackend').projectDir = "$rootDir/AdminServer/AdminServerBackend" as File
-//include 'AdminServerFrontend'
-//project(':AdminServerFrontend').projectDir = "$rootDir/AdminServer/AdminServerFrontend" as File
-
 include 'WebsiteBackend'
 project(':WebsiteBackend').projectDir = "$rootDir/Website/WebsiteBackend" as File
 include 'WebsiteFrontend'
