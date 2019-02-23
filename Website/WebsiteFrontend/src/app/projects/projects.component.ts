@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Hero } from '../hero';
-import { HeroService } from '../hero.service';
+import { ContactDto } from '../model/contact.model';
+import { HeroService } from '../service/contact.service';
 import { ProjectDto } from '../model/project.model'
 import { Router,ActivatedRoute } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 })
 
 export class ProjectsComponent implements OnInit {
-  heroes: Hero[] = [];
+  heroes: ContactDto[] = [];
   id: string;
   project: ProjectDto;
 

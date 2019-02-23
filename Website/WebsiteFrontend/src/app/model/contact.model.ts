@@ -1,4 +1,4 @@
-export class Hero {
+export class ContactDto {
     id: number;
     name: string;
 }

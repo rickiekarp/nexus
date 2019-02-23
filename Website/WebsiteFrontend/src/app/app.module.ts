@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { HeroService } from './hero.service';
+import { HeroService } from './service/contact.service';
 import { SafePipe } from './core/pipe/safepipe.service' 
 
 import { AppRoutingModule } from './app-routing.module';

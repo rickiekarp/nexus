@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import { Hero } from './hero';
+import { ContactDto } from '../model/contact.model';
 
 @Injectable()
 export class HeroService {
@@ -9,12 +9,12 @@ export class HeroService {
 
   constructor(private http: Http) { }
 
-  getHeroes(): Promise<Hero[]> {
+  getHeroes(): Promise<ContactDto[]> {
     return this.http.get(this.greetingUrl).toPromise()
-      .then(response => response.json() as Hero[]).catch(this.handleError);
+      .then(response => response.json() as ContactDto[]).catch(this.handleError);
   }
 
-  getHero(id: number): Promise<Hero> {
+  getHero(id: number): Promise<ContactDto> {
     return this.getHeroes()
                .then(heroes => heroes.find(hero => hero.id === id));
   }
