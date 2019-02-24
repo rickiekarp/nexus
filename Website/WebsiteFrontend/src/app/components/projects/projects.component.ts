@@ -1,29 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ContactDto } from '../model/contact.model';
-import { HeroService } from '../service/contact.service';
-import { ProjectDto } from '../model/project.model'
+import { ProjectDto } from '../../model/project.model'
 import { Router,ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-my-project',
   templateUrl: './projects.component.html',
   styleUrls: [ './projects.component.css' ],
-  providers: [HeroService]
+  providers: []
 })
 
 export class ProjectsComponent implements OnInit {
-  heroes: ContactDto[] = [];
   id: string;
   project: ProjectDto;
 
   constructor(
     private activatedroute:ActivatedRoute,
-    private router: Router, 
-    private heroService: HeroService) { }
+    private router: Router) { }
     
   ngOnInit(): void {
-    this.heroService.getHeroes().then(heroes => this.heroes = heroes.slice(1, 5));
     this.id=this.activatedroute.snapshot.params['id'];
 
     // temporary

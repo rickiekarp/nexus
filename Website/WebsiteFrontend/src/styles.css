@@ -110,9 +110,10 @@ h1 {
     content:none
 }
 
-.row {
-    margin-left: 0px;
-    margin-right: 0px;
+.row-footer {
+   display: flex;
+   margin-left: 20%;
+   margin-right: 20%;
 }
 
 .column {
@@ -233,10 +234,10 @@ footer{
    color: #a3a9ad
 }
 .row-back {
-    color:#a3a9ad;
     font-size:1.5em;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    display: table;
+    margin: 0 auto;
+    padding-bottom: 50px;
  }
 .top{
    text-align:center
@@ -425,6 +426,7 @@ footer{
 #projects{
    padding:50px 15px;
    border-bottom:0px solid #dcd9d9;
+   background: #111111;
    text-align:center
 }
 #projects h2{
@@ -453,7 +455,7 @@ footer{
 .project-info p{
    color:#a3a9ad;
    margin:0 0 15px 0;
-   font-size:0.9em
+   font-size:1.1em
 }
 .no-image .project-info{
    position:relative;
@@ -710,22 +712,6 @@ main {
     font-weight: normal;
     margin-right: 10px;
     color: white;
-  }
-  
-  label[for*='1']:before {
-    content: '\f121';
-  }
-  
-  label[for*='2']:before {
-    content: '\f007';
-  }
-  
-  label[for*='3']:before {
-    content: '\f2c2';
-  }
-  
-  label[for*='4']:before {
-    content: '\f0e0';
   }
   
   label:hover {

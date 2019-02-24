@@ -1,0 +1,19 @@
+nav {
+    background-color: #1a1c1f;
+    height: 80px;
+    width: 100%;
+    list-style: none;
+}
+
+nav li {
+    text-align: center;
+    color: #FFFFFF;
+    padding: 5px;
+}
+
+.navbar-nav {
+    flex-direction: row;
+    padding-left: 0;
+    margin-bottom: 0;
+    padding-right: 0;
+}

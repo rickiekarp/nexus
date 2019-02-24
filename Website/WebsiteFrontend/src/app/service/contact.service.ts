@@ -4,7 +4,7 @@ import { Headers, Http } from '@angular/http';
 import { ContactDto } from '../model/contact.model';
 
 @Injectable()
-export class HeroService {
+export class ContactService {
   private greetingUrl = 'api/contact';
 
   constructor(private http: Http) { }

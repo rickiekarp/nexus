@@ -4,10 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { HeroService } from './service/contact.service';
-import { SafePipe } from './core/pipe/safepipe.service' 
+import { ProfessionalComponent } from './components/professional/professional.component';
+import { ProjectsComponent } from './components/projects/projects.component';
+import { PersonalComponent } from './components/personal/personal.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { ContactService } from './service/contact.service';
+import { SafePipe } from './core/pipe/safepipe.service';
+import { AboutComponent } from './about/about.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -20,11 +23,14 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   declarations: [
     AppComponent,
-    HomeComponent,
+    ProfessionalComponent,
+    PersonalComponent,
     ProjectsComponent,
-    SafePipe
-  ],
-  providers: [ HeroService ],
+    ContactComponent,
+    SafePipe,
+    AboutComponent
+    ],
+  providers: [ ContactService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
