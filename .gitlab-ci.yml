@@ -21,7 +21,7 @@ unitTests:
 buildLogin:
   stage: build
   script:
-    - ./gradlew :LoginServer:build :HomeServer:build :WebsiteFrontend:buildClientToSpring :WebsiteBackend:bootWar
+    - ./gradlew :LoginServer:build
   artifacts:
     paths:
     - module-deployment/service-application/webapps/
