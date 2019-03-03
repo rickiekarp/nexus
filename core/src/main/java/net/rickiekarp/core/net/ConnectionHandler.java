@@ -3,8 +3,7 @@ package net.rickiekarp.core.net;
 import net.rickiekarp.core.AppContext;
 import net.rickiekarp.core.debug.LogFileHandler;
 import net.rickiekarp.core.settings.Configuration;
-import com.squareup.okhttp.*;
-import okio.Buffer;
+import okhttp3.*;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -32,22 +31,18 @@ class ConnectionHandler {
 	private final OkHttpClient mHttpClient;
 
 	ConnectionHandler() {
-		mHttpClient = new OkHttpClient();
-		mHttpClient.setConnectTimeout(MAX_CONNECTION_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
-		mHttpClient.setReadTimeout(MAX_DATA_TRANSFER_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
+		mHttpClient = new OkHttpClient.Builder()
+				.connectTimeout(MAX_CONNECTION_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS)
+				.readTimeout(MAX_DATA_TRANSFER_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS)
+				.build();
 	}
 
 	InputStream requestInputStream(final NetworkAction networkAction) {
-		try {
-		    Response response = request(networkAction);
-		    if (response == null) {
-		        return null;
-            }
-			return response.body().byteStream();
-		} catch (IOException e) {
-			e.printStackTrace();
+		Response response = request(networkAction);
+		if (response == null) {
 			return null;
 		}
+		return response.body().byteStream();
 	}
 
 	Response request(final NetworkAction networkAction) {
@@ -159,15 +154,16 @@ class ConnectionHandler {
 	}
 
 	private String bodyToString(final Request request) {
-		try {
-			final Request copy = request.newBuilder().build();
-			final Buffer buffer = new Buffer();
-			copy.body().writeTo(buffer);
-			return buffer.readUtf8();
-		} catch (final IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+//		try {
+//			final Request copy = request.newBuilder().build();
+//			final Buffer buffer = new Buffer();
+//			copy.body().writeTo(buffer);
+//			return buffer.readUtf8();
+//		} catch (final IOException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+		return null;
 	}
 
 	private void printRequestBody(Request request) {

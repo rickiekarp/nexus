@@ -6,12 +6,12 @@ import net.rickiekarp.core.debug.LogFileHandler;
 import net.rickiekarp.core.net.NetResponse;
 import net.rickiekarp.core.net.NetworkApi;
 import net.rickiekarp.core.view.MessageDialog;
-import com.squareup.okhttp.Response;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import okhttp3.Response;
 import org.json.JSONObject;
 
 import java.io.InputStream;

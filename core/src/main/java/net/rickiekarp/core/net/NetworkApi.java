@@ -3,7 +3,7 @@ package net.rickiekarp.core.net;
 import net.rickiekarp.core.AppContext;
 import net.rickiekarp.core.account.Account;
 import net.rickiekarp.core.net.provider.NetworkParameterProvider;
-import com.squareup.okhttp.Response;
+import okhttp3.Response;
 
 import java.io.InputStream;
 
