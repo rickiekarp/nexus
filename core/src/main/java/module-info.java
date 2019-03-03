@@ -11,6 +11,8 @@ module core {
   exports net.rickiekarp.core.settings;
   exports net.rickiekarp.core.ui.windowmanager;
   exports net.rickiekarp.core.model;
+  exports net.rickiekarp.core.ui.tray;
+  exports net.rickiekarp.core.ui.anim;
 
   requires kotlin.stdlib;
   requires java.logging;

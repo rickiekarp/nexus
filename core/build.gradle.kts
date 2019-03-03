@@ -13,9 +13,9 @@ extra.set("javafxVersion", "11.0.2")
 
 
 dependencies {
-  implementation("org.openjfx:javafx-controls:${extra.get("javafxVersion")}:linux")
-  implementation("org.openjfx:javafx-graphics:${extra.get("javafxVersion")}:linux")
-  implementation("org.openjfx:javafx-base:${extra.get("javafxVersion")}:linux")
+  compile("org.openjfx:javafx-controls:${extra.get("javafxVersion")}:linux")
+  compile("org.openjfx:javafx-graphics:${extra.get("javafxVersion")}:linux")
+  compile("org.openjfx:javafx-base:${extra.get("javafxVersion")}:linux")
 
   implementation("com.squareup.okhttp3:okhttp:${extra.get("okhttpVersion")}")
   implementation("org.json:json:${extra.get("jsonVersion")}")

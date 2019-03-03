@@ -6,6 +6,7 @@ import net.rickiekarp.core.debug.LogFileHandler;
 import net.rickiekarp.core.settings.Configuration;
 import net.rickiekarp.core.ui.anim.AnimationHandler;
 import net.rickiekarp.core.view.MainScene;
+import net.rickiekarp.core.view.layout.AppLayout;
 import net.rickiekarp.flc.listcell.FoldableListCell;
 import net.rickiekarp.flc.controller.FilelistController;
 import net.rickiekarp.flc.model.Directorylist;
@@ -35,7 +36,7 @@ import java.io.File;
 import java.text.DecimalFormatSymbols;
 import java.util.Collections;
 
-public class MainLayout {
+public class MainLayout implements AppLayout {
     public static MainLayout mainLayout;
     public static TableView<Filelist> fileTable;
     public static TableView<Directorylist> dirTable;
@@ -516,4 +517,13 @@ public class MainLayout {
         }.execute();
     }
 
+    @Override
+    public Node getLayout() {
+        return getMainLayout();
+    }
+
+    @Override
+    public void postInit() {
+
+    }
 }

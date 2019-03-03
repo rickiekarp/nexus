@@ -12,20 +12,16 @@ apply {
 
 application {
     applicationName = "Filelist Creator"
-    mainClassName="net.rickiekarp.filelistcreator.MainApp"
-    group = "net.rickiekarp.filelistcreator"
+    mainClassName="net.rickiekarp.flc.MainApp"
+    group = "net.rickiekarp.flc"
     version = "1.0-SNAPSHOT"
 }
 
 javaModule {
-    setName("filelist-creator")
+    setName("flc")
 }
 
 dependencies {
-    implementation("org.openjfx:javafx-controls:11:linux")
-    implementation("org.openjfx:javafx-graphics:11:linux")
-    implementation("org.openjfx:javafx-base:11:linux")
-
     compile(project(":core"))
 }
 
