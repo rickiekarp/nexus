@@ -43,13 +43,13 @@ allprojects {
     }
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra.get("kotlinVersion")}")
+        compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra.get("kotlinVersion")}")
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     }
 
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
-//        setDestinationDir(File("$projectDir/build", "classes/java"))
+        setDestinationDir(File("$projectDir/build", "classes/java/main"))
     }
 }
 

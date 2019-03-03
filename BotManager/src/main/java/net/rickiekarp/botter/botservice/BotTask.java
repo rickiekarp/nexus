@@ -16,8 +16,6 @@ import net.rickiekarp.botter.settings.AppConfiguration;
 import net.rickiekarp.botter.view.MainLayout;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import org.json.JSONObject;
-import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,8 +55,6 @@ public class BotTask extends Task<Void> {
                     System.out.println("There was a problem while starting the service!");
                     this.cancel();
                 }
-            } catch (UnreachableBrowserException e) {
-                this.cancel();
             } catch (Exception e) {
                 System.out.println("Something went wrong! Check the logs for more details!");
                 LogFileHandler.logger.warning(ExceptionHandler.getExceptionString(e));
@@ -197,7 +193,6 @@ public class BotTask extends Task<Void> {
      * @return true, if the plugin is allowed by the server
      */
     private boolean canExecutePlugin(PluginData plugin) {
-        JSONObject in = NetResponse.getResponseJson(AppContext.getContext().getNetworkApi().runNetworkAction(BotNetworkApi.requestValidation(plugin)));
-        return in.getBoolean("result");
+        return NetResponse.getResponseResultAsBoolean(AppContext.getContext().getNetworkApi().runNetworkAction(BotNetworkApi.requestValidation(plugin)), "result");
     }
 }

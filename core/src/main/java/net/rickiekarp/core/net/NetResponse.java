@@ -68,6 +68,10 @@ public class NetResponse {
         }
     }
 
+    public static boolean getResponseResultAsBoolean(InputStream in, String key) {
+        return getResponseJson(in).getBoolean(key);
+    }
+
     /**
      * Converts a given XML String to a DOM Object and returns the document
      */

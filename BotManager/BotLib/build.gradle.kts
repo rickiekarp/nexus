@@ -22,12 +22,8 @@ javaModule {
 }
 
 dependencies {
-    implementation("org.openjfx:javafx-controls:11:linux")
-    implementation("org.openjfx:javafx-graphics:11:linux")
-    implementation("org.openjfx:javafx-base:11:linux")
-
     compile(project(":core"))
-//    provided group: 'io.appium', name: 'java-client', version: '4.1.2'
+//    implementation("io.appium:java-client:7.0.0")
 
 }
 

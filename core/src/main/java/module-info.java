@@ -13,8 +13,9 @@ module core {
   exports net.rickiekarp.core.model;
   exports net.rickiekarp.core.ui.tray;
   exports net.rickiekarp.core.ui.anim;
+    exports net.rickiekarp.core.net;
 
-  requires kotlin.stdlib;
+    requires kotlin.stdlib;
   requires java.logging;
 
 

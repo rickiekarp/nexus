@@ -22,10 +22,6 @@ javaModule {
 }
 
 dependencies {
-    implementation("org.openjfx:javafx-controls:11:linux")
-    implementation("org.openjfx:javafx-graphics:11:linux")
-    implementation("org.openjfx:javafx-base:11:linux")
-
     compile(project(":core"))
 }
 
