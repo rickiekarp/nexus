@@ -1,7 +1,7 @@
 //import com.github.spotbugs.SpotBugsTask
 
 buildscript {
-    apply from: 'module-base/base.gradle'
+    apply from: 'module-base/base.gradle.kts'
 
     repositories {
         mavenCentral()
@@ -20,19 +20,14 @@ group = 'net.rickiekarp.backend'
 version = '1.0.0'
 
 allprojects {
-
     ext {
         log4jVersion = '2.11.1'
         guavaVersion = '27.0-jre'
 
         gsonVersion = '2.8.5'
 
-        flywayVersion = '5.2.1'
-
         //foundation
         jacksonVersion = '2.9.7'
-
-        springBootVersion = '2.1.0.RELEASE'
     }
 
     apply plugin: "java"
@@ -52,7 +47,7 @@ subprojects {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as Object
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion" as Object
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
-        testCompile group: 'junit', name: 'junit', version: junit4Version
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
         testCompile "org.mockito:mockito-core:2.1.0"
     }
 

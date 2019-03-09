@@ -1,3 +1,7 @@
+buildscript {
+    apply from: '../module-base/base.gradle.kts'
+}
+
 dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: project.ext.log4jVersion
 

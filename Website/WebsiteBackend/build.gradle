@@ -1,8 +1,4 @@
 buildscript {
-    ext {
-        springBootVersion = project.ext.springBootVersion
-    }
-
     repositories {
         mavenCentral()
         maven { url "https://repo.spring.io/milestone" }
@@ -12,8 +8,6 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
     }
 }
-
-
 
 //------------------------------------------------------------------------------------------------------------------------
 //    Plugins - Application
