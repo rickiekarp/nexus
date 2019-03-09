@@ -1,12 +1,8 @@
 package net.rickiekarp.foundation.config
 
 object ServerContext {
-    var serverVersion: String? = null
+    lateinit var serverVersion: String
     var developerEnvironment: Boolean = false
-
-    init {
-        println("init:${ServerContext}")
-    }
 
     fun getHomeDirPath(clazz: Class<*>): String {
         var path = System.getProperty("user.dir")

@@ -1,5 +1,6 @@
-package net.rickiekarp.loginserver.rest.api
+package net.rickiekarp.admin.rest.api
 
+import net.rickiekarp.foundation.config.ServerContext
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -7,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class StatusApi {
+@RequestMapping("api")
+class InfoApi {
 
-    @RequestMapping("status")
+    @RequestMapping("info/version")
     @GetMapping()
-    fun status(): ResponseEntity<String> {
-        return ResponseEntity("test", HttpStatus.OK)
+    fun infoVersion(): ResponseEntity<String> {
+        return ResponseEntity(ServerContext.serverVersion, HttpStatus.OK)
     }
 }
