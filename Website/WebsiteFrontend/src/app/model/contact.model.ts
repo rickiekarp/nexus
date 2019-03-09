@@ -1,4 +1,4 @@
 export class ContactDto {
-    id: number;
     name: string;
+    email: string;
 }

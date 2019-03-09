@@ -9,11 +9,23 @@ import { ContactService } from '../../service/contact.service';
   styleUrls: [ './contact.component.less' ],
   providers: [ContactService]
 })
-
 export class ContactComponent implements OnInit {
-  heroes: ContactDto[] = [];
+  contactInfo: ContactDto = new ContactDto();
   constructor(private contactService: ContactService) { }
   ngOnInit(): void {
-    this.contactService.getHeroes().then(heroes => this.heroes = heroes.slice(1, 5));
+
+    this.contactService.getContactInformation().subscribe(
+      data => {
+        let body = data.text()
+        let dat = JSON.parse(body)
+        this.contactInfo = <ContactDto> dat;
+              },
+      error=> { 
+                console.log("Error in recieving data"); 
+              },
+      ()   => {
+                //console.log( "Test" );
+              }
+    );
   }
 }
