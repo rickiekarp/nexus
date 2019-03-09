@@ -2,6 +2,8 @@
 
 buildscript {
     apply from: 'module-base/base.gradle.kts'
+    apply from: 'module-base/libs.gradle.kts'
+    apply from: 'module-base/logging.gradle.kts'
 
     repositories {
         mavenCentral()
@@ -20,16 +22,6 @@ group = 'net.rickiekarp.backend'
 version = '1.0.0'
 
 allprojects {
-    ext {
-        log4jVersion = '2.11.1'
-        guavaVersion = '27.0-jre'
-
-        gsonVersion = '2.8.5'
-
-        //foundation
-        jacksonVersion = '2.9.7'
-    }
-
     apply plugin: "java"
     apply plugin: "org.jetbrains.kotlin.jvm"
     apply plugin: 'org.jetbrains.dokka'

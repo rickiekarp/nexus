@@ -1,5 +1,7 @@
 buildscript {
     apply from: '../module-base/base.gradle.kts'
+    apply from: '../module-base/libs.gradle.kts'
+    apply from: '../module-base/logging.gradle.kts'
 }
 
 dependencies {
