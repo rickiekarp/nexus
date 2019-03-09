@@ -9,6 +9,6 @@ extra.set("spotbugsVersion", "1.6.4")
 
 extra.set("junitVersion", "5.3.1")
 
-extra.set("springBootVersion", "2.1.0.RELEASE")
+extra.set("springBootVersion", "2.1.3.RELEASE")
 
 extra.set("flywayVersion", "5.2.1")
