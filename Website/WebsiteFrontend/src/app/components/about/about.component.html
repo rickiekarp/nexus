@@ -120,26 +120,14 @@
 </div>
 <!-- End #education -->
 
-<div id="education">
-
+<!-- skills -->
+<div id="education" *ngIf="skillsInfo.length > 0">
     <div id="skills">
         <h2 class="heading">Skills</h2>
         <ul>
-            <li>Java</li>
-            <li>Kotlin</li>
-            <li>Android</li>
-            <li>Git</li>
-            <li>PostgreSQL</li>
-            <li>Docker</li>
-            <li>DevOps</li>
-            <li>Kubernetes</li>
-            <li>Ansible</li>
-            <li>Shell Scripting</li>
-            <li>IntelliJ IDEA</li>
-            <li>Android Studio</li>
+            <li *ngFor="let skill of skillsInfo">
+                {{ skill.text }}
+            </li>
         </ul>
     </div>
-    <!-- End #skills -->
-
 </div>
-<!-- End #education -->

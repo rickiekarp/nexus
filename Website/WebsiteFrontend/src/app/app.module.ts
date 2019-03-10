@@ -13,6 +13,7 @@ import { SafePipe } from './core/pipe/safepipe.service';
 import { AboutComponent } from './components/about/about.component';
 
 import { AppRoutingModule } from './app-routing.module';
+import { ResumeService } from './service/resume.service';
 
 @NgModule({
   imports: [
@@ -30,7 +31,7 @@ import { AppRoutingModule } from './app-routing.module';
     SafePipe,
     AboutComponent
     ],
-  providers: [ ContactService ],
+  providers: [ ContactService, ResumeService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
