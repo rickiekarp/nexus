@@ -1,6 +1,7 @@
 package net.rickiekarp.admin.repo
 
 import net.rickiekarp.admin.dao.ResumeDAO
+import net.rickiekarp.admin.dto.ResumeDTO
 import net.rickiekarp.admin.dto.SkillsDTO
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,11 +13,68 @@ import javax.sql.DataSource
 
 @Repository
 open class ResumeRepo : ResumeDAO {
-
     private val FIND_ACTIVE = "SELECT * FROM skill WHERE active = 1"
+    private val FIND_RESUME = "select e.experience_id, e.startDate, e.endDate, c.name, j.title, e.description from experience e " +
+            "join company c ON c.company_id = e.companyid " +
+            "join job j ON j.job_id = e.jobid " +
+            "where c.type = '%s'"
 
     @Autowired
     private val dataSource: DataSource? = null
+
+    override fun getExperienceData(): List<ResumeDTO> {
+        val list = ArrayList<ResumeDTO>()
+        var stmt: PreparedStatement? = null
+        try {
+            stmt = dataSource!!.connection.prepareStatement(findResumeString("experience"), Statement.RETURN_GENERATED_KEYS)
+
+            val rs = stmt.executeQuery()
+            while (rs.next()) {
+                val user = ResumeDTO(
+                        rs.getInt("experience_id"),
+                        rs.getDate("startDate"),
+                        rs.getDate("endDate"),
+                        rs.getString("name"),
+                        rs.getString("title"),
+                        rs.getString("description")
+                )
+                list.add(user)
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
+        }
+        return list
+    }
+
+    override fun getEducationData(): List<ResumeDTO> {
+        val list = ArrayList<ResumeDTO>()
+        var stmt: PreparedStatement? = null
+        try {
+            stmt = dataSource!!.connection.prepareStatement(findResumeString("education"), Statement.RETURN_GENERATED_KEYS)
+
+            val rs = stmt.executeQuery()
+            while (rs.next()) {
+                val user = ResumeDTO(
+                        rs.getInt("experience_id"),
+                        rs.getDate("startDate"),
+                        rs.getDate("endDate"),
+                        rs.getString("name"),
+                        rs.getString("title"),
+                        rs.getString("description")
+                )
+                list.add(user)
+            }
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
+        }
+        return list
+    }
 
     override fun getSkillsData(): List<SkillsDTO> {
         val list = ArrayList<SkillsDTO>(15)
@@ -38,5 +96,9 @@ open class ResumeRepo : ResumeDAO {
             DatabaseUtil.close(dataSource!!.connection)
         }
         return list
+    }
+
+    private fun findResumeString(s: String): String {
+        return String.format(FIND_RESUME, s)
     }
 }
