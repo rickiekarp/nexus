@@ -21,15 +21,25 @@ export const HEROES: SkillDto[] = [
 @Injectable()
 export class ResumeService {
   private skillsApiUrl = 'api/resume/skills';
+  private experienceApiUrl = 'api/resume/experience';
+  private educationApiUrl = 'api/resume/education';
 
   constructor(private http: Http) { }
 
-  getAll() {
+  getAllExperience() {
+    return this.http.get(this.experienceApiUrl);
+  }
+
+  getAllEducation() {
+    return this.http.get(this.educationApiUrl);
+  }
+
+  getAllSkills() {
     return this.http.get(this.skillsApiUrl);
   }
 
   getHeroes(): Observable<SkillDto[]> {
-    return this.getAll().pipe(
+    return this.getAllSkills().pipe(
       map(data => {
           let body = data.text()
           let dat = JSON.parse(body)
