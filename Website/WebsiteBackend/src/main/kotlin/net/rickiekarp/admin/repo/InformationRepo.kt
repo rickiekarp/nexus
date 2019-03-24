@@ -13,7 +13,7 @@ import javax.sql.DataSource
 @Repository
 open class InformationRepo : InformationDAO {
 
-    private val FIND_FIRST_CONTACT = "SELECT * FROM contact WHERE id = 1"
+    private val FIND_FIRST_CONTACT = "SELECT * FROM contact WHERE contact_id = 1"
 
     @Autowired
     private val dataSource: DataSource? = null
