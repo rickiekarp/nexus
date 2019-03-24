@@ -27,7 +27,7 @@ CREATE TABLE experience (
     endDate DATE,
     companyid int(11) NOT NULL,
     jobid int(11) NOT NULL,
-    description JSON,
+    description TEXT,
     FOREIGN KEY (companyid) REFERENCES  company(company_id),
     FOREIGN KEY (jobid) REFERENCES  job(job_id)
 );
