@@ -85,7 +85,7 @@ open class ResumeRepo : ResumeDAO {
             val rs = stmt.executeQuery()
             while (rs.next()) {
                 val user = SkillsDTO()
-                user.id = rs.getInt("id")
+                user.id = rs.getInt("skill_id")
                 user.text = rs.getString("text")
                 list.add(user)
             }
