@@ -5,6 +5,9 @@ insert into company (name, type) values ('XYRALITY GmbH', 'experience');
 insert into company (name, type) values ('HanseMerkur Insurance Group', 'experience');
 insert into company (name, type) values ('Gameforge', 'experience');
 
+insert into job (title) values ('Berufsfachschule (Field of studies - Foreign languages)');
+insert into job (title) values ('Berufsoberschule (Field of studies - Economics)');
+insert into job (title) values ('Computer Science');
 insert into job (title) values ('Quality Assurance Engineer');
 insert into job (title) values ('Software Engineering Trainee');
 insert into job (title) values ('Software Development Engineer');
@@ -24,7 +27,22 @@ insert into skill (text, active) values ('Android Studio', true);
 
 insert into contact (name, email) values ('Rickie Karp', 'contact@rickiekarp.net');
 
-insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 3, 1, '{
+insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 1, 1, '{
+  "description": "University of applied sciences entrance qualification",
+  "tasks": []
+}');
+
+insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 1, 2, '{
+  "description": "General qualification for university entrance",
+  "tasks": []
+}');
+
+insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 2, 3, '{
+  "description": "Attended computer science classes for one semester",
+  "tasks": []
+}');
+
+insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 3, 4, '{
   "description": "During my time at Goodgame Studios I was responsible for:",
   "tasks": [
     "Testing alpha versions of games and company-internal systems",
@@ -36,7 +54,7 @@ insert into experience (startDate, endDate, companyid, jobid, description) value
   ]
 }');
 
-insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 4, 2, '{
+insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 4, 5, '{
   "description": "At Xyrality I worked on:",
   "tasks": [
     "Developing automated tests for Android, iOS and Browser game clients",
@@ -47,7 +65,7 @@ insert into experience (startDate, endDate, companyid, jobid, description) value
   ]
 }');
 
-insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 5, 3, '{
+insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 5, 6, '{
   "description": "My responsibilities while working for HanseMerkur:",
   "tasks": [
     "Creating Java/AngularJS Enterprise applications",
@@ -56,7 +74,7 @@ insert into experience (startDate, endDate, companyid, jobid, description) value
   ]
 }');
 
-insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 6, 4, '{
+insert into experience (startDate, endDate, companyid, jobid, description) values (now(), null, 6, 7, '{
   "description": "",
   "tasks": []
 }');
