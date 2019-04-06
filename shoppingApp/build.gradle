@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 27
 
-    def applicationBaseId = "com.projekt.assistantapp"
+    def applicationBaseId = "net.rickiekarp.shoppinghelper"
     def versionBaseName = "1.0"
 
     flavorDimensions "default"
