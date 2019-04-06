@@ -14,9 +14,9 @@ import javax.sql.DataSource
 
 @Repository
 open class UserRepo : UserDAO {
-    private val FIND_BY_TOKEN = "SELECT * FROM credentials WHERE token = ?"
-    private val FIND_BY_NAME = "SELECT * FROM credentials WHERE username = ?"
-    private val INSERT = "INSERT INTO credentials(username, password, enabled) VALUES(?, ?, true)"
+    private val FIND_BY_TOKEN = "SELECT * FROM users WHERE token = ?"
+    private val FIND_BY_NAME = "SELECT * FROM users WHERE username = ?"
+    private val INSERT = "INSERT INTO users(username, password, enabled) VALUES(?, ?, true)"
 
     @Autowired
     private val dataSource: DataSource? = null
@@ -76,7 +76,7 @@ open class UserRepo : UserDAO {
     override fun updateUserToken(user: User, token: String) {
         var stmt: PreparedStatement? = null
         try {
-            stmt = dataSource!!.connection.prepareStatement("UPDATE credentials SET token = '" + token + "' WHERE id = " + user.userId)
+            stmt = dataSource!!.connection.prepareStatement("UPDATE users SET token = '" + token + "' WHERE id = " + user.userId)
             stmt.executeUpdate()
         } catch (e: Exception) {
             e.printStackTrace()
