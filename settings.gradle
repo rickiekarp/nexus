@@ -1,2 +1,2 @@
-include ':assistantApp', ':sha1passApp', ':redditApp', ':shoppingApp'
+include ':assistantApp', ':sha1passApp', ':redditApp', ':homeassistantApp'
 

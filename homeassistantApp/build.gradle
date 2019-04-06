@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    def applicationBaseId = "com.projekt.assistantapp"
+    def applicationBaseId = "net.rickiekarp.homeassistant"
     def versionBaseName = "1.0"
 
     flavorDimensions "default"
@@ -24,17 +24,14 @@ android {
     }
 
     productFlavors {
-
         production {
-
             applicationId "${applicationBaseId}"
 
             // authority
             resValue "string", "provider_authority", "\"${applicationId}.data\""
             buildConfigField "String", "PROVIDER_AUTHORITY", "\"${applicationId}.data\""
-            buildConfigField "String", "FILEPROVIDER_AUTHORITY", "\"com.example.sebastian.fileprovider\""
-            resValue "string", "fileprovider_authority", "\"com.example.sebastian.fileprovider\""
-
+            buildConfigField "String", "FILEPROVIDER_AUTHORITY", "\"net.rickiekarp.fileprovider\""
+            resValue "string", "fileprovider_authority", "\"net.rickiekarp.fileprovider\""
         }
     }
     compileOptions {

@@ -1,17 +1,5 @@
-buildscript {
-    repositories {
-        jcenter()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-    }
-}
 apply plugin: 'com.android.application'
 
-repositories {
-    jcenter()
-}
 
 android {
     compileSdkVersion 27
