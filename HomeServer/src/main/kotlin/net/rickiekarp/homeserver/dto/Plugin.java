@@ -1,4 +1,4 @@
-package net.rickiekarp.homeserver.model;
+package net.rickiekarp.homeserver.dto;
 
 public class Plugin {
     private String identifier;

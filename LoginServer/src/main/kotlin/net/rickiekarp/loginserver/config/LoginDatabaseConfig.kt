@@ -55,7 +55,7 @@ open class LoginDatabaseConfig {
         return builder
                 .dataSource(dataSource)
                 .packages("net.rickiekarp.loginserver.database")
-                .persistenceUnit("applicationPU")
+                .persistenceUnit("loginPU")
                 .properties(additionalProperties)
                 .build()
     }

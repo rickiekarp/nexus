@@ -16,7 +16,7 @@ class AdminApi {
 
     @RequestMapping(
             value = ["getFeatureFlags"],
-            method = arrayOf(RequestMethod.POST)
+            method = [RequestMethod.GET]
     )
     fun getFeatureFlags(): ResponseEntity<ArrayList<KeyValuePairDTO>> {
         val keyValueList = ArrayList<KeyValuePairDTO>()

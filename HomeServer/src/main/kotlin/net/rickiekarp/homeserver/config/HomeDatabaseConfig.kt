@@ -54,7 +54,7 @@ open class HomeDatabaseConfig {
 
         return builder
                 .dataSource(dataSource)
-                .packages("net.rickiekarp.foundation.data")
+                .packages("net.rickiekarp.homeserver.config")
                 .persistenceUnit("applicationPU")
                 .properties(additionalProperties)
                 .build()

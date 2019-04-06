@@ -10,7 +10,7 @@ class Configuration {
     }
 
     fun load(clazz: Class<*>, propertiesFile: String) {
-        Configuration.Companion.properties = loader.read(clazz, propertiesFile)
+        Configuration.properties = loader.read(clazz, propertiesFile)
     }
 
     fun printProperties() {
