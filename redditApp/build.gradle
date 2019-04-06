@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "${applicationBaseId}"
         minSdkVersion 14
-        targetSdkVersion 15
+        targetSdkVersion 27
         versionCode 1
         versionName "${versionBaseName}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -44,9 +44,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.2'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.2'
-    compile group: 'dk.brics.automaton', name: 'automaton', version: '1.11-8'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.2'
+    implementation group: 'dk.brics.automaton', name: 'automaton', version: '1.11-8'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
