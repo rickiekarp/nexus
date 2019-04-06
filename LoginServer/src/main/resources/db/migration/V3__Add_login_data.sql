@@ -42,11 +42,8 @@ call createRoleHasPermission(1, 'CTRL_PERM_DELETE_GET');
 
 
 -- Create accounts
-call createUser('admin', 'admin');
+call createUser('admin', 'admin', false);
 call createUserHasRole(1, 1);
 
-call createUser('logintest', 'test');
+call createUser('user', 'test', false);
 call createUserHasRole(2, 2);
-
-call createUser('user', 'test');
-call createUserHasRole(3, 2);
