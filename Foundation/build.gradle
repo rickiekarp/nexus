@@ -8,6 +8,12 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: project.ext.log4jVersion
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: project.ext.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: project.ext.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: project.ext.springBootVersion
+    
+    //redis
+    compile group: 'org.springframework.data', name: 'spring-data-redis', version: project.ext.springBootVersion
+    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
 
     compile group: 'com.google.code.gson', name: 'gson', version: project.ext.gsonVersion
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jacksonVersion

@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-
-import { map, catchError } from 'rxjs/operators';
 import { Http } from '@angular/http';
+import { Injectable } from '@angular/core';
 import { SkillDto } from '../model/skill.model';
-import { Observable, of } from 'rxjs';
+import {BehaviorSubject, Observable, Subject, timer} from 'rxjs';
+import {delayWhen, filter, map, retryWhen, shareReplay, tap, withLatestFrom} from 'rxjs/operators';
+import {createHttpObservable} from './util';
 
 export const HEROES: SkillDto[] = [
   { id: 11, text: 'Mr. Nice' },
@@ -18,6 +18,9 @@ export const HEROES: SkillDto[] = [
   { id: 20, text: 'Tornado' }
 ];
 
+@Injectable({
+  providedIn: 'root'
+})
 @Injectable()
 export class ResumeService {
   private skillsApiUrl = 'api/resume/skills';
@@ -25,6 +28,39 @@ export class ResumeService {
   private educationApiUrl = 'api/resume/education';
 
   constructor(private http: Http) { }
+
+  skillsInfo: Array<SkillDto>;
+
+  private subject = new BehaviorSubject<SkillDto[]>([]);
+
+  courses$: Observable<SkillDto[]> = this.subject.asObservable();
+
+  getAll() {
+    return this.http.get('assets/data/people.json');
+  }
+
+  init() {
+    console.log("init");
+    const http$ = createHttpObservable('/api/resume/skills');
+
+    http$
+        .pipe(
+            tap(() => console.log('HTTP request executed')),
+            map(res => Object.values(res['payload']))
+        )
+        .subscribe(
+            courses => this.subject.next(courses)
+        );
+}
+
+  selectCourseById(courseId:number) {
+    return this.courses$
+        .pipe(
+            map(courses => courses.find(course => course.id == courseId)),
+            filter(course => !!course)
+
+        );
+}
 
   getAllExperience() {
     return this.http.get(this.experienceApiUrl);
@@ -37,21 +73,4 @@ export class ResumeService {
   getAllSkills() {
     return this.http.get(this.skillsApiUrl);
   }
-
-  getHeroes(): Observable<SkillDto[]> {
-    return this.getAllSkills().pipe(
-      map(data => {
-          let body = data.text()
-          let dat = JSON.parse(body)
-          let result = <SkillDto[]> dat;
-          return result;
-      })
-    );
-  }
-
-  getLocalHeroes(): Observable<SkillDto[]> {
-    console.log(HEROES)
-    return of(HEROES);
-  }
-
 }

@@ -1,7 +1,6 @@
 package net.rickiekarp.homeserver.rest.api
 
 import net.rickiekarp.foundation.dto.exception.ResultDTO
-import net.rickiekarp.foundation.model.User
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO
 import net.rickiekarp.homeserver.dto.ShoppingNoteDto
 import org.springframework.beans.factory.annotation.Autowired

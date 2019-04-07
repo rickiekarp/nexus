@@ -1,5 +1,6 @@
 package net.rickiekarp.loginserver.repo
 
+import net.rickiekarp.foundation.config.redis.TokenRepository
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
 import net.rickiekarp.foundation.utils.DatabaseUtil
@@ -21,6 +22,9 @@ open class UserRepo : UserDAO {
     @Autowired
     private val dataSource: DataSource? = null
 
+    @Autowired
+    private val studentRepository: TokenRepository? = null
+
     override fun getUserFromToken(token: String): User? {
         var userVO: User? = null
         var stmt: PreparedStatement? = null
@@ -31,7 +35,7 @@ open class UserRepo : UserDAO {
             val rs = stmt.executeQuery()
             if (rs.next()) {
                 userVO = User()
-                userVO.userId = rs.getInt("id")
+                userVO.id = rs.getInt("id")
                 userVO.username = rs.getString("username")
                 userVO.password = rs.getString("password")
             }
@@ -67,7 +71,7 @@ open class UserRepo : UserDAO {
     @Throws(SQLException::class)
     private fun extractUserFromResultSet(resultSet: ResultSet): User {
         val userVO = User()
-        userVO.userId = resultSet.getInt("id")
+        userVO.id = resultSet.getInt("id")
         userVO.username = resultSet.getString("username")
         userVO.password = resultSet.getString("password")
         return userVO
@@ -76,15 +80,28 @@ open class UserRepo : UserDAO {
     override fun updateUserToken(user: User, token: String) {
         var stmt: PreparedStatement? = null
         try {
-            stmt = dataSource!!.connection.prepareStatement("UPDATE users SET token = '" + token + "' WHERE id = " + user.userId)
+            stmt = dataSource!!.connection.prepareStatement("UPDATE users SET token = '" + token + "' WHERE id = " + user.id)
             stmt.executeUpdate()
         } catch (e: Exception) {
+            println("exce")
             e.printStackTrace()
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
         }
 
+//        println("adding user to redis")
+//        println("retr")
+//        val retrievedStudent = studentRepository.findById(user.id.toString()).get()
+//        println(retrievedStudent)
+//
+//        println("upda")
+//        retrievedStudent.token = "testToken"
+//        println(retrievedStudent)
+
+        user.token = token
+        println("adding to redis: $user")
+        studentRepository!!.save(user)
     }
 
     override fun registerUser(user: Credentials): User? {
@@ -100,7 +117,7 @@ open class UserRepo : UserDAO {
             val resultSet = stmt.generatedKeys
             if (resultSet.next()) {
                 newUser = User()
-                newUser.userId = resultSet.getInt(1)
+                newUser.id = resultSet.getInt(1)
             } else {
                 println("There is no result when adding a new user!")
             }

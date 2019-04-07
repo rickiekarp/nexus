@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping("account")
+@RequestMapping("/account")
 class AccountApi {
 
     @Autowired
@@ -31,26 +31,27 @@ class AccountApi {
      * @param pluginIdentifierJson Plugin to check
      * @return True if user is allowed, false otherwise
      */
-    @PostMapping(value = ["authorize"])
+    @PostMapping(value = ["/authorize"])
     fun authenticateUser(@RequestBody credentialsDTO: Credentials): ResponseEntity<TokenDTO> {
 
-        try {
+        return try {
             // Authenticate the user using the credentials provided
-            val user = authenticate(credentialsDTO.username, credentialsDTO.password)
+            val user = findUser(credentialsDTO.username, credentialsDTO.password)
 
             // Issue a token for the user
-            val token = issueToken(user)
+            issueToken(user)
 
             // Return the token on the response
-            return ResponseEntity(token, HttpStatus.OK)
+            ResponseEntity(TokenDTO(user.token), HttpStatus.OK)
 
         } catch (e: RuntimeException) {
-            return ResponseEntity(HttpStatus.UNAUTHORIZED)
+            e.printStackTrace()
+            ResponseEntity(HttpStatus.UNAUTHORIZED)
         }
     }
 
     @Throws(RuntimeException::class)
-    private fun authenticate(username: String?, password: String?): User {
+    private fun findUser(username: String?, password: String?): User {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
         val authenticatedUser = repo!!.getUserByName(username!!)
@@ -61,10 +62,10 @@ class AccountApi {
             }
         }
 
-        throw RuntimeException("unauthorized")
+        throw RuntimeException("user not found")
     }
 
-    @PostMapping(value = ["login"])
+    @PostMapping(value = ["/login"])
     fun login(): ResponseEntity<AppObjectDTO> {
         return try {
             val dto = AppObjectDTO(AppObjectBuilder())
@@ -76,12 +77,12 @@ class AccountApi {
         }
     }
 
-    @PostMapping(value = ["create"])
+    @PostMapping(value = ["/create"])
     fun create(@RequestBody credentials: Credentials): ResponseEntity<Any> {
         val user = repo!!.registerUser(credentials)
         return if (user != null) {
             // Issue a token for the user
-            val token: TokenDTO = issueToken(user)
+            val token = issueToken(user)
             ResponseEntity(token, HttpStatus.OK)
         } else {
             val result = ResultDTO("User could not be created!")
@@ -89,19 +90,15 @@ class AccountApi {
         }
     }
 
-    private fun issueToken(user: User): TokenDTO {
+    private fun issueToken(user: User) {
         // Issue a token (can be a random String persisted to a database or a JWT token)
         // The issued token must be associated to a user
         // Return the issued token
-        val token = TokenDTO(Base64.getEncoder().encodeToString((user.userId.toString() + ":" + RandomStringUtils.randomAlphabetic(16)).toByteArray()))
+        val token = Base64.getEncoder().encodeToString((user.id.toString() + ":" + RandomStringUtils.randomAlphabetic(16)).toByteArray())
         try {
-            repo!!.updateUserToken(user, token.token)
-            return token
+            repo!!.updateUserToken(user, token)
         } catch (e: Exception) {
-            println("Token could not be persisted into the database!")
-            e.printStackTrace()
+            throw RuntimeException("Token could not be updated!")
         }
-
-        throw RuntimeException("error")
     }
 }

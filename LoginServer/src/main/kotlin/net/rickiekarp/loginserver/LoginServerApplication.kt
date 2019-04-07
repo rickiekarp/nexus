@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan
 
 @SpringBootApplication
-@ComponentScan(value = ["net.rickiekarp.foundation", "net.rickiekarp.loginserver"])
+@ComponentScan(value = ["net.rickiekarp"])
 open class LoginServerApplication: SpringBootServletInitializer() {
 
     override fun configure(springApplicationBuilder: SpringApplicationBuilder): SpringApplicationBuilder {

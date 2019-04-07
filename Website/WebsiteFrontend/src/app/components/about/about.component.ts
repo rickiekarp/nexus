@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SkillDto } from '../../model/skill.model';
 import { ResumeDto } from '../../model/resume.model';
 import { ResumeService } from '../../service/resume.service';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-about',
@@ -9,26 +11,38 @@ import { ResumeService } from '../../service/resume.service';
   styleUrls: ['./about.component.css']
 })
 export class AboutComponent implements OnInit {
-  skillsInfo: SkillDto[] = [];
-  experienceInfo: ResumeDto[] = [];
-  educationInfo: ResumeDto[] = [];
+  skillsInfo: Array<SkillDto>;
+  experienceInfo: Array<ResumeDto>;
+  educationInfo: Array<ResumeDto>;
 
   constructor(private resumeService: ResumeService) { }
 
   ngOnInit() {
-    this.getExperience();
-    this.getEducation();
-    this.getSkills();
+    console.log(this.getHalls());
 
-    console.log(this.experienceInfo)
+    //emit ({name: 'Joe', age: 30}, {name: 'Frank', age: 20},{name: 'Ryan', age: 50})
+const source = from([
+  { name: 'Joe', age: 30 },
+  { name: 'Frank', age: 20 },
+  { name: 'Ryan', age: 50 }
+]);
+//grab each persons name, could also use pluck for this scenario
+const example = source.pipe(map(({ name }) => name));
+//output: "Joe","Frank","Ryan"
+const subscribe = example.subscribe(val => console.log(val));
   }
+
+  getHalls() {
+    this.resumeService.init();
+    return this.resumeService.selectCourseById(1);
+}
 
   getExperience(): void {
     this.resumeService.getAllExperience().subscribe(
       data => {
         let body = data.text()
         let dat = JSON.parse(body)
-        this.experienceInfo = <ResumeDto[]> dat;
+        this.experienceInfo = <Array<ResumeDto>> dat;
         console.log(this.experienceInfo);
               },
       error=> { 

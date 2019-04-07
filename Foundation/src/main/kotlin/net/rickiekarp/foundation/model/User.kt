@@ -1,10 +1,14 @@
 package net.rickiekarp.foundation.model
 
-//import com.fasterxml.jackson.annotation.JsonIgnore
-import java.security.Principal
+import org.springframework.data.redis.core.RedisHash
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import java.util.ArrayList
+import org.springframework.security.core.GrantedAuthority
 
-class User : Credentials, Principal {
-    var userId: Int = 0
+@RedisHash("token")
+class User : Credentials {
+    var id: Int = 0
+    lateinit var token: String
     var role: List<String>? = null
 
     constructor() {
@@ -17,7 +21,20 @@ class User : Credentials, Principal {
     }
 
 //    @JsonIgnore
-    override fun getName(): String? {
+    fun getName(): String? {
         return username
+    }
+
+    fun getAuthorities(): Collection<GrantedAuthority> {
+        val authorities = ArrayList<SimpleGrantedAuthority>()
+//        for (role in this.getUserRoles()) {
+//            authorities.add(SimpleGrantedAuthority("ROLE_" + role.getRole()))
+//        }
+        authorities.add(SimpleGrantedAuthority("ROLE_ADMIN"))
+        return authorities
+    }
+
+    override fun toString(): String {
+        return "User(id=$id, token='$token', role=$role)"
     }
 }

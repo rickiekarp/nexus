@@ -1,5 +1,7 @@
 package net.rickiekarp.loginserver.config
 
+import net.rickiekarp.foundation.config.redis.TokenRepository
+import net.rickiekarp.loginserver.rest.api.AccountApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Primary
 import org.springframework.core.env.Environment
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
 import org.springframework.jdbc.datasource.DriverManagerDataSource
 import org.springframework.orm.jpa.JpaTransactionManager
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
@@ -24,7 +27,8 @@ import javax.sql.DataSource
         transactionManagerRef = "loginTransactionManager",
         basePackages = ["net.rickiekarp.loginserver.config"]
 )
-open class LoginDatabaseConfig {
+@EnableRedisRepositories(basePackages = ["net.rickiekarp.foundation.config.redis"])
+open class ApplicationConfig {
 
     @Autowired
     private val env: Environment? = null
