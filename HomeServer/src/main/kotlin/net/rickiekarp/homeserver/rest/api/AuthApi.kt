@@ -1,5 +1,6 @@
 package net.rickiekarp.homeserver.rest.api
 
+import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.parser.PropertiesParser
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,9 +20,9 @@ class AuthApi {
      */
     @RequestMapping(value = ["validate"], method = [RequestMethod.POST])
     fun validatePlugin(pluginIdentifier: String): ResponseEntity<String> {
-        val result = Configuration.properties.getProperty("$pluginIdentifier.enable")
+        val result = BaseConfig.get().application().getProperty("$pluginIdentifier.enable")
         return if (result == null) {
-            throw RuntimeException("asdasd")
+            throw RuntimeException("Config not found!")
         } else {
             return ResponseEntity(result, HttpStatus.OK)
         }
@@ -32,7 +33,7 @@ class AuthApi {
             method = [RequestMethod.GET]
     )
     fun validateProperties(pluginIdentifier: String): ResponseEntity<HashMap<String, HashMap<Any, Any>>> {
-        val filteredProperties = PropertiesParser.filterPropertiesAndReplaceIdentifier(Configuration.properties, pluginIdentifier)
+        val filteredProperties = PropertiesParser.filterPropertiesAndReplaceIdentifier(BaseConfig.get().application(), pluginIdentifier)
         if (filteredProperties.size == 0) {
             //throw NotFoundException()
         }
