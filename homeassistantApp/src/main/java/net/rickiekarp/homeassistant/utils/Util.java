@@ -13,9 +13,6 @@ import net.rickiekarp.homeassistant.preferences.Token;
  */
 
 public class Util {
-
-
-
     private final String TAG = getClass().getSimpleName();
 
     private static Util instance;

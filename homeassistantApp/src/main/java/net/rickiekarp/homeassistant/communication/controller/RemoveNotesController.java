@@ -59,7 +59,6 @@ public class RemoveNotesController implements Callback<VOResult>, IRunController
 
     @Override
     public void onResponse(Call<VOResult> call, Response<VOResult> response) {
-
         if (response.code() == 200) {
             uiCallback.onRemoveNoteSuccess(id);
         } else {

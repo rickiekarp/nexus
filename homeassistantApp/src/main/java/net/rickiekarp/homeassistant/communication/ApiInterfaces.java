@@ -29,23 +29,25 @@ public abstract class ApiInterfaces {
 
     public interface NotesApi {
 
-        @GET("shopping/get/")
+        @GET("shopping/get")
         Call<List<VONotes>> getNotes(@Header(Params.AUTHORIZATION) String apiToken);
 
-        @POST("shopping/add/")
+        @POST("shopping/add")
         Call<VONotes> doAddNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONotes notes);
 
-        @POST("shopping/update/")
+        @POST("shopping/markAsBought")
+        Call<VONotes> doMarkAsBought(@Header(Params.AUTHORIZATION) String apiToken, @Body VONotes notes);
+
+        @POST("shopping/update")
         Call<VONotes> doUpdateNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONotes notes);
 
-        @POST("shopping/remove/")
+        @POST("shopping/remove")
         Call<VOResult> doRemoveNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONotes notes);
     }
 
     public interface LoginApi {
-        @POST("account/authorize/")
+        @POST("account/authorize")
         Call<VOToken> doGetToken(@Body VOCredentials credentials);
-
 
         @POST("account/login")                                         // Token String: "Basic token"
         Call<VOData> doLogin(@Header(Params.AUTHORIZATION) String token);

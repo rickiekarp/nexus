@@ -8,31 +8,21 @@ import java.util.Date;
 
 public class VONotes {
 
-    private String content, title;
-    private int noteId;
+    private String title;
+    private int id;
     private Date dateAdded;
 
-    public VONotes(String content, String title, int noteId) {
-        this.content = content;
+    public VONotes(String title, int id) {
         this.title = title;
-        this.noteId = noteId;
+        this.id = id;
     }
 
-    public VONotes(String title, String content) {
-        this.content = content;
+    public VONotes(String title) {
         this.title = title;
     }
 
-    public VONotes(int noteId) {
-        this.noteId = noteId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    public VONotes(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -43,12 +33,12 @@ public class VONotes {
         this.title = title;
     }
 
-    public int getNoteId() {
-        return noteId;
+    public int getId() {
+        return id;
     }
 
-    public void setNoteId(int noteID) {
-        this.noteId = noteId;
+    public void setId(int noteID) {
+        this.id = noteID;
     }
 
     public Date getDate() {

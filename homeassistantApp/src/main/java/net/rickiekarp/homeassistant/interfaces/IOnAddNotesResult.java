@@ -6,6 +6,6 @@ package net.rickiekarp.homeassistant.interfaces;
 
 public interface IOnAddNotesResult {
 
-    void onAddNotesSuccess(String title, String body);
+    void onAddNotesSuccess(String title);
     void onAddNotesError();
 }

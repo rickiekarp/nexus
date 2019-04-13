@@ -21,14 +21,13 @@ import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 public class NotesDialog extends DialogFragment {
 
     private IOnDialogClick listener;
-    private String title, body;
+    private String title;
     private int id;
 
-    public static NotesDialog newInstance(IOnDialogClick listener, String title, String body, int id) {
+    public static NotesDialog newInstance(IOnDialogClick listener, String title, int id) {
         NotesDialog fragment = new NotesDialog();
         fragment.listener = listener;
         fragment.title = title;
-        fragment.body = body;
         fragment.id = id;
 
         return fragment;
@@ -53,18 +52,19 @@ public class NotesDialog extends DialogFragment {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     title = editTitle.getText().toString();
 
-                        listener.onPositiveClick(title, body, "add");
+                        listener.onPositiveClick(title, "add");
                         dialogInterface.dismiss();
 
                 }
             });
-        } else if (getTag().equals("updatenotes")) {
+        }
+        else if (getTag().equals("updatenotes")) {
             builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     title = editTitle.getText().toString();
 
-                    listener.onPositiveClick(title, body, "update");
+                    listener.onPositiveClick(title,"update");
                     dialogInterface.dismiss();
 
                 }

@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onPositiveClick(String title, String body, String type) {
+    public void onPositiveClick(String title, String type) {
         doLogout();
 
     }

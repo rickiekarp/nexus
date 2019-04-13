@@ -4,10 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import net.rickiekarp.homeassistant.R;
+import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.model.CardViewItem;
+import net.rickiekarp.homeassistant.tasks.MarkAsBoughtNoteTask;
 
 import java.util.ArrayList;
 
@@ -17,10 +20,14 @@ import java.util.ArrayList;
 
 public class AdapterCustomRecyclerView extends RecyclerView.Adapter<AdapterCustomRecyclerView.MyViewHolder> {
 
+    IOnRemoveNoteResult onRemoveNoteResult;
+    private String token;
     private ArrayList<CardViewItem> items;
 
-    public AdapterCustomRecyclerView(ArrayList<CardViewItem> items) {
+    public AdapterCustomRecyclerView(ArrayList<CardViewItem> items, String token, IOnRemoveNoteResult removeResult) {
         this.items = items;
+        this.token = token;
+        this.onRemoveNoteResult = removeResult;
     }
 
     @Override
@@ -32,6 +39,15 @@ public class AdapterCustomRecyclerView extends RecyclerView.Adapter<AdapterCusto
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.title.setText(items.get(position).getTitle());
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("clicked");
+                System.out.println("position:"  + items.get(position).getId());
+                MarkAsBoughtNoteTask updateNoteTask = new MarkAsBoughtNoteTask(token, onRemoveNoteResult, position, items.get(position).getId());
+                updateNoteTask.execute();
+            }
+        });
     }
 
 
@@ -42,16 +58,13 @@ public class AdapterCustomRecyclerView extends RecyclerView.Adapter<AdapterCusto
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
-        private TextView body;
+        private Button button;
 
         MyViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.notes_title);
+            button = (Button) itemView.findViewById(R.id.remove);
         }
-    }
-
-    public String getItemBody(int position) {
-        return items.get(position).getBody();
     }
 
     public String getItemTitle(int position) {

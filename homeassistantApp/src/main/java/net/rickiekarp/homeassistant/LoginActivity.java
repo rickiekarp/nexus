@@ -1,12 +1,18 @@
 package net.rickiekarp.homeassistant;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
@@ -25,13 +31,15 @@ import net.rickiekarp.homeassistant.tasks.RegistrationTask;
 import net.rickiekarp.homeassistant.tasks.TokenTask;
 import net.rickiekarp.homeassistant.utils.Util;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by sebastian on 24.11.17.
  */
 
 public class LoginActivity extends AppCompatActivity implements IOnCreateAccountResult, IOnLoginResult, IOnGetTokenResult {
 
-    private String username = "", password = "";
     private SharedPreferences sp;
     private ProgressDialog progressDialog;
     private AppDatabase database;
@@ -45,66 +53,39 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
         database = AppDatabase.getDatabase(this);
         sp = this.getSharedPreferences(Constants.Preferences.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
 
+        final String deviceId = Settings.Secure.getString(this.getBaseContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
         EditText editUsername = findViewById(R.id.edit_name);
-        editUsername.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                username = s.toString();
-            }
-        });
+        editUsername.setText(deviceId);
 
         EditText editPassword = findViewById(R.id.edit_password);
-        editPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                password = s.toString();
-            }
-        });
+        editPassword.setText(md5(deviceId));
 
         Button buttonLogin = findViewById(R.id.button_login);
         Button buttonRegister = findViewById(R.id.button_register);
 
 
         buttonRegister.setOnClickListener(v -> {
-            if (username.isEmpty() || password.isEmpty()) {
+            if (editUsername.getText().toString().isEmpty() || editPassword.getText().toString().isEmpty()) {
                 showInvalidCredentialsToast();
             } else {
                 progressDialog = ProgressDialog.show(this, "", "Registrierung wird ausgeführt", true, false);
-                sp.edit().putString(Constants.Preferences.PREF_USERNAME, username).apply();
-                RegistrationTask registrationTask = new RegistrationTask(sp, username, password, this);
+                sp.edit().putString(Constants.Preferences.PREF_USERNAME, editUsername.getText().toString()).apply();
+                RegistrationTask registrationTask = new RegistrationTask(sp, editUsername.getText().toString(), editPassword.getText().toString(), this);
                 registrationTask.execute();
             }
         });
 
         buttonLogin.setOnClickListener(v -> {
-            if (username.isEmpty() || password.isEmpty()) {
+            if (editUsername.getText().toString().isEmpty() || editPassword.getText().toString().isEmpty()) {
                 showInvalidCredentialsToast();
             } else {
                 progressDialog = ProgressDialog.show(this, "", "Login wird ausgeführt", true, false);
-                TokenTask getTokenTask = new TokenTask(sp, this, username, password);
+                TokenTask getTokenTask = new TokenTask(sp, this, editUsername.getText().toString(), editPassword.getText().toString());
                 getTokenTask.execute();
 
-                sp.edit().putString(Constants.Preferences.PREF_USERNAME, username).apply();
+                sp.edit().putString(Constants.Preferences.PREF_USERNAME, editUsername.getText().toString()).apply();
             }
         });
 
@@ -198,5 +179,24 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
         errorDialog.setMessage("Please check your internet connection");
         errorDialog.show();
         removeToken();
+    }
+
+    public String md5(String s) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i<messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

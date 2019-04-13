@@ -6,6 +6,6 @@ package net.rickiekarp.homeassistant.interfaces;
 
 public interface IOnDialogClick {
 
-    void onPositiveClick(String title, String body, String type);
+    void onPositiveClick(String title, String type);
     void onNegativeClick(int id);
 }

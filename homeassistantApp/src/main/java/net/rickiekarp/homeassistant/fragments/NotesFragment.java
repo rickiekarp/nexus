@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import net.rickiekarp.homeassistant.Constants;
@@ -29,6 +30,7 @@ import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.interfaces.IOnUpdateNotesResult;
 import net.rickiekarp.homeassistant.model.CardViewItem;
+import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.provider.Notes;
 import net.rickiekarp.homeassistant.tasks.AddNoteTask;
 import net.rickiekarp.homeassistant.tasks.GetNotesTask;
@@ -75,17 +77,17 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
             public void onClick(View view) {
                 //openSingleNoteFragment();
 
-                NotesDialog notesDialog = NotesDialog.newInstance(context, "", "", 0);
+                NotesDialog notesDialog = NotesDialog.newInstance(context,"", 0);
                 notesDialog.show(getActivity().getSupportFragmentManager(), "addnote");
             }
         });
 
-        adapter = new AdapterCustomRecyclerView(itemList);
+        adapter = new AdapterCustomRecyclerView(itemList, sp.getString(Token.KEY, ""), this);
         RecyclerView myView =  (RecyclerView)view.findViewById(R.id.recyclerView_notes);
         ItemClickSupport.addTo(myView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                NotesDialog notesDialog = NotesDialog.newInstance(context, adapter.getItemTitle(position), adapter.getItemBody(position), adapter.getNoteId(position));
+                NotesDialog notesDialog = NotesDialog.newInstance(context, adapter.getItemTitle(position), adapter.getNoteId(position));
                 notesDialog.show(getActivity().getSupportFragmentManager(), "updatenotes");
                 itemId = position;
             }
@@ -95,6 +97,9 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         myView.setLayoutManager(llm);
+
+//        MarkAsBoughtNoteTask markAsBought = new MarkAsBoughtNoteTask(sp, this, title, body, database);
+//        markAsBought.execute();
 
         return view;
     }
@@ -112,7 +117,7 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     @Override
     public void onGetAllNotesSuccess(List<VONotes> notesList) {
         for (VONotes note : notesList) {
-            CardViewItem item = new CardViewItem(note.getTitle(), note.getContent(), note.getNoteId());
+            CardViewItem item = new CardViewItem(note.getTitle(), note.getId());
             itemList.add(item);
         }
 
@@ -137,8 +142,8 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     }
 
     @Override
-    public void onAddNotesSuccess(String title, String body) {
-        itemList.add(new CardViewItem(title, body));
+    public void onAddNotesSuccess(String title) {
+        itemList.add(new CardViewItem(title));
         adapter.notifyDataSetChanged();
         progressDialog.dismiss();
     }
@@ -156,15 +161,15 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     }
 
     @Override
-    public void onPositiveClick(String title, String body, String type) {
+    public void onPositiveClick(String title, String type) {
         progressDialog = ProgressDialog.show(getActivity(), "", "Notes werden gespeichert", true, false);
         switch (type) {
             case "add":
-                AddNoteTask addNoteTask = new AddNoteTask(sp, this, title, body, database);
+                AddNoteTask addNoteTask = new AddNoteTask(sp, this, title, database);
                 addNoteTask.execute();
                 break;
             case "update":
-                UpdateNoteTask updateNoteTask = new UpdateNoteTask(sp, this, title, body, database);
+                UpdateNoteTask updateNoteTask = new UpdateNoteTask(sp.getString(Token.KEY, ""), this, title, database);
                 updateNoteTask.execute();
                 break;
         }
@@ -178,9 +183,8 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     }
 
     @Override
-    public void onUpdateNotesSuccess(String title, String body) {
+    public void onUpdateNotesSuccess(String title) {
         itemList.get(itemId).setTitle(title);
-        itemList.get(itemId).setBody(body);
 
         adapter.notifyDataSetChanged();
         progressDialog.dismiss();

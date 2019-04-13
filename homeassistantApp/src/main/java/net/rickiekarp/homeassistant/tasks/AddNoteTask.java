@@ -15,21 +15,20 @@ public class AddNoteTask extends AsyncTask<Void, Void, String> {
 
     private SharedPreferences sp;
     private IOnAddNotesResult uiCallback;
-    private String title, body;
+    private String title;
     private AppDatabase database;
 
-    public AddNoteTask (SharedPreferences sp, IOnAddNotesResult uiCallback, String title, String body, AppDatabase database) {
+    public AddNoteTask (SharedPreferences sp, IOnAddNotesResult uiCallback, String title, AppDatabase database) {
         this.sp = sp;
         this.uiCallback = uiCallback;
         this.title = title;
-        this.body = body;
         this.database = database;
     }
 
     @Override
     protected String doInBackground(Void... voids) {
 
-        AddNotesController addNotesController = new AddNotesController(sp, uiCallback, title, body, database);
+        AddNotesController addNotesController = new AddNotesController(sp, uiCallback, title, database);
         addNotesController.start();
 
         return "Task executed";

@@ -39,7 +39,7 @@ public class LogoutDialog extends DialogFragment {
         builder.setPositiveButton("Bestätigen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                listener.onPositiveClick("", "", "");
+                listener.onPositiveClick("", "");
                 dialog.dismiss();
             }
         });

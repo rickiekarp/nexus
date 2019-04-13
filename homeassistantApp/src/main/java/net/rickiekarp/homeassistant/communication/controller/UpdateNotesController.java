@@ -26,16 +26,15 @@ import static net.rickiekarp.homeassistant.Constants.URL.BASE_URL_APPSERVER;
 
 public class UpdateNotesController implements Callback<VONotes>, IRunController {
 
-    private SharedPreferences sp;
-    private String title, body;
+    private String sp;
+    private String title;
     private AppDatabase database;
     private IOnUpdateNotesResult uiCallback;
 
-    public UpdateNotesController(SharedPreferences sp, IOnUpdateNotesResult uiCallback, String title, String body, AppDatabase database) {
+    public UpdateNotesController(String sp, IOnUpdateNotesResult uiCallback, String title, AppDatabase database) {
         this.sp = sp;
         this.uiCallback = uiCallback;
         this.title = title;
-        this.body = body;
         this.database = database;
     }
 
@@ -52,19 +51,15 @@ public class UpdateNotesController implements Callback<VONotes>, IRunController 
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        VONotes vo = new VONotes(title, body);
-        Call<VONotes> call = api.doUpdateNotes(Util.generateToken(sp.getString(Token.KEY, "")), vo);
+        VONotes vo = new VONotes(title);
+        Call<VONotes> call = api.doUpdateNotes(Util.generateToken(sp), vo);
         call.enqueue(this);
     }
 
     @Override
     public void onResponse(Call<VONotes> call, Response<VONotes> response) {
-        VONotes vo = response.body();
         if (response.code() == 200) {
-
-            if (vo != null) {
-                uiCallback.onUpdateNotesSuccess(vo.getTitle(), vo.getContent());
-            }
+            uiCallback.onUpdateNotesSuccess(title);
         } else {
             uiCallback.onUpdateNotesError();
         }
