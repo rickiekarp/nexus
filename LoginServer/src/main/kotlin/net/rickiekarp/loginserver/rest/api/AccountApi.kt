@@ -39,10 +39,10 @@ class AccountApi {
             val user = findUser(credentialsDTO.username, credentialsDTO.password)
 
             // Issue a token for the user
-            issueToken(user)
+            val token = issueToken(user)
 
             // Return the token on the response
-            ResponseEntity(TokenDTO(user.token), HttpStatus.OK)
+            ResponseEntity(TokenDTO(token), HttpStatus.OK)
 
         } catch (e: RuntimeException) {
             e.printStackTrace()
@@ -84,14 +84,14 @@ class AccountApi {
         return if (user != null) {
             // Issue a token for the user
             val token = issueToken(user)
-            ResponseEntity(token, HttpStatus.OK)
+            ResponseEntity(TokenDTO(token), HttpStatus.OK)
         } else {
             val result = ResultDTO("User could not be created!")
             ResponseEntity(result, HttpStatus.OK)
         }
     }
 
-    private fun issueToken(user: User) {
+    private fun issueToken(user: User): String {
         // Issue a token (can be a random String persisted to a database or a JWT token)
         // The issued token must be associated to a user
         // Return the issued token
@@ -101,5 +101,6 @@ class AccountApi {
         } catch (e: Exception) {
             throw RuntimeException("Token could not be updated!")
         }
+        return token
     }
 }
