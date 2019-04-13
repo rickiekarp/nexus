@@ -1,6 +1,6 @@
 package net.rickiekarp.loginserver.rest.api
 
-import net.rickiekarp.foundation.config.Configuration
+import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.config.ServerContext
 import net.rickiekarp.foundation.dto.exception.ResultDTO
 import net.rickiekarp.foundation.model.Credentials
@@ -71,7 +71,7 @@ class AccountApi {
         return try {
             val dto = AppObjectDTO(AppObjectBuilder())
             dto.serverVersion = ServerContext.serverVersion
-            dto.setFeatureSettings(Configuration.properties)
+            dto.setFeatureSettings(BaseConfig.get().application())
             ResponseEntity(dto, HttpStatus.OK)
         } catch (e: Exception) {
             ResponseEntity(null, HttpStatus.UNAUTHORIZED)

@@ -1,6 +1,5 @@
 package net.rickiekarp.homeserver.rest.api
 
-import net.rickiekarp.foundation.config.Configuration
 import net.rickiekarp.foundation.parser.PropertiesParser
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

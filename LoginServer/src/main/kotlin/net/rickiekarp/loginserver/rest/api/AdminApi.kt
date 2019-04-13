@@ -1,10 +1,11 @@
 package net.rickiekarp.loginserver.rest.api
 
-import net.rickiekarp.foundation.config.Configuration
+import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.dto.exception.ResultDTO
 import net.rickiekarp.loginserver.dto.KeyValuePairDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
@@ -21,8 +22,8 @@ class AdminApi {
     fun getFeatureFlags(): ResponseEntity<ArrayList<KeyValuePairDTO>> {
         val keyValueList = ArrayList<KeyValuePairDTO>()
 
-        for (key in Configuration.properties.stringPropertyNames()) {
-            val value = Configuration.properties.getProperty(key)
+        for (key in BaseConfig.get().application().stringPropertyNames()) {
+            val value = BaseConfig.get().application().getProperty(key)
             val keyValuePair = KeyValuePairDTO(key, value)
             keyValueList.add(keyValuePair)
             println("$key: $value")
@@ -33,13 +34,13 @@ class AdminApi {
 
     @RequestMapping(
             value = ["updateFeatureFlag"],
-            method = arrayOf(RequestMethod.POST)
+            method = [RequestMethod.POST]
     )
-    fun updateFeatureFlag(keyValue: KeyValuePairDTO): ResponseEntity<ResultDTO> {
-        if (Configuration.properties.containsKey(keyValue.key)) {
-            Configuration.properties.setProperty(keyValue.key, keyValue.value)
+    fun updateFeatureFlag(@RequestBody keyValue: KeyValuePairDTO): ResponseEntity<ResultDTO> {
+        if (BaseConfig.get().application().containsKey(keyValue.key)) {
+            BaseConfig.get().application().setProperty(keyValue.key, keyValue.value)
         } else {
-            return ResponseEntity(ResultDTO("Key not found!"), HttpStatus.NOT_FOUND)
+            return ResponseEntity(ResultDTO("key_not_found"), HttpStatus.BAD_REQUEST)
         }
         return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
     }

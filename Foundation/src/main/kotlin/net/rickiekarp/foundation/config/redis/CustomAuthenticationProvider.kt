@@ -26,7 +26,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
             // and authenticate against the third-party system
             UsernamePasswordAuthenticationToken(userid, password, ArrayList<GrantedAuthority>())
         } else {
-            println("User could not be authenticated!")
+            println("UserId[$userid] could not be authenticated!")
             null
         }
     }

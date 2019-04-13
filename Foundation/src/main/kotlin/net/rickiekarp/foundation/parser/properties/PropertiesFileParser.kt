@@ -1,11 +1,9 @@
 package net.rickiekarp.foundation.parser.properties
 
+import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.utils.FileUtil
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 import java.util.*
 
 class PropertiesFileParser {
@@ -23,6 +21,20 @@ class PropertiesFileParser {
             val inputStream = clazz.classLoader.getResourceAsStream(propertiesFile)
             if (inputStream != null) {
                 properties.load(inputStream)
+            }
+            return properties
+        }
+
+        @JvmStatic
+        fun readPropertiesFileFromSetupDirectory(propertiesFile: String): Properties {
+            val properties = Properties()
+
+            val inputStream: InputStream
+            try {
+                inputStream = FileInputStream(BaseConfig.get().setupDirectory + File.separator + propertiesFile)
+                properties.load(inputStream)
+            } catch (e: FileNotFoundException) {
+                println("Config [$propertiesFile]")
             }
             return properties
         }

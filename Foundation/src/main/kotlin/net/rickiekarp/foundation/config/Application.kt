@@ -8,11 +8,13 @@ import java.util.*
 open class Application {
 
     fun getProperties(clazz: Class<*>, applicationName: String): Properties {
-        val configBuilder = BaseConfig.ConfigBuilder().setApplicationIdentifier(applicationName)
+        ServerContext.serverVersion = evaluateServerVersion(clazz.`package`.implementationVersion)
+
+        val configBuilder = BaseConfig.ConfigBuilder()
+                .setApplicationIdentifier(applicationName)
+                .setConfigDirectory(findSetupDirectory(applicationName))
         BaseConfig.create(configBuilder)
 
-        ServerContext.serverVersion = evaluateServerVersion(clazz.`package`.implementationVersion)
-        BaseConfig.get().setupDirectory = findSetupDirectory(BaseConfig.get().applicationIdentifier)
         Log.DEBUG.debug("Current setup directory: ${BaseConfig.get().setupDirectory}")
 
         val props = Properties()
@@ -24,7 +26,6 @@ open class Application {
         // if the implementation version is null (because there is no manifest file),
         // it is assumed that the application is running in a development environment
         if (version == null) {
-            Log.DEBUG.debug("Implementation version could not be found, assuming developer environment!")
             ServerContext.developerEnvironment = true
             val format = SimpleDateFormat("yyMMddHHmm")
             return format.format(Date())
