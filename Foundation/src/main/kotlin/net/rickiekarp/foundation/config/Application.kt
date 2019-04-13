@@ -45,7 +45,7 @@ open class Application {
         } else {
             val directories = File(System.getProperty("user.dir")).listFiles().filter { it.isDirectory }
             for (directory in directories) {
-                if (directory.name == "${BaseConfig.get().applicationIdentifier}.setup") {
+                if (directory.name == "$aSetupDirectoryName.setup") {
                     Log.DEBUG.info("Setup directory ${directory.name} found in ${directory.path}")
                     return "${System.getProperty("user.dir")}/${directory.name}"
                 }
