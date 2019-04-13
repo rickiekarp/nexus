@@ -14,9 +14,10 @@ import javax.sql.DataSource
 
 @Repository
 open class ShoppingNoteRepo : ShoppingNoteDAO {
-    private val FIND_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ?"
+    private val FIND_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND lastUpdated IS NULL AND isDeleted = false"
     private val INSERT = "insert into shopping_note(title, description,  users_id, dateAdded, lastUpdated, isDeleted) values (?, null, ?, now(), null, false)"
-    private val UPDATE_BOUGHT = "UPDATE shopping_note SET lastUpdated = now() WHERE id = ?"
+    private val MARK_AS_BOUGHT = "UPDATE shopping_note SET lastUpdated = now() WHERE id = ?"
+    private val UPDATE = "UPDATE shopping_note SET title = ?, lastUpdated = now() WHERE id = ?"
     private val REMOVE = "UPDATE shopping_note SET isDeleted = true, lastUpdated = now() WHERE id = ?"
 
     @Autowired
@@ -60,7 +61,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
         return userVO
     }
 
-    override fun insertShoppingNote(note: ShoppingNoteDto, id: Int): ShoppingNoteDto? {
+    override fun insertShoppingNote(note: ShoppingNoteDto): ShoppingNoteDto? {
         var insertedNote: ShoppingNoteDto? = null
         var stmt: PreparedStatement? = null
         try {
@@ -76,6 +77,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             if (resultSet.next()) {
                 insertedNote = ShoppingNoteDto()
                 insertedNote.id = resultSet.getInt(1)
+                insertedNote.title = note.title
             } else {
                 println("There was no result when adding a new note!")
             }
@@ -88,11 +90,28 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
         return insertedNote
     }
 
-    override fun updateShoppingNote(user: ShoppingNoteDto, id: Int): ResultDTO {
+    override fun updateShoppingNote(user: ShoppingNoteDto): ResultDTO {
         var stmt: PreparedStatement? = null
         try {
-            stmt = dataSource!!.connection.prepareStatement(UPDATE_BOUGHT)
-            stmt!!.setInt(1, id)
+            stmt = dataSource!!.connection.prepareStatement(UPDATE)
+            stmt!!.setString(1, user.title)
+            stmt.setInt(2, user.user_id)
+            stmt.executeUpdate()
+            return ResultDTO("success")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
+        }
+        return ResultDTO("failed")
+    }
+
+    override fun markAsBought(user: ShoppingNoteDto): ResultDTO {
+        var stmt: PreparedStatement? = null
+        try {
+            stmt = dataSource!!.connection.prepareStatement(MARK_AS_BOUGHT)
+            stmt!!.setInt(1, user.id)
             stmt.executeUpdate()
             return ResultDTO("success")
         } catch (e: Exception) {

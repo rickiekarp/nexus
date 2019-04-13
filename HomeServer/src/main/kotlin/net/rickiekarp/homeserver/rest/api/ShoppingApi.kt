@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.security.authentication.AnonymousAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 
 @RestController
 @RequestMapping("shopping")
@@ -22,28 +24,46 @@ class ShoppingApi {
      */
     @GetMapping(value = ["get"])
     fun getList(): ResponseEntity<List<ShoppingNoteDto>> {
-        println("getList")
-        val noteList = repo!!.getNotesFromUserId(1)
+        val noteList = repo!!.getNotesFromUserId(getUserId())
         return ResponseEntity(noteList, HttpStatus.OK)
     }
 
     @PostMapping(value = ["add"])
     fun insertNote(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ShoppingNoteDto?> {
         println("insertNote")
-        val noteList = repo!!.insertShoppingNote(noteDto, 1)
-        return ResponseEntity(noteList, HttpStatus.OK)
+        noteDto.user_id = getUserId()
+        val note = repo!!.insertShoppingNote(noteDto)
+        return ResponseEntity(note, HttpStatus.OK)
     }
 
     @PostMapping(value = ["update"])
-    fun updateBought(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
+    fun updateItem(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
         println("updateBought")
-        val noteDeleted = repo!!.updateShoppingNote(noteDto, 1)
+        noteDto.user_id = getUserId()
+        val noteDeleted = repo!!.updateShoppingNote(noteDto)
         return ResponseEntity(noteDeleted, HttpStatus.OK)
     }
 
+    @PostMapping(value = ["markAsBought"])
+    fun markAsBought(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
+        println("markAsBought")
+        noteDto.user_id = getUserId()
+        val noteDeleted = repo!!.markAsBought(noteDto)
+        return ResponseEntity(noteDeleted, HttpStatus.OK)
+    }
+
+    @PostMapping(value = ["remove"])
     fun remove(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
         println("remove")
         val noteDeleted = repo!!.removeItem(noteDto.id)
         return ResponseEntity(noteDeleted, HttpStatus.OK)
+    }
+
+    private fun getUserId(): Int {
+        val authentication = SecurityContextHolder.getContext().authentication
+        if (authentication !is AnonymousAuthenticationToken) {
+            return authentication.name.toInt()
+        }
+        return -1
     }
 }
