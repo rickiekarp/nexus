@@ -16,6 +16,7 @@ open class Application {
         BaseConfig.create(configBuilder)
 
         Log.DEBUG.debug("Current setup directory: ${BaseConfig.get().setupDirectory}")
+        Log.DEBUG.debug("Dev environment? ${ServerContext.developerEnvironment}")
 
         val props = Properties()
         props["spring.config.location"] = "file:${BaseConfig.get().setupDirectory}/"
@@ -46,11 +47,9 @@ open class Application {
             val directories = File(System.getProperty("user.dir")).listFiles().filter { it.isDirectory }
             for (directory in directories) {
                 if (directory.name == "$aSetupDirectoryName.setup") {
-                    Log.DEBUG.info("Setup directory ${directory.name} found in ${directory.path}")
                     return "${System.getProperty("user.dir")}/${directory.name}"
                 }
             }
-            Log.DEBUG.error("Setup directory could not be found in current path ${System.getProperty("user.dir")}")
         }
         return aSetupDirectoryName
     }
