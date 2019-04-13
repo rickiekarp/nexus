@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Primary
 import org.springframework.core.env.Environment
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
 import org.springframework.jdbc.datasource.DriverManagerDataSource
 import org.springframework.orm.jpa.JpaTransactionManager
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
@@ -24,6 +25,7 @@ import javax.sql.DataSource
         transactionManagerRef = "transactionManager",
         basePackages = ["net.rickiekarp.foundation.data"]
 )
+@EnableRedisRepositories(basePackages = ["net.rickiekarp.foundation.config.redis"])
 open class HomeDatabaseConfig {
 
     @Autowired

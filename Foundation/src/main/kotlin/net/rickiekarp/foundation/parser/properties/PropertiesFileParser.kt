@@ -34,7 +34,7 @@ class PropertiesFileParser {
                 inputStream = FileInputStream(BaseConfig.get().setupDirectory + File.separator + propertiesFile)
                 properties.load(inputStream)
             } catch (e: FileNotFoundException) {
-                println("Config [$propertiesFile]")
+                println("Config [$propertiesFile] not found in ${BaseConfig.get().setupDirectory + File.separator + propertiesFile}")
             }
             return properties
         }

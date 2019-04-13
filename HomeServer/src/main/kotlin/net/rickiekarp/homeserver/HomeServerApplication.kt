@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan
 
 @SpringBootApplication
-@ComponentScan(value = ["net.rickiekarp.foundation", "net.rickiekarp.homeserver"])
+@ComponentScan(value = ["net.rickiekarp"])
 open class HomeServerApplication: SpringBootServletInitializer() {
 
     override fun configure(springApplicationBuilder: SpringApplicationBuilder): SpringApplicationBuilder {
