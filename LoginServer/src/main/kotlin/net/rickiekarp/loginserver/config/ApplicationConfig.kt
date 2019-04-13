@@ -1,7 +1,5 @@
 package net.rickiekarp.loginserver.config
 
-import net.rickiekarp.foundation.config.redis.TokenRepository
-import net.rickiekarp.loginserver.rest.api.AccountApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder

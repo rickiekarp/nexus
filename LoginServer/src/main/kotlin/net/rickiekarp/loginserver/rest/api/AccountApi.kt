@@ -57,6 +57,7 @@ class AccountApi {
         val authenticatedUser = repo!!.getUserByName(username!!)
 
         if (authenticatedUser != null) {
+            // validate credentials
             if (password == authenticatedUser.password) {
                 return authenticatedUser
             }

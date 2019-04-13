@@ -23,7 +23,7 @@ open class UserRepo : UserDAO {
     private val dataSource: DataSource? = null
 
     @Autowired
-    private val studentRepository: TokenRepository? = null
+    private val redisRepository: TokenRepository? = null
 
     override fun getUserFromToken(token: String): User? {
         var userVO: User? = null
@@ -90,18 +90,9 @@ open class UserRepo : UserDAO {
             DatabaseUtil.close(dataSource!!.connection)
         }
 
-//        println("adding user to redis")
-//        println("retr")
-//        val retrievedStudent = studentRepository.findById(user.id.toString()).get()
-//        println(retrievedStudent)
-//
-//        println("upda")
-//        retrievedStudent.token = "testToken"
-//        println(retrievedStudent)
-
         user.token = token
         println("adding to redis: $user")
-        studentRepository!!.save(user)
+        redisRepository!!.save(user)
     }
 
     override fun registerUser(user: Credentials): User? {
@@ -122,7 +113,8 @@ open class UserRepo : UserDAO {
                 println("There is no result when adding a new user!")
             }
         } catch (e: SQLException) {
-            e.printStackTrace()
+            //e.printStackTrace()
+            println("User could not be created! Reason: " + e.message)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
