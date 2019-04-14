@@ -5,8 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="action_info">Info</string>
-    <string name="action_notes">Notes</string>
+    <string name="action_info">About</string>
+    <string name="action_notes">Shopping list</string>
     <string name="action_bought">Bought</string>
 
     <string name="app_description">description_placeholder </string>
