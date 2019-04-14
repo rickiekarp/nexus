@@ -30,4 +30,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string-array name="hosts_array">
+        <item>app.rickiekarp.net</item>
+        <item>10.0.3.2</item>
+    </string-array>
 </resources>

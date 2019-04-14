@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import net.rickiekarp.homeassistant.config.Configuration;
@@ -33,11 +35,12 @@ import java.security.NoSuchAlgorithmException;
  * Created by sebastian on 24.11.17.
  */
 
-public class LoginActivity extends AppCompatActivity implements IOnCreateAccountResult, IOnLoginResult, IOnGetTokenResult {
+public class LoginActivity extends AppCompatActivity implements IOnCreateAccountResult, IOnLoginResult, IOnGetTokenResult, AdapterView.OnItemSelectedListener {
 
     private SharedPreferences sp;
     private ProgressDialog progressDialog;
     private AppDatabase database;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,23 +87,15 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
             }
         });
 
-        EditText serverField = findViewById(R.id.server);
-        serverField.setText(Configuration.host);
-        serverField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Configuration.host = s.toString();
-            }
-        });
+        spinner = findViewById(R.id.serverselection);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.hosts_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     private void showInvalidCredentialsToast() {
@@ -193,5 +188,15 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
             e.printStackTrace();
         }
         return "";
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Configuration.host = spinner.getSelectedItem().toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
