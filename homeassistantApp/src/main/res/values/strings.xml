@@ -9,7 +9,7 @@
     <string name="action_notes">Notes</string>
     <string name="action_bought">Bought</string>
 
-    <string name="app_description">App für den täglichen Gebrauch.\nErmöglicht das Erstellen von Notizen oder das Generieren von Passwörtern. </string>
+    <string name="app_description">description_placeholder </string>
 
     <string-array name="navigation_drawer_items_array">
         <item>Notes</item>
