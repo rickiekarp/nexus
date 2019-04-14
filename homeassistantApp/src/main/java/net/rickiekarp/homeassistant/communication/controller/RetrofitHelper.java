@@ -1,8 +1,9 @@
 package net.rickiekarp.homeassistant.communication.controller;
 
-import net.rickiekarp.homeassistant.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import net.rickiekarp.homeassistant.Constants;
 
 import java.util.concurrent.TimeUnit;
 

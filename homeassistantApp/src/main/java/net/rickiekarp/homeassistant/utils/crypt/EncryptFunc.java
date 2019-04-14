@@ -1,12 +1,14 @@
 package net.rickiekarp.homeassistant.utils.crypt;
 
 import android.util.Log;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 public class EncryptFunc {
 

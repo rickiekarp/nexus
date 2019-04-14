@@ -2,6 +2,9 @@ package net.rickiekarp.homeassistant.communication.controller;
 
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
 import net.rickiekarp.homeassistant.communication.vo.VONotes;
 import net.rickiekarp.homeassistant.communication.vo.VOResult;
@@ -10,8 +13,6 @@ import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.utils.Util;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import retrofit2.Call;
 import retrofit2.Callback;

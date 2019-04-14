@@ -3,14 +3,15 @@ package net.rickiekarp.homeassistant.communication.controller;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
 import net.rickiekarp.homeassistant.communication.vo.VOCredentials;
 import net.rickiekarp.homeassistant.communication.vo.VOToken;
 import net.rickiekarp.homeassistant.interfaces.IOnGetTokenResult;
 import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.preferences.Token;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import retrofit2.Call;
 import retrofit2.Callback;

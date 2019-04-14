@@ -1,6 +1,5 @@
 package net.rickiekarp.homeassistant.tasks;
 
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import net.rickiekarp.homeassistant.communication.controller.UpdateNotesController;
