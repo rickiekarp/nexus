@@ -16,7 +16,7 @@ public abstract class Constants {
     }
 
     public static abstract class URL {
-        public static final String BASE_URL_LOGIN = "https://" + Configuration.host + "/LoginServer/";
-        public static final String BASE_URL_APPSERVER = "https://" + Configuration.host + "/HomeServer/";
+        public static final String BASE_URL_LOGIN = Configuration.host + "/LoginServer/";
+        public static final String BASE_URL_APPSERVER = Configuration.host + "/HomeServer/";
     }
 }

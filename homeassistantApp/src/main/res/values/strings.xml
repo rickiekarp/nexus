@@ -32,8 +32,8 @@
     </string>
 
     <string-array name="hosts_array">
-        <item>app.rickiekarp.net</item>
-        <item>10.0.3.2</item>
-        <item>192.168.178.200</item>
+        <item>https://app.rickiekarp.net</item>
+        <item>http://10.0.3.2:8080</item>
+        <item>http://192.168.178.200</item>
     </string-array>
 </resources>
