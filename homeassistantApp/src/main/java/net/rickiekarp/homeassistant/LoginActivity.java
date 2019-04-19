@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
         progressDialog.dismiss();
         AlertDialog errorDialog = new AlertDialog.Builder(this).create();
         errorDialog.setTitle("Error");
-        errorDialog.setMessage("Account already exists");
+        errorDialog.setMessage("Account registration failed");
         errorDialog.show();
     }
 
@@ -179,9 +179,9 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
             byte messageDigest[] = digest.digest();
 
             // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i=0; i<messageDigest.length; i++)
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest)
+                hexString.append(Integer.toHexString(0xFF & aMessageDigest));
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {

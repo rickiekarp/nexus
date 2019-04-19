@@ -4,9 +4,7 @@ apply plugin: 'kotlin-android'
 android {
     def applicationBaseId = "net.rickiekarp.homeassistant"
     def versionBaseName = "1.0"
-
     flavorDimensions "default"
-
     defaultConfig {
         applicationId "${applicationBaseId}p"
         minSdkVersion 21
@@ -22,7 +20,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     productFlavors {
         production {
             applicationId "${applicationBaseId}"
@@ -41,18 +38,16 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.0.1'
     implementation 'com.android.support:design:27.0.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation "android.arch.lifecycle:extensions:1.0.0"
-    implementation "android.arch.persistence.room:runtime:1.0.0"
+    implementation 'android.arch.lifecycle:extensions:1.0.0'
+    implementation 'android.arch.persistence.room:runtime:1.0.0'
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
-
     //Server communication
     implementation 'com.squareup.okhttp3:okhttp:3.8.1'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'

@@ -13,7 +13,9 @@ import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.utils.Util;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,8 +44,15 @@ public class GetNotesController implements Callback<List<VONotes>>, IRunControll
                 .setLenient()
                 .create();
 
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL_APPSERVER)
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
