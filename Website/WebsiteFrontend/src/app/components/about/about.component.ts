@@ -18,24 +18,15 @@ export class AboutComponent implements OnInit {
   constructor(private resumeService: ResumeService) { }
 
   ngOnInit() {
-    console.log(this.getHalls());
-
-    //emit ({name: 'Joe', age: 30}, {name: 'Frank', age: 20},{name: 'Ryan', age: 50})
-const source = from([
-  { name: 'Joe', age: 30 },
-  { name: 'Frank', age: 20 },
-  { name: 'Ryan', age: 50 }
-]);
-//grab each persons name, could also use pluck for this scenario
-const example = source.pipe(map(({ name }) => name));
-//output: "Joe","Frank","Ryan"
-const subscribe = example.subscribe(val => console.log(val));
+    this.getExperience();
+    this.getEducation();
+    this.getSkills();
   }
 
   getHalls() {
     this.resumeService.init();
     return this.resumeService.selectCourseById(1);
-}
+  }
 
   getExperience(): void {
     this.resumeService.getAllExperience().subscribe(

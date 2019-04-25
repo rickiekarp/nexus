@@ -5,7 +5,7 @@
         <li class="event" *ngFor="let exp of experienceInfo" data-date="December 2018 – NOW">
             <h3>{{exp.name}}</h3>
             <h4>{{exp.jobTitle}}</h4>
-            <p>asd {{exp.description.description}}</p>
+            <p>{{exp.description.description}}</p>
             <ul>
                 <li *ngFor="let task of exp.description.tasks">
                     {{task}}
