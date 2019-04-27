@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority
 class User : Credentials {
     var id: Int = 0
     lateinit var token: String
-    var role: List<String>? = null
+    var role: Byte = 0
 
     constructor() {
         //empty

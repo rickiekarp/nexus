@@ -17,6 +17,7 @@ import org.springframework.security.web.firewall.HttpFirewall;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] NOT_SECURED = {
+            "/worlds/get",
             "/account/authorize",
             "/account/create"
     };

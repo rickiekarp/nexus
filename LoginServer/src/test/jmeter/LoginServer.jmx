@@ -33,8 +33,8 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-  &quot;username&quot;: &quot;user&quot;,&#xd;
-  &quot;password&quot;: &quot;test&quot;&#xd;
+  &quot;username&quot;: &quot;admin&quot;,&#xd;
+  &quot;password&quot;: &quot;admin&quot;&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -105,7 +105,7 @@
               </elementProp>
               <elementProp name="" elementType="Header">
                 <stringProp name="Header.name">Authorization</stringProp>
-                <stringProp name="Header.value">Basic MjpPdE9Dd1NLaEF6S0ZCRGFE</stringProp>
+                <stringProp name="Header.value">Basic MjplZ2VhYlptS1ZDZnRMcE1OY0tjWmFEaEY=</stringProp>
               </elementProp>
             </collectionProp>
           </HeaderManager>
