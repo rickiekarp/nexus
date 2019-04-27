@@ -5,7 +5,10 @@ import java.util.Date;
 public class ShoppingNoteDto {
     private int id;
     private String title;
+    private double price;
     private int user_id;
+    private Date dateBought;
+    private byte store_id;
     private Date dateAdded;
     private Date lastUpdated;
 
@@ -47,6 +50,30 @@ public class ShoppingNoteDto {
 
     public void setLastUpdated(Date dateBought) {
         this.lastUpdated = dateBought;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public Date getDateBought() {
+        return dateBought;
+    }
+
+    public void setDateBought(Date dateBought) {
+        this.dateBought = dateBought;
+    }
+
+    public byte getStore_id() {
+        return store_id;
+    }
+
+    public void setStore_id(byte store_id) {
+        this.store_id = store_id;
     }
 
     @Override
