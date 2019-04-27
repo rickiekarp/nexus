@@ -83,7 +83,6 @@ open class UserRepo : UserDAO {
             stmt = dataSource!!.connection.prepareStatement("UPDATE users SET token = '" + token + "' WHERE id = " + user.id)
             stmt.executeUpdate()
         } catch (e: Exception) {
-            println("exce")
             e.printStackTrace()
         } finally {
             DatabaseUtil.close(stmt)

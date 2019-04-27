@@ -36,7 +36,7 @@ class AccountApi {
 
         return try {
             // Authenticate the user using the credentials provided
-            val user = findUser(credentialsDTO.username, credentialsDTO.password)
+            val user = findUser(credentialsDTO)
 
             // Issue a token for the user
             val token = issueToken(user)
@@ -51,18 +51,16 @@ class AccountApi {
     }
 
     @Throws(RuntimeException::class)
-    private fun findUser(username: String?, password: String?): User {
+    private fun findUser(credentialsDTO: Credentials): User {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
-        val authenticatedUser = repo!!.getUserByName(username!!)
-
-        if (authenticatedUser != null) {
+        val retrievedUser = repo!!.getUserByName(credentialsDTO.username!!)
+        if (retrievedUser != null) {
             // validate credentials
-            if (password == authenticatedUser.password) {
-                return authenticatedUser
+            if (credentialsDTO.password == retrievedUser.password) {
+                return retrievedUser
             }
         }
-
         throw RuntimeException("user not found")
     }
 
@@ -95,12 +93,12 @@ class AccountApi {
         // Issue a token (can be a random String persisted to a database or a JWT token)
         // The issued token must be associated to a user
         // Return the issued token
-        val token = Base64.getEncoder().encodeToString((user.id.toString() + ":" + RandomStringUtils.randomAlphabetic(16)).toByteArray())
+        val token = RandomStringUtils.randomAlphabetic(24)
         try {
             repo!!.updateUserToken(user, token)
         } catch (e: Exception) {
             throw RuntimeException("Token could not be updated!")
         }
-        return token
+        return Base64.getEncoder().encodeToString((user.id.toString() + ":" + token).toByteArray())
     }
 }

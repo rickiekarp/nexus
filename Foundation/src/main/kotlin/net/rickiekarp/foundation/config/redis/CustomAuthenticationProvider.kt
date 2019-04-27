@@ -19,12 +19,12 @@ class CustomAuthenticationProvider : AuthenticationProvider {
     @Throws(AuthenticationException::class)
     override fun authenticate(authentication: Authentication): Authentication? {
         val userid = authentication.name.toInt()
-        val password = authentication.credentials.toString()
+        val accessToken = authentication.credentials.toString()
 
-        return if (shouldAuthenticateAgainstThirdPartySystem(userid, password)) {
+        return if (shouldAuthenticateAgainstThirdPartySystem(userid, accessToken)) {
             // use the credentials
             // and authenticate against the third-party system
-            UsernamePasswordAuthenticationToken(userid, password, ArrayList<GrantedAuthority>())
+            UsernamePasswordAuthenticationToken(userid, accessToken, ArrayList<GrantedAuthority>())
         } else {
             println("UserId[$userid] could not be authenticated!")
             null
@@ -35,10 +35,10 @@ class CustomAuthenticationProvider : AuthenticationProvider {
         return authentication == UsernamePasswordAuthenticationToken::class.java
     }
 
-    private fun shouldAuthenticateAgainstThirdPartySystem(userid: Int, password: String): Boolean {
+    private fun shouldAuthenticateAgainstThirdPartySystem(userid: Int, accessToken: String): Boolean {
         val user = retrieveUserFromRedis(userid)
         if (user.isPresent) {
-            return user.get().password.equals(password)
+            return user.get().token == accessToken
         }
         return false
     }
