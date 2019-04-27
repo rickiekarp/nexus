@@ -18,6 +18,7 @@ open class UserRepo : UserDAO {
     private val FIND_BY_TOKEN = "SELECT * FROM users WHERE token = ?"
     private val FIND_BY_NAME = "SELECT * FROM users WHERE username = ?"
     private val INSERT = "INSERT INTO users(username, password, enabled) VALUES(?, ?, true)"
+    private val UPDATE = "UPDATE users SET token = ? WHERE id = ?"
 
     @Autowired
     private val dataSource: DataSource? = null
@@ -34,10 +35,7 @@ open class UserRepo : UserDAO {
 
             val rs = stmt.executeQuery()
             if (rs.next()) {
-                userVO = User()
-                userVO.id = rs.getInt("id")
-                userVO.username = rs.getString("username")
-                userVO.password = rs.getString("password")
+                userVO = extractUserFromResultSet(rs)
             }
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -74,13 +72,16 @@ open class UserRepo : UserDAO {
         userVO.id = resultSet.getInt("id")
         userVO.username = resultSet.getString("username")
         userVO.password = resultSet.getString("password")
+        userVO.token = resultSet.getString("token")
         return userVO
     }
 
     override fun updateUserToken(user: User, token: String) {
         var stmt: PreparedStatement? = null
         try {
-            stmt = dataSource!!.connection.prepareStatement("UPDATE users SET token = '" + token + "' WHERE id = " + user.id)
+            stmt = dataSource!!.connection.prepareStatement(UPDATE, Statement.RETURN_GENERATED_KEYS)
+            stmt.setString(1, token)
+            stmt.setInt(2, user.id)
             stmt.executeUpdate()
         } catch (e: Exception) {
             e.printStackTrace()

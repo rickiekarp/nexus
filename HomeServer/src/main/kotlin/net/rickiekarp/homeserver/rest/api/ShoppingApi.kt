@@ -30,7 +30,6 @@ class ShoppingApi {
 
     @PostMapping(value = ["add"])
     fun insertNote(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ShoppingNoteDto?> {
-        println("insertNote")
         noteDto.user_id = getUserId()
         val note = repo!!.insertShoppingNote(noteDto)
         return ResponseEntity(note, HttpStatus.OK)
@@ -38,7 +37,6 @@ class ShoppingApi {
 
     @PostMapping(value = ["update"])
     fun updateItem(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
-        println("updateBought")
         noteDto.user_id = getUserId()
         val noteDeleted = repo!!.updateShoppingNote(noteDto)
         return ResponseEntity(noteDeleted, HttpStatus.OK)
@@ -46,7 +44,6 @@ class ShoppingApi {
 
     @PostMapping(value = ["markAsBought"])
     fun markAsBought(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
-        println("markAsBought")
         noteDto.user_id = getUserId()
         val noteDeleted = repo!!.markAsBought(noteDto)
         return ResponseEntity(noteDeleted, HttpStatus.OK)
@@ -54,7 +51,6 @@ class ShoppingApi {
 
     @PostMapping(value = ["remove"])
     fun remove(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
-        println("remove")
         val noteDeleted = repo!!.removeItem(noteDto.id)
         return ResponseEntity(noteDeleted, HttpStatus.OK)
     }
