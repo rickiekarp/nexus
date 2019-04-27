@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
 import net.rickiekarp.homeassistant.communication.vo.VOCredentials;
 import net.rickiekarp.homeassistant.communication.vo.VOToken;
+import net.rickiekarp.homeassistant.config.Configuration;
 import net.rickiekarp.homeassistant.interfaces.IOnGetTokenResult;
 import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.preferences.Token;
@@ -54,7 +55,7 @@ public class TokenController implements Callback<VOToken>, IRunController {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL_LOGIN)
+                .baseUrl(Configuration.host + BASE_URL_LOGIN)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();

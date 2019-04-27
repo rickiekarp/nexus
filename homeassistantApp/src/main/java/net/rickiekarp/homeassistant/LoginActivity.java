@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ import net.rickiekarp.homeassistant.utils.Util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sebastian on 24.11.17.
@@ -41,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
     private ProgressDialog progressDialog;
     private AppDatabase database;
     private Spinner spinner;
+    private ImageView accountsettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,15 +91,24 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
             }
         });
 
+        List<String> hosts_array = new ArrayList<>();
+        hosts_array.add("https://app.rickiekarp.net");
+        hosts_array.add("http://10.0.3.2:8080");
+
         spinner = findViewById(R.id.serverselection);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.hosts_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, hosts_array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        accountsettings = findViewById(R.id.account_settings);
+        accountsettings.setOnClickListener(v -> {
+            Toast.makeText(this, "Not implemented yet!", Toast.LENGTH_SHORT).show();
+        });
+
+        //Toast.makeText(this, Configuration.host, Toast.LENGTH_LONG).show();
+
     }
 
     private void showInvalidCredentialsToast() {

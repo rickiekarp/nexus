@@ -30,10 +30,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-
-    <string-array name="hosts_array">
-        <item>https://app.rickiekarp.net</item>
-        <item>http://10.0.3.2:8080</item>
-        <item>http://192.168.178.200</item>
-    </string-array>
+    <string name="action_accountsettings" />
 </resources>

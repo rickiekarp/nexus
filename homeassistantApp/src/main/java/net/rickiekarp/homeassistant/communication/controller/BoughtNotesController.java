@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
 import net.rickiekarp.homeassistant.communication.vo.VONotes;
+import net.rickiekarp.homeassistant.config.Configuration;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.utils.Util;
@@ -51,7 +52,7 @@ public class BoughtNotesController implements Callback<VONotes>, IRunController 
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL_APPSERVER)
+                .baseUrl(Configuration.host + BASE_URL_APPSERVER)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();

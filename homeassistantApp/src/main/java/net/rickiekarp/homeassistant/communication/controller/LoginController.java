@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
 import net.rickiekarp.homeassistant.communication.vo.VOData;
+import net.rickiekarp.homeassistant.config.Configuration;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.interfaces.IOnLoginResult;
 import net.rickiekarp.homeassistant.preferences.Token;
@@ -51,7 +52,7 @@ public class LoginController implements Callback<VOData> {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL_LOGIN)
+                .baseUrl(Configuration.host + BASE_URL_LOGIN)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();

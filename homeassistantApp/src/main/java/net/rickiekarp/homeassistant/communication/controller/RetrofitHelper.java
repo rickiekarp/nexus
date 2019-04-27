@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import net.rickiekarp.homeassistant.Constants;
+import net.rickiekarp.homeassistant.config.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -65,7 +66,9 @@ public class RetrofitHelper {
     }
 
     private String getBaseUrl(String serverType) {
-        return serverType.equals(Constants.LOGIN_SERVER) ? Constants.URL.BASE_URL_LOGIN : Constants.URL.BASE_URL_APPSERVER;
+        return serverType.equals(Constants.LOGIN_SERVER) ?
+                Configuration.host + Constants.URL.BASE_URL_LOGIN :
+                Configuration.host + Constants.URL.BASE_URL_APPSERVER;
 
     }
 }
