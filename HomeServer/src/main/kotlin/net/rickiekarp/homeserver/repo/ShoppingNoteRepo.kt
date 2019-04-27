@@ -14,9 +14,9 @@ import javax.sql.DataSource
 
 @Repository
 open class ShoppingNoteRepo : ShoppingNoteDAO {
-    private val FIND_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND lastUpdated IS NULL AND isDeleted = false"
+    private val FIND_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND dateBought IS NULL AND isDeleted = false"
     private val INSERT = "insert into shopping_note(title, description,  users_id, dateAdded, lastUpdated, isDeleted) values (?, null, ?, now(), null, false)"
-    private val MARK_AS_BOUGHT = "UPDATE shopping_note SET lastUpdated = now() WHERE id = ?"
+    private val MARK_AS_BOUGHT = "UPDATE shopping_note SET dateBought = now(), lastUpdated = now() WHERE id = ?"
     private val UPDATE = "UPDATE shopping_note SET title = ?, lastUpdated = now() WHERE id = ?"
     private val REMOVE = "UPDATE shopping_note SET isDeleted = true, lastUpdated = now() WHERE id = ?"
 
@@ -31,15 +31,8 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             stmt!!.setInt(1, id)
 
             val rs = stmt.executeQuery()
-
             while (rs.next()) {
-                val user = ShoppingNoteDto()
-                user.id = rs.getInt("id")
-                user.title = rs.getString("title")
-                user.dateAdded = rs.getDate("dateAdded")
-                user.lastUpdated = rs.getDate("lastUpdated")
-
-                notesList.add(user)
+                notesList.add(extractUserFromResultSet(rs))
             }
         } catch (e: SQLException) {
             // e.printStackTrace();
@@ -53,12 +46,15 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
 
     @Throws(SQLException::class)
     private fun extractUserFromResultSet(resultSet: ResultSet): ShoppingNoteDto {
-        val userVO = ShoppingNoteDto()
-        userVO.id = resultSet.getInt("id")
-        userVO.title = resultSet.getString("title")
-        userVO.dateAdded = resultSet.getDate("dateAdded")
-        userVO.lastUpdated = resultSet.getDate("lastUpdated")
-        return userVO
+        val noteDto = ShoppingNoteDto()
+        noteDto.id = resultSet.getInt("id")
+        noteDto.title = resultSet.getString("title")
+        noteDto.price = resultSet.getDouble("price")
+        noteDto.dateAdded = resultSet.getDate("dateAdded")
+        noteDto.dateBought = resultSet.getDate("dateBought")
+        noteDto.store_id = resultSet.getByte("store_id")
+        noteDto.lastUpdated = resultSet.getDate("lastUpdated")
+        return noteDto
     }
 
     override fun insertShoppingNote(note: ShoppingNoteDto): ShoppingNoteDto? {
@@ -90,12 +86,12 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
         return insertedNote
     }
 
-    override fun updateShoppingNote(user: ShoppingNoteDto): ResultDTO {
+    override fun updateShoppingNote(note: ShoppingNoteDto): ResultDTO {
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(UPDATE)
-            stmt!!.setString(1, user.title)
-            stmt.setInt(2, user.user_id)
+            stmt!!.setString(1, note.title)
+            stmt.setInt(2, note.id)
             stmt.executeUpdate()
             return ResultDTO("success")
         } catch (e: Exception) {
@@ -107,11 +103,11 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
         return ResultDTO("failed")
     }
 
-    override fun markAsBought(user: ShoppingNoteDto): ResultDTO {
+    override fun markAsBought(note: ShoppingNoteDto): ResultDTO {
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(MARK_AS_BOUGHT)
-            stmt!!.setInt(1, user.id)
+            stmt!!.setInt(1, note.id)
             stmt.executeUpdate()
             return ResultDTO("success")
         } catch (e: Exception) {
