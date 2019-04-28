@@ -6,22 +6,20 @@ import java.util.Date;
  * Created by sebastian on 17.11.17.
  */
 
-public class VONotes {
+public class VONote {
 
     private String title;
     private int id;
+    private Double price;
     private Date dateAdded;
+    private Date dateBought;
+    private int store_id;
 
-    public VONotes(String title, int id) {
-        this.title = title;
-        this.id = id;
-    }
-
-    public VONotes(String title) {
+    public VONote(String title) {
         this.title = title;
     }
 
-    public VONotes(int id) {
+    public VONote(int id) {
         this.id = id;
     }
 
@@ -55,5 +53,29 @@ public class VONotes {
 
     public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Date getDateBought() {
+        return dateBought;
+    }
+
+    public void setDateBought(Date dateBought) {
+        this.dateBought = dateBought;
+    }
+
+    public int getStore_id() {
+        return store_id;
+    }
+
+    public void setStore_id(int store_id) {
+        this.store_id = store_id;
     }
 }

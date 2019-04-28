@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
-import net.rickiekarp.homeassistant.communication.vo.VONotes;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.config.Configuration;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.interfaces.IRunController;
@@ -25,7 +25,7 @@ import static net.rickiekarp.homeassistant.Constants.URL.BASE_URL_APPSERVER;
  * Created by sebastian on 22.11.17.
  */
 
-public class BoughtNotesController implements Callback<VONotes>, IRunController {
+public class BoughtNotesController implements Callback<VONote>, IRunController {
 
     private String token;
     private IOnRemoveNoteResult uiCallback;
@@ -59,13 +59,13 @@ public class BoughtNotesController implements Callback<VONotes>, IRunController 
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        VONotes vo = new VONotes(noteId);
-        Call<VONotes> call = api.doMarkAsBought(Util.generateToken(token), vo);
+        VONote vo = new VONote(noteId);
+        Call<VONote> call = api.doMarkAsBought(Util.generateToken(token), vo);
         call.enqueue(this);
     }
 
     @Override
-    public void onResponse(Call<VONotes> call, Response<VONotes> response) {
+    public void onResponse(Call<VONote> call, Response<VONote> response) {
         if (response.code() == 200) {
             uiCallback.onRemoveNoteSuccess(id);
         } else {
@@ -74,7 +74,7 @@ public class BoughtNotesController implements Callback<VONotes>, IRunController 
     }
 
     @Override
-    public void onFailure(Call<VONotes> call, Throwable t) {
+    public void onFailure(Call<VONote> call, Throwable t) {
         uiCallback.onRemoveNoteError();
         t.printStackTrace();
     }

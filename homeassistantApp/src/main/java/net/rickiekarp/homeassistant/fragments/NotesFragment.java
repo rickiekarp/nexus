@@ -20,7 +20,7 @@ import net.rickiekarp.homeassistant.Constants;
 import net.rickiekarp.homeassistant.ItemClickSupport;
 import net.rickiekarp.homeassistant.R;
 import net.rickiekarp.homeassistant.adapter.AdapterCustomRecyclerView;
-import net.rickiekarp.homeassistant.communication.vo.VONotes;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.dialog.NotesDialog;
 import net.rickiekarp.homeassistant.interfaces.IOnAddNotesResult;
@@ -28,9 +28,7 @@ import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.interfaces.IOnUpdateNotesResult;
-import net.rickiekarp.homeassistant.model.CardViewItem;
 import net.rickiekarp.homeassistant.preferences.Token;
-import net.rickiekarp.homeassistant.provider.Notes;
 import net.rickiekarp.homeassistant.tasks.AddNoteTask;
 import net.rickiekarp.homeassistant.tasks.GetNotesTask;
 import net.rickiekarp.homeassistant.tasks.RemoveNoteTask;
@@ -47,11 +45,10 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
 
     private final String TAG = "singleNote";
     private AppDatabase database;
-    private ArrayList<CardViewItem> itemList;
+    private ArrayList<VONote> itemList;
     private AdapterCustomRecyclerView adapter;
     private SharedPreferences sp;
     private ProgressDialog progressDialog;
-    private List<Notes> notesList = new ArrayList<>();
     private IOnDialogClick context;
     private int itemId;
 
@@ -68,15 +65,15 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
         sp = getContext().getSharedPreferences(Constants.Preferences.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         getAllNotes();
         database = AppDatabase.getDatabase(getActivity());
-        itemList = new ArrayList<CardViewItem>();
+        itemList = new ArrayList<>();
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_notes);
+        FloatingActionButton fab = view.findViewById(R.id.fab_notes);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //openSingleNoteFragment();
 
-                NotesDialog notesDialog = NotesDialog.newInstance(context,"", 0);
+                NotesDialog notesDialog = NotesDialog.newInstance(context,null);
                 notesDialog.show(getActivity().getSupportFragmentManager(), "addnote");
             }
         });
@@ -86,7 +83,11 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
         ItemClickSupport.addTo(myView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                NotesDialog notesDialog = NotesDialog.newInstance(context, adapter.getItemTitle(position), adapter.getNoteId(position));
+
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                fragmentManager.beginTransaction().replace(R.id.main, new SingleNoteFragment()).addToBackStack(TAG).commit();
+
+                NotesDialog notesDialog = NotesDialog.newInstance(context, adapter.getNoteAtIndex(position));
                 notesDialog.show(getActivity().getSupportFragmentManager(), "updatenotes");
                 itemId = position;
             }
@@ -96,9 +97,6 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         myView.setLayoutManager(llm);
-
-//        MarkAsBoughtNoteTask markAsBought = new MarkAsBoughtNoteTask(sp, this, title, body, database);
-//        markAsBought.execute();
 
         return view;
     }
@@ -114,12 +112,8 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     }*/
 
     @Override
-    public void onGetAllNotesSuccess(List<VONotes> notesList) {
-        for (VONotes note : notesList) {
-            CardViewItem item = new CardViewItem(note.getTitle(), note.getId());
-            itemList.add(item);
-        }
-
+    public void onGetAllNotesSuccess(List<VONote> notesList) {
+        itemList.addAll(notesList);
         adapter.notifyDataSetChanged();
         progressDialog.dismiss();
 
@@ -142,7 +136,7 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
 
     @Override
     public void onAddNotesSuccess(String title) {
-        itemList.add(new CardViewItem(title));
+        itemList.add(new VONote(title));
         adapter.notifyDataSetChanged();
         progressDialog.dismiss();
     }

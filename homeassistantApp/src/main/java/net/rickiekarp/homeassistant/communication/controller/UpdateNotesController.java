@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
-import net.rickiekarp.homeassistant.communication.vo.VONotes;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.config.Configuration;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.interfaces.IOnUpdateNotesResult;
@@ -26,7 +26,7 @@ import static net.rickiekarp.homeassistant.Constants.URL.BASE_URL_APPSERVER;
  * Created by sebastian on 22.11.17.
  */
 
-public class UpdateNotesController implements Callback<VONotes>, IRunController {
+public class UpdateNotesController implements Callback<VONote>, IRunController {
 
     private String sp;
     private String title;
@@ -60,13 +60,13 @@ public class UpdateNotesController implements Callback<VONotes>, IRunController 
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        VONotes vo = new VONotes(title);
-        Call<VONotes> call = api.doUpdateNotes(Util.generateToken(sp), vo);
+        VONote vo = new VONote(title);
+        Call<VONote> call = api.doUpdateNotes(Util.generateToken(sp), vo);
         call.enqueue(this);
     }
 
     @Override
-    public void onResponse(Call<VONotes> call, Response<VONotes> response) {
+    public void onResponse(Call<VONote> call, Response<VONote> response) {
         if (response.code() == 200) {
             uiCallback.onUpdateNotesSuccess(title);
         } else {
@@ -75,7 +75,7 @@ public class UpdateNotesController implements Callback<VONotes>, IRunController 
     }
 
     @Override
-    public void onFailure(Call<VONotes> call, Throwable t) {
+    public void onFailure(Call<VONote> call, Throwable t) {
         uiCallback.onUpdateNotesError();
         t.printStackTrace();
     }

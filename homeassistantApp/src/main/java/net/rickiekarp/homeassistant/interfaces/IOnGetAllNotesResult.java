@@ -1,6 +1,6 @@
 package net.rickiekarp.homeassistant.interfaces;
 
-import net.rickiekarp.homeassistant.communication.vo.VONotes;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 
 import java.util.List;
 
@@ -9,6 +9,6 @@ import java.util.List;
  */
 
 public interface IOnGetAllNotesResult {
-    void onGetAllNotesSuccess(List<VONotes> notesList);
+    void onGetAllNotesSuccess(List<VONote> notesList);
     void onGetAllNotesError();
 }

@@ -1,10 +1,10 @@
 package net.rickiekarp.homeassistant.fragments;
 
-import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +31,10 @@ public class SingleNoteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_single_note, container, false);
-
         action = getTag();
         editTitle = (EditText) view.findViewById(R.id.single_note_title);
-
         editTitle.addTextChangedListener(new CustomTextWatcher(title));
-        editBody.addTextChangedListener(new CustomTextWatcher(body));
+//        editBody.addTextChangedListener(new CustomTextWatcher(body));
         return view;
     }
 

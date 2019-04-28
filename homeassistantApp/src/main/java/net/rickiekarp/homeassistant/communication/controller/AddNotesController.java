@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
-import net.rickiekarp.homeassistant.communication.vo.VONotes;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.config.Configuration;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.db.entities.Notes;
@@ -30,7 +30,7 @@ import static net.rickiekarp.homeassistant.Constants.URL.BASE_URL_APPSERVER;
  * Created by sebastian on 22.11.17.
  */
 
-public class AddNotesController implements Callback<VONotes>, IRunController {
+public class AddNotesController implements Callback<VONote>, IRunController {
 
     private SharedPreferences sp;
     private IOnAddNotesResult uiCallback;
@@ -64,15 +64,15 @@ public class AddNotesController implements Callback<VONotes>, IRunController {
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        VONotes vo = new VONotes(title);
-        Call<VONotes> call = api.doAddNotes(Util.generateToken(sp.getString(Token.KEY, "")), vo);
+        VONote vo = new VONote(title);
+        Call<VONote> call = api.doAddNotes(Util.generateToken(sp.getString(Token.KEY, "")), vo);
         call.enqueue(this);
     }
 
     @Override
-    public void onResponse(Call<VONotes> call, Response<VONotes> response) {
+    public void onResponse(Call<VONote> call, Response<VONote> response) {
         if (response.code() == 200) {
-            VONotes vo = response.body();
+            VONote vo = response.body();
             if (vo != null) {
 
                 database.notesDAO().insert(createNote(vo));
@@ -84,12 +84,12 @@ public class AddNotesController implements Callback<VONotes>, IRunController {
     }
 
     @Override
-    public void onFailure(Call<VONotes> call, Throwable t) {
+    public void onFailure(Call<VONote> call, Throwable t) {
         uiCallback.onAddNotesError();
         t.printStackTrace();
     }
 
-    private Notes createNote(VONotes vo) {
+    private Notes createNote(VONote vo) {
         Notes note = new Notes();
         note.id = vo.getId();
         note.title = vo.getTitle();

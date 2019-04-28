@@ -3,7 +3,7 @@ package net.rickiekarp.homeassistant.communication;
 
 import net.rickiekarp.homeassistant.communication.vo.VOCredentials;
 import net.rickiekarp.homeassistant.communication.vo.VOData;
-import net.rickiekarp.homeassistant.communication.vo.VONotes;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.communication.vo.VOResult;
 import net.rickiekarp.homeassistant.communication.vo.VOToken;
 
@@ -30,19 +30,19 @@ public abstract class ApiInterfaces {
     public interface NotesApi {
 
         @GET("shopping/get")
-        Call<List<VONotes>> getNotes(@Header(Params.AUTHORIZATION) String apiToken);
+        Call<List<VONote>> getNotes(@Header(Params.AUTHORIZATION) String apiToken);
 
         @POST("shopping/add")
-        Call<VONotes> doAddNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONotes notes);
+        Call<VONote> doAddNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONote notes);
 
         @POST("shopping/markAsBought")
-        Call<VONotes> doMarkAsBought(@Header(Params.AUTHORIZATION) String apiToken, @Body VONotes notes);
+        Call<VONote> doMarkAsBought(@Header(Params.AUTHORIZATION) String apiToken, @Body VONote notes);
 
         @POST("shopping/update")
-        Call<VONotes> doUpdateNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONotes notes);
+        Call<VONote> doUpdateNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONote notes);
 
         @POST("shopping/remove")
-        Call<VOResult> doRemoveNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONotes notes);
+        Call<VOResult> doRemoveNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONote notes);
     }
 
     public interface LoginApi {

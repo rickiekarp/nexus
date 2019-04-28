@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import net.rickiekarp.homeassistant.R;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
-import net.rickiekarp.homeassistant.model.CardViewItem;
 import net.rickiekarp.homeassistant.tasks.MarkAsBoughtNoteTask;
 
 import java.util.ArrayList;
@@ -20,11 +20,11 @@ import java.util.ArrayList;
 
 public class AdapterCustomRecyclerView extends RecyclerView.Adapter<AdapterCustomRecyclerView.MyViewHolder> {
 
-    IOnRemoveNoteResult onRemoveNoteResult;
+    private IOnRemoveNoteResult onRemoveNoteResult;
     private String token;
-    private ArrayList<CardViewItem> items;
+    private ArrayList<VONote> items;
 
-    public AdapterCustomRecyclerView(ArrayList<CardViewItem> items, String token, IOnRemoveNoteResult removeResult) {
+    public AdapterCustomRecyclerView(ArrayList<VONote> items, String token, IOnRemoveNoteResult removeResult) {
         this.items = items;
         this.token = token;
         this.onRemoveNoteResult = removeResult;
@@ -65,6 +65,10 @@ public class AdapterCustomRecyclerView extends RecyclerView.Adapter<AdapterCusto
             title = (TextView) itemView.findViewById(R.id.notes_title);
             button = (Button) itemView.findViewById(R.id.remove);
         }
+    }
+
+    public VONote getNoteAtIndex(int index) {
+        return items.get(index);
     }
 
     public String getItemTitle(int position) {

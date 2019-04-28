@@ -10,8 +10,10 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import net.rickiekarp.homeassistant.R;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 
 /**
@@ -21,15 +23,12 @@ import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 public class NotesDialog extends DialogFragment {
 
     private IOnDialogClick listener;
-    private String title;
-    private int id;
+    private VONote note;
 
-    public static NotesDialog newInstance(IOnDialogClick listener, String title, int id) {
+    public static NotesDialog newInstance(IOnDialogClick listener, VONote noteItem) {
         NotesDialog fragment = new NotesDialog();
         fragment.listener = listener;
-        fragment.title = title;
-        fragment.id = id;
-
+        fragment.note = noteItem;
         return fragment;
     }
 
@@ -38,46 +37,55 @@ public class NotesDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         LayoutInflater inflater = (LayoutInflater) getActivity().getLayoutInflater().getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.layout_add_note, null);
+        View v = inflater.inflate(R.layout.fragment_single_note, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Erstelle Notiz");
         builder.setView(v);
 
-        EditText editTitle = v.findViewById(R.id.dialog_title);
-        editTitle.setText(title);
+        EditText editTitle = v.findViewById(R.id.single_note_title);
+        editTitle.setHint("New title");
 
-        if (getTag().equals("addnote")) {
-            builder.setPositiveButton("Hinzufügen", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    title = editTitle.getText().toString();
+        switch (getTag()) {
+            case "addnote":
+                builder.setTitle("Create item");
+                builder.setPositiveButton("Hinzufügen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final String noteTitle = editTitle.getText().toString();
+                        if (noteTitle.isEmpty()) {
+                            Toast.makeText(getActivity(), "Title can not be empty", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        listener.onPositiveClick(noteTitle, "add");
+                        dialogInterface.dismiss();
+                    }
+                });
+                break;
+            case "updatenotes":
+                builder.setTitle("Update item");
+                editTitle.setText(note.getTitle());
 
-                        listener.onPositiveClick(title, "add");
+                EditText price = v.findViewById(R.id.note_detail_price);
+                price.setText(String.valueOf(note.getPrice()));
+
+                builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        listener.onPositiveClick(editTitle.getText().toString(),"update");
                         dialogInterface.dismiss();
 
-                }
-            });
+                    }
+                });
+                builder.setNegativeButton("Löschen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        listener.onNegativeClick(note.getId());
+                        dismiss();
+                    }
+                });
+                break;
+            default:
+                throw new RuntimeException("invalid parameter");
         }
-        else if (getTag().equals("updatenotes")) {
-            builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    title = editTitle.getText().toString();
-
-                    listener.onPositiveClick(title,"update");
-                    dialogInterface.dismiss();
-
-                }
-            });
-            builder.setNegativeButton("Löschen", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    listener.onNegativeClick(id);
-                    dismiss();
-                }
-            });
-        }
-
 
         return builder.create();
     }

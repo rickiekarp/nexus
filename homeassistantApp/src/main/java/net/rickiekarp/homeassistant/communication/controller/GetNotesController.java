@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
-import net.rickiekarp.homeassistant.communication.vo.VONotes;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.config.Configuration;
 import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 import net.rickiekarp.homeassistant.interfaces.IRunController;
@@ -29,7 +29,7 @@ import static net.rickiekarp.homeassistant.Constants.URL.BASE_URL_APPSERVER;
  * Created by sebastian on 22.11.17.
  */
 
-public class GetNotesController implements Callback<List<VONotes>>, IRunController {
+public class GetNotesController implements Callback<List<VONote>>, IRunController {
 
     private SharedPreferences sp;
     private IOnGetAllNotesResult uiCallback;
@@ -59,14 +59,14 @@ public class GetNotesController implements Callback<List<VONotes>>, IRunControll
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        Call<List<VONotes>> call = api.getNotes(Util.generateToken(sp.getString(Token.KEY, "")));
+        Call<List<VONote>> call = api.getNotes(Util.generateToken(sp.getString(Token.KEY, "")));
         call.enqueue(this);
     }
 
     @Override
-    public void onResponse(Call<List<VONotes>> call, Response<List<VONotes>> response) {
+    public void onResponse(Call<List<VONote>> call, Response<List<VONote>> response) {
         if (response.code() == 200) {
-            List<VONotes> voList = response.body();
+            List<VONote> voList = response.body();
             uiCallback.onGetAllNotesSuccess(voList);
         } else {
             uiCallback.onGetAllNotesError();
@@ -74,7 +74,7 @@ public class GetNotesController implements Callback<List<VONotes>>, IRunControll
     }
 
     @Override
-    public void onFailure(Call<List<VONotes>> call, Throwable t) {
+    public void onFailure(Call<List<VONote>> call, Throwable t) {
         uiCallback.onGetAllNotesError();
     }
 }

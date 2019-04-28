@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import net.rickiekarp.homeassistant.communication.ApiInterfaces;
-import net.rickiekarp.homeassistant.communication.vo.VONotes;
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.communication.vo.VOResult;
 import net.rickiekarp.homeassistant.config.Configuration;
 import net.rickiekarp.homeassistant.db.AppDatabase;
@@ -64,7 +64,7 @@ public class RemoveNotesController implements Callback<VOResult>, IRunController
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        VONotes vo = new VONotes(id);
+        VONote vo = new VONote(id);
         Call<VOResult> call = api.doRemoveNotes(Util.generateToken(sp.getString(Token.KEY, "")), vo);
         call.enqueue(this);
     }
