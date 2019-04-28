@@ -55,6 +55,12 @@ class ShoppingApi {
         return ResponseEntity(noteDeleted, HttpStatus.OK)
     }
 
+    @GetMapping(value = ["history"])
+    fun history(): ResponseEntity<List<ShoppingNoteDto>?> {
+        val noteList = repo!!.getBoughtHistory(getUserId())
+        return ResponseEntity(noteList, HttpStatus.OK)
+    }
+
     private fun getUserId(): Int {
         val authentication = SecurityContextHolder.getContext().authentication
         if (authentication !is AnonymousAuthenticationToken) {

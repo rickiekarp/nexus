@@ -19,6 +19,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
     private val MARK_AS_BOUGHT = "UPDATE shopping_note SET dateBought = now(), lastUpdated = now() WHERE id = ?"
     private val UPDATE = "UPDATE shopping_note SET title = ?, lastUpdated = now() WHERE id = ?"
     private val REMOVE = "UPDATE shopping_note SET isDeleted = true, lastUpdated = now() WHERE id = ?"
+    private val FIND_HISTORY_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND dateBought IS NOT NULL AND isDeleted = false"
 
     @Autowired
     private val dataSource: DataSource? = null
@@ -42,19 +43,6 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             DatabaseUtil.close(dataSource!!.connection)
         }
         return notesList
-    }
-
-    @Throws(SQLException::class)
-    private fun extractUserFromResultSet(resultSet: ResultSet): ShoppingNoteDto {
-        val noteDto = ShoppingNoteDto()
-        noteDto.id = resultSet.getInt("id")
-        noteDto.title = resultSet.getString("title")
-        noteDto.price = resultSet.getDouble("price")
-        noteDto.dateAdded = resultSet.getDate("dateAdded")
-        noteDto.dateBought = resultSet.getDate("dateBought")
-        noteDto.store_id = resultSet.getByte("store_id")
-        noteDto.lastUpdated = resultSet.getDate("lastUpdated")
-        return noteDto
     }
 
     override fun insertShoppingNote(note: ShoppingNoteDto): ShoppingNoteDto? {
@@ -135,5 +123,39 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             DatabaseUtil.close(dataSource!!.connection)
         }
         return ResultDTO("failed")
+    }
+
+    override fun getBoughtHistory(user_id: Int): List<ShoppingNoteDto> {
+        var stmt: PreparedStatement? = null
+        val notesList = ArrayList<ShoppingNoteDto>()
+        try {
+            stmt = dataSource!!.connection.prepareStatement(FIND_HISTORY_BY_USER_ID)
+            stmt!!.setInt(1, user_id)
+
+            val rs = stmt.executeQuery()
+            while (rs.next()) {
+                notesList.add(extractUserFromResultSet(rs))
+            }
+        } catch (e: SQLException) {
+            // e.printStackTrace();
+            throw RuntimeException(e)
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
+        }
+        return notesList
+    }
+
+    @Throws(SQLException::class)
+    private fun extractUserFromResultSet(resultSet: ResultSet): ShoppingNoteDto {
+        val noteDto = ShoppingNoteDto()
+        noteDto.id = resultSet.getInt("id")
+        noteDto.title = resultSet.getString("title")
+        noteDto.price = resultSet.getDouble("price")
+        noteDto.dateAdded = resultSet.getDate("dateAdded")
+        noteDto.dateBought = resultSet.getDate("dateBought")
+        noteDto.store_id = resultSet.getByte("store_id")
+        noteDto.lastUpdated = resultSet.getDate("lastUpdated")
+        return noteDto
     }
 }
