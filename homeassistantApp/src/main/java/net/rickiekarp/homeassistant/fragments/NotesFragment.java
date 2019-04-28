@@ -58,7 +58,6 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_notes, container, false);
-
         context = this;
         getActivity().setTitle(R.string.action_notes);
 
@@ -87,9 +86,9 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
 //                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //                fragmentManager.beginTransaction().replace(R.id.main, new SingleNoteFragment()).addToBackStack(TAG).commit();
 
+                itemId = position;
                 NotesDialog notesDialog = NotesDialog.newInstance(context, adapter.getNoteAtIndex(position));
                 notesDialog.show(getActivity().getSupportFragmentManager(), "updatenotes");
-                itemId = position;
             }
         });
         myView.setHasFixedSize(true);
@@ -185,18 +184,18 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
 
     @Override
     public void onUpdateNotesError() {
-
+        Toast.makeText(getContext(), "There was an error when updating the note", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onRemoveNoteSuccess(int id) {
-        itemList.remove(itemId);
+        itemList.remove(id);
         adapter.notifyDataSetChanged();
         progressDialog.dismiss();
     }
 
     @Override
     public void onRemoveNoteError() {
-
+        Toast.makeText(getContext(), "There was an error when removing the note", Toast.LENGTH_LONG).show();
     }
 }

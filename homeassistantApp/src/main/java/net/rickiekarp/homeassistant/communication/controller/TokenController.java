@@ -86,6 +86,6 @@ public class TokenController implements Callback<VOToken>, IRunController {
 
     @Override
     public void onFailure(Call<VOToken> call, Throwable t) {
-        t.printStackTrace();
+        uiCallback.onGetTokenError();
     }
 }
