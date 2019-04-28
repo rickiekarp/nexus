@@ -65,8 +65,6 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             stmt!!.setString(1, note.title)
             stmt.setInt(2, note.user_id)
 
-            println(note)
-
             stmt.execute()
 
             val resultSet = stmt.generatedKeys
@@ -74,6 +72,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
                 insertedNote = ShoppingNoteDto()
                 insertedNote.id = resultSet.getInt(1)
                 insertedNote.title = note.title
+                println("Inserted: $note")
             } else {
                 println("There was no result when adding a new note!")
             }
@@ -93,6 +92,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             stmt!!.setString(1, note.title)
             stmt.setInt(2, note.id)
             stmt.executeUpdate()
+            println("Updated: $note")
             return ResultDTO("success")
         } catch (e: Exception) {
             e.printStackTrace()
@@ -109,6 +109,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             stmt = dataSource!!.connection.prepareStatement(MARK_AS_BOUGHT)
             stmt!!.setInt(1, note.id)
             stmt.executeUpdate()
+            println("Bought: $note")
             return ResultDTO("success")
         } catch (e: Exception) {
             e.printStackTrace()
@@ -125,6 +126,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             stmt = dataSource!!.connection.prepareStatement(REMOVE)
             stmt!!.setInt(1, noteid)
             stmt.executeUpdate()
+            println("Removed note: $noteid")
             return ResultDTO("success")
         } catch (e: Exception) {
             e.printStackTrace()
