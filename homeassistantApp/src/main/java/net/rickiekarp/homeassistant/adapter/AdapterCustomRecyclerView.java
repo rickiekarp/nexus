@@ -42,7 +42,6 @@ public class AdapterCustomRecyclerView extends RecyclerView.Adapter<AdapterCusto
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("clicked");
                 System.out.println("position:"  + items.get(position).getId());
                 MarkAsBoughtNoteTask updateNoteTask = new MarkAsBoughtNoteTask(token, onRemoveNoteResult, position, items.get(position).getId());
                 updateNoteTask.execute();

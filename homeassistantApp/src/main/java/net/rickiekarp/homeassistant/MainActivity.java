@@ -24,6 +24,7 @@ import android.widget.Toast;
 import net.rickiekarp.homeassistant.dialog.LogoutDialog;
 import net.rickiekarp.homeassistant.fragments.InfoFragment;
 import net.rickiekarp.homeassistant.fragments.NotesFragment;
+import net.rickiekarp.homeassistant.fragments.NotesHistoryFragment;
 import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 import net.rickiekarp.homeassistant.model.MenuItemInformation;
 import net.rickiekarp.homeassistant.utils.Util;
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences sp;
     private static String TAG;
 
-    private static final int MENU_NOTES = 1;
+    private final int MENU_NOTES = 1;
+    private final int MENU_NOTES_HISTORY = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new NotesFragment();
                 TAG = "notes";
                 break;
+            case MENU_NOTES_HISTORY:
+                fragment = new NotesHistoryFragment();
+                TAG = "notes_history";
+                break;
             case R.id.nav_info:
                 fragment = new InfoFragment();
                 TAG = "info";
@@ -133,8 +139,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 newItem.itemId = MENU_NOTES;
                 newItem.drawableId = R.drawable.ic_assignment_black_24dp;
                 break;
+            case "featureNotesHistory":
+                newItem.title = R.string.action_notes_history;
+                newItem.itemId = MENU_NOTES_HISTORY;
+                newItem.drawableId = R.drawable.ic_assignment_black_24dp;
+                break;
             default:
-                Log.e("error", "No fitting key found!");
+                Log.w("error", "No fitting key found!");
         }
         return newItem;
     }
@@ -152,10 +163,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = headerView.findViewById(R.id.headerSubTitle);
         navUsername.setText(sp.getString(Constants.Preferences.PREF_USERNAME, null));
 
-        final MenuItemInformation testItem = getMenuItem("featureNotes");
-        addNavigationDrawerItem(
-                navigationView.getMenu().findItem(R.id.submenu_1), testItem
-        );
+        final MenuItemInformation shoppingNoteItem = getMenuItem("featureNotes");
+        addNavigationDrawerItem(navigationView.getMenu().findItem(R.id.submenu_1), shoppingNoteItem);
+        final MenuItemInformation shoppingNoteHistoryItem = getMenuItem("featureNotesHistory");
+        addNavigationDrawerItem(navigationView.getMenu().findItem(R.id.submenu_1), shoppingNoteHistoryItem);
     }
 
     private void addNavigationDrawerItem(final MenuItem menuItem, final MenuItemInformation newItem) {

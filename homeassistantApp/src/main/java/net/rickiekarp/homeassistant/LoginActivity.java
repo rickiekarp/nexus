@@ -92,8 +92,8 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
         });
 
         List<String> hosts_array = new ArrayList<>();
-        hosts_array.add("https://app.rickiekarp.net");
         hosts_array.add("http://10.0.3.2:8080");
+        hosts_array.add("https://app.rickiekarp.net");
 
         spinner = findViewById(R.id.serverselection);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,

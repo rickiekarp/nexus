@@ -45,6 +45,10 @@ public class NotesDialog extends DialogFragment {
         editTitle.setHint("New title");
 
         switch (getTag()) {
+            case "viewnote":
+                builder.setTitle("Item details");
+                break;
+
             case "addnote":
                 builder.setTitle("Create item");
                 builder.setPositiveButton("Hinzufügen", new DialogInterface.OnClickListener() {
