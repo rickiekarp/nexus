@@ -19,7 +19,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
     private val MARK_AS_BOUGHT = "UPDATE shopping_note SET dateBought = now(), lastUpdated = now() WHERE id = ?"
     private val UPDATE = "UPDATE shopping_note SET title = ?, lastUpdated = now() WHERE id = ?"
     private val REMOVE = "UPDATE shopping_note SET isDeleted = true, lastUpdated = now() WHERE id = ?"
-    private val FIND_HISTORY_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND dateBought IS NOT NULL AND isDeleted = false"
+    private val FIND_HISTORY_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND dateBought IS NOT NULL AND isDeleted = false ORDER BY dateBought desc"
 
     @Autowired
     private val dataSource: DataSource? = null
