@@ -30,7 +30,7 @@ public abstract class ApiInterfaces {
     public interface NotesApi {
 
         @GET("shopping/get")
-        Call<List<VONote>> getNotes(@Header(Params.AUTHORIZATION) String apiToken);
+        Call<List<VONote>> doGetNotes(@Header(Params.AUTHORIZATION) String apiToken);
 
         @POST("shopping/add")
         Call<VONote> doAddNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONote notes);
@@ -43,6 +43,9 @@ public abstract class ApiInterfaces {
 
         @POST("shopping/remove")
         Call<VOResult> doRemoveNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONote notes);
+
+        @GET("shopping/history")
+        Call<List<VONote>> doGetHistory(@Header(Params.AUTHORIZATION) String apiToken);
     }
 
     public interface LoginApi {

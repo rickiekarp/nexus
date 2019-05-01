@@ -13,6 +13,7 @@ import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.utils.Util;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -29,12 +30,12 @@ import static net.rickiekarp.homeassistant.Constants.URL.BASE_URL_APPSERVER;
  * Created by sebastian on 22.11.17.
  */
 
-public class GetNotesController implements Callback<List<VONote>>, IRunController {
+public class GetNotesHistoryController implements Callback<List<VONote>>, IRunController {
 
     private SharedPreferences sp;
     private IOnGetAllNotesResult uiCallback;
 
-    public GetNotesController(SharedPreferences sp, IOnGetAllNotesResult uiCallback) {
+    public GetNotesHistoryController(SharedPreferences sp, IOnGetAllNotesResult uiCallback) {
         this.uiCallback = uiCallback;
         this.sp = sp;
     }
@@ -42,7 +43,7 @@ public class GetNotesController implements Callback<List<VONote>>, IRunControlle
     @Override
     public void start() {
         Gson gson = new GsonBuilder()
-                .setLenient()
+                .setDateFormat("yy-MM-dd")
                 .create();
 
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
@@ -59,7 +60,7 @@ public class GetNotesController implements Callback<List<VONote>>, IRunControlle
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        Call<List<VONote>> call = api.doGetNotes(Util.generateToken(sp.getString(Token.KEY, "")));
+        Call<List<VONote>> call = api.doGetHistory(Util.generateToken(sp.getString(Token.KEY, "")));
         call.enqueue(this);
     }
 

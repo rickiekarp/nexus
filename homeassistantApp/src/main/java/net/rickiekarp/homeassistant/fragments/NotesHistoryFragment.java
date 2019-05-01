@@ -33,6 +33,7 @@ import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.interfaces.IOnUpdateNotesResult;
 import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.tasks.AddNoteTask;
+import net.rickiekarp.homeassistant.tasks.GetNotesHistoryTask;
 import net.rickiekarp.homeassistant.tasks.GetNotesTask;
 import net.rickiekarp.homeassistant.tasks.RemoveNoteTask;
 import net.rickiekarp.homeassistant.tasks.UpdateNoteTask;
@@ -123,7 +124,7 @@ public class NotesHistoryFragment extends Fragment implements IOnGetAllNotesResu
 
     private void getAllNotes(){
         progressDialog = ProgressDialog.show(getActivity(), "", "Loading history", true, false);
-        GetNotesTask getNotesTask = new GetNotesTask(sp, this);
+        GetNotesHistoryTask getNotesTask = new GetNotesHistoryTask(sp, this);
         getNotesTask.execute();
     }
 

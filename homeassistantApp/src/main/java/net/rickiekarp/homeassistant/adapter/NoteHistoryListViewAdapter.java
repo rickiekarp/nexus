@@ -1,6 +1,8 @@
 package net.rickiekarp.homeassistant.adapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -83,7 +85,7 @@ public class NoteHistoryListViewAdapter extends BaseAdapter
         VONote map = items.get(position);
         holder.txtFirst.setText(map.getTitle());
         holder.txtSecond.setText(String.valueOf(map.getPrice()));
-        holder.txtThird.setText(String.valueOf(map.getDateBought()));
+        holder.txtThird.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(map.getDateBought()));
         holder.txtFourth.setText(String.valueOf(map.getStore_id()));
 
         return convertView;
