@@ -1,9 +1,5 @@
 package net.rickiekarp.loginserver.rest.api
 
-import net.rickiekarp.foundation.dto.exception.ResultDTO
-import net.rickiekarp.foundation.model.Credentials
-import net.rickiekarp.foundation.model.User
-import net.rickiekarp.loginserver.dao.UserDAO
 import net.rickiekarp.loginserver.dao.WorldsDAO
 import net.rickiekarp.loginserver.dto.WorldDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,7 +31,7 @@ class WorldsApi {
 
         } catch (e: RuntimeException) {
             e.printStackTrace()
-            ResponseEntity(HttpStatus.UNAUTHORIZED)
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 }

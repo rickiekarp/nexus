@@ -20,14 +20,6 @@ class UpdateRepo : UpdateDAO {
     @Autowired
     private val dataSource: DataSource? = null
 
-    override fun findAll(): List<ApplicationEntity> {
-        return ArrayList()
-    }
-
-    override fun findById(): List<ApplicationEntity> {
-        return ArrayList()
-    }
-
     override fun findByName(identifier: String, updateChannel: Int): List<ApplicationEntity> {
         var stmt: PreparedStatement? = null
         val list = ArrayList<ApplicationEntity>()
