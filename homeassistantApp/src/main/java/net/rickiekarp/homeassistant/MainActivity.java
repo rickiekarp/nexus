@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.dialog.LogoutDialog;
 import net.rickiekarp.homeassistant.fragments.InfoFragment;
 import net.rickiekarp.homeassistant.fragments.NotesFragment;
@@ -28,6 +29,10 @@ import net.rickiekarp.homeassistant.fragments.NotesHistoryFragment;
 import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 import net.rickiekarp.homeassistant.model.MenuItemInformation;
 import net.rickiekarp.homeassistant.utils.Util;
+
+import java.util.Map;
+import java.util.Properties;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IOnDialogClick {
 
@@ -163,10 +168,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = headerView.findViewById(R.id.headerSubTitle);
         navUsername.setText(sp.getString(Constants.Preferences.PREF_USERNAME, null));
 
-        final MenuItemInformation shoppingNoteItem = getMenuItem("featureNotes");
-        addNavigationDrawerItem(navigationView.getMenu().findItem(R.id.submenu_1), shoppingNoteItem);
-        final MenuItemInformation shoppingNoteHistoryItem = getMenuItem("featureNotesHistory");
-        addNavigationDrawerItem(navigationView.getMenu().findItem(R.id.submenu_1), shoppingNoteHistoryItem);
+        Properties properties = AppDatabase.getDatabase(this).getAppData().getFeatures();
+
+        // create treemap of feature properties to sort the received properties
+        // TODO: use an array (json) instead of Properties
+        Map<String, String> sortedMap = new TreeMap(properties);
+        for (String key : sortedMap.keySet()) {
+            if (Boolean.parseBoolean(properties.getProperty(key))) {
+                final MenuItemInformation navItem = getMenuItem(key);
+                addNavigationDrawerItem(
+                        navigationView.getMenu().findItem(R.id.submenu_1), navItem
+                );
+            }
+        }
+
+//        // set menu items of enabled features
+//        Enumeration e = properties.propertyNames();
+//        while (e.hasMoreElements()) {
+//            String key = (String) e.nextElement();
+//            if (Boolean.parseBoolean(properties.getProperty(key))) {
+//                final MenuItemInformation navItem = getMenuItem(key);
+//                addNavigationDrawerItem(
+//                        navigationView.getMenu().findItem(R.id.submenu_1), navItem
+//                );
+//            }
+//        }
     }
 
     private void addNavigationDrawerItem(final MenuItem menuItem, final MenuItemInformation newItem) {
