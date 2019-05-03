@@ -12,7 +12,7 @@ buildscript {
 
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${rootProject.extra.get("kotlinVersion")}")
-        classpath("gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:${rootProject.extra.get("spotbugsVersion")}")
+        classpath("gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:${rootProject.extra.get("spotbugsPluginVersion")}")
     }
 }
 
@@ -44,7 +44,7 @@ allprojects {
 
     dependencies {
         compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra.get("kotlinVersion")}")
-        testImplementation("org.junit.jupiter:junit-jupiter-api:${rootProject.extra.get("junit5Version")}")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:${rootProject.extra.get("junitVersion")}")
     }
 
     tasks.withType<KotlinCompile> {
