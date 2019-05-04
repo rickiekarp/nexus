@@ -21,9 +21,6 @@ apply plugin: 'war'
 //    Plugins - Configuration
 //------------------------------------------------------------------------------------------------------------------------
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
 bootWar {
     baseName = 'Website'
     libsDirName = new File(projectDir, "/../../module-deployment/service-application/webapps")
