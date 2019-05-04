@@ -1,4 +1,4 @@
-extra.set("gradleVersion", "5.0")
+extra.set("gradleVersion", "5.4.1")
 
 extra.set("kotlinVersion", "1.3.31")
 
