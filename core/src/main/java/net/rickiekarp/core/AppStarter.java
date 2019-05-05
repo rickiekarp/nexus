@@ -26,16 +26,6 @@ public class AppStarter extends Application {
 
     private static AppLayout node;
 
-    protected static void setMainClazz(Class mainClazz) {
-        AppStarter.mainClazz = mainClazz;
-    }
-    protected static void setConfigClazz(Class configClazz) {
-        AppStarter.configClazz = configClazz;
-    }
-    protected static void setLayout(AppLayout node) {
-        AppStarter.node = node;
-    }
-
     @Override
     public void start(Stage stage) {
         AppContext.create(mainClazz.getModule().getName());
@@ -92,23 +82,28 @@ public class AppStarter extends Application {
         }
     }
 
-    protected static void setWinType(byte type) {
+    protected void setMainClazz(Class mainClazz) {
+        AppStarter.mainClazz = mainClazz;
+    }
+    protected void setConfigClazz(Class configClazz) {
+        AppStarter.configClazz = configClazz;
+    }
+    protected void setLayout(AppLayout node) {
+        AppStarter.node = node;
+    }
+    protected void setWinType(byte type) {
         winType = type;
     }
-
-    public static void setMinWidth(final int width) {
+    protected void setMinWidth(final int width) {
         minWidth = width;
     }
-
-    public static void setMinHeight(final int height) {
+    protected void setMinHeight(final int height) {
         minHeight = height;
     }
-
-    public static void setWidth(final int defWidth) {
+    protected void setWidth(final int defWidth) {
         width = defWidth;
     }
-
-    public static void setHeight(final int defHeight) {
+    protected void setHeight(final int defHeight) {
         height = defHeight;
     }
 

@@ -1,5 +1,6 @@
 package net.rickiekarp.flc;
 
+import javafx.stage.Stage;
 import net.rickiekarp.core.AppStarter;
 import net.rickiekarp.flc.settings.AppConfiguration;
 import net.rickiekarp.flc.view.layout.MainLayout;
@@ -11,22 +12,25 @@ public class MainApp extends AppStarter {
      * @param args Program arguments
      */
     public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) {
         setMainClazz(MainApp.class);
         setConfigClazz(AppConfiguration.class);
 
-        setWinType((byte) 1);
-
+        setWinType((byte) 0);
         setMinWidth(800);
         setMinHeight(550);
         setWidth(900);
         setHeight(600);
-
         setLayout(new MainLayout());
 
-        launch(args);
+        super.start(stage);
     }
 
-//    public void start(Stage stage) throws Exception {
+    //    public void start(Stage stage) throws Exception {
 //        AppContext.create("filelistcreator");
 
         //load config file
