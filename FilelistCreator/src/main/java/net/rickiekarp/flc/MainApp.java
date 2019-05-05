@@ -25,6 +25,7 @@ public class MainApp extends AppStarter {
         setMinHeight(550);
         setWidth(900);
         setHeight(600);
+        setResizable(true);
         setLayout(new MainLayout());
 
         super.start(stage);

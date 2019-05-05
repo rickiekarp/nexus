@@ -16,13 +16,14 @@ import net.rickiekarp.core.view.MessageDialog;
 import net.rickiekarp.core.view.layout.AppLayout;
 
 public class AppStarter extends Application {
-    private static Class mainClazz;
-    private static Class configClazz;
-    private static byte winType;
-    private static int minWidth;
-    private static int minHeight;
-    private static int width;
-    private static int height;
+    private Class mainClazz;
+    private Class configClazz;
+    private byte winType;
+    private int minWidth;
+    private int minHeight;
+    private int width;
+    private int height;
+    private boolean resizable;
 
     private static AppLayout node;
 
@@ -60,7 +61,7 @@ public class AppStarter extends Application {
         //application related configuration
         stage.setTitle(AppContext.getContext().getApplicationName());
         stage.getIcons().add(ImageLoader.getAppIconSmall());
-        stage.setResizable(false);
+        stage.setResizable(resizable);
         stage.setMinWidth(minWidth); stage.setMinHeight(minHeight);
         stage.setWidth(width); stage.setHeight(height);
 
@@ -82,11 +83,11 @@ public class AppStarter extends Application {
         }
     }
 
-    protected void setMainClazz(Class mainClazz) {
-        AppStarter.mainClazz = mainClazz;
+    protected void setMainClazz(Class clazz) {
+        mainClazz = clazz;
     }
-    protected void setConfigClazz(Class configClazz) {
-        AppStarter.configClazz = configClazz;
+    protected void setConfigClazz(Class clazz) {
+        configClazz = clazz;
     }
     protected void setLayout(AppLayout node) {
         AppStarter.node = node;
@@ -105,6 +106,9 @@ public class AppStarter extends Application {
     }
     protected void setHeight(final int defHeight) {
         height = defHeight;
+    }
+    protected void setResizable(final boolean isResizable) {
+        resizable = isResizable;
     }
 
 }
