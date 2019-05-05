@@ -11,7 +11,7 @@ import net.rickiekarp.core.settings.Configuration;
 import net.rickiekarp.core.settings.LoadSave;
 import net.rickiekarp.core.ui.tray.ToolTrayIcon;
 import net.rickiekarp.core.util.FileUtil;
-import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.ui.windowmanager.ImageLoader;
 import net.rickiekarp.core.view.MainScene;
 import net.rickiekarp.core.view.MessageDialog;
 import net.rickiekarp.core.view.layout.LoginMaskLayout;

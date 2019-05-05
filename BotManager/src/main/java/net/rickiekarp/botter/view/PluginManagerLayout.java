@@ -11,7 +11,7 @@ import net.rickiekarp.core.ui.windowmanager.WindowStage;
 import net.rickiekarp.core.settings.Configuration;
 import net.rickiekarp.core.ui.windowmanager.WindowScene;
 import net.rickiekarp.core.util.FileUtil;
-import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.ui.windowmanager.ImageLoader;
 import net.rickiekarp.core.view.MainScene;
 import net.rickiekarp.botlib.enums.BotPlatforms;
 import net.rickiekarp.botlib.model.PluginData;

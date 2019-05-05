@@ -8,7 +8,6 @@ import net.rickiekarp.core.settings.AppCommands;
 import net.rickiekarp.core.settings.Configuration;
 import net.rickiekarp.core.settings.LoadSave;
 import net.rickiekarp.core.ui.anim.AnimationHandler;
-import net.rickiekarp.core.util.ImageLoader;
 import net.rickiekarp.core.view.AboutScene;
 import net.rickiekarp.core.view.SettingsScene;
 import javafx.beans.property.SimpleBooleanProperty;

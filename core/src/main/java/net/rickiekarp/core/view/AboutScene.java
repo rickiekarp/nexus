@@ -6,7 +6,7 @@ import net.rickiekarp.core.debug.DebugHelper;
 import net.rickiekarp.core.debug.ExceptionHandler;
 import net.rickiekarp.core.ui.windowmanager.WindowScene;
 import net.rickiekarp.core.ui.windowmanager.WindowStage;
-import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.ui.windowmanager.ImageLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;

@@ -1,8 +1,10 @@
-package net.rickiekarp.core.util;
+package net.rickiekarp.core.ui.windowmanager;
 
 import javafx.scene.image.Image;
 import net.rickiekarp.api.HelloService;
 import net.rickiekarp.core.HelloFactory;
+
+import java.net.URL;
 
 public class ImageLoader {
     private static Image appIcon;
@@ -26,18 +28,18 @@ public class ImageLoader {
         return appIconSmall;
     }
 
-    public static Image getMenu() {
+    static Image getMenu() {
         if (menu == null) {
-            final HelloService service = HelloFactory.createService();
-            menu = new Image(service.getStream("ui/components/titlebar/menu.png"));
+            URL buttonStyle = ImageLoader.class.getResource("ui/components/titlebar/menu.png");
+            menu = new Image(buttonStyle.getFile());
         }
         return menu;
     }
 
-    public static Image getMenuHover() {
+    static Image getMenuHover() {
         if (menuHover == null) {
-            final HelloService service = HelloFactory.createService();
-            menuHover = new Image(service.getStream("ui/components/titlebar/menu-hover.png"));
+            URL buttonStyle = ImageLoader.class.getResource("ui/components/titlebar/menu-hover.png");
+            menuHover = new Image(buttonStyle.getFile());
         }
         return menuHover;
     }

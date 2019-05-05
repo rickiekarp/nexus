@@ -8,7 +8,7 @@ import net.rickiekarp.core.net.update.UpdateChecker;
 import net.rickiekarp.core.settings.Configuration;
 import net.rickiekarp.core.ui.windowmanager.WindowScene;
 import net.rickiekarp.core.ui.windowmanager.WindowStage;
-import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.ui.windowmanager.ImageLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

@@ -6,7 +6,7 @@ import net.rickiekarp.core.debug.ExceptionHandler;
 import net.rickiekarp.core.ui.windowmanager.WindowScene;
 import net.rickiekarp.core.ui.windowmanager.WindowStage;
 import net.rickiekarp.core.util.CommonUtil;
-import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.ui.windowmanager.ImageLoader;
 import net.rickiekarp.core.view.MessageDialog;
 import net.rickiekarp.qaacc.factory.AccountXmlFactory;
 import net.rickiekarp.qaacc.settings.AppConfiguration;

@@ -11,7 +11,7 @@ import net.rickiekarp.core.ui.windowmanager.WindowStage;
 import net.rickiekarp.core.util.parser.XmlParser;
 import net.rickiekarp.core.ui.windowmanager.ThemeSelector;
 import net.rickiekarp.core.ui.windowmanager.WindowScene;
-import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.ui.windowmanager.ImageLoader;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

@@ -4,7 +4,7 @@ import net.rickiekarp.core.controller.LanguageController;
 import net.rickiekarp.core.ui.windowmanager.ThemeSelector;
 import net.rickiekarp.core.ui.windowmanager.WindowScene;
 import net.rickiekarp.core.ui.windowmanager.WindowStage;
-import net.rickiekarp.core.util.ImageLoader;
+import net.rickiekarp.core.ui.windowmanager.ImageLoader;
 import net.rickiekarp.core.view.MainScene;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
