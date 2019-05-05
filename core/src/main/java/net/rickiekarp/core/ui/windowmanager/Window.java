@@ -123,7 +123,7 @@ public class Window extends StackPane {
 
         // The controller
         windowController = new WindowController(this);
-        windowContentController = new WindowContentController(this);
+        windowContentController = new WindowContentController();
 
         //set default values if there is not config.xml and the values have not been set
         if (colorTheme == null) { colorTheme = "black"; }

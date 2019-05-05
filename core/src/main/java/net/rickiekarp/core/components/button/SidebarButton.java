@@ -1,7 +1,6 @@
 package net.rickiekarp.core.components.button;
 
 import javafx.scene.control.Button;
-import kotlin.jvm.internal.Intrinsics;
 
 public final class SidebarButton extends Button {
     private final String identifier;
@@ -11,8 +10,8 @@ public final class SidebarButton extends Button {
     }
 
     public SidebarButton(String identifier) {
-        Intrinsics.checkParameterIsNotNull(identifier, "identifier");
         this.identifier = identifier;
-        this.getStyleClass().addAll("sidebar-button");
+        setText(identifier);
+        getStyleClass().addAll("sidebar-button");
     }
 }

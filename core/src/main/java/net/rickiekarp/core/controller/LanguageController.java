@@ -14,12 +14,6 @@ import java.util.Properties;
 public final class LanguageController {
     private static Properties prop;
 
-    /** @deprecated */
-    // $FF: synthetic method
-    @JvmStatic
-    public static void currentLocale$annotations() {
-    }
-
     public static final int getCurrentLocale() {
         String var0 = Configuration.CURRENT_LOCALE.toString();
         switch(var0.hashCode()) {
@@ -35,12 +29,6 @@ public final class LanguageController {
         }
 
         return 0;
-    }
-
-    /** @deprecated */
-    // $FF: synthetic method
-    @JvmStatic
-    public static void locale$annotations() {
     }
 
     public static final int getLocale() {

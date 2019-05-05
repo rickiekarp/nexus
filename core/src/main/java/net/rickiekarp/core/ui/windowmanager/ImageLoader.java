@@ -33,6 +33,7 @@ public class ImageLoader {
             URL buttonStyle = ImageLoader.class.getResource("ui/components/titlebar/menu.png");
             menu = new Image(buttonStyle.getFile());
         }
+        System.out.println(menu);
         return menu;
     }
 
@@ -41,6 +42,7 @@ public class ImageLoader {
             URL buttonStyle = ImageLoader.class.getResource("ui/components/titlebar/menu-hover.png");
             menuHover = new Image(buttonStyle.getFile());
         }
+        System.out.println(menuHover);
         return menuHover;
     }
 }

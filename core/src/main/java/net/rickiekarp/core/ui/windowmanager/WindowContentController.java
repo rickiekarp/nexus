@@ -8,13 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WindowContentController {
-    private Window window;
     private List<SidebarButton> sidebarNodes;
     private HBox titlebarRightButtonBox;
     private VBox sidebarButtonBox;
 
-    WindowContentController(Window ud) {
-        window = ud;
+    WindowContentController() {
         sidebarNodes = new ArrayList<>(3);
     }
 
