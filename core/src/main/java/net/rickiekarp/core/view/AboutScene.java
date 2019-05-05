@@ -102,6 +102,7 @@ public class AboutScene {
         //add components
         Label title = new Label(AppContext.getContext().getApplicationName());
         title.setStyle("-fx-font-size: 16pt;");
+        GridPane.setHalignment(title, HPos.CENTER);
         GridPane.setConstraints(title, 0, 0);
         grid.getChildren().add(title);
 
