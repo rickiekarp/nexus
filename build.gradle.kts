@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 buildscript {
     project.apply {
         from("module-base/base.gradle.kts")
+        from("module-base/libs.gradle.kts")
+        from("module-base/ui.gradle.kts")
     }
 
     repositories {
