@@ -211,7 +211,7 @@ public class Window extends StackPane {
     /**
      * Sets the color of the window decoration & resize Rectangle
      */
-    public void setDecorationColor() {
+    void setDecorationColor() {
         resizeRect.setStroke(Configuration.decorationColor);
         stageDecoration.setStyle("-fx-background-color: " + ThemeSelector.getColorHexString(Configuration.decorationColor));
     }
@@ -278,7 +278,7 @@ public class Window extends StackPane {
                 ImageView imageView = new ImageView(ImageLoader.getMenu());
                 imageView.setViewport(new Rectangle2D(AnimationHandler.OFFSET_X, AnimationHandler.OFFSET_Y, AnimationHandler.WIDTH, TITLEBAR_HEIGHT));
                 imageView.setPickOnBounds(true);
-                imageView.setOnMouseMoved(event -> imageView.setImage(ImageLoader.getMenuHover()));
+                imageView.setOnMouseEntered(event -> imageView.setImage(ImageLoader.getMenuHover()));
                 imageView.setOnMouseExited(event -> imageView.setImage(ImageLoader.getMenu()));
                 imageView.setOnMouseClicked(event -> toggleSideBar());
 
