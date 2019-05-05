@@ -1,1 +1,1 @@
-extra.set("javafxVersion", "11.0.2")
+extra.set("javafxVersion", "12.0.1")
