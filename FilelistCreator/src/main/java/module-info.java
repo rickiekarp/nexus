@@ -6,6 +6,7 @@ module flc {
     requires java.logging;
     requires java.desktop;
 
+    opens net.rickiekarp.flc.model;
     opens net.rickiekarp.flc;
     exports net.rickiekarp.flc;
 }
