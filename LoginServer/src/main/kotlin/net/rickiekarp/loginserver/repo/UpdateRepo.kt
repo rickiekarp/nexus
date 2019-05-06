@@ -1,7 +1,7 @@
 package net.rickiekarp.loginserver.repo
 
 import net.rickiekarp.foundation.utils.DatabaseUtil
-import net.rickiekarp.loginserver.dao.ApplicationEntity
+import net.rickiekarp.loginserver.dto.ApplicationDTO
 import net.rickiekarp.loginserver.dao.UpdateDAO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -20,9 +20,9 @@ class UpdateRepo : UpdateDAO {
     @Autowired
     private val dataSource: DataSource? = null
 
-    override fun findByName(identifier: String, updateChannel: Int): List<ApplicationEntity> {
+    override fun findByName(identifier: String, updateChannel: Int): List<ApplicationDTO> {
         var stmt: PreparedStatement? = null
-        val list = ArrayList<ApplicationEntity>()
+        val list = ArrayList<ApplicationDTO>()
         try {
             stmt = dataSource!!.connection.prepareStatement(FIND_BY_IDENTIFIER)
             stmt!!.setString(1, identifier)
@@ -30,7 +30,7 @@ class UpdateRepo : UpdateDAO {
             val rs = stmt.executeQuery()
 
             while (rs.next()) {
-                val user = ApplicationEntity()
+                val user = ApplicationDTO()
                 user.identifier = rs.getString("identifier")
                 user.version = rs.getInt("version")
                 user.isUpdateEnable = rs.getBoolean("updateEnable")
@@ -48,7 +48,7 @@ class UpdateRepo : UpdateDAO {
         return list
     }
 
-    override fun insert(application: ApplicationEntity): Int {
+    override fun insert(application: ApplicationDTO): Int {
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)
@@ -66,7 +66,7 @@ class UpdateRepo : UpdateDAO {
         }
     }
 
-    override fun update(application: ApplicationEntity): Int {
+    override fun update(application: ApplicationDTO): Int {
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(UPDATE)
