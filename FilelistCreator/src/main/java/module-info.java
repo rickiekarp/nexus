@@ -8,5 +8,6 @@ module flc {
 
     opens net.rickiekarp.flc.model;
     opens net.rickiekarp.flc;
+    opens net.rickiekarp.flc.settings;
     exports net.rickiekarp.flc;
 }
