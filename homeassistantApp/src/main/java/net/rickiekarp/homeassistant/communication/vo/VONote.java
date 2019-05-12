@@ -13,7 +13,7 @@ public class VONote {
     private Double price;
     private Date dateAdded;
     private Date dateBought;
-    private int store_id;
+    private Byte store_id;
 
     public VONote(String title) {
         this.title = title;
@@ -71,11 +71,11 @@ public class VONote {
         this.dateBought = dateBought;
     }
 
-    public int getStore_id() {
+    public Byte getStore_id() {
         return store_id;
     }
 
-    public void setStore_id(int store_id) {
+    public void setStore_id(Byte store_id) {
         this.store_id = store_id;
     }
 }

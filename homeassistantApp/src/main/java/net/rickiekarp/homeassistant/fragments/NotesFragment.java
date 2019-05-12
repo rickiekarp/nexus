@@ -153,15 +153,15 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     }
 
     @Override
-    public void onPositiveClick(String title, String type) {
+    public void onPositiveClick(VONote note, String type) {
         progressDialog = ProgressDialog.show(getActivity(), "", "Notes werden gespeichert", true, false);
         switch (type) {
             case "add":
-                AddNoteTask addNoteTask = new AddNoteTask(sp, this, title, database);
+                AddNoteTask addNoteTask = new AddNoteTask(sp, this, note, database);
                 addNoteTask.execute();
                 break;
             case "update":
-                UpdateNoteTask updateNoteTask = new UpdateNoteTask(sp.getString(Token.KEY, ""), this, title, database);
+                UpdateNoteTask updateNoteTask = new UpdateNoteTask(sp.getString(Token.KEY, ""), this, note, database);
                 updateNoteTask.execute();
                 break;
         }
@@ -185,6 +185,7 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     @Override
     public void onUpdateNotesError() {
         Toast.makeText(getContext(), "There was an error when updating the note", Toast.LENGTH_LONG).show();
+        progressDialog.dismiss();
     }
 
     @Override
@@ -197,5 +198,6 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     @Override
     public void onRemoveNoteError() {
         Toast.makeText(getContext(), "There was an error when removing the note", Toast.LENGTH_LONG).show();
+        progressDialog.dismiss();
     }
 }

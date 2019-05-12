@@ -27,16 +27,15 @@ import static net.rickiekarp.homeassistant.Constants.URL.BASE_URL_APPSERVER;
  */
 
 public class UpdateNotesController implements Callback<VONote>, IRunController {
-
     private String sp;
-    private String title;
+    private VONote note;
     private AppDatabase database;
     private IOnUpdateNotesResult uiCallback;
 
-    public UpdateNotesController(String sp, IOnUpdateNotesResult uiCallback, String title, AppDatabase database) {
+    public UpdateNotesController(String sp, IOnUpdateNotesResult uiCallback, VONote note, AppDatabase database) {
         this.sp = sp;
         this.uiCallback = uiCallback;
-        this.title = title;
+        this.note = note;
         this.database = database;
     }
 
@@ -60,15 +59,14 @@ public class UpdateNotesController implements Callback<VONote>, IRunController {
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        VONote vo = new VONote(title);
-        Call<VONote> call = api.doUpdateNotes(Util.generateToken(sp), vo);
+        Call<VONote> call = api.doUpdateNotes(Util.generateToken(sp), note);
         call.enqueue(this);
     }
 
     @Override
     public void onResponse(Call<VONote> call, Response<VONote> response) {
         if (response.code() == 200) {
-            uiCallback.onUpdateNotesSuccess(title);
+            uiCallback.onUpdateNotesSuccess(note.getTitle());
         } else {
             uiCallback.onUpdateNotesError();
         }

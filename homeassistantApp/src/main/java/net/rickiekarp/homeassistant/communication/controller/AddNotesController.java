@@ -34,13 +34,13 @@ public class AddNotesController implements Callback<VONote>, IRunController {
 
     private SharedPreferences sp;
     private IOnAddNotesResult uiCallback;
-    private String title;
+    private VONote note;
     private AppDatabase database;
 
-    public AddNotesController(SharedPreferences sp, IOnAddNotesResult uiCallback, String title, AppDatabase database) {
+    public AddNotesController(SharedPreferences sp, IOnAddNotesResult uiCallback, VONote note, AppDatabase database) {
         this.uiCallback = uiCallback;
         this.sp = sp;
-        this.title = title;
+        this.note = note;
         this.database = database;
     }
 
@@ -64,8 +64,7 @@ public class AddNotesController implements Callback<VONote>, IRunController {
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        VONote vo = new VONote(title);
-        Call<VONote> call = api.doAddNotes(Util.generateToken(sp.getString(Token.KEY, "")), vo);
+        Call<VONote> call = api.doAddNotes(Util.generateToken(sp.getString(Token.KEY, "")), note);
         call.enqueue(this);
     }
 

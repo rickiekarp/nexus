@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.dialog.LogoutDialog;
 import net.rickiekarp.homeassistant.fragments.InfoFragment;
@@ -226,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onPositiveClick(String title, String type) {
+    public void onPositiveClick(VONote note, String type) {
         doLogout();
 
     }
