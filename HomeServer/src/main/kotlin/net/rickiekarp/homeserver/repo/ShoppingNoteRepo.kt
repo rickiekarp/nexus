@@ -15,10 +15,10 @@ import javax.sql.DataSource
 @Repository
 open class ShoppingNoteRepo : ShoppingNoteDAO {
     private val FIND_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND dateBought IS NULL AND isDeleted = false"
-    private val INSERT = "insert into shopping_note(title, description,  users_id, dateAdded, lastUpdated, isDeleted) values (?, null, ?, now(), null, false)"
-    private val MARK_AS_BOUGHT = "UPDATE shopping_note SET dateBought = now(), lastUpdated = now() WHERE id = ?"
-    private val UPDATE = "UPDATE shopping_note SET title = ?, lastUpdated = now() WHERE id = ?"
+    private val INSERT = "INSERT INTO shopping_note(title, description,  price, users_id, dateAdded, store_id, lastUpdated, isDeleted) VALUES (?, null, ?, ?, now(), ?, null, false)"
+    private val UPDATE = "UPDATE shopping_note SET title = ?, price = ?, store_id = ?, lastUpdated = now() WHERE id = ?"
     private val REMOVE = "UPDATE shopping_note SET isDeleted = true, lastUpdated = now() WHERE id = ?"
+    private val MARK_AS_BOUGHT = "UPDATE shopping_note SET dateBought = now(), lastUpdated = now() WHERE id = ?"
     private val FIND_HISTORY_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND dateBought IS NOT NULL AND isDeleted = false ORDER BY dateBought desc"
 
     @Autowired
@@ -51,7 +51,9 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
         try {
             stmt = dataSource!!.connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)
             stmt!!.setString(1, note.title)
-            stmt.setInt(2, note.user_id)
+            stmt.setDouble(2, note.price)
+            stmt.setInt(3, note.user_id)
+            stmt.setObject(4, note.store_id)
 
             stmt.execute()
 
@@ -78,7 +80,9 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
         try {
             stmt = dataSource!!.connection.prepareStatement(UPDATE)
             stmt!!.setString(1, note.title)
-            stmt.setInt(2, note.id)
+            stmt.setDouble(2, note.price)
+            stmt.setObject(3, note.store_id)
+            stmt.setInt(4, note.id)
             stmt.executeUpdate()
             println("Updated: $note")
             return ResultDTO("success")

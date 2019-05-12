@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority
 @RedisHash("token")
 class User : Credentials {
     var id: Int = 0
-    lateinit var token: String
+    var token: String? = null
     var role: Byte = 0
 
     constructor() {
