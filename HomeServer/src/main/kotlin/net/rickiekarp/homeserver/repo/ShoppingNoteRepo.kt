@@ -112,13 +112,13 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
         return ResultDTO("failed")
     }
 
-    override fun removeItem(noteid: Int): ResultDTO {
+    override fun removeItem(itemid: Int): ResultDTO {
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(REMOVE)
-            stmt!!.setInt(1, noteid)
+            stmt!!.setInt(1, itemid)
             stmt.executeUpdate()
-            println("Removed note: $noteid")
+            println("Removed note: $itemid")
             return ResultDTO("success")
         } catch (e: Exception) {
             e.printStackTrace()
