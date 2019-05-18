@@ -17,7 +17,7 @@ import javax.sql.DataSource
 open class UserRepo : UserDAO {
     private val FIND_BY_TOKEN = "SELECT * FROM users WHERE token = ?"
     private val FIND_BY_NAME = "SELECT * FROM users WHERE username = ?"
-    private val INSERT = "INSERT INTO users(username, password, enabled, dateCreated) VALUES(?, ?, true, now())"
+    private val INSERT = "CALL createUser(?, ?, ?, true)"
     private val UPDATE = "UPDATE users SET token = ? WHERE id = ?"
 
     @Autowired
@@ -62,7 +62,6 @@ open class UserRepo : UserDAO {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
         }
-
         return userVO
     }
 
@@ -96,29 +95,21 @@ open class UserRepo : UserDAO {
     }
 
     override fun registerUser(user: Credentials): User? {
-        var newUser: User? = null
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)
             stmt!!.setString(1, user.username)
             stmt.setString(2, user.password)
-
+            stmt.setInt(3, 2) // user role (1 = ADMIN, 2 = USER)
             stmt.execute()
-
-            val resultSet = stmt.generatedKeys
-            if (resultSet.next()) {
-                newUser = User()
-                newUser.id = resultSet.getInt(1)
-            } else {
-                println("There is no result when adding a new user!")
-            }
         } catch (e: SQLException) {
             //e.printStackTrace()
             println("User could not be created! Reason: " + e.message)
+            return null
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
         }
-        return newUser
+        return getUserByName(user.username!!)
     }
 }
