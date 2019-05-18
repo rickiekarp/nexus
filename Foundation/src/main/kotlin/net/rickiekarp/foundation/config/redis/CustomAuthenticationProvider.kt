@@ -23,9 +23,10 @@ class CustomAuthenticationProvider : AuthenticationProvider {
         val accessToken = authentication.credentials.toString()
 
         // use the credentials and authenticate against the third-party system
-        return if (shouldAuthenticateAgainstThirdPartySystem(userid, accessToken)) {
+        val user = retrieveUserFromRedis(userid)
+        return if (user.isPresent && user.get().token == accessToken) {
             val updatedAuthorities = ArrayList<SimpleGrantedAuthority>()
-            val authority = SimpleGrantedAuthority("ROLE_USER")
+            val authority = SimpleGrantedAuthority(user.get().role.second)
             updatedAuthorities.add(authority)
             UsernamePasswordAuthenticationToken(userid, accessToken, updatedAuthorities)
         } else {
@@ -36,14 +37,6 @@ class CustomAuthenticationProvider : AuthenticationProvider {
 
     override fun supports(authentication: Class<*>): Boolean {
         return authentication == UsernamePasswordAuthenticationToken::class.java
-    }
-
-    private fun shouldAuthenticateAgainstThirdPartySystem(userid: Int, accessToken: String): Boolean {
-        val user = retrieveUserFromRedis(userid)
-        if (user.isPresent) {
-            return user.get().token == accessToken
-        }
-        return false
     }
 
     private fun retrieveUserFromRedis(userid: Int): Optional<User> {

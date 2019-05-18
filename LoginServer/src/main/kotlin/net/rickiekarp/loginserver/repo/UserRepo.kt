@@ -15,8 +15,8 @@ import javax.sql.DataSource
 
 @Repository
 open class UserRepo : UserDAO {
-    private val FIND_BY_TOKEN = "SELECT * FROM users WHERE token = ?"
-    private val FIND_BY_NAME = "SELECT * FROM users WHERE username = ?"
+    private val FIND_BY_TOKEN = "SELECT * FROM users u JOIN user_roles ur ON u.id = ur.users_id JOIN roles r ON r.id = ur.roles_id WHERE token = ?"
+    private val FIND_BY_NAME = "SELECT * FROM users u JOIN user_roles ur ON u.id = ur.users_id JOIN roles r ON r.id = ur.roles_id WHERE username = ?"
     private val INSERT = "CALL createUser(?, ?, ?, true)"
     private val UPDATE = "UPDATE users SET token = ? WHERE id = ?"
 
@@ -72,6 +72,7 @@ open class UserRepo : UserDAO {
         userVO.username = resultSet.getString("username")
         userVO.password = resultSet.getString("password")
         userVO.token = resultSet.getString("token")
+        userVO.role = Pair<Int, String>(resultSet.getInt("roles_id"), resultSet.getString("name"))
         return userVO
     }
 

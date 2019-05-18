@@ -1,6 +1,5 @@
 package net.rickiekarp.loginserver.rest.api
 
-import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.dto.exception.ResultDTO
 import net.rickiekarp.loginserver.config.EmailServiceImpl
 import net.rickiekarp.loginserver.dto.EmailDto

@@ -40,11 +40,11 @@
               </elementProp>
             </collectionProp>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">app.rickiekarp.net</stringProp>
-          <stringProp name="HTTPSampler.port">80</stringProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
           <stringProp name="HTTPSampler.path">LoginServer/account/authorize</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -105,7 +105,7 @@
               </elementProp>
               <elementProp name="" elementType="Header">
                 <stringProp name="Header.name">Authorization</stringProp>
-                <stringProp name="Header.value">Basic MTpzdXBlcnNlY3JldHRva2Vu</stringProp>
+                <stringProp name="Header.value">Basic MjpXRUtRWVZubUFpZ0ZrTlh6TlpPSHhITk0=</stringProp>
               </elementProp>
             </collectionProp>
           </HeaderManager>
