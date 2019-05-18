@@ -16,6 +16,10 @@ import org.springframework.security.web.firewall.HttpFirewall
 @EnableWebSecurity
 open class SecurityConfig : WebSecurityConfigurerAdapter() {
 
+    companion object {
+        private val NOT_SECURED = arrayOf("/worlds/get", "/account/authorize", "/account/create")
+    }
+
     @Autowired
     private val authProvider: CustomAuthenticationProvider? = null
 
@@ -37,16 +41,10 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
                     .and()
                     .csrf().disable()
         }
-
     }
 
     @Bean
     open fun defaultHttpFirewall(): HttpFirewall {
         return DefaultHttpFirewall()
-    }
-
-    companion object {
-
-        private val NOT_SECURED = arrayOf("/worlds/get", "/account/authorize", "/account/create")
     }
 }

@@ -25,7 +25,7 @@ class CustomLoggerConfigurationFactory {
 
         val rootLoggerComponentBuilder = builder.newRootLogger(logLevel)
         val loggerComponentBuilder = builder.newLogger("org.apache.logging.log4j", logLevel).addAttribute("additivity", false)
-        val showInConsole = BaseConfig.get().getConnectionPropertyAs("Log.debug.showInConsole", OutputType.BOOLEAN)
+        val showInConsole = BaseConfig.get().getFoundationPropertyAs("Log.debug.showInConsole", OutputType.BOOLEAN)
         when (name) {
             "log.debug" -> {
                 if (showInConsole) {
@@ -34,7 +34,7 @@ class CustomLoggerConfigurationFactory {
                     loggerComponentBuilder.add(builder.newAppenderRef(stdout))
                     builder.add(getFilterComponentBuilder(builder, logLevel))
                 }
-                if (BaseConfig.get().getConnectionPropertyAs("Log.debug.writeLogFile", OutputType.BOOLEAN)) {
+                if (BaseConfig.get().getFoundationPropertyAs("Log.debug.writeLogFile", OutputType.BOOLEAN)) {
                     val fileRef = "fileRef"
                     setupFileAppender(name, builder, rootLoggerComponentBuilder)
                     loggerComponentBuilder.add(builder.newAppenderRef(fileRef))

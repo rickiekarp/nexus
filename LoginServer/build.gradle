@@ -6,6 +6,7 @@ buildscript {
 
 dependencies {
     compile project(':Foundation')
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: project.ext.springBootVersion
 }
 
 apply plugin: 'war'

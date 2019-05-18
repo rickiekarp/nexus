@@ -6,9 +6,10 @@ import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.stereotype.Component
 import java.util.*
+import java.util.ArrayList
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 @Component
 class CustomAuthenticationProvider : AuthenticationProvider {
@@ -21,10 +22,12 @@ class CustomAuthenticationProvider : AuthenticationProvider {
         val userid = authentication.name.toInt()
         val accessToken = authentication.credentials.toString()
 
+        // use the credentials and authenticate against the third-party system
         return if (shouldAuthenticateAgainstThirdPartySystem(userid, accessToken)) {
-            // use the credentials
-            // and authenticate against the third-party system
-            UsernamePasswordAuthenticationToken(userid, accessToken, ArrayList<GrantedAuthority>())
+            val updatedAuthorities = ArrayList<SimpleGrantedAuthority>()
+            val authority = SimpleGrantedAuthority("ROLE_USER")
+            updatedAuthorities.add(authority)
+            UsernamePasswordAuthenticationToken(userid, accessToken, updatedAuthorities)
         } else {
             println("UserId[$userid] could not be authenticated!")
             null

@@ -8,12 +8,6 @@ import org.springframework.stereotype.Component
 @Component
 class ApplicationReadyListener : ApplicationListener<ApplicationReadyEvent> {
 
-//    @Autowired
-//    internal var dataSource: DataSource? = null
-
-//    @Autowired
-//    internal var servlet: ApplicationContext? = null
-
     @Value("\${spring.application.name}")
     private val appName: String? = null
 
@@ -23,17 +17,5 @@ class ApplicationReadyListener : ApplicationListener<ApplicationReadyEvent> {
      */
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
         println("Started: $appName")
-
-        //        loadConfiguration();
-
-        // Set up server context and load settings
-//        ServerContext.loadDatabaseProperties(this.javaClass)
-
-//        DataSourceFactory(appName!!)
-
-//        val databaseMigrationController = DatabaseMigrationController()
-//        databaseMigrationController.migrateDatabase(appName, dataSource!!)
-
-//        parseServerManifest(servlet!!)
     }
 }

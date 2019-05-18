@@ -3,6 +3,8 @@ package net.rickiekarp.foundation.config
 import net.rickiekarp.foundation.core.types.OutputType
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.parser.properties.PropertiesFileParser
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 
 import java.util.HashMap
 import java.util.Properties
@@ -21,6 +23,14 @@ class BaseConfig private constructor(builder: ConfigBuilder) {
         applicationProperties = HashMap(2)
     }
 
+    fun getUserId(): Int {
+        val authentication = SecurityContextHolder.getContext().authentication
+        if (authentication is UsernamePasswordAuthenticationToken) {
+            return authentication.name.toInt()
+        }
+        return -1
+    }
+
     /**
      * Load all properties for the current application.
      * By default it will first load all Foundation properties defined in foundation.properties
@@ -35,7 +45,6 @@ class BaseConfig private constructor(builder: ConfigBuilder) {
      * Configures all needed services and prints the loaded properties
      */
     fun configureServices() {
-        // Load properties
         Log.setupLogging()
         printProperties()
     }
@@ -53,7 +62,7 @@ class BaseConfig private constructor(builder: ConfigBuilder) {
         return outputType.convert(propertyValue)
     }
 
-    fun <X> getConnectionPropertyAs(key: String, outputType: OutputType<X>): X {
+    fun <X> getFoundationPropertyAs(key: String, outputType: OutputType<X>): X {
         val propertyValue = foundation().getProperty(key)
         return outputType.convert(propertyValue)
     }
