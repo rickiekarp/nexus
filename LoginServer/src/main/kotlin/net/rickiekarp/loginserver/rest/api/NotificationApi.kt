@@ -31,7 +31,7 @@ class NotificationApi {
         val setting = repo!!.getApplicationSettingByIdentifier("notificationtoken")
         if (setting != null) {
             val notificationList: List<NotificationTokenData> = jacksonObjectMapper().readValue(setting.content!!)
-            if (isTokenPresent(notificationToken, notificationList)) {
+            if (isTokenPresent(notificationToken, notificationList, mail)) {
                 println("Sending mail! ($mail)")
                 service!!.sendMail(mail)
                 return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
@@ -43,9 +43,10 @@ class NotificationApi {
         return ResponseEntity(ResultDTO("not_sent"), HttpStatus.OK)
     }
 
-    private fun isTokenPresent(notificationToken: String, notificationDataList: List<NotificationTokenData>): Boolean {
+    private fun isTokenPresent(notificationToken: String, notificationDataList: List<NotificationTokenData>, mail: EmailDto): Boolean {
         for (i in 0 until notificationDataList.size) {
             if (notificationDataList[i].token == notificationToken) {
+                mail.subject = "(${notificationDataList[i].name}) ${mail.subject}" //Add notification job name to subject
                 return true
             }
         }
