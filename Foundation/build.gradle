@@ -17,6 +17,7 @@ dependencies {
 
     compile group: 'com.google.code.gson', name: 'gson', version: project.ext.gsonVersion
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jacksonVersion
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: project.ext.jacksonVersion
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.13'
     compile group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flywayVersion

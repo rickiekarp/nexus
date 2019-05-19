@@ -1,6 +1,10 @@
 package net.rickiekarp.loginserver.rest.api
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import net.rickiekarp.foundation.data.dao.ApplicationSettingsDao
 import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.model.NotificationTokenData
 import net.rickiekarp.loginserver.config.EmailServiceImpl
 import net.rickiekarp.loginserver.dto.EmailDto
 import org.springframework.http.HttpStatus
@@ -19,15 +23,32 @@ class NotificationApi {
     @Autowired
     var service: EmailServiceImpl? = null
 
+    @Autowired
+    var repo: ApplicationSettingsDao? = null
+
     @PostMapping(value = ["send"])
-    fun sendMailContent(@RequestBody mail: EmailDto): ResponseEntity<ResultDTO> {
-        service!!.sendMail(mail)
-        return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
+    fun sendMailContent(@RequestHeader(name = "X-Notification-Token") notificationToken: String, @RequestBody mail: EmailDto): ResponseEntity<ResultDTO> {
+        val setting = repo!!.getApplicationSettingByIdentifier("notificationtoken")
+        if (setting != null) {
+            val notificationList: List<NotificationTokenData> = jacksonObjectMapper().readValue(setting.content!!)
+            if (isTokenPresent(notificationToken, notificationList)) {
+                println("Sending mail! ($mail)")
+                service!!.sendMail(mail)
+                return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
+            } else {
+                println("Invalid notification token: $notificationToken")
+            }
+        }
+
+        return ResponseEntity(ResultDTO("not_sent"), HttpStatus.OK)
     }
 
-    @PostMapping(value = ["sendStatus"])
-    fun sendMailByStatus(@RequestHeader(name = "X-Notification") notificationType: Int): ResponseEntity<ResultDTO> {
-        service!!.sendMailByType(notificationType)
-        return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
+    private fun isTokenPresent(notificationToken: String, notificationDataList: List<NotificationTokenData>): Boolean {
+        for (i in 0 until notificationDataList.size) {
+            if (notificationDataList[i].token == notificationToken) {
+                return true
+            }
+        }
+        return false
     }
 }

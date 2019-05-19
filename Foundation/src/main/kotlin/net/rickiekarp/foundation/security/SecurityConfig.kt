@@ -17,7 +17,7 @@ import org.springframework.security.web.firewall.HttpFirewall
 open class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     companion object {
-        private val NOT_SECURED = arrayOf("/worlds/get", "/account/authorize", "/account/create")
+        private val NOT_SECURED = arrayOf("/worlds/get", "/account/authorize", "/account/create", "/notify/send")
     }
 
     @Autowired

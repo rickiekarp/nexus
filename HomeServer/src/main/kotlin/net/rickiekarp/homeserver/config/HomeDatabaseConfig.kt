@@ -23,7 +23,7 @@ import javax.sql.DataSource
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManager",
         transactionManagerRef = "transactionManager",
-        basePackages = ["net.rickiekarp.foundation.data"]
+        basePackages = ["net.rickiekarp.foundation.data.repository"]
 )
 @EnableRedisRepositories(basePackages = ["net.rickiekarp.foundation.config.redis"])
 open class HomeDatabaseConfig {
