@@ -1,5 +1,6 @@
 package net.rickiekarp.foundation.config.redis
 
+import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.model.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationProvider
@@ -30,7 +31,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
             updatedAuthorities.add(authority)
             UsernamePasswordAuthenticationToken(userid, accessToken, updatedAuthorities)
         } else {
-            println("UserId[$userid] could not be authenticated!")
+            Log.DEBUG.debug("UserId[$userid] could not be authenticated!")
             null
         }
     }

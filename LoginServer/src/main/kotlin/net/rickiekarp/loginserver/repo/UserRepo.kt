@@ -1,6 +1,7 @@
 package net.rickiekarp.loginserver.repo
 
 import net.rickiekarp.foundation.config.redis.TokenRepository
+import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
 import net.rickiekarp.foundation.utils.DatabaseUtil
@@ -91,7 +92,7 @@ open class UserRepo : UserDAO {
         }
 
         user.token = token
-        println("adding to redis: $user")
+        Log.DEBUG.debug("adding to redis: $user")
         redisRepository!!.save(user)
     }
 
@@ -105,7 +106,7 @@ open class UserRepo : UserDAO {
             stmt.execute()
         } catch (e: SQLException) {
             //e.printStackTrace()
-            println("User could not be created! Reason: " + e.message)
+            Log.DEBUG.debug("User could not be created! Reason: " + e.message)
             return null
         } finally {
             DatabaseUtil.close(stmt)

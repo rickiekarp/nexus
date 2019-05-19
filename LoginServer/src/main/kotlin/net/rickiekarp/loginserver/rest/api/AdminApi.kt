@@ -2,6 +2,7 @@ package net.rickiekarp.loginserver.rest.api
 
 import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.loginserver.dto.KeyValuePairDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,7 +21,7 @@ class AdminApi {
             val value = BaseConfig.get().application().getProperty(key)
             val keyValuePair = KeyValuePairDTO(key, value)
             keyValueList.add(keyValuePair)
-            println("$key: $value")
+            Log.DEBUG.debug("$key: $value")
         }
 
         return ResponseEntity(keyValueList, HttpStatus.OK)

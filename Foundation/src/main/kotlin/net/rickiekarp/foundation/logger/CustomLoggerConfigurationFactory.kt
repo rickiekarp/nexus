@@ -27,7 +27,7 @@ class CustomLoggerConfigurationFactory {
         val loggerComponentBuilder = builder.newLogger("org.apache.logging.log4j", logLevel).addAttribute("additivity", false)
         val showInConsole = BaseConfig.get().getFoundationPropertyAs("Log.debug.showInConsole", OutputType.BOOLEAN)
         when (name) {
-            "log.debug" -> {
+            "debug" -> {
                 if (showInConsole) {
                     setupConsoleAppender(builder, rootLoggerComponentBuilder)
                     val stdout = "Stdout"

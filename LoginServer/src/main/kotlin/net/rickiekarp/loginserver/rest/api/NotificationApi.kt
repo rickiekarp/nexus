@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import net.rickiekarp.foundation.data.dao.ApplicationSettingsDao
 import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.model.NotificationTokenData
 import net.rickiekarp.loginserver.config.EmailServiceImpl
 import net.rickiekarp.loginserver.dto.EmailDto
@@ -32,11 +33,11 @@ class NotificationApi {
         if (setting != null) {
             val notificationList: List<NotificationTokenData> = jacksonObjectMapper().readValue(setting.content!!)
             if (isTokenPresent(notificationToken, notificationList, mail)) {
-                println("Sending mail! ($mail)")
+                Log.DEBUG.info("Sending mail! ($mail)")
                 service!!.sendMail(mail)
                 return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
             } else {
-                println("Invalid notification token: $notificationToken")
+                Log.DEBUG.info("Invalid notification token: $notificationToken")
             }
         }
 

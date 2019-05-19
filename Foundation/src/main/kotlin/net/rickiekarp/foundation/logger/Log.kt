@@ -21,8 +21,8 @@ class Log private constructor() {
         fun setupLogging() {
             // Get context instance
             val context = LoggerContext("LoggerContext")
-            val debugConfig = createConfiguration("log.debug", BaseConfig.get().foundation().getProperty("LogLevelDebug"))
-            DEBUG = context.getLogger("log.debug")
+            val debugConfig = createConfiguration("debug", BaseConfig.get().foundation().getProperty("LogLevelDebug"))
+            DEBUG = context.getLogger("debug")
             context.start(debugConfig)
         }
 

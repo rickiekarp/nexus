@@ -1,6 +1,7 @@
 package net.rickiekarp.homeserver.repo
 
 import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO
 import net.rickiekarp.homeserver.dto.ShoppingNoteDto
@@ -62,9 +63,9 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
                 insertedNote = ShoppingNoteDto()
                 insertedNote.id = resultSet.getInt(1)
                 insertedNote.title = note.title
-                println("Inserted: $note")
+                Log.DEBUG.debug("Inserted: $note")
             } else {
-                println("There was no result when adding a new note!")
+                Log.DEBUG.debug("There was no result when adding a new note!")
             }
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -84,7 +85,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             stmt.setObject(3, note.store_id)
             stmt.setInt(4, note.id)
             stmt.executeUpdate()
-            println("Updated: $note")
+            Log.DEBUG.debug("Updated: $note")
             return ResultDTO("success")
         } catch (e: Exception) {
             e.printStackTrace()
@@ -101,7 +102,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             stmt = dataSource!!.connection.prepareStatement(MARK_AS_BOUGHT)
             stmt!!.setInt(1, note.id)
             stmt.executeUpdate()
-            println("Bought: $note")
+            Log.DEBUG.debug("Bought: $note")
             return ResultDTO("success")
         } catch (e: Exception) {
             e.printStackTrace()
@@ -118,7 +119,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             stmt = dataSource!!.connection.prepareStatement(REMOVE)
             stmt!!.setInt(1, itemid)
             stmt.executeUpdate()
-            println("Removed note: $itemid")
+            Log.DEBUG.debug("Removed note: $itemid")
             return ResultDTO("success")
         } catch (e: Exception) {
             e.printStackTrace()

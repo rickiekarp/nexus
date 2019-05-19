@@ -1,5 +1,6 @@
 package net.rickiekarp.foundation.config
 
+import net.rickiekarp.foundation.logger.Log
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.ApplicationListener
@@ -16,6 +17,6 @@ class ApplicationReadyListener : ApplicationListener<ApplicationReadyEvent> {
      * the application is ready to service requests.
      */
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        println("Started: $appName")
+        Log.DEBUG.info("Started: $appName")
     }
 }
