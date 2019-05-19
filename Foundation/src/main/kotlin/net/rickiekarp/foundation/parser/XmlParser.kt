@@ -1,5 +1,6 @@
 package net.rickiekarp.foundation.parser
 
+import net.rickiekarp.foundation.logger.Log
 import org.w3c.dom.Document
 import org.w3c.dom.NodeList
 import org.xml.sax.InputSource
@@ -31,13 +32,13 @@ class XmlParser {
             try {
                 doc = stringToDom(FileParser.readFileAndReturnString(path))
             } catch (e: SAXException) {
-                e.printStackTrace()
+                Log.DEBUG.error("Exception", e)
                 return null
             } catch (e: ParserConfigurationException) {
-                e.printStackTrace()
+                Log.DEBUG.error("Exception", e)
                 return null
             } catch (e: IOException) {
-                e.printStackTrace()
+                Log.DEBUG.error("Exception", e)
                 return null
             }
 

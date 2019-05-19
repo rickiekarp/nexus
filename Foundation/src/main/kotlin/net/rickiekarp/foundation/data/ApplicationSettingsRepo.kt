@@ -2,6 +2,7 @@ package net.rickiekarp.foundation.data
 
 import net.rickiekarp.foundation.data.dao.ApplicationSettingsDao
 import net.rickiekarp.foundation.data.dto.ApplicationSettingDto
+import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -30,7 +31,7 @@ open class ApplicationSettingsRepo: ApplicationSettingsDao {
                 userVO = extractUserFromResultSet(rs)
             }
         } catch (e: SQLException) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)

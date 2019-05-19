@@ -39,7 +39,7 @@ open class UserRepo : UserDAO {
                 userVO = extractUserFromResultSet(rs)
             }
         } catch (e: SQLException) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
@@ -58,7 +58,7 @@ open class UserRepo : UserDAO {
                 userVO = extractUserFromResultSet(rs)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
@@ -85,7 +85,7 @@ open class UserRepo : UserDAO {
             stmt.setInt(2, user.id)
             stmt.executeUpdate()
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
@@ -105,7 +105,7 @@ open class UserRepo : UserDAO {
             stmt.setInt(3, 2) // user role (1 = ADMIN, 2 = USER)
             stmt.execute()
         } catch (e: SQLException) {
-            //e.printStackTrace()
+            //Log.DEBUG.error("Exception", e)
             Log.DEBUG.debug("User could not be created! Reason: " + e.message)
             return null
         } finally {

@@ -1,5 +1,6 @@
 package net.rickiekarp.loginserver.rest.api
 
+import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.loginserver.dao.WorldsDAO
 import net.rickiekarp.loginserver.dto.WorldDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,7 +31,7 @@ class WorldsApi {
             ResponseEntity(worldList, HttpStatus.OK)
 
         } catch (e: RuntimeException) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

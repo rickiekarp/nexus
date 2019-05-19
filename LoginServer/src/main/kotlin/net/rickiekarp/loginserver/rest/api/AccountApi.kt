@@ -3,6 +3,7 @@ package net.rickiekarp.loginserver.rest.api
 import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.config.ServerContext
 import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
 import net.rickiekarp.loginserver.dao.UserDAO
@@ -45,7 +46,7 @@ class AccountApi {
             ResponseEntity(TokenDTO(token), HttpStatus.OK)
 
         } catch (e: RuntimeException) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
             ResponseEntity(HttpStatus.UNAUTHORIZED)
         }
     }

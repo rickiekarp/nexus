@@ -93,7 +93,7 @@ class FileUtil {
             try {
                 writer.writeValue(File(outputPath + File.separator + fileName + ".json"), jsonDataObject)
             } catch (e: IOException) {
-                e.printStackTrace()
+                Log.DEBUG.error("Exception", e)
             }
         }
 
@@ -120,7 +120,7 @@ class FileUtil {
             output.write(text)
             output.close()
         } catch (e: IOException) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         }
 
         return file!!.absolutePath

@@ -37,7 +37,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
                 notesList.add(extractUserFromResultSet(rs))
             }
         } catch (e: SQLException) {
-            // e.printStackTrace();
+            // Log.DEBUG.error("Exception", e);
             throw RuntimeException(e)
         } finally {
             DatabaseUtil.close(stmt)
@@ -68,7 +68,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
                 Log.DEBUG.debug("There was no result when adding a new note!")
             }
         } catch (e: SQLException) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
@@ -88,7 +88,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             Log.DEBUG.debug("Updated: $note")
             return ResultDTO("success")
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
@@ -105,7 +105,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             Log.DEBUG.debug("Bought: $note")
             return ResultDTO("success")
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
@@ -122,7 +122,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             Log.DEBUG.debug("Removed note: $itemid")
             return ResultDTO("success")
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
@@ -142,7 +142,7 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
                 notesList.add(extractUserFromResultSet(rs))
             }
         } catch (e: SQLException) {
-            // e.printStackTrace();
+            // Log.DEBUG.error("Exception", e);
             throw RuntimeException(e)
         } finally {
             DatabaseUtil.close(stmt)

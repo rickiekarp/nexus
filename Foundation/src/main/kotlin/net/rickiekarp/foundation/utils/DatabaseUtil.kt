@@ -1,5 +1,6 @@
 package net.rickiekarp.foundation.utils
 
+import net.rickiekarp.foundation.logger.Log
 import java.sql.Connection
 import java.sql.SQLException
 import java.sql.Statement
@@ -11,7 +12,7 @@ class DatabaseUtil {
                 try {
                     con.close()
                 } catch (e: SQLException) {
-                    e.printStackTrace()
+                    Log.DEBUG.error("Exception", e)
                 }
             }
         }
@@ -21,7 +22,7 @@ class DatabaseUtil {
                 try {
                     stmt.close()
                 } catch (e: SQLException) {
-                    e.printStackTrace()
+                    Log.DEBUG.error("Exception", e)
                 }
             }
         }

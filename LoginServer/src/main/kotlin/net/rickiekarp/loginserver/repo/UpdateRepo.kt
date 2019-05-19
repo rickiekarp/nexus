@@ -38,7 +38,7 @@ class UpdateRepo : UpdateDAO {
                 list.add(user)
             }
         } catch (e: SQLException) {
-            // e.printStackTrace();
+            // Log.DEBUG.error("Exception", e);
             throw RuntimeException(e)
         } finally {
             DatabaseUtil.close(stmt)
@@ -58,7 +58,7 @@ class UpdateRepo : UpdateDAO {
 
             return stmt.executeUpdate()
         } catch (e: SQLException) {
-            // e.printStackTrace();
+            // Log.DEBUG.error("Exception", e);
             throw RuntimeException(e)
         } finally {
             DatabaseUtil.close(stmt)
@@ -76,7 +76,7 @@ class UpdateRepo : UpdateDAO {
 
             return stmt.executeUpdate()
         } catch (e: SQLException) {
-            // e.printStackTrace();
+            // Log.DEBUG.error("Exception", e);
             throw RuntimeException(e)
         } finally {
             DatabaseUtil.close(stmt)

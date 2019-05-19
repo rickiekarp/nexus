@@ -1,5 +1,6 @@
 package net.rickiekarp.loginserver.repo
 
+import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import net.rickiekarp.loginserver.dao.WorldsDAO
 import net.rickiekarp.loginserver.dto.WorldDTO
@@ -33,7 +34,7 @@ open class WorldsRepo : WorldsDAO {
                 worldList.add(world)
             }
         } catch (e: SQLException) {
-            e.printStackTrace()
+            Log.DEBUG.error("Exception", e)
         } finally {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)

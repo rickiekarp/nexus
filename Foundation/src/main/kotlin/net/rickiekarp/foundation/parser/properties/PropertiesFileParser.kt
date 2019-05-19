@@ -47,7 +47,7 @@ class PropertiesFileParser {
                 os = FileOutputStream(filePath + File.separator + fileName + ".properties")
                 properties.store(os, comment)
             } catch (e: IOException) {
-                e.printStackTrace()
+                Log.DEBUG.error("Exception", e)
             }
 
         }
