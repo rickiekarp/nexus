@@ -15,6 +15,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" as Object
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion" as Object
 //        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.1"
+        classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufGradlePlugin"
     }
 }
 
@@ -25,6 +26,7 @@ allprojects {
     apply plugin: "java"
     apply plugin: "org.jetbrains.kotlin.jvm"
     apply plugin: 'org.jetbrains.dokka'
+    apply plugin: 'com.google.protobuf'
 
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
@@ -38,6 +40,8 @@ subprojects {
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as Object
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion" as Object
+        compile "com.google.protobuf:protobuf-java:$protobufJava"
+        compile "com.googlecode.protobuf-java-format:protobuf-java-format:$protobufJavaFormat"
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
         testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
         testCompile "org.mockito:mockito-core:2.1.0"
@@ -46,6 +50,19 @@ subprojects {
     sourceSets {
         main.kotlin.srcDirs += 'src/main/kotlin'
         main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    dokka {
+        outputFormat = 'html'
+        outputDirectory = "$it.project.buildDir/dokka"
+    }
+
+    protobuf {
+        protoc {
+            // Download from repositories
+            artifact = "com.google.protobuf:protoc:$protobufJava"
+            generatedFilesBaseDir = "$projectDir/src"
+        }
     }
 
 //    project.apply plugin: "com.github.spotbugs"
@@ -73,11 +90,6 @@ subprojects {
 //            pluginClasspath = project.configurations.spotbugsPlugins
 //        }
 //    }
-
-    dokka {
-        outputFormat = 'html'
-        outputDirectory = "$it.project.buildDir/dokka"
-    }
 }
 
 wrapper {

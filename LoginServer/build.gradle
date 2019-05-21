@@ -2,6 +2,7 @@ group 'net.rickiekarp.loginserver'
 
 buildscript {
     apply from: '../module-base/base.gradle.kts'
+    apply from: '../module-base/libs.gradle.kts'
 }
 
 dependencies {
