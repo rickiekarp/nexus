@@ -1,4 +1,4 @@
-package net.rickiekarp.foundation.security
+package net.rickiekarp.foundation.config.security
 
 import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.config.redis.CustomAuthenticationProvider

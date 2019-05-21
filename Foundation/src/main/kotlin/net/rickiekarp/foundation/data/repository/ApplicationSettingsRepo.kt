@@ -1,4 +1,4 @@
-package net.rickiekarp.foundation.data
+package net.rickiekarp.foundation.data.repository
 
 import net.rickiekarp.foundation.data.dao.ApplicationSettingsDao
 import net.rickiekarp.foundation.data.dto.ApplicationSettingDto

@@ -2,6 +2,7 @@ package net.rickiekarp.loginserver.rest.api
 
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.loginserver.dao.WorldsDAO
+import net.rickiekarp.loginserver.domain.WorldProto
 import net.rickiekarp.loginserver.dto.WorldDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -34,5 +35,15 @@ class WorldsApi {
             Log.DEBUG.error("Exception", e)
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
+    }
+
+    @RequestMapping(value = ["/proto"], produces = ["application/x-protobuf"])
+    fun getPersonProto(): WorldProto {
+        return WorldProto
+                .newBuilder()
+                .setName("worldname")
+                .setUrl("worldurl")
+                .setWorldstatusid(1)
+                .build()
     }
 }
