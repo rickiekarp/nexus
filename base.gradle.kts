@@ -13,6 +13,7 @@ extra.set("detektVersion", "1.0.0-RC14")
 extra.set("spotbugsPluginVersion", "1.7.1")
 
 // protocols
+extra.set("protobufGradlePlugin", "0.8.8")
 extra.set("protobufJava", "3.7.1")
 extra.set("protobufJavaFormat", "1.4")
 
