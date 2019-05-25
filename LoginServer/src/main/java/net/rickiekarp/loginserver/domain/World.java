@@ -4,18 +4,18 @@
 package net.rickiekarp.loginserver.domain;
 
 /**
- * Protobuf type {@code WorldProto}
+ * Protobuf type {@code World}
  */
-public  final class WorldProto extends
+public  final class World extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:WorldProto)
-    WorldProtoOrBuilder {
+    // @@protoc_insertion_point(message_implements:World)
+    WorldOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use WorldProto.newBuilder() to construct.
-  private WorldProto(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use World.newBuilder() to construct.
+  private World(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private WorldProto() {
+  private World() {
     name_ = "";
     url_ = "";
   }
@@ -25,7 +25,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private WorldProto(
+  private World(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -87,15 +87,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return net.rickiekarp.loginserver.domain.OuterWorldProto.internal_static_WorldProto_descriptor;
+    return net.rickiekarp.loginserver.domain.WorldProtos.internal_static_World_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return net.rickiekarp.loginserver.domain.OuterWorldProto.internal_static_WorldProto_fieldAccessorTable
+    return net.rickiekarp.loginserver.domain.WorldProtos.internal_static_World_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            net.rickiekarp.loginserver.domain.WorldProto.class, net.rickiekarp.loginserver.domain.WorldProto.Builder.class);
+            net.rickiekarp.loginserver.domain.World.class, net.rickiekarp.loginserver.domain.World.Builder.class);
   }
 
   public static final int ID_FIELD_NUMBER = 1;
@@ -243,10 +243,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof net.rickiekarp.loginserver.domain.WorldProto)) {
+    if (!(obj instanceof net.rickiekarp.loginserver.domain.World)) {
       return super.equals(obj);
     }
-    net.rickiekarp.loginserver.domain.WorldProto other = (net.rickiekarp.loginserver.domain.WorldProto) obj;
+    net.rickiekarp.loginserver.domain.World other = (net.rickiekarp.loginserver.domain.World) obj;
 
     if (getId()
         != other.getId()) return false;
@@ -280,69 +280,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(
+  public static net.rickiekarp.loginserver.domain.World parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(
+  public static net.rickiekarp.loginserver.domain.World parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(
+  public static net.rickiekarp.loginserver.domain.World parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(
+  public static net.rickiekarp.loginserver.domain.World parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(byte[] data)
+  public static net.rickiekarp.loginserver.domain.World parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(
+  public static net.rickiekarp.loginserver.domain.World parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(java.io.InputStream input)
+  public static net.rickiekarp.loginserver.domain.World parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(
+  public static net.rickiekarp.loginserver.domain.World parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseDelimitedFrom(java.io.InputStream input)
+  public static net.rickiekarp.loginserver.domain.World parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseDelimitedFrom(
+  public static net.rickiekarp.loginserver.domain.World parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(
+  public static net.rickiekarp.loginserver.domain.World parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static net.rickiekarp.loginserver.domain.WorldProto parseFrom(
+  public static net.rickiekarp.loginserver.domain.World parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -355,7 +355,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(net.rickiekarp.loginserver.domain.WorldProto prototype) {
+  public static Builder newBuilder(net.rickiekarp.loginserver.domain.World prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -371,26 +371,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code WorldProto}
+   * Protobuf type {@code World}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:WorldProto)
-      net.rickiekarp.loginserver.domain.WorldProtoOrBuilder {
+      // @@protoc_insertion_point(builder_implements:World)
+      net.rickiekarp.loginserver.domain.WorldOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return net.rickiekarp.loginserver.domain.OuterWorldProto.internal_static_WorldProto_descriptor;
+      return net.rickiekarp.loginserver.domain.WorldProtos.internal_static_World_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return net.rickiekarp.loginserver.domain.OuterWorldProto.internal_static_WorldProto_fieldAccessorTable
+      return net.rickiekarp.loginserver.domain.WorldProtos.internal_static_World_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              net.rickiekarp.loginserver.domain.WorldProto.class, net.rickiekarp.loginserver.domain.WorldProto.Builder.class);
+              net.rickiekarp.loginserver.domain.World.class, net.rickiekarp.loginserver.domain.World.Builder.class);
     }
 
-    // Construct using net.rickiekarp.loginserver.domain.WorldProto.newBuilder()
+    // Construct using net.rickiekarp.loginserver.domain.World.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -422,17 +422,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return net.rickiekarp.loginserver.domain.OuterWorldProto.internal_static_WorldProto_descriptor;
+      return net.rickiekarp.loginserver.domain.WorldProtos.internal_static_World_descriptor;
     }
 
     @java.lang.Override
-    public net.rickiekarp.loginserver.domain.WorldProto getDefaultInstanceForType() {
-      return net.rickiekarp.loginserver.domain.WorldProto.getDefaultInstance();
+    public net.rickiekarp.loginserver.domain.World getDefaultInstanceForType() {
+      return net.rickiekarp.loginserver.domain.World.getDefaultInstance();
     }
 
     @java.lang.Override
-    public net.rickiekarp.loginserver.domain.WorldProto build() {
-      net.rickiekarp.loginserver.domain.WorldProto result = buildPartial();
+    public net.rickiekarp.loginserver.domain.World build() {
+      net.rickiekarp.loginserver.domain.World result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -440,8 +440,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public net.rickiekarp.loginserver.domain.WorldProto buildPartial() {
-      net.rickiekarp.loginserver.domain.WorldProto result = new net.rickiekarp.loginserver.domain.WorldProto(this);
+    public net.rickiekarp.loginserver.domain.World buildPartial() {
+      net.rickiekarp.loginserver.domain.World result = new net.rickiekarp.loginserver.domain.World(this);
       result.id_ = id_;
       result.name_ = name_;
       result.url_ = url_;
@@ -484,16 +484,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof net.rickiekarp.loginserver.domain.WorldProto) {
-        return mergeFrom((net.rickiekarp.loginserver.domain.WorldProto)other);
+      if (other instanceof net.rickiekarp.loginserver.domain.World) {
+        return mergeFrom((net.rickiekarp.loginserver.domain.World)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(net.rickiekarp.loginserver.domain.WorldProto other) {
-      if (other == net.rickiekarp.loginserver.domain.WorldProto.getDefaultInstance()) return this;
+    public Builder mergeFrom(net.rickiekarp.loginserver.domain.World other) {
+      if (other == net.rickiekarp.loginserver.domain.World.getDefaultInstance()) return this;
       if (other.getId() != 0) {
         setId(other.getId());
       }
@@ -523,11 +523,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      net.rickiekarp.loginserver.domain.WorldProto parsedMessage = null;
+      net.rickiekarp.loginserver.domain.World parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (net.rickiekarp.loginserver.domain.WorldProto) e.getUnfinishedMessage();
+        parsedMessage = (net.rickiekarp.loginserver.domain.World) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -739,41 +739,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:WorldProto)
+    // @@protoc_insertion_point(builder_scope:World)
   }
 
-  // @@protoc_insertion_point(class_scope:WorldProto)
-  private static final net.rickiekarp.loginserver.domain.WorldProto DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:World)
+  private static final net.rickiekarp.loginserver.domain.World DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new net.rickiekarp.loginserver.domain.WorldProto();
+    DEFAULT_INSTANCE = new net.rickiekarp.loginserver.domain.World();
   }
 
-  public static net.rickiekarp.loginserver.domain.WorldProto getDefaultInstance() {
+  public static net.rickiekarp.loginserver.domain.World getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<WorldProto>
-      PARSER = new com.google.protobuf.AbstractParser<WorldProto>() {
+  private static final com.google.protobuf.Parser<World>
+      PARSER = new com.google.protobuf.AbstractParser<World>() {
     @java.lang.Override
-    public WorldProto parsePartialFrom(
+    public World parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new WorldProto(input, extensionRegistry);
+      return new World(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<WorldProto> parser() {
+  public static com.google.protobuf.Parser<World> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<WorldProto> getParserForType() {
+  public com.google.protobuf.Parser<World> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public net.rickiekarp.loginserver.domain.WorldProto getDefaultInstanceForType() {
+  public net.rickiekarp.loginserver.domain.World getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

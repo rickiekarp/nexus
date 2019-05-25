@@ -3,7 +3,8 @@ package net.rickiekarp.loginserver.repo
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import net.rickiekarp.loginserver.dao.WorldsDAO
-import net.rickiekarp.loginserver.dto.WorldDTO
+import net.rickiekarp.loginserver.domain.World
+import net.rickiekarp.loginserver.domain.WorldList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
@@ -18,20 +19,22 @@ open class WorldsRepo : WorldsDAO {
     @Autowired
     private val dataSource: DataSource? = null
 
-    override fun getWorldList(): List<WorldDTO> {
-        val worldList = ArrayList<WorldDTO>()
+    override fun getWorldList(): WorldList {
+        val worldList = WorldList.newBuilder()
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(FIND_ALL, Statement.RETURN_GENERATED_KEYS)
 
             val rs = stmt.executeQuery()
             while (rs.next()) {
-                val world = WorldDTO()
-                world.id = rs.getInt("id")
-                world.name = rs.getString("name")
-                world.url = rs.getString("url")
-                world.worldstatus_id = rs.getInt("worldstatus_id")
-                worldList.add(world)
+                val world = World
+                        .newBuilder()
+                        .setId(rs.getInt("id"))
+                        .setName(rs.getString("name"))
+                        .setUrl(rs.getString("url"))
+                        .setWorldstatusid(rs.getInt("worldstatus_id"))
+                        .build()
+                worldList.addWorld(world)
             }
         } catch (e: SQLException) {
             Log.DEBUG.error("Exception", e)
@@ -39,7 +42,7 @@ open class WorldsRepo : WorldsDAO {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
         }
-        return worldList
+        return worldList.build()
     }
 
 }

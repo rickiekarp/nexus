@@ -3,8 +3,8 @@
 
 package net.rickiekarp.loginserver.domain;
 
-public interface WorldProtoOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:WorldProto)
+public interface WorldOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:World)
     com.google.protobuf.MessageOrBuilder {
 
   /**

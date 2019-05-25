@@ -1,7 +1,7 @@
 package net.rickiekarp.loginserver.dao
 
-import net.rickiekarp.loginserver.dto.WorldDTO
+import net.rickiekarp.loginserver.domain.WorldList
 
 interface WorldsDAO {
-    fun getWorldList(): List<WorldDTO>
+    fun getWorldList(): WorldList
 }
