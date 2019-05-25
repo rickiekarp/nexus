@@ -18,7 +18,7 @@ class EmailServiceImpl {
     var sender: JavaMailSender? = null
 
     @Value("\${spring.mail.username}")
-    private val contactEmail: String? = null
+    private val smtpEmail: String? = null
 
     @Autowired
     private val freemarkerConfig: Configuration? = null
@@ -48,13 +48,13 @@ class EmailServiceImpl {
         // set loading location to src/main/resources
         freemarkerConfig!!.setClassForTemplateLoading(this.javaClass, "/templates/")
 
-        val t = freemarkerConfig.getTemplate("mail/cronjob.ftl")
-        val text = FreeMarkerTemplateUtils.processTemplateIntoString(t, model)
+        val template = freemarkerConfig.getTemplate("mail/cronjob.ftl")
+        val templateContentText = FreeMarkerTemplateUtils.processTemplateIntoString(template, model)
 
-        helper.setFrom(contactEmail!!)
-        helper.setTo("rickie.karp@gmail.com")
+        helper.setFrom(smtpEmail!!)
+        helper.setTo(email.to)
         helper.setSubject(email.subject)
-        helper.setText(text, true) // set to html
+        helper.setText(templateContentText, true) // set to html
 
         sender!!.send(message)
     }
