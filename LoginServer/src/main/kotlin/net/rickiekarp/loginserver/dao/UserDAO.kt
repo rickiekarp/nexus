@@ -8,4 +8,5 @@ interface UserDAO {
     fun getUserByName(username: String): User?
     fun updateUserToken(user: User, token: String)
     fun registerUser(user: Credentials): User?
+    fun doLogin(userId: Int): Boolean
 }

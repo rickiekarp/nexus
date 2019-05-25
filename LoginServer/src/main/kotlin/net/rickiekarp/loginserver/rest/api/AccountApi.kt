@@ -67,12 +67,12 @@ class AccountApi {
 
     @PostMapping(value = ["/login"])
     fun login(): ResponseEntity<AppObjectDTO> {
-        return try {
+        return if (repo!!.doLogin(BaseConfig.get().getUserId())) {
             val dto = AppObjectDTO(AppObjectBuilder())
             dto.serverVersion = ServerContext.serverVersion
             dto.setFeatureSettings(BaseConfig.get().application())
             ResponseEntity(dto, HttpStatus.OK)
-        } catch (e: Exception) {
+        } else {
             ResponseEntity(null, HttpStatus.UNAUTHORIZED)
         }
     }

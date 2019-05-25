@@ -8,6 +8,8 @@ import net.rickiekarp.foundation.utils.DatabaseUtil
 import net.rickiekarp.loginserver.dao.UserDAO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -20,6 +22,7 @@ open class UserRepo : UserDAO {
     private val FIND_BY_NAME = "SELECT * FROM users u JOIN user_roles ur ON u.id = ur.users_id JOIN roles r ON r.id = ur.roles_id WHERE username = ?"
     private val INSERT = "CALL createUser(?, ?, ?, true)"
     private val UPDATE = "UPDATE users SET token = ? WHERE id = ?"
+    private val DO_LOGIN = "UPDATE login SET lastLoginDate = now(), lastLoginIP = ? WHERE users_id = ?"
 
     @Autowired
     private val dataSource: DataSource? = null
@@ -113,5 +116,25 @@ open class UserRepo : UserDAO {
             DatabaseUtil.close(dataSource!!.connection)
         }
         return getUserByName(user.username!!)
+    }
+
+    override fun doLogin(userId: Int): Boolean {
+        val request = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
+        val ip = request.remoteAddr
+
+        var stmt: PreparedStatement? = null
+        return try {
+            stmt = dataSource!!.connection.prepareStatement(DO_LOGIN, Statement.RETURN_GENERATED_KEYS)
+            stmt.setString(1, ip)
+            stmt.setInt(2, userId)
+            stmt.execute()
+            true
+        } catch (e: SQLException) {
+            Log.DEBUG.debug("Login currently not possible! Reason: " + e.message)
+            false
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
+        }
     }
 }
