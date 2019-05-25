@@ -14,10 +14,10 @@ dependencies {
 apply plugin: 'war'
 build {
     war {
+        archivesBaseName = 'LoginServer'
         libsDirName = new File(projectDir, "/../module-deployment/service-application/webapps")
         manifest {
             attributes 'Implementation-Version': new Date().format('yyMMddHHmm')
         }
-        archiveName 'LoginServer.war'
     }
 }

@@ -22,14 +22,14 @@ apply plugin: 'war'
 //------------------------------------------------------------------------------------------------------------------------
 
 bootWar {
-    baseName = 'Website'
+    archivesBaseName = "Website"
     libsDirName = new File(projectDir, "/../../module-deployment/service-application/webapps")
     version =  '1.0'
     manifest {
         attributes 'Main-Class': 'net.rickiekarp.admin.AngularBootApplication'
         attributes 'Implementation-Version': new Date().format('yyMMddHHmm')
     }
-    archiveName baseName + ".war"
+    archiveFileName = archivesBaseName + ".war"
 }
 
 
