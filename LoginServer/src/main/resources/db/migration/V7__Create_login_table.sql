@@ -1,6 +1,6 @@
 -- General migration
 ALTER TABLE users
-ADD COLUMN email varchar(255) UNIQUE AFTER username,
+ADD COLUMN email varchar(100) UNIQUE AFTER username,
 MODIFY COLUMN dateCreated TIMESTAMP,
 MODIFY COLUMN lastUpdated TIMESTAMP;
 
