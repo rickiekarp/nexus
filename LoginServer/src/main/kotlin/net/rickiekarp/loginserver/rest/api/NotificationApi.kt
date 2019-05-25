@@ -12,14 +12,10 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.mail.SimpleMailMessage
 
 @RestController
 @RequestMapping("notify")
 class NotificationApi {
-
-    @Autowired
-    var template: SimpleMailMessage? = null
 
     @Autowired
     var service: EmailServiceImpl? = null
@@ -32,25 +28,25 @@ class NotificationApi {
         val setting = repo!!.getApplicationSettingByIdentifier("notificationtoken")
         if (setting != null) {
             val notificationList: List<NotificationTokenData> = jacksonObjectMapper().readValue(setting.content!!)
-            if (isTokenPresent(notificationToken, notificationList, mail)) {
-                Log.DEBUG.info("Sending mail! ($mail)")
-                service!!.sendMail(mail)
+            val notificationData = findNotificationData(notificationToken, notificationList)
+            if (notificationData != null) {
+                mail.subject = "(${notificationData.name}) ${mail.subject}" //Add notification job name to subject
+                service!!.sendInfoMail(mail, notificationData.name!!)
                 return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
             } else {
-                Log.DEBUG.info("Invalid notification token: $notificationToken")
+                Log.DEBUG.info("Mail was not sent! Invalid notification token: $notificationToken")
             }
         }
 
         return ResponseEntity(ResultDTO("not_sent"), HttpStatus.OK)
     }
 
-    private fun isTokenPresent(notificationToken: String, notificationDataList: List<NotificationTokenData>, mail: EmailDto): Boolean {
+    private fun findNotificationData(notificationToken: String, notificationDataList: List<NotificationTokenData>): NotificationTokenData? {
         for (i in 0 until notificationDataList.size) {
             if (notificationDataList[i].token == notificationToken) {
-                mail.subject = "(${notificationDataList[i].name}) ${mail.subject}" //Add notification job name to subject
-                return true
+                return notificationDataList[i]
             }
         }
-        return false
+        return null
     }
 }
