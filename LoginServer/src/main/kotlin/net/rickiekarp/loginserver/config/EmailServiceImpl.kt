@@ -41,9 +41,9 @@ class EmailServiceImpl {
         val model = HashMap<String, String>()
         model["message"] = email.message
         model["job"] = jobIdentifier
-        model["date"] = additionalData["backupDate"] as String
-        model["backupPath"] = additionalData["backupPath"] as String
-        model["backupFile"] = additionalData["backupFile"] as String
+        additionalData.forEach { (k, v) ->
+            model["$k"] = v as String
+        }
 
         // set loading location to src/main/resources
         freemarkerConfig!!.setClassForTemplateLoading(this.javaClass, "/templates/")
