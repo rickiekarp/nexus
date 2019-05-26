@@ -10,14 +10,14 @@ import javax.sql.DataSource
 
 @Repository
 open class StatisticRepo : StatisticDAO {
-    private val SELECT_SHOPPING_STATISTIC = "select sum(sn.price) as value, ss.name from shopping_note sn join shopping_store ss on ss.id = sn.store_id where sn.users_id = ? AND sn.dateBought BETWEEN CURDATE() - INTERVAL ? DAY AND CURDATE() group by store_id"
+    private val SELECT_SHOPPING_STATISTIC = "select IFNULL(ss.name, 'Total') AS name, sum(sn.price) as value from shopping_note sn join shopping_store ss on ss.id = sn.store_id where sn.users_id = ? AND sn.dateBought BETWEEN CURDATE() - INTERVAL ? DAY AND CURDATE() group by name with rollup"
 
     @Autowired
     private val dataSource: DataSource? = null
 
-    override fun getShoppingStatistic(userId: Int, days: Int): HashMap<String, Double> {
+    override fun getShoppingStatistic(userId: Int, days: Int): LinkedHashMap<String, Double> {
         var stmt: PreparedStatement? = null
-        val costMap = HashMap<String, Double>()
+        val costMap = LinkedHashMap<String, Double>()
         try {
             stmt = dataSource!!.connection.prepareStatement(SELECT_SHOPPING_STATISTIC)
             stmt!!.setInt(1, userId)

@@ -28,13 +28,16 @@ class StatisticsApi {
     var statisticRepo: StatisticDAO? = null
 
     @PostMapping(value = ["shoppingValue"])
-    fun generateShoppingStatistic(@RequestHeader(name = "X-Notification-Token") notificationToken: String, @RequestBody mail: EmailDto): ResponseEntity<ResultDTO> {
-        val setting = settingsRepo!!.getApplicationSettingByIdentifier("notificationtoken")
-        if (setting != null) {
-            val notificationList: List<NotificationTokenData> = jacksonObjectMapper().readValue(setting.content!!)
-            val notificationData = emailService!!.findNotificationData(notificationToken, notificationList)
+    fun generateShoppingStatistic(@RequestHeader(name = "X-Notification-Token") notificationToken: String,
+                                  @RequestHeader(name = "X-UserId") userId: Int,
+                                  @RequestHeader(name = "X-Days") daysToLookBack: Int,
+                                  @RequestBody mail: EmailDto): ResponseEntity<ResultDTO> {
+        val applicationSetting = settingsRepo!!.getApplicationSettingByIdentifier("notificationtoken")
+        if (applicationSetting != null) {
+            val notificationTokenList: List<NotificationTokenData> = jacksonObjectMapper().readValue(applicationSetting.content!!)
+            val notificationData = emailService!!.findNotificationData(notificationToken, notificationTokenList)
             if (notificationData != null) {
-                val statisticData = statisticRepo!!.getShoppingStatistic(4, 30)
+                val statisticData = statisticRepo!!.getShoppingStatistic(userId, daysToLookBack)
                 if (statisticData.size > 0) {
                     mail.additionalData = statisticData
                     emailService!!.sendInfoMail(mail, notificationData)
