@@ -2,7 +2,7 @@ package net.rickiekarp.loginserver.rest.api
 
 import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.config.ServerContext
-import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User

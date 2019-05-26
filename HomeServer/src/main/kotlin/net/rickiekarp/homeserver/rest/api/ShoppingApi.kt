@@ -1,15 +1,13 @@
 package net.rickiekarp.homeserver.rest.api
 
 import net.rickiekarp.foundation.config.BaseConfig
-import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO
 import net.rickiekarp.homeserver.dto.ShoppingNoteDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.security.authentication.AnonymousAuthenticationToken
-import org.springframework.security.core.context.SecurityContextHolder
 
 @RestController
 @RequestMapping("shopping")

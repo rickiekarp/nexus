@@ -1,7 +1,8 @@
-package net.rickiekarp.loginserver.config
+package net.rickiekarp.foundation.core.services.mail
 
 import freemarker.template.Configuration
-import net.rickiekarp.loginserver.dto.EmailDto
+import net.rickiekarp.foundation.model.NotificationTokenData
+import net.rickiekarp.foundation.data.dto.EmailDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.SimpleMailMessage
@@ -12,7 +13,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils
 import java.util.HashMap
 
 @Component
-class EmailServiceImpl {
+class EmailService {
 
     @Autowired
     var sender: JavaMailSender? = null
@@ -57,6 +58,15 @@ class EmailServiceImpl {
         helper.setText(templateContentText, true) // set to html
 
         sender!!.send(message)
+    }
+
+    fun findNotificationData(notificationToken: String, notificationDataList: List<NotificationTokenData>): NotificationTokenData? {
+        for (i in 0 until notificationDataList.size) {
+            if (notificationDataList[i].token == notificationToken) {
+                return notificationDataList[i]
+            }
+        }
+        return null
     }
 
 }

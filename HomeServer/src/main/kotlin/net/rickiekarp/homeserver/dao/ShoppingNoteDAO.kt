@@ -1,6 +1,6 @@
 package net.rickiekarp.homeserver.dao
 
-import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.homeserver.dto.ShoppingNoteDto
 
 interface ShoppingNoteDAO {

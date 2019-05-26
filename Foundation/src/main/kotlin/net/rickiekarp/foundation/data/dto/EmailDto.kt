@@ -1,4 +1,4 @@
-package net.rickiekarp.loginserver.dto
+package net.rickiekarp.foundation.data.dto
 
 class EmailDto {
     lateinit var to: String

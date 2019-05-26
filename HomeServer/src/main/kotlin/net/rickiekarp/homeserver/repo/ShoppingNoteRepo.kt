@@ -1,6 +1,6 @@
 package net.rickiekarp.homeserver.repo
 
-import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO

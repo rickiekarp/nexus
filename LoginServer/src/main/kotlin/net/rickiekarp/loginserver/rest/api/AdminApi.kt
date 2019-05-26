@@ -1,7 +1,7 @@
 package net.rickiekarp.loginserver.rest.api
 
 import net.rickiekarp.foundation.config.BaseConfig
-import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.loginserver.dto.KeyValuePairDTO
 import org.springframework.http.HttpStatus

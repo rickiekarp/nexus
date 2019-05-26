@@ -1,6 +1,6 @@
 package net.rickiekarp.loginserver.rest.api
 
-import net.rickiekarp.foundation.dto.exception.ResultDTO
+import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
 import net.rickiekarp.loginserver.dao.UserDAO
@@ -14,7 +14,6 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
-import org.mockito.stubbing.Answer
 
 class AccountApiTest {
 
