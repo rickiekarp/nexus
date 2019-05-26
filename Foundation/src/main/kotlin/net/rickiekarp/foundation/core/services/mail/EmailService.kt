@@ -33,31 +33,35 @@ class EmailService {
     }
 
     @Throws(Exception::class)
-    fun sendInfoMail(email: EmailDto, jobIdentifier: String) {
+    fun sendInfoMail(mail: EmailDto, notificationTokenData: NotificationTokenData) {
         val message = sender!!.createMimeMessage()
         val helper = MimeMessageHelper(message)
 
-        val additionalData = email.additionalData as LinkedHashMap<*, *>
-
-        val model = HashMap<String, String>()
-        model["message"] = email.message
-        model["job"] = jobIdentifier
-        additionalData.forEach { (k, v) ->
-            model["$k"] = v as String
-        }
+        val model = extractModel(mail, notificationTokenData)
 
         // set loading location to src/main/resources
-        freemarkerConfig!!.setClassForTemplateLoading(this.javaClass, "/templates/")
+        freemarkerConfig!!.setClassForTemplateLoading(this.javaClass, "/templates/mail/")
 
-        val template = freemarkerConfig.getTemplate("mail/cronjob.ftl")
+        val template = freemarkerConfig.getTemplate("${notificationTokenData.template}.ftl")
         val templateContentText = FreeMarkerTemplateUtils.processTemplateIntoString(template, model)
 
+        //Add notification job name to subject
+        //mail.subject = "(${notificationTokenData.name}) ${mail.subject}"
+
         helper.setFrom(smtpEmail!!)
-        helper.setTo(email.to)
-        helper.setSubject(email.subject)
+        helper.setTo(mail.to)
+        helper.setSubject(mail.subject)
         helper.setText(templateContentText, true) // set to html
 
         sender!!.send(message)
+    }
+
+    private fun extractModel(mail: EmailDto, notificationTokenData: NotificationTokenData): Map<String, Any> {
+        val model = HashMap<String, Any>()
+        model["message"] = mail.message
+        model["additionalData"] = mail.additionalData as LinkedHashMap<*, *>
+        model["job"] = notificationTokenData.name as String
+        return model
     }
 
     fun findNotificationData(notificationToken: String, notificationDataList: List<NotificationTokenData>): NotificationTokenData? {

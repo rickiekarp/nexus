@@ -30,8 +30,7 @@ class StatisticsApi {
             val notificationList: List<NotificationTokenData> = jacksonObjectMapper().readValue(setting.content!!)
             val notificationData = emailService!!.findNotificationData(notificationToken, notificationList)
             if (notificationData != null) {
-                mail.subject = "(${notificationData.name}) ${mail.subject}" //Add notification job name to subject
-                emailService!!.sendInfoMail(mail, notificationData.name!!)
+                emailService!!.sendInfoMail(mail, notificationData)
                 return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
             } else {
                 Log.DEBUG.info("Mail was not sent! Invalid notification token: $notificationToken")

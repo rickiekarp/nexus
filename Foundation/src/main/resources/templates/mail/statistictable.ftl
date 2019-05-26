@@ -1,4 +1,4 @@
-${message}<br><br>
+<h3>${message}</h3><br><br>
 
 <table style="border:0; padding-top:0px; margin-top:0px;">
 
