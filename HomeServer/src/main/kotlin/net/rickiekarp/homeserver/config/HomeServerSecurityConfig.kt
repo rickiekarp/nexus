@@ -1,6 +1,5 @@
-package net.rickiekarp.foundation.config.security
+package net.rickiekarp.homeserver.config
 
-import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.config.redis.CustomAuthenticationProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -14,10 +13,10 @@ import org.springframework.security.web.firewall.HttpFirewall
 
 @Configuration
 @EnableWebSecurity
-open class SecurityConfig : WebSecurityConfigurerAdapter() {
+open class HomeServerSecurityConfig : WebSecurityConfigurerAdapter() {
 
     companion object {
-        private val NOT_SECURED = arrayOf("/worlds/get", "/account/authorize", "/account/create", "/notify/send")
+        private val NOT_SECURED = arrayOf("/statistics/shoppingValue")
     }
 
     @Autowired
@@ -29,18 +28,14 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        if (BaseConfig.get().applicationIdentifier == "Website") {
-            http.csrf().disable().authorizeRequests().anyRequest().permitAll()
-        } else {
-            http
-                    .authorizeRequests()
-                    .antMatchers(*NOT_SECURED).permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                    .httpBasic()
-                    .and()
-                    .csrf().disable()
-        }
+        http
+                .authorizeRequests()
+                .antMatchers(*NOT_SECURED).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic()
+                .and()
+                .csrf().disable()
     }
 
     @Bean
