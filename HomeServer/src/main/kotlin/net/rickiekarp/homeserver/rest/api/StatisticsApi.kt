@@ -8,6 +8,7 @@ import net.rickiekarp.foundation.core.services.mail.EmailService
 import net.rickiekarp.foundation.data.dto.EmailDto
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.model.NotificationTokenData
+import net.rickiekarp.homeserver.dao.StatisticDAO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -23,6 +24,9 @@ class StatisticsApi {
     @Autowired
     var settingsRepo: ApplicationSettingsDao? = null
 
+    @Autowired
+    var statisticRepo: StatisticDAO? = null
+
     @PostMapping(value = ["shoppingValue"])
     fun generateShoppingStatistic(@RequestHeader(name = "X-Notification-Token") notificationToken: String, @RequestBody mail: EmailDto): ResponseEntity<ResultDTO> {
         val setting = settingsRepo!!.getApplicationSettingByIdentifier("notificationtoken")
@@ -30,7 +34,13 @@ class StatisticsApi {
             val notificationList: List<NotificationTokenData> = jacksonObjectMapper().readValue(setting.content!!)
             val notificationData = emailService!!.findNotificationData(notificationToken, notificationList)
             if (notificationData != null) {
-                emailService!!.sendInfoMail(mail, notificationData)
+                val statisticData = statisticRepo!!.getShoppingStatistic(4, 30)
+                if (statisticData.size > 0) {
+                    mail.additionalData = statisticData
+                    emailService!!.sendInfoMail(mail, notificationData)
+                } else {
+                    Log.DEBUG.info("No statistic data found!")
+                }
                 return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
             } else {
                 Log.DEBUG.info("Mail was not sent! Invalid notification token: $notificationToken")
