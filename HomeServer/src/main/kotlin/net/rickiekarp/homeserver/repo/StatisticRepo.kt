@@ -10,7 +10,7 @@ import javax.sql.DataSource
 
 @Repository
 open class StatisticRepo : StatisticDAO {
-    private val SELECT_SHOPPING_STATISTIC = "select IFNULL(ss.name, 'Total') AS name, sum(sn.price) as value from shopping_note sn join shopping_store ss on ss.id = sn.store_id where sn.users_id = ? AND sn.dateBought BETWEEN CURDATE() - INTERVAL ? DAY AND CURDATE() group by name with rollup"
+    private val SELECT_SHOPPING_STATISTIC = "select IFNULL(ss.name, ?) AS name, sum(sn.price) as value from shopping_note sn join shopping_store ss on ss.id = sn.store_id where sn.users_id = ? AND sn.dateBought BETWEEN CURDATE() - INTERVAL ? DAY AND CURDATE() group by name with rollup"
 
     @Autowired
     private val dataSource: DataSource? = null
@@ -20,8 +20,9 @@ open class StatisticRepo : StatisticDAO {
         val costMap = LinkedHashMap<String, Double>()
         try {
             stmt = dataSource!!.connection.prepareStatement(SELECT_SHOPPING_STATISTIC)
-            stmt!!.setInt(1, userId)
-            stmt.setInt(2, days)
+            stmt!!.setString(1, "TOTAL")
+            stmt.setInt(2, userId)
+            stmt.setInt(3, days)
 
             val resultSet = stmt.executeQuery()
             while (resultSet.next()) {
