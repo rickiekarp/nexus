@@ -19,9 +19,11 @@ import android.widget.Toast;
 
 import net.rickiekarp.homeassistant.config.Configuration;
 import net.rickiekarp.homeassistant.db.AppDatabase;
+import net.rickiekarp.homeassistant.domain.WorldList;
 import net.rickiekarp.homeassistant.interfaces.IOnCreateAccountResult;
 import net.rickiekarp.homeassistant.interfaces.IOnGetTokenResult;
 import net.rickiekarp.homeassistant.interfaces.IOnLoginResult;
+import net.rickiekarp.homeassistant.net.WorldsCall;
 import net.rickiekarp.homeassistant.preferences.IsLoggedIn;
 import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.tasks.login.LoginTask;
@@ -33,6 +35,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by sebastian on 24.11.17.
@@ -92,23 +95,31 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
         });
 
         List<String> hosts_array = new ArrayList<>();
-        hosts_array.add("http://10.0.2.2:8080");
-        hosts_array.add("https://app.rickiekarp.net");
+
+        WorldsCall call = new WorldsCall();
+        try {
+            WorldList worlds = call.execute().get();
+            for (int i = 0; i < worlds.getWorldCount(); i++) {
+                hosts_array.add(worlds.getWorld(i).getUrl());
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         spinner = findViewById(R.id.serverselection);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, hosts_array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+        spinner.setSelection(0);
 
         accountsettings = findViewById(R.id.account_settings);
         accountsettings.setOnClickListener(v -> {
             Toast.makeText(this, "Not implemented yet!", Toast.LENGTH_SHORT).show();
         });
-
-        //Toast.makeText(this, Configuration.host, Toast.LENGTH_LONG).show();
-
     }
 
     private void showInvalidCredentialsToast() {
