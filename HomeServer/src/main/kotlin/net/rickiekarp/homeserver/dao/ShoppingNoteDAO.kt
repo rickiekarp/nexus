@@ -10,6 +10,5 @@ interface ShoppingNoteDAO {
     fun updateShoppingNote(note: ShoppingNoteDto): ResultDTO
     fun markAsBought(note: ShoppingNoteDto): ResultDTO
     fun removeItem(itemid: Int): ResultDTO
-    fun getBoughtHistory(user_id: Int): List<ShoppingNoteDto>
-    fun getBoughtHistoryProto(user_id: Int): ShoppingNoteList
+    fun getBoughtHistory(user_id: Int): ShoppingNoteList
 }

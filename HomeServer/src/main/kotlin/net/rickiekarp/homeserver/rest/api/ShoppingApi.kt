@@ -55,16 +55,9 @@ class ShoppingApi {
         return ResponseEntity(noteDeleted, HttpStatus.OK)
     }
 
-    @Deprecated(message = "Use historyProto instead!")
-    @GetMapping(value = ["history"])
-    fun history(): ResponseEntity<List<ShoppingNoteDto>?> {
-        val noteList = repo!!.getBoughtHistory(BaseConfig.get().getUserId())
-        return ResponseEntity(noteList, HttpStatus.OK)
-    }
-
-    @GetMapping(value = ["historyProto"], produces = ["application/x-protobuf"])
+    @GetMapping(value = ["history"], produces = ["application/x-protobuf"])
     fun getWorlds(): ResponseEntity<ShoppingNoteList> {
-        val noteList = repo!!.getBoughtHistoryProto(BaseConfig.get().getUserId())
+        val noteList = repo!!.getBoughtHistory(BaseConfig.get().getUserId())
         return ResponseEntity(noteList, HttpStatus.OK)
     }
 }
