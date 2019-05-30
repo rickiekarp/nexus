@@ -1,6 +1,6 @@
 package net.rickiekarp.homeassistant.interfaces;
 
-import net.rickiekarp.homeassistant.communication.vo.VONote;
+import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 
 /**
  * Created by sebastian on 05.12.17.

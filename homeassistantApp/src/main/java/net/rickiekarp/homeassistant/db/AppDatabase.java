@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import net.rickiekarp.homeassistant.communication.vo.VOData;
+import net.rickiekarp.homeassistant.net.communication.vo.VOData;
 import net.rickiekarp.homeassistant.db.daos.NotesDAO;
 import net.rickiekarp.homeassistant.db.daos.UserDAO;
 import net.rickiekarp.homeassistant.db.entities.Notes;

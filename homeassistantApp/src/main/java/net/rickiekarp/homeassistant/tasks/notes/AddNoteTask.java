@@ -3,8 +3,8 @@ package net.rickiekarp.homeassistant.tasks.notes;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
-import net.rickiekarp.homeassistant.communication.controller.AddNotesController;
-import net.rickiekarp.homeassistant.communication.vo.VONote;
+import net.rickiekarp.homeassistant.net.communication.controller.AddNotesController;
+import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.interfaces.IOnAddNotesResult;
 

@@ -2,7 +2,7 @@ package net.rickiekarp.homeassistant.tasks.notes;
 
 import android.os.AsyncTask;
 
-import net.rickiekarp.homeassistant.communication.controller.BoughtNotesController;
+import net.rickiekarp.homeassistant.net.communication.controller.BoughtNotesController;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 
 /**

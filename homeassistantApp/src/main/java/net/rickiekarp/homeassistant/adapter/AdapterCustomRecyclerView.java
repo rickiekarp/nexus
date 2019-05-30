@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import net.rickiekarp.homeassistant.R;
-import net.rickiekarp.homeassistant.communication.vo.VONote;
+import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.tasks.notes.MarkAsBoughtNoteTask;
 

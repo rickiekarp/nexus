@@ -3,7 +3,7 @@ package net.rickiekarp.homeassistant.tasks.login;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
-import net.rickiekarp.homeassistant.communication.controller.LoginController;
+import net.rickiekarp.homeassistant.net.communication.controller.LoginController;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.interfaces.IOnLoginResult;
 

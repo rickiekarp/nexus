@@ -3,8 +3,6 @@ package net.rickiekarp.homeassistant.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import net.rickiekarp.homeassistant.Constants;
-
 /**
  * Created by sebastian on 08.12.17.
  */

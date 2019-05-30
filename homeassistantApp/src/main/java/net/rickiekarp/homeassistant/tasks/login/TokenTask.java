@@ -3,7 +3,7 @@ package net.rickiekarp.homeassistant.tasks.login;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
-import net.rickiekarp.homeassistant.communication.controller.TokenController;
+import net.rickiekarp.homeassistant.net.communication.controller.TokenController;
 import net.rickiekarp.homeassistant.interfaces.IOnGetTokenResult;
 
 /**

@@ -2,14 +2,14 @@ package net.rickiekarp.homeassistant.net;
 
 import android.os.AsyncTask;
 
-import net.rickiekarp.homeassistant.Constants;
+import net.rickiekarp.homeassistant.preferences.Constants;
 import net.rickiekarp.homeassistant.domain.WorldList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static net.rickiekarp.homeassistant.Constants.URL.BASE_URL_LOGIN;
+import static net.rickiekarp.homeassistant.preferences.Constants.URL.BASE_URL_LOGIN;
 
 public class WorldsCall extends AsyncTask<String, Void, WorldList> {
 
