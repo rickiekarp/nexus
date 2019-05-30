@@ -176,7 +176,7 @@ public class SubmitLinkActivity extends TabActivity {
         } else {
         	String submitPath = null;
         	Uri data = getIntent().getData();
-        	if (data != null && Util.isRedditUri(data))
+        	if (Util.isRedditUri(data))
         		submitPath = data.getPath();
         	if (submitPath == null)
     			submitPath = "/submit";
@@ -455,7 +455,7 @@ public class SubmitLinkActivity extends TabActivity {
             	// We only need to fill in a few fields.
             	newlyCreatedThread.setId(newId);
             	newlyCreatedThread.setSubreddit(newSubreddit);
-            	newlyCreatedThread.setTitle(_mTitle.toString());
+            	newlyCreatedThread.setTitle(_mTitle);
 
             	return newlyCreatedThread;
 

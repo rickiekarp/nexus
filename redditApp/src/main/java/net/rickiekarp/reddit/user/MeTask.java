@@ -20,8 +20,7 @@ public abstract class MeTask extends AsyncTask<Void, Void, Object> {
 	private static final String REQUEST_URL = Constants.REDDIT_BASE_URL + "/api/me.json";
 	
 	protected HttpClient mClient;
-	protected long mContentLength = 0;
-	
+
 	public MeTask(HttpClient client) {
 		mClient = client;
 	}
@@ -36,12 +35,11 @@ public abstract class MeTask extends AsyncTask<Void, Void, Object> {
             	
             // Read the header to get Content-Length since entity.getContentLength() returns -1
         	Header contentLengthHeader = response.getFirstHeader("Content-Length");
-        	if (contentLengthHeader != null) {
-        		mContentLength = Long.valueOf(contentLengthHeader.getValue());
-            	if (Constants.LOGGING) Log.d(TAG, "Content length: "+mContentLength);
+			if (contentLengthHeader != null) {
+				long mContentLength = Long.valueOf(contentLengthHeader.getValue());
+            	if (Constants.LOGGING) Log.d(TAG, "Content length: "+ mContentLength);
         	}
         	else {
-        		mContentLength = -1; 
             	if (Constants.LOGGING) Log.d(TAG, "Content length: UNAVAILABLE");
         	}
 

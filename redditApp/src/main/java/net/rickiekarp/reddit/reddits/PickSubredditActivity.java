@@ -118,7 +118,7 @@ public final class PickSubredditActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSubredditsList = new ArrayList<SubredditInfo>();
+		mSubredditsList = new ArrayList<>();
 
 		CookieSyncManager.createInstance(getApplicationContext());
 
@@ -255,10 +255,10 @@ public final class PickSubredditActivity extends ListActivity {
 	class DownloadRedditsTask extends AsyncTask<Void, Void, ArrayList<SubredditInfo>> {
 		@Override
 		public ArrayList<SubredditInfo> doInBackground(Void... voidz) {
-			HttpEntity entity = null;
+			HttpEntity entity;
 			try {
 
-				ArrayList<SubredditInfo> reddits = null;
+				ArrayList<SubredditInfo> reddits;
 				if(refresh) {
 
 					HttpGet request = new HttpGet(Constants.REDDIT_BASE_URL + "/subreddits/mine/subscriber.json?limit=100");
@@ -273,7 +273,7 @@ public final class PickSubredditActivity extends ListActivity {
 					JsonNode rootNode = mapper.readValue(entity.getContent(), JsonNode.class);
 					entity.consumeContent();
 
-					reddits = new ArrayList<SubredditInfo>();
+					reddits = new ArrayList<>();
 					for(JsonNode ee : rootNode.get("data").get("children")) {
 						ee = ee.get("data");
 						SubredditInfo sr = new SubredditInfo();
@@ -302,6 +302,7 @@ public final class PickSubredditActivity extends ListActivity {
 				return reddits;
 			}
 			catch(Throwable e) {
+				Log.e(TAG, e.getMessage());
 			}
 			return null;
 		}
@@ -328,7 +329,7 @@ public final class PickSubredditActivity extends ListActivity {
 
 			if (reddits == null || reddits.size() == 0) {
 				// Need to make a copy because Arrays.asList returns List backed by original array
-				mSubredditsList = new ArrayList<SubredditInfo>();
+				mSubredditsList = new ArrayList<>();
 				for(String ee : DEFAULT_SUBREDDITS) {
 					SubredditInfo info = new SubredditInfo();
 					info.name = ee;
@@ -350,7 +351,7 @@ public final class PickSubredditActivity extends ListActivity {
 		private NumberFormat mSubscriberFormat;
 
 
-		public PickSubredditAdapter(Context context, List<SubredditInfo> objects) {
+		PickSubredditAdapter(Context context, List<SubredditInfo> objects) {
 			super(context, 0, objects);
 
 			mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -415,7 +416,7 @@ public final class PickSubredditActivity extends ListActivity {
 			}
 
 			text = (TextView) view.findViewById(R.id.nsfw);
-			if(subject.nsfw == true) {
+			if(subject.nsfw) {
 				text.setVisibility(View.VISIBLE);
 			} else {
 				text.setVisibility(View.GONE);
