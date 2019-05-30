@@ -48,6 +48,7 @@ public class RedditSettings {
 	 * Should the browser attempt to load imgur images directly?
 	 */
 	private boolean loadImgurImagesDirectly = true;
+	private boolean loadVredditLinksDirectly = false;
 
 	private int threadDownloadLimit = Constants.DEFAULT_THREAD_DOWNLOAD_LIMIT;
 	private String commentsSortByUrl = Constants.CommentsSort.SORT_BY_BEST_URL;
@@ -132,6 +133,7 @@ public class RedditSettings {
 		editor.putBoolean(Constants.PREF_LOAD_JS, this.loadJavascript);
 		editor.putBoolean(Constants.PREF_LOAD_PLUGINS, this.loadPlugins);
 		editor.putBoolean(Constants.PREF_IMGUR_DIRECT, this.loadImgurImagesDirectly);
+		editor.putBoolean(Constants.PREF_VREDDIT_DIRECT, this.loadVredditLinksDirectly);
 
 		// Use external browser instead of BrowserActivity
 		editor.putBoolean(Constants.PREF_USE_EXTERNAL_BROWSER, this.useExternalBrowser);
@@ -216,6 +218,7 @@ public class RedditSettings {
 		this.setLoadJS(sessionPrefs.getBoolean(Constants.PREF_LOAD_JS, true));
 		this.setLoadPlugins(sessionPrefs.getBoolean(Constants.PREF_LOAD_PLUGINS, true));
 		this.setLoadImgurImagesDirectly(sessionPrefs.getBoolean(Constants.PREF_IMGUR_DIRECT, true));
+		this.setLoadVredditLinksDirectly(sessionPrefs.getBoolean(Constants.PREF_VREDDIT_DIRECT, false));
 
 		// Use external browser instead of BrowserActivity
 		this.setUseExternalBrowser(sessionPrefs.getBoolean(Constants.PREF_USE_EXTERNAL_BROWSER, false));
@@ -401,6 +404,10 @@ public class RedditSettings {
 		this.loadImgurImagesDirectly = newLoadImgurImagesDirectly;
 	}
 
+	public void setLoadVredditLinksDirectly(boolean loadVredditLinksDirectly) {
+		this.loadVredditLinksDirectly = loadVredditLinksDirectly;
+	}
+
 	public boolean isOverwriteUA() {
 		return overWriteUA;
 	}
@@ -417,6 +424,9 @@ public class RedditSettings {
 		return this.loadImgurImagesDirectly;
 	}
 
+	public boolean isLoadVredditLinksDirectly() {
+		return this.loadVredditLinksDirectly;
+	}
 
 	public int getRotation() {
 		return rotation;

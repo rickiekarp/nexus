@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     def applicationBaseId = "com.rkarp.reddit"
-    def versionBaseName = "1.0"
+    def versionBaseName = "2019.06"
 
     defaultConfig {
         applicationId "${applicationBaseId}"
         minSdkVersion 14
         compileSdkVersion 15
-        targetSdkVersion 15
+        targetSdkVersion 28
         versionCode 1
         versionName "${versionBaseName}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -43,11 +43,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.2'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.8'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
     implementation group: 'dk.brics.automaton', name: 'automaton', version: '1.11-8'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

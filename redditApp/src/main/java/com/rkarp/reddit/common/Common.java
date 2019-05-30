@@ -35,7 +35,6 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -534,6 +533,12 @@ public class Common {
 					url += ".png";
 				}
 				forceDesktopUserAgent = true;
+			}
+		}
+
+		if(settings != null && settings.isLoadVredditLinksDirectly()) {
+			if(url.contains("v.redd.it")) {
+				url += "/DASH_600_K";
 			}
 		}
 
