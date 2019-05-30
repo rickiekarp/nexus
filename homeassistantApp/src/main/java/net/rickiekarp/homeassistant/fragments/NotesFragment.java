@@ -29,10 +29,10 @@ import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.interfaces.IOnUpdateNotesResult;
 import net.rickiekarp.homeassistant.preferences.Token;
-import net.rickiekarp.homeassistant.tasks.AddNoteTask;
-import net.rickiekarp.homeassistant.tasks.GetNotesTask;
-import net.rickiekarp.homeassistant.tasks.RemoveNoteTask;
-import net.rickiekarp.homeassistant.tasks.UpdateNoteTask;
+import net.rickiekarp.homeassistant.tasks.notes.AddNoteTask;
+import net.rickiekarp.homeassistant.tasks.notes.GetNotesTask;
+import net.rickiekarp.homeassistant.tasks.notes.RemoveNoteTask;
+import net.rickiekarp.homeassistant.tasks.notes.UpdateNoteTask;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -24,9 +24,9 @@ import net.rickiekarp.homeassistant.interfaces.IOnGetTokenResult;
 import net.rickiekarp.homeassistant.interfaces.IOnLoginResult;
 import net.rickiekarp.homeassistant.preferences.IsLoggedIn;
 import net.rickiekarp.homeassistant.preferences.Token;
-import net.rickiekarp.homeassistant.tasks.LoginTask;
-import net.rickiekarp.homeassistant.tasks.RegistrationTask;
-import net.rickiekarp.homeassistant.tasks.TokenTask;
+import net.rickiekarp.homeassistant.tasks.login.LoginTask;
+import net.rickiekarp.homeassistant.tasks.login.RegistrationTask;
+import net.rickiekarp.homeassistant.tasks.login.TokenTask;
 import net.rickiekarp.homeassistant.utils.Util;
 
 import java.security.MessageDigest;

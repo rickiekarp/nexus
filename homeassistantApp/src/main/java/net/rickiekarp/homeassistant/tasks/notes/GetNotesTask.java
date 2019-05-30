@@ -1,4 +1,4 @@
-package net.rickiekarp.homeassistant.tasks;
+package net.rickiekarp.homeassistant.tasks.notes;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;

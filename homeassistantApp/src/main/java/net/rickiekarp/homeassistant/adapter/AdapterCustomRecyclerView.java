@@ -10,7 +10,7 @@ import android.widget.TextView;
 import net.rickiekarp.homeassistant.R;
 import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
-import net.rickiekarp.homeassistant.tasks.MarkAsBoughtNoteTask;
+import net.rickiekarp.homeassistant.tasks.notes.MarkAsBoughtNoteTask;
 
 import java.util.ArrayList;
 

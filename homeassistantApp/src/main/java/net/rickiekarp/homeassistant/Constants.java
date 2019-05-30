@@ -1,7 +1,5 @@
 package net.rickiekarp.homeassistant;
 
-import net.rickiekarp.homeassistant.config.Configuration;
-
 /**
  * Created by sebastian on 08.11.17.
  */
@@ -12,7 +10,7 @@ public abstract class Constants {
 
     public abstract class Preferences {
         public static final String SHARED_PREFERENCES_NAME = "sharedPreferencesName";
-        public static final String PREF_USERNAME = "userName";
+        static final String PREF_USERNAME = "userName";
     }
 
     public static abstract class URL {

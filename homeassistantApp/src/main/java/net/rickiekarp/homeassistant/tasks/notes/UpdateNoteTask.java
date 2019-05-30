@@ -1,4 +1,4 @@
-package net.rickiekarp.homeassistant.tasks;
+package net.rickiekarp.homeassistant.tasks.notes;
 
 import android.os.AsyncTask;
 
@@ -12,10 +12,10 @@ import net.rickiekarp.homeassistant.interfaces.IOnUpdateNotesResult;
  */
 
 public class UpdateNoteTask extends AsyncTask<Void, Void, String> {
-    String token;
-    VONote note;
-    AppDatabase database;
-    IOnUpdateNotesResult uiCallback;
+    private String token;
+    private VONote note;
+    private AppDatabase database;
+    private IOnUpdateNotesResult uiCallback;
 
     public UpdateNoteTask(String token, IOnUpdateNotesResult uiCallback, VONote note, AppDatabase database) {
         this.token = token;

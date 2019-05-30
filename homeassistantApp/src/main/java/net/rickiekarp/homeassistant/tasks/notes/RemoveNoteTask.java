@@ -1,4 +1,4 @@
-package net.rickiekarp.homeassistant.tasks;
+package net.rickiekarp.homeassistant.tasks.notes;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,10 +13,10 @@ import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 
 public class RemoveNoteTask extends AsyncTask<Void, Void, String> {
 
-    SharedPreferences sp;
-    AppDatabase database;
-    IOnRemoveNoteResult uiCallback;
-    int id;
+    private SharedPreferences sp;
+    private AppDatabase database;
+    private IOnRemoveNoteResult uiCallback;
+    private int id;
 
     public RemoveNoteTask(SharedPreferences sp, IOnRemoveNoteResult uiCallback, AppDatabase database, int id) {
         this.sp = sp;

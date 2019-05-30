@@ -1,4 +1,4 @@
-package net.rickiekarp.homeassistant.tasks;
+package net.rickiekarp.homeassistant.tasks.notes;
 
 import android.os.AsyncTask;
 
@@ -11,10 +11,10 @@ import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 
 public class MarkAsBoughtNoteTask extends AsyncTask<Void, Void, String> {
 
-    String sp;
-    int id;
-    int noteId;
-    IOnRemoveNoteResult uiCallback;
+    private String sp;
+    private int id;
+    private int noteId;
+    private IOnRemoveNoteResult uiCallback;
 
     public MarkAsBoughtNoteTask(String sp, IOnRemoveNoteResult uiCallback, int id, int noteid) {
         this.sp = sp;

@@ -1,4 +1,4 @@
-package net.rickiekarp.homeassistant.tasks;
+package net.rickiekarp.homeassistant.tasks.login;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -12,9 +12,9 @@ import net.rickiekarp.homeassistant.interfaces.IOnGetTokenResult;
 
 public class TokenTask extends AsyncTask<Void, Void, String> {
 
-    SharedPreferences sp;
-    IOnGetTokenResult uiCallback;
-    String username, password;
+    private SharedPreferences sp;
+    private IOnGetTokenResult uiCallback;
+    private String username, password;
 
     public TokenTask(SharedPreferences sp, IOnGetTokenResult uiCallback, String username, String password) {
         this.sp = sp;

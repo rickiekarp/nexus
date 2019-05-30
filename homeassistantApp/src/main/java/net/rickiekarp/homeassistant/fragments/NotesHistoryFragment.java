@@ -20,7 +20,7 @@ import net.rickiekarp.homeassistant.adapter.NoteHistoryListViewAdapter;
 import net.rickiekarp.homeassistant.communication.vo.VONote;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
-import net.rickiekarp.homeassistant.tasks.GetNotesHistoryTask;
+import net.rickiekarp.homeassistant.tasks.notes.GetNotesHistoryTask;
 
 import java.util.ArrayList;
 import java.util.List;
