@@ -1,9 +1,13 @@
 package net.rickiekarp.homeserver.repo
 
+import com.google.protobuf.ByteString
+import com.google.protobuf.Timestamp
 import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO
+import net.rickiekarp.homeserver.domain.ShoppingNote
+import net.rickiekarp.homeserver.domain.ShoppingNoteList
 import net.rickiekarp.homeserver.dto.ShoppingNoteDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -11,7 +15,9 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
+import java.util.*
 import javax.sql.DataSource
+import kotlin.collections.ArrayList
 
 @Repository
 open class ShoppingNoteRepo : ShoppingNoteDAO {
@@ -151,6 +157,27 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
         return notesList
     }
 
+    override fun getBoughtHistoryProto(user_id: Int): ShoppingNoteList {
+        var stmt: PreparedStatement? = null
+        val notesList = ShoppingNoteList.newBuilder()
+        try {
+            stmt = dataSource!!.connection.prepareStatement(FIND_HISTORY_BY_USER_ID)
+            stmt!!.setInt(1, user_id)
+
+            val rs = stmt.executeQuery()
+            while (rs.next()) {
+                notesList.addNote(extractNoteFromResultSet(rs))
+            }
+        } catch (e: SQLException) {
+            // Log.DEBUG.error("Exception", e);
+            throw RuntimeException(e)
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
+        }
+        return notesList.build()
+    }
+
     @Throws(SQLException::class)
     private fun extractUserFromResultSet(resultSet: ResultSet): ShoppingNoteDto {
         val noteDto = ShoppingNoteDto()
@@ -162,5 +189,21 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
         noteDto.store_id = resultSet.getByte("store_id")
         noteDto.lastUpdated = resultSet.getDate("lastUpdated")
         return noteDto
+    }
+
+    @Throws(SQLException::class)
+    private fun extractNoteFromResultSet(resultSet: ResultSet): ShoppingNote {
+        val note = ShoppingNote
+                .newBuilder()
+                .setId(resultSet.getInt("id"))
+                .setTitle(resultSet.getString("title"))
+                .setPrice(resultSet.getDouble("price"))
+                .setDateAdded(Timestamp.newBuilder().setSeconds(resultSet.getDate("dateAdded").time).build())
+                .setDateBought(Timestamp.newBuilder().setSeconds(resultSet.getDate("dateBought").time).build())
+                .setStoreId(resultSet.getInt("store_id"))
+                .setLastUpdated(Timestamp.newBuilder().setSeconds(resultSet.getDate("lastUpdated").time).build())
+                .build()
+
+        return note
     }
 }

@@ -1,6 +1,7 @@
 package net.rickiekarp.homeserver.dao
 
 import net.rickiekarp.foundation.data.dto.ResultDTO
+import net.rickiekarp.homeserver.domain.ShoppingNoteList
 import net.rickiekarp.homeserver.dto.ShoppingNoteDto
 
 interface ShoppingNoteDAO {
@@ -10,4 +11,5 @@ interface ShoppingNoteDAO {
     fun markAsBought(note: ShoppingNoteDto): ResultDTO
     fun removeItem(itemid: Int): ResultDTO
     fun getBoughtHistory(user_id: Int): List<ShoppingNoteDto>
+    fun getBoughtHistoryProto(user_id: Int): ShoppingNoteList
 }

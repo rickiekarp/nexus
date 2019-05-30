@@ -3,6 +3,7 @@ package net.rickiekarp.homeserver.rest.api
 import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO
+import net.rickiekarp.homeserver.domain.ShoppingNoteList
 import net.rickiekarp.homeserver.dto.ShoppingNoteDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -54,9 +55,16 @@ class ShoppingApi {
         return ResponseEntity(noteDeleted, HttpStatus.OK)
     }
 
+    @Deprecated(message = "Use historyProto instead!")
     @GetMapping(value = ["history"])
     fun history(): ResponseEntity<List<ShoppingNoteDto>?> {
         val noteList = repo!!.getBoughtHistory(BaseConfig.get().getUserId())
+        return ResponseEntity(noteList, HttpStatus.OK)
+    }
+
+    @GetMapping(value = ["historyProto"], produces = ["application/x-protobuf"])
+    fun getWorlds(): ResponseEntity<ShoppingNoteList> {
+        val noteList = repo!!.getBoughtHistoryProto(BaseConfig.get().getUserId())
         return ResponseEntity(noteList, HttpStatus.OK)
     }
 }
