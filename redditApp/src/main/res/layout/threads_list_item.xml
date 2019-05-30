@@ -128,7 +128,7 @@
                 android:background="@drawable/divider_vertical_dark"
             />
             
-            <com.rkarp.reddit.threads.DontPressWithParentFrameLayout
+            <net.rickiekarp.reddit.threads.DontPressWithParentFrameLayout
                 android:id="@+id/thumbnail_frame"
                 android:layout_width="?android:attr/listPreferredItemHeight"
                 android:layout_height="fill_parent"
@@ -152,7 +152,7 @@
                     android:indeterminate="true"
                     android:visibility="visible"
                     />
-            </com.rkarp.reddit.threads.DontPressWithParentFrameLayout>
+            </net.rickiekarp.reddit.threads.DontPressWithParentFrameLayout>
             
         </LinearLayout>
 		

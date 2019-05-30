@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    def applicationBaseId = "com.rkarp.reddit"
+    def applicationBaseId = "net.rickiekarp.reddit"
     def versionBaseName = "2019.06"
 
     defaultConfig {
