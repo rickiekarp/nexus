@@ -155,7 +155,9 @@ open class ShoppingRepo : ShoppingNoteDAO {
             DatabaseUtil.close(stmt)
             DatabaseUtil.close(dataSource!!.connection)
         }
-        return notesList.build()
+        val notes = notesList.build()
+        Log.DEBUG.debug("NoteHistory size: ${notes.noteCount}")
+        return notes
     }
 
     override fun getStores(): ShoppingStoreList {
@@ -203,10 +205,10 @@ open class ShoppingRepo : ShoppingNoteDAO {
                 .setId(resultSet.getInt("id"))
                 .setTitle(resultSet.getString("title"))
                 .setPrice(resultSet.getDouble("price"))
-                .setDateAdded(Timestamp.newBuilder().setSeconds(resultSet.getDate("dateAdded").time).build())
-                .setDateBought(Timestamp.newBuilder().setSeconds(resultSet.getDate("dateBought").time).build())
+                .setDateAdded(Timestamp.newBuilder().setSeconds(resultSet.getTimestamp("dateAdded").time).build())
+                .setDateBought(Timestamp.newBuilder().setSeconds(resultSet.getTimestamp("dateBought").time).build())
                 .setStoreId(resultSet.getInt("store_id"))
-                .setLastUpdated(Timestamp.newBuilder().setSeconds(resultSet.getDate("lastUpdated").time).build())
+                .setLastUpdated(Timestamp.newBuilder().setSeconds(resultSet.getTimestamp("lastUpdated").time).build())
                 .build()
     }
 }
