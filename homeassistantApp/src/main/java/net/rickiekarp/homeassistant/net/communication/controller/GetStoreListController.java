@@ -1,14 +1,17 @@
 package net.rickiekarp.homeassistant.net.communication.controller;
 
+import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import net.rickiekarp.homeassistant.net.communication.ApiInterfaces;
-import net.rickiekarp.homeassistant.net.communication.vo.VONote;
-import net.rickiekarp.homeassistant.preferences.Configuration;
-import net.rickiekarp.homeassistant.db.AppDatabase;
-import net.rickiekarp.homeassistant.interfaces.IOnUpdateNotesResult;
+import net.rickiekarp.homeassistant.domain.ShoppingStoreList;
+import net.rickiekarp.homeassistant.interfaces.IOnGetStoreListResult;
 import net.rickiekarp.homeassistant.interfaces.IRunController;
+import net.rickiekarp.homeassistant.net.communication.ApiInterfaces;
+import net.rickiekarp.homeassistant.preferences.Configuration;
+import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.utils.Util;
 
 import java.util.concurrent.TimeUnit;
@@ -18,7 +21,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.protobuf.ProtoConverterFactory;
 
 import static net.rickiekarp.homeassistant.preferences.Constants.URL.BASE_URL_APPSERVER;
@@ -27,26 +29,18 @@ import static net.rickiekarp.homeassistant.preferences.Constants.URL.BASE_URL_AP
  * Created by sebastian on 22.11.17.
  */
 
-public class UpdateNotesController implements Callback<VONote>, IRunController {
-    private String sp;
-    private VONote note;
-    private AppDatabase database;
-    private IOnUpdateNotesResult uiCallback;
+public class GetStoreListController implements Callback<ShoppingStoreList>, IRunController {
 
-    public UpdateNotesController(String sp, IOnUpdateNotesResult uiCallback, VONote note, AppDatabase database) {
-        this.sp = sp;
+    private SharedPreferences sp;
+    private IOnGetStoreListResult uiCallback;
+
+    public GetStoreListController(SharedPreferences sp, IOnGetStoreListResult uiCallback) {
         this.uiCallback = uiCallback;
-        this.note = note;
-        this.database = database;
+        this.sp = sp;
     }
 
     @Override
     public void start() {
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
-                .setLenient()
-                .create();
-
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
@@ -56,27 +50,28 @@ public class UpdateNotesController implements Callback<VONote>, IRunController {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Configuration.host + BASE_URL_APPSERVER)
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(ProtoConverterFactory.create())
                 .build();
 
         ApiInterfaces.NotesApi api = retrofit.create(ApiInterfaces.NotesApi.class);
 
-        Call<VONote> call = api.doUpdateNotes(Util.generateToken(sp), note);
+        Call<ShoppingStoreList> call = api.doGetStoreList(Util.generateToken(sp.getString(Token.KEY, "")));
         call.enqueue(this);
     }
 
     @Override
-    public void onResponse(Call<VONote> call, Response<VONote> response) {
+    public void onResponse(Call<ShoppingStoreList> call, Response<ShoppingStoreList> response) {
         if (response.code() == 200) {
-            uiCallback.onUpdateNotesSuccess(note.getTitle());
+            ShoppingStoreList voList = response.body();
+            uiCallback.onGetAllNotesSuccess(voList);
         } else {
-            uiCallback.onUpdateNotesError(response.code());
+            uiCallback.onGetAllNotesError();
         }
     }
 
     @Override
-    public void onFailure(Call<VONote> call, Throwable t) {
-        uiCallback.onUpdateNotesError(-1);
-        t.printStackTrace();
+    public void onFailure(Call<ShoppingStoreList> call, Throwable t) {
+        Log.e("tag", t.getMessage());
+        uiCallback.onGetAllNotesError();
     }
 }

@@ -9,11 +9,14 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import net.rickiekarp.homeassistant.R;
+import net.rickiekarp.homeassistant.db.AppDatabase;
+import net.rickiekarp.homeassistant.domain.ShoppingStore;
 import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 
@@ -23,11 +26,13 @@ import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 
 public class NotesDialog extends DialogFragment {
 
+    private AppDatabase database;
     private IOnDialogClick listener;
     private VONote note;
 
-    public static NotesDialog newInstance(IOnDialogClick listener, VONote noteItem) {
+    public static NotesDialog newInstance(IOnDialogClick listener, VONote noteItem, AppDatabase db) {
         NotesDialog fragment = new NotesDialog();
+        fragment.database = db;
         fragment.listener = listener;
         fragment.note = noteItem;
         return fragment;
@@ -45,6 +50,14 @@ public class NotesDialog extends DialogFragment {
         EditText editTitle = v.findViewById(R.id.single_note_title);
         editTitle.setHint("New title");
 
+        EditText priceField = v.findViewById(R.id.note_detail_price);
+        priceField.setHint("Item price");
+
+        ArrayAdapter<ShoppingStore> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, database.getStoreList().getStoreList());
+
+        Spinner storeSpinner = v.findViewById(R.id.note_detail_store_spinner);
+        storeSpinner.setAdapter(dataAdapter);
+
         switch (getTag()) {
             case "viewnote":
                 builder.setTitle("Item details");
@@ -56,11 +69,15 @@ public class NotesDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final String noteTitle = editTitle.getText().toString();
-                        VONote note = new VONote(noteTitle);
                         if (noteTitle.isEmpty()) {
                             Toast.makeText(getActivity(), "Title can not be empty", Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        final double notePrice = Double.valueOf(priceField.getText().toString());
+                        VONote note = new VONote(noteTitle);
+                        note.setPrice(notePrice);
+                        ShoppingStore store = (ShoppingStore) storeSpinner.getSelectedItem();
+                        note.setStore_id((byte) store.getId());
                         listener.onPositiveClick(note, "add");
                         dialogInterface.dismiss();
                     }
@@ -73,15 +90,14 @@ public class NotesDialog extends DialogFragment {
                 EditText price = v.findViewById(R.id.note_detail_price);
                 price.setText(String.valueOf(note.getPrice()));
 
-                Spinner storeId = v.findViewById(R.id.note_detail_store_spinner);
-
                 builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         note.setTitle(editTitle.getText().toString());
                         note.setPrice(Double.valueOf(price.getText().toString()));
-                        if (storeId.getSelectedItem() != null) {
-                            note.setStore_id((byte) storeId.getSelectedItem());
+                        if (storeSpinner.getSelectedItem() != null) {
+                            ShoppingStore store = (ShoppingStore) storeSpinner.getSelectedItem();
+                            note.setStore_id((byte) store.getId());
                         }
                         listener.onPositiveClick(note,"update");
                         dialogInterface.dismiss();

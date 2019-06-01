@@ -50,29 +50,32 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //Server communication
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-protobuf:2.3.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.3.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'com.google.protobuf:protobuf-lite:3.0.1'
-
-    protobuf 'com.google.protobuf:protobuf-java:3.7.1'
+// You need to depend on the lite runtime library, not protobuf-java
 }
 
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.7.1'
+        // You still need protoc like in the non-Android case
+        artifact = 'com.google.protobuf:protoc:3.0.0'
     }
     plugins {
         javalite {
+            // The codegen for lite comes as a separate artifact
             artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
         }
     }
     generateProtoTasks {
         all().each { task ->
             task.builtins {
+                // In most cases you don't need the full Java output
+                // if you use the lite output.
                 remove java
             }
             task.plugins {

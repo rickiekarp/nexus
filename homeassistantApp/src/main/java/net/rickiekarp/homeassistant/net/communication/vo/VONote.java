@@ -6,6 +6,7 @@ import java.util.Date;
  * Created by sebastian on 17.11.17.
  */
 
+@Deprecated
 public class VONote {
 
     private String title;

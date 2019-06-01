@@ -15,8 +15,11 @@ public abstract class Constants {
         public static final String PREF_USERNAME = "userName";
     }
 
+    @Deprecated
     public static abstract class URL {
+        @Deprecated
         public static final String BASE_URL_LOGIN = "/LoginServer/";
+        @Deprecated
         public static final String BASE_URL_APPSERVER = "/HomeServer/";
     }
 }

@@ -1,6 +1,8 @@
 package net.rickiekarp.homeassistant.net.communication;
 
 
+import net.rickiekarp.homeassistant.domain.ShoppingNoteList;
+import net.rickiekarp.homeassistant.domain.ShoppingStoreList;
 import net.rickiekarp.homeassistant.net.communication.vo.VOCredentials;
 import net.rickiekarp.homeassistant.net.communication.vo.VOData;
 import net.rickiekarp.homeassistant.net.communication.vo.VONote;
@@ -28,7 +30,6 @@ public abstract class ApiInterfaces {
     }
 
     public interface NotesApi {
-
         @GET("shopping/get")
         Call<List<VONote>> doGetNotes(@Header(Params.AUTHORIZATION) String apiToken);
 
@@ -45,7 +46,10 @@ public abstract class ApiInterfaces {
         Call<VOResult> doRemoveNotes(@Header(Params.AUTHORIZATION) String apiToken, @Body VONote notes);
 
         @GET("shopping/history")
-        Call<List<VONote>> doGetHistory(@Header(Params.AUTHORIZATION) String apiToken);
+        Call<ShoppingNoteList> doGetHistory(@Header(Params.AUTHORIZATION) String apiToken);
+
+        @GET("shopping/stores")
+        Call<ShoppingStoreList> doGetStoreList(@Header(Params.AUTHORIZATION) String apiToken);
     }
 
     public interface LoginApi {

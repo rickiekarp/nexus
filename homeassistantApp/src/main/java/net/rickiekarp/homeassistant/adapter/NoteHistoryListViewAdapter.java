@@ -2,6 +2,7 @@ package net.rickiekarp.homeassistant.adapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -12,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import net.rickiekarp.homeassistant.R;
-import net.rickiekarp.homeassistant.net.communication.vo.VONote;
+import net.rickiekarp.homeassistant.domain.ShoppingNote;
 
 /**
  *
@@ -20,10 +21,10 @@ import net.rickiekarp.homeassistant.net.communication.vo.VONote;
  */
 public class NoteHistoryListViewAdapter extends BaseAdapter
 {
-    public ArrayList<VONote> items;
+    public ArrayList<ShoppingNote> items;
     private Activity activity;
 
-    public NoteHistoryListViewAdapter(Activity activity, ArrayList<VONote> noteList) {
+    public NoteHistoryListViewAdapter(Activity activity, ArrayList<ShoppingNote> noteList) {
         super();
         this.activity = activity;
         this.items = noteList;
@@ -54,7 +55,7 @@ public class NoteHistoryListViewAdapter extends BaseAdapter
         TextView txtFourth;
     }
 
-    public VONote getNoteAtIndex(int index) {
+    public ShoppingNote getNoteAtIndex(int index) {
         return items.get(index);
     }
 
@@ -67,26 +68,23 @@ public class NoteHistoryListViewAdapter extends BaseAdapter
         ViewHolder holder;
         LayoutInflater inflater =  activity.getLayoutInflater();
 
-        if (convertView == null)
-        {
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_notehistory_list, null);
             holder = new ViewHolder();
-            holder.txtFirst = (TextView) convertView.findViewById(R.id.FirstText);
-            holder.txtSecond = (TextView) convertView.findViewById(R.id.SecondText);
-            holder.txtThird = (TextView) convertView.findViewById(R.id.ThirdText);
-            holder.txtFourth = (TextView) convertView.findViewById(R.id.FourthText);
+            holder.txtFirst = convertView.findViewById(R.id.FirstText);
+            holder.txtSecond = convertView.findViewById(R.id.SecondText);
+            holder.txtThird = convertView.findViewById(R.id.ThirdText);
+            holder.txtFourth = convertView.findViewById(R.id.FourthText);
             convertView.setTag(holder);
-        }
-        else
-        {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        VONote map = items.get(position);
+        ShoppingNote map = items.get(position);
         holder.txtFirst.setText(map.getTitle());
         holder.txtSecond.setText(String.valueOf(map.getPrice()));
-        holder.txtThird.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(map.getDateBought()));
-        holder.txtFourth.setText(String.valueOf(map.getStore_id()));
+        holder.txtThird.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(map.getDateBought().getSeconds())));
+        holder.txtFourth.setText(String.valueOf(map.getStoreId()));
 
         return convertView;
     }

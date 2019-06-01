@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.rickiekarp.homeassistant.R;
+import net.rickiekarp.homeassistant.domain.ShoppingStoreList;
+import net.rickiekarp.homeassistant.interfaces.IOnGetStoreListResult;
+import net.rickiekarp.homeassistant.net.communication.controller.GetStoreListController;
 import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.ui.dialog.LogoutDialog;
@@ -40,6 +43,7 @@ import java.util.TreeMap;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IOnDialogClick {
 
     private SharedPreferences sp;
+    private AppDatabase database;
     private static String TAG;
 
     private final int MENU_NOTES = 1;
@@ -51,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         sp = getSharedPreferences(Constants.Preferences.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+
+        database = AppDatabase.getDatabase(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,6 +71,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         updateNavigationDrawer(navigationView);
+
+        if (database.getStoreList() == null) {
+            GetStoreListController call = new GetStoreListController(sp, new IOnGetStoreListResult() {
+                @Override
+                public void onGetAllNotesSuccess(ShoppingStoreList storeList) {
+                    database.setStoreList(storeList);
+                }
+
+                @Override
+                public void onGetAllNotesError() {
+                    Log.e("tag", "error");
+                }
+            });
+            call.start();
+        }
 
         showFragment(new NotesFragment());
     }
@@ -171,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = headerView.findViewById(R.id.headerSubTitle);
         navUsername.setText(sp.getString(Constants.Preferences.PREF_USERNAME, null));
 
-        Properties properties = AppDatabase.getDatabase(this).getAppData().getFeatures();
+        Properties properties = database.getAppData().getFeatures();
 
         // create treemap of feature properties to sort the received properties
         // TODO: use an array (json) instead of Properties

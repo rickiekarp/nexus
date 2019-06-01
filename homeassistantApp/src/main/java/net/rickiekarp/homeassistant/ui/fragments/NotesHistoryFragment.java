@@ -14,26 +14,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import net.rickiekarp.homeassistant.domain.ShoppingNote;
+import net.rickiekarp.homeassistant.domain.ShoppingNoteList;
+import net.rickiekarp.homeassistant.interfaces.IOnGetHistoryNotesResult;
 import net.rickiekarp.homeassistant.preferences.Constants;
 import net.rickiekarp.homeassistant.R;
 import net.rickiekarp.homeassistant.adapter.NoteHistoryListViewAdapter;
-import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.db.AppDatabase;
-import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 import net.rickiekarp.homeassistant.tasks.notes.GetNotesHistoryTask;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sebastian on 01.11.17.
  */
 
-public class NotesHistoryFragment extends Fragment implements IOnGetAllNotesResult {
+public class NotesHistoryFragment extends Fragment implements IOnGetHistoryNotesResult {
 
     private final String TAG = "singleNote";
     private AppDatabase database;
-    private ArrayList<VONote> itemList;
+    private ArrayList<ShoppingNote> itemList;
     private NoteHistoryListViewAdapter adapter;
     private SharedPreferences sp;
     private ProgressDialog progressDialog;
@@ -64,8 +64,8 @@ public class NotesHistoryFragment extends Fragment implements IOnGetAllNotesResu
     }
 
     @Override
-    public void onGetAllNotesSuccess(List<VONote> notesList) {
-        itemList.addAll(notesList);
+    public void onGetAllNotesSuccess(ShoppingNoteList notesList) {
+        itemList.addAll(notesList.getNoteList());
         adapter.notifyDataSetChanged();
         progressDialog.dismiss();
 

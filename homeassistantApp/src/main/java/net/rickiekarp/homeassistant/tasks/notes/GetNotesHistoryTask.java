@@ -3,6 +3,7 @@ package net.rickiekarp.homeassistant.tasks.notes;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
+import net.rickiekarp.homeassistant.interfaces.IOnGetHistoryNotesResult;
 import net.rickiekarp.homeassistant.net.communication.controller.GetNotesHistoryController;
 import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 
@@ -13,9 +14,9 @@ import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 public class GetNotesHistoryTask extends AsyncTask<Void, Void, String> {
 
     private SharedPreferences sp;
-    private IOnGetAllNotesResult uiCallback;
+    private IOnGetHistoryNotesResult uiCallback;
 
-    public GetNotesHistoryTask(SharedPreferences sp, IOnGetAllNotesResult uiCallback) {
+    public GetNotesHistoryTask(SharedPreferences sp, IOnGetHistoryNotesResult uiCallback) {
         this.sp = sp;
         this.uiCallback = uiCallback;
     }

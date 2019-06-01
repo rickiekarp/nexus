@@ -72,7 +72,7 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
             public void onClick(View view) {
                 //openSingleNoteFragment();
 
-                NotesDialog notesDialog = NotesDialog.newInstance(context,null);
+                NotesDialog notesDialog = NotesDialog.newInstance(context,null, database);
                 notesDialog.show(getActivity().getSupportFragmentManager(), "addnote");
             }
         });
@@ -87,7 +87,7 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
 //                fragmentManager.beginTransaction().replace(R.id.main, new SingleNoteFragment()).addToBackStack(TAG).commit();
 
                 itemId = position;
-                NotesDialog notesDialog = NotesDialog.newInstance(context, adapter.getNoteAtIndex(position));
+                NotesDialog notesDialog = NotesDialog.newInstance(context, adapter.getNoteAtIndex(position), database);
                 notesDialog.show(getActivity().getSupportFragmentManager(), "updatenotes");
             }
         });
@@ -183,8 +183,8 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
     }
 
     @Override
-    public void onUpdateNotesError() {
-        Toast.makeText(getContext(), "There was an error when updating the note", Toast.LENGTH_LONG).show();
+    public void onUpdateNotesError(int responseCode) {
+        Toast.makeText(getContext(), "There was an error when updating the note ("+responseCode+")", Toast.LENGTH_LONG).show();
         progressDialog.dismiss();
     }
 

@@ -17,9 +17,8 @@ public class WorldsCall extends AsyncTask<String, Void, WorldList> {
 
     @Override
     protected WorldList doInBackground(String... params) {
-
         Request.Builder builder = new Request.Builder();
-        String url = Constants.DEFAULT_HOST + BASE_URL_LOGIN + NetworkApi.WORLDS;
+        String url = Constants.DEFAULT_HOST + BASE_URL_LOGIN + NetworkApi.WORLDS_ACTION;
         builder.url(url);
         Request request = builder.build();
         try {
