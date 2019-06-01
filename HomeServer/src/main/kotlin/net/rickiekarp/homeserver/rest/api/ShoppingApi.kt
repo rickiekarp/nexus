@@ -4,6 +4,7 @@ import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO
 import net.rickiekarp.homeserver.domain.ShoppingNoteList
+import net.rickiekarp.homeserver.domain.ShoppingStoreList
 import net.rickiekarp.homeserver.dto.ShoppingNoteDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -56,8 +57,14 @@ class ShoppingApi {
     }
 
     @GetMapping(value = ["history"], produces = ["application/x-protobuf"])
-    fun getWorlds(): ResponseEntity<ShoppingNoteList> {
+    fun getHistory(): ResponseEntity<ShoppingNoteList> {
         val noteList = repo!!.getBoughtHistory(BaseConfig.get().getUserId())
         return ResponseEntity(noteList, HttpStatus.OK)
+    }
+
+    @GetMapping(value = ["stores"], produces = ["application/x-protobuf"])
+    fun getStores(): ResponseEntity<ShoppingStoreList> {
+        val storeList = repo!!.getStores()
+        return ResponseEntity(storeList, HttpStatus.OK)
     }
 }

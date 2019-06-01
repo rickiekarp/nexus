@@ -7,6 +7,8 @@ import net.rickiekarp.foundation.utils.DatabaseUtil
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO
 import net.rickiekarp.homeserver.domain.ShoppingNote
 import net.rickiekarp.homeserver.domain.ShoppingNoteList
+import net.rickiekarp.homeserver.domain.ShoppingStore
+import net.rickiekarp.homeserver.domain.ShoppingStoreList
 import net.rickiekarp.homeserver.dto.ShoppingNoteDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -18,13 +20,14 @@ import javax.sql.DataSource
 import kotlin.collections.ArrayList
 
 @Repository
-open class ShoppingNoteRepo : ShoppingNoteDAO {
+open class ShoppingRepo : ShoppingNoteDAO {
     private val FIND_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND dateBought IS NULL AND isDeleted = false"
     private val INSERT = "INSERT INTO shopping_note(title, description,  price, users_id, dateAdded, store_id, lastUpdated, isDeleted) VALUES (?, null, ?, ?, now(), ?, null, false)"
     private val UPDATE = "UPDATE shopping_note SET title = ?, price = ?, store_id = ?, lastUpdated = now() WHERE id = ?"
     private val REMOVE = "UPDATE shopping_note SET isDeleted = true, lastUpdated = now() WHERE id = ?"
     private val MARK_AS_BOUGHT = "UPDATE shopping_note SET dateBought = now(), lastUpdated = now() WHERE id = ?"
     private val FIND_HISTORY_BY_USER_ID = "SELECT * FROM shopping_note WHERE users_id = ? AND dateBought IS NOT NULL AND isDeleted = false ORDER BY dateBought desc"
+    private val FIND_STORES = "SELECT * FROM shopping_store"
 
     @Autowired
     private val dataSource: DataSource? = null
@@ -153,6 +156,30 @@ open class ShoppingNoteRepo : ShoppingNoteDAO {
             DatabaseUtil.close(dataSource!!.connection)
         }
         return notesList.build()
+    }
+
+    override fun getStores(): ShoppingStoreList {
+        var stmt: PreparedStatement? = null
+        val storeList = ShoppingStoreList.newBuilder()
+        try {
+            stmt = dataSource!!.connection.prepareStatement(FIND_STORES)
+
+            val rs = stmt.executeQuery()
+            while (rs.next()) {
+                val store = ShoppingStore.newBuilder()
+                        .setId(rs.getInt("id"))
+                        .setName(rs.getString("name"))
+                        .build()
+                storeList.addStore(store)
+            }
+        } catch (e: SQLException) {
+            // Log.DEBUG.error("Exception", e);
+            throw RuntimeException(e)
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
+        }
+        return storeList.build()
     }
 
     @Deprecated(message = "Use extractNoteFromResultSet(resultSet: ResultSet)")
