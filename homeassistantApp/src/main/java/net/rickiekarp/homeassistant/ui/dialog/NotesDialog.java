@@ -73,9 +73,12 @@ public class NotesDialog extends DialogFragment {
                             Toast.makeText(getActivity(), "Title can not be empty", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        final double notePrice = Double.valueOf(priceField.getText().toString());
                         VONote note = new VONote(noteTitle);
-                        note.setPrice(notePrice);
+                        final String priceFieldContent = priceField.getText().toString();
+                        if (!priceFieldContent.isEmpty()) {
+                            final double notePrice = Double.valueOf(priceField.getText().toString());
+                            note.setPrice(notePrice);
+                        }
                         ShoppingStore store = (ShoppingStore) storeSpinner.getSelectedItem();
                         note.setStore_id((byte) store.getId());
                         listener.onPositiveClick(note, "add");
