@@ -17,9 +17,9 @@ application {
     version = "1.0-SNAPSHOT"
 }
 
-javaModule {
-    setName("updater")
-}
+//javaModule {
+//    setName("updater")
+//}
 
 dependencies {
     compile(project(":core"))
@@ -43,6 +43,6 @@ tasks {
             attributes["Version"] = publicVersion
         }
 
-        archiveName = "${javaModule.geName()}-$publicVersion.jar"
+//        archiveName = "${javaModule.geName()}-$publicVersion.jar"
     }
 }

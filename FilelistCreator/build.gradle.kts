@@ -2,7 +2,6 @@ import java.util.Date
 import java.text.SimpleDateFormat
 
 plugins {
-    id("org.gradle.java.experimental-jigsaw") version "0.1.1"
     application
 }
 
@@ -15,10 +14,6 @@ application {
     mainClassName="net.rickiekarp.flc.MainApp"
     group = "net.rickiekarp.flc"
     version = "1.0-SNAPSHOT"
-}
-
-javaModule {
-    setName("flc")
 }
 
 dependencies {
@@ -43,6 +38,6 @@ tasks {
             attributes["Version"] = publicVersion
         }
 
-        archiveName = "${javaModule.geName()}-$publicVersion.jar"
+        archiveName = "flc-$publicVersion.jar"
     }
 }

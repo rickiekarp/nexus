@@ -50,66 +50,66 @@ public class PluginManagerLayout {
     private void loadRemotePlugins() {
         setLoadingBar(LanguageController.getString("loading"), true);
 
-        new Thread(() -> {
-            //list all plugins where a new version needs to be fetched
-            List<PluginData> toFetchVersion = new ArrayList<>();
-            for (int i = 0; i < PluginData.pluginData.size(); i++) {
-                if (PluginData.pluginData.get(i).getPluginNewVersion() == null) {
-                    toFetchVersion.add(PluginData.pluginData.get(i));
-                    PluginData.pluginData.get(i).setPluginNewVersion(LanguageController.getString("fetching"));
-                }
-            }
-
-            if (toFetchVersion.size() > 0 || PluginData.pluginData.size() == 0) {
-                pluginTable.refresh();
-                String response = NetResponse.getResponseString(AppContext.getContext().getNetworkApi().runNetworkAction(BotNetworkApi.requestPlugins()));
-
-                switch (response) {
-                    case "no_connection":
-                        Platform.runLater(() -> setLoadingBar(LanguageController.getString("no_connection"), false));
-                        return;
-                    case "file_not_found":
-                        Platform.runLater(() -> setLoadingBar(LanguageController.getString("no_connection"), false));
-                        return;
-                    default:
-                        JSONArray pluginArray = new JSONArray(response);
-                        JSONObject pluginEntry;
-                        entry: for (int i = 0; i < pluginArray.length(); i++) {
-                            pluginEntry = (JSONObject) pluginArray.get(i);
-                            LogFileHandler.logger.info("Remote Plugin: " + pluginEntry.getString("identifier") + " - " + pluginEntry.getString("version"));
-                            for (int localPlugin = 0 ; localPlugin < PluginData.pluginData.size(); localPlugin++) {
-                                if (pluginEntry.getString("identifier").equals(PluginData.pluginData.get(localPlugin).getPluginName())) {
-                                    PluginData.pluginData.get(i).setPluginNewVersion(pluginEntry.getString("version"));
-                                    PluginData.pluginData.get(i).setUpdateEnable(pluginEntry.getBoolean("updateEnable"));
-                                    continue entry;
-                                }
-                            }
-
-                            //if no corresponding plugin entry is found, add new entry
-                            PluginData pluginData = new PluginData(
-                                    null,
-                                    pluginEntry.getString("identifier"),
-                                    null,
-                                    pluginEntry.getString("version"),
-                                    BotPlatforms.valueOf(pluginEntry.getString("type"))
-                            );
-                            pluginData.setUpdateEnable(pluginEntry.getBoolean("updateEnable"));
-                            PluginData.pluginData.add(pluginData);
-                        }
-                        pluginTable.refresh();
-                }
-            }
-
-            //set version to 'no version found' for plugins without remote version
-            for (int i = 0; i < PluginData.pluginData.size(); i++) {
-                if (PluginData.pluginData.get(i).getPluginNewVersion().equals(LanguageController.getString("fetching"))) {
-                    PluginData.pluginData.get(i).setPluginNewVersion(LanguageController.getString("no_version_found"));
-                }
-            }
-
-            Platform.runLater(() -> setLoadingBar("", false));
-
-        }).start();
+//        new Thread(() -> {
+//            //list all plugins where a new version needs to be fetched
+//            List<PluginData> toFetchVersion = new ArrayList<>();
+//            for (int i = 0; i < PluginData.pluginData.size(); i++) {
+//                if (PluginData.pluginData.get(i).getPluginNewVersion() == null) {
+//                    toFetchVersion.add(PluginData.pluginData.get(i));
+//                    PluginData.pluginData.get(i).setPluginNewVersion(LanguageController.getString("fetching"));
+//                }
+//            }
+//
+//            if (toFetchVersion.size() > 0 || PluginData.pluginData.size() == 0) {
+//                pluginTable.refresh();
+//                String response = NetResponse.getResponseString(AppContext.getContext().getNetworkApi().runNetworkAction(BotNetworkApi.requestPlugins()));
+//
+//                switch (response) {
+//                    case "no_connection":
+//                        Platform.runLater(() -> setLoadingBar(LanguageController.getString("no_connection"), false));
+//                        return;
+//                    case "file_not_found":
+//                        Platform.runLater(() -> setLoadingBar(LanguageController.getString("no_connection"), false));
+//                        return;
+//                    default:
+//                        JSONArray pluginArray = new JSONArray(response);
+//                        JSONObject pluginEntry;
+//                        entry: for (int i = 0; i < pluginArray.length(); i++) {
+//                            pluginEntry = (JSONObject) pluginArray.get(i);
+//                            LogFileHandler.logger.info("Remote Plugin: " + pluginEntry.getString("identifier") + " - " + pluginEntry.getString("version"));
+//                            for (int localPlugin = 0 ; localPlugin < PluginData.pluginData.size(); localPlugin++) {
+//                                if (pluginEntry.getString("identifier").equals(PluginData.pluginData.get(localPlugin).getPluginName())) {
+//                                    PluginData.pluginData.get(i).setPluginNewVersion(pluginEntry.getString("version"));
+//                                    PluginData.pluginData.get(i).setUpdateEnable(pluginEntry.getBoolean("updateEnable"));
+//                                    continue entry;
+//                                }
+//                            }
+//
+//                            //if no corresponding plugin entry is found, add new entry
+//                            PluginData pluginData = new PluginData(
+//                                    null,
+//                                    pluginEntry.getString("identifier"),
+//                                    null,
+//                                    pluginEntry.getString("version"),
+//                                    BotPlatforms.valueOf(pluginEntry.getString("type"))
+//                            );
+//                            pluginData.setUpdateEnable(pluginEntry.getBoolean("updateEnable"));
+//                            PluginData.pluginData.add(pluginData);
+//                        }
+//                        pluginTable.refresh();
+//                }
+//            }
+//
+//            //set version to 'no version found' for plugins without remote version
+//            for (int i = 0; i < PluginData.pluginData.size(); i++) {
+//                if (PluginData.pluginData.get(i).getPluginNewVersion().equals(LanguageController.getString("fetching"))) {
+//                    PluginData.pluginData.get(i).setPluginNewVersion(LanguageController.getString("no_version_found"));
+//                }
+//            }
+//
+//            Platform.runLater(() -> setLoadingBar("", false));
+//
+//        }).start();
     }
 
     private void create() {

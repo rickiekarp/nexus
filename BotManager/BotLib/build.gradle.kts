@@ -2,7 +2,6 @@ import java.util.Date
 import java.text.SimpleDateFormat
 
 plugins {
-    id("org.gradle.java.experimental-jigsaw") version "0.1.1"
     application
 }
 
@@ -17,13 +16,9 @@ application {
     version = "1.0-SNAPSHOT"
 }
 
-javaModule {
-    setName("botlib")
-}
-
 dependencies {
     compile(project(":core"))
-//    implementation("io.appium:java-client:7.0.0")
+    implementation("io.appium:java-client:7.0.0")
 
 }
 
@@ -45,6 +40,6 @@ tasks {
             attributes["Version"] = publicVersion
         }
 
-        archiveName = "${javaModule.geName()}-$publicVersion.jar"
+//        archiveName = "${javaModule.geName()}-$publicVersion.jar"
     }
 }

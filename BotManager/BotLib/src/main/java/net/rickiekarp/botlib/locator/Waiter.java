@@ -7,7 +7,7 @@ import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.MarionetteDriver;
+//import org.openqa.selenium.firefox.MarionetteDriver;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -68,8 +68,8 @@ public class Waiter {
                             element = androidDriver.findElement(byString);
                             break;
                         case FIREFOX:
-                            MarionetteDriver firefoxDriver = (MarionetteDriver) BotLauncher.getRunnerInstance().get();
-                            element = firefoxDriver.findElement(byString);
+//                            MarionetteDriver firefoxDriver = (MarionetteDriver) BotLauncher.getRunnerInstance().get();
+//                            element = firefoxDriver.findElement(byString);
                             break;
                         case CHROME:
                             ChromeDriver chromeDriver = (ChromeDriver) BotLauncher.getRunnerInstance().get();

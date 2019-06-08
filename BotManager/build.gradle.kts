@@ -2,7 +2,6 @@ import java.util.Date
 import java.text.SimpleDateFormat
 
 plugins {
-    id("org.gradle.java.experimental-jigsaw") version "0.1.1"
     application
 }
 
@@ -12,18 +11,15 @@ apply {
 
 application {
     applicationName = "Bot Manager"
-    mainClassName="net.rickiekarp.botmanager.MainApp"
-    group = "net.rickiekarp.botmanager"
+    mainClassName="net.rickiekarp.botter.MainApp"
+    group = "net.rickiekarp.botter"
     version = "1.0-SNAPSHOT"
-}
-
-javaModule {
-    setName("botmanager")
 }
 
 dependencies {
     compile(project(":core"))
     compile(project(":BotLib"))
+    implementation("org.json:json:${rootProject.extra.get("jsonVersion")}")
 }
 
 tasks {
@@ -44,6 +40,6 @@ tasks {
             attributes["Version"] = publicVersion
         }
 
-        archiveName = "${javaModule.geName()}-$publicVersion.jar"
+//        archiveName = "${javaModule.geName()}-$publicVersion.jar"
     }
 }

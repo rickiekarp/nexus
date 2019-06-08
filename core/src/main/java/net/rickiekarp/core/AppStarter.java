@@ -3,7 +3,6 @@ package net.rickiekarp.core;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import net.rickiekarp.api.HelloService;
 import net.rickiekarp.core.controller.LanguageController;
 import net.rickiekarp.core.debug.DebugHelper;
 import net.rickiekarp.core.debug.ExceptionHandler;
@@ -29,10 +28,10 @@ public class AppStarter extends Application {
 
     @Override
     public void start(Stage stage) {
-        AppContext.create(mainClazz.getModule().getName());
+        AppContext.create(mainClazz.getPackage().getName());
 
-        final HelloService service = HelloFactory.createService();
-        System.out.println(service.hi("hello " + AppContext.getContext().getApplicationName()));
+//        final HelloService service = HelloFactory.createService();
+//        System.out.println(service.hi("hello " + AppContext.getContext().getApplicationName()));
 
         //load config file
         Configuration.config = new Configuration("config.xml", mainClazz);
@@ -50,7 +49,7 @@ public class AppStarter extends Application {
         }
 
         //load language properties file
-        LanguageController.loadLangFile(service.getStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties"));
+        LanguageController.loadLangFile(mainClazz.getResourceAsStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties"));
 
         //set the default exception handler
         if (!DebugHelper.DEBUGVERSION) {

@@ -32,14 +32,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
-import org.apache.commons.lang3.RandomStringUtils;
+import net.rickiekarp.core.view.layout.AppLayout;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Base64;
 
-public class MainLayout {
+public class MainLayout implements AppLayout {
     public static MainLayout mainLayout;
     private HBox optionBox;
     private ComboBox<PluginData> modCBox;
@@ -63,7 +63,7 @@ public class MainLayout {
         modCBox.getItems().clear();
     }
 
-    MainLayout() {
+    public MainLayout() {
         mainLayout = this;
 
         optionBox = new HBox(10);
@@ -424,7 +424,7 @@ public class MainLayout {
             } else {
                 JSONArray jsonArray;
                 final String login = loginTF.getText();
-                final String pass = RandomStringUtils.randomAlphanumeric(16) + Base64.getEncoder().encodeToString(passTF.getText().getBytes());
+                final String pass = /*RandomStringUtils.randomAlphanumeric(16) +*/ Base64.getEncoder().encodeToString(passTF.getText().getBytes());
                 if (deviceJson[0] == null) {
                     JSONObject newDeviceJson = new JSONObject();
                     jsonArray = new JSONArray();
@@ -589,6 +589,16 @@ public class MainLayout {
         BotConfig.DEVICE_NAME = name;
         BotConfig.VERSION = version;
         BotConfig.UDID = udid;
+    }
+
+    @Override
+    public Node getLayout() {
+        return null;
+    }
+
+    @Override
+    public void postInit() {
+
     }
 }
 

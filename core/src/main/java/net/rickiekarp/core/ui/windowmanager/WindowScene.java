@@ -37,7 +37,7 @@ public class WindowScene extends Scene {
         super(root);
 
         //add custom button style for settings/about scene button
-        URL buttonStyle = WindowScene.class.getResource("ui/components/button/ButtonStyle.css");
+        URL buttonStyle = WindowScene.class.getResource("components/button/ButtonStyle.css");
         root.getStylesheets().add(buttonStyle.toString());
 
         // behaviour when using system borders instead of custom implementation

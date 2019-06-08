@@ -54,7 +54,6 @@ public final class LanguageController {
     @JvmStatic
     public static final void loadLangFile(InputStream utf8in) {
         try {
-            System.out.println(utf8in);
             System.out.println("Locale: " + Configuration.CURRENT_LOCALE);
             try {
                 prop.load(utf8in);
@@ -71,7 +70,7 @@ public final class LanguageController {
 
     @JvmStatic
     public static final String getString(String textID) {
-        Intrinsics.checkParameterIsNotNull(textID, "textID");
+        //Intrinsics.checkParameterIsNotNull(textID, "textID");
 
         try {
             String value = prop.getProperty(textID);

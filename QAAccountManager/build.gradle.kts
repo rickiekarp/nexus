@@ -2,7 +2,6 @@ import java.util.Date
 import java.text.SimpleDateFormat
 
 plugins {
-    id("org.gradle.java.experimental-jigsaw") version "0.1.1"
     application
 }
 
@@ -17,15 +16,7 @@ application {
     version = "1.0-SNAPSHOT"
 }
 
-javaModule {
-    setName("qaacc")
-}
-
 dependencies {
-    implementation("org.openjfx:javafx-controls:11:linux")
-    implementation("org.openjfx:javafx-graphics:11:linux")
-    implementation("org.openjfx:javafx-base:11:linux")
-
     compile(project(":core"))
 }
 
@@ -47,6 +38,6 @@ tasks {
             attributes["Version"] = publicVersion
         }
 
-        archiveName = "${javaModule.geName()}-$publicVersion.jar"
+//        archiveName = "${javaModule.geName()}-$publicVersion.jar"
     }
 }

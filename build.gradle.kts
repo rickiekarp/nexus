@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.openjfx.gradle.JavaFXOptions
 
 buildscript {
     project.apply {
@@ -21,12 +22,7 @@ buildscript {
 plugins {
     java
     application
-}
-
-application {
-    applicationName = "JavaFxApp"
-    version = "1.0-SNAPSHOT"
-    group = "net.rickiekarp.toolbox"
+    id("org.openjfx.javafxplugin") version "0.0.7"
 }
 
 allprojects {
@@ -36,8 +32,8 @@ allprojects {
     }
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     repositories {
@@ -58,7 +54,14 @@ allprojects {
 subprojects {
     apply {
         plugin("java-library")
+        plugin("org.openjfx.javafxplugin")
     }
+
+    configure<JavaFXOptions> {
+        version = rootProject.extra.get("javafxVersion") as String
+        modules("javafx.controls")
+    }
+
 
 //    apply plugin: 'com.github.spotbugs'
 //    spotbugs {

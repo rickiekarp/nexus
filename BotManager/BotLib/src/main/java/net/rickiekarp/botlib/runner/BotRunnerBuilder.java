@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.GeckoDriverService;
-import org.openqa.selenium.firefox.MarionetteDriver;
+//import org.openqa.selenium.firefox.MarionetteDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.service.DriverService;
 
@@ -27,7 +27,7 @@ public class BotRunnerBuilder {
                     @Override
                     public void start() {
                         switch (PluginConfig.botType) {
-                            case FIREFOX: set(new MarionetteDriver((GeckoDriverService) getDriverService(), BotLauncher.getCapabilities(plugin))); break;
+//                            case FIREFOX: set(new MarionetteDriver((GeckoDriverService) getDriverService(), BotLauncher.getCapabilities(plugin))); break;
                             case CHROME: set(new ChromeDriver((ChromeDriverService) getDriverService(), BotLauncher.getCapabilities(plugin))); break;
                         }
                     }

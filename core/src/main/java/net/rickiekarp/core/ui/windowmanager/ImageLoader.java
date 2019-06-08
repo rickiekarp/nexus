@@ -1,10 +1,6 @@
 package net.rickiekarp.core.ui.windowmanager;
 
 import javafx.scene.image.Image;
-import net.rickiekarp.api.HelloService;
-import net.rickiekarp.core.HelloFactory;
-
-import java.net.URL;
 
 public class ImageLoader {
     private static Image appIcon;
@@ -14,24 +10,21 @@ public class ImageLoader {
 
     public static Image getAppIcon() {
         if (appIcon == null) {
-            final HelloService service = HelloFactory.createService();
-            appIcon = new Image(service.getStream("icons/app_icon_big.png"));
+            appIcon = new Image("ui/icons/app_icon_big.png");
         }
         return appIcon;
     }
 
     public static Image getAppIconSmall() {
         if (appIconSmall == null) {
-            final HelloService service = HelloFactory.createService();
-            appIconSmall = new Image(service.getStream("icons/app_icon_small.png"));
+            appIconSmall = new Image("ui/icons/app_icon_small.png");
         }
         return appIconSmall;
     }
 
     static Image getMenu() {
         if (menu == null) {
-            URL buttonStyle = ImageLoader.class.getResource("ui/components/titlebar/menu.png");
-            menu = new Image(buttonStyle.getFile());
+            menu = new Image(String.valueOf(ImageLoader.class.getResource("components/titlebar/menu.png")));
         }
         System.out.println(menu);
         return menu;
@@ -39,8 +32,7 @@ public class ImageLoader {
 
     static Image getMenuHover() {
         if (menuHover == null) {
-            URL buttonStyle = ImageLoader.class.getResource("ui/components/titlebar/menu-hover.png");
-            menuHover = new Image(buttonStyle.getFile());
+            menuHover = new Image(String.valueOf(ImageLoader.class.getResource("components/titlebar/menu-hover.png")));
         }
         System.out.println(menuHover);
         return menuHover;

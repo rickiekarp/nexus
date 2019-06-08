@@ -11,8 +11,8 @@ import java.net.URL;
 
 public class ThemeSelector {
 
-    public final static String DARK_THEME_CSS = "ui/themes/DarkTheme.css";
-    public final static String LIGHT_THEME_CSS = "ui/themes/LightTheme.css";
+    public final static String DARK_THEME_CSS = "themes/DarkTheme.css";
+    public final static String LIGHT_THEME_CSS = "themes/LightTheme.css";
 
     /**
      * Sets the theme according to the current themeState.

@@ -253,7 +253,7 @@ public class Window extends StackPane {
      **/
     private AnchorPane getStageDecoration(Stage stage, String title, int type) {
         AnchorPane menuAnchor = new AnchorPane();
-        URL titlebarStyle = WindowScene.class.getResource("ui/components/titlebar/TitleBarStyle.css");
+        URL titlebarStyle = WindowScene.class.getResource("components/titlebar/TitleBarStyle.css");
         menuAnchor.getStylesheets().add(titlebarStyle.toString());
         menuAnchor.setStyle("-fx-background-color: " + ThemeSelector.getColorHexString(Configuration.decorationColor));
         menuAnchor.setMaxHeight(TITLEBAR_HEIGHT);
