@@ -9,12 +9,12 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import net.rickiekarp.homeassistant.R;
+import net.rickiekarp.homeassistant.adapter.ShoppingStoreArrayAdapter;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.domain.ShoppingStore;
 import net.rickiekarp.homeassistant.net.communication.vo.VONote;
@@ -53,10 +53,12 @@ public class NotesDialog extends DialogFragment {
         EditText priceField = v.findViewById(R.id.note_detail_price);
         priceField.setHint("Item price");
 
-        ArrayAdapter<ShoppingStore> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, database.getStoreList().getStoreList());
+        ShoppingStoreArrayAdapter shoppingStoreArrayAdapter = new ShoppingStoreArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, database.getStoreList().getStoreList());
 
         Spinner storeSpinner = v.findViewById(R.id.note_detail_store_spinner);
-        storeSpinner.setAdapter(dataAdapter);
+        storeSpinner.setAdapter(shoppingStoreArrayAdapter);
+
+        storeSpinner.setSelection(findId(note.getStore_id()));
 
         switch (getTag()) {
             case "viewnote":
@@ -90,14 +92,13 @@ public class NotesDialog extends DialogFragment {
                 builder.setTitle("Update item");
                 editTitle.setText(note.getTitle());
 
-                EditText price = v.findViewById(R.id.note_detail_price);
-                price.setText(String.valueOf(note.getPrice()));
+                priceField.setText(String.valueOf(note.getPrice()));
 
                 builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         note.setTitle(editTitle.getText().toString());
-                        note.setPrice(Double.valueOf(price.getText().toString()));
+                        note.setPrice(Double.valueOf(priceField.getText().toString()));
                         if (storeSpinner.getSelectedItem() != null) {
                             ShoppingStore store = (ShoppingStore) storeSpinner.getSelectedItem();
                             note.setStore_id((byte) store.getId());
@@ -120,5 +121,14 @@ public class NotesDialog extends DialogFragment {
         }
 
         return builder.create();
+    }
+
+    private int findId(int storeId) {
+        for (int i = 0; i < database.getStoreList().getStoreCount(); i++) {
+            if (database.getStoreList().getStore(i).getId() == storeId) {
+                return i;
+            }
+        }
+        return 0;
     }
 }
