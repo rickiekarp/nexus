@@ -50,6 +50,7 @@ buildWebsiteFrontend:
   image: trion/ng-cli
   script:
     - cd Website/WebsiteFrontend
+    - npm install
     - ng build --prod
   artifacts:
     paths:
