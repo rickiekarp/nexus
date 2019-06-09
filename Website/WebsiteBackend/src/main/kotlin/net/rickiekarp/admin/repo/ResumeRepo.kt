@@ -22,7 +22,7 @@ open class ResumeRepo : ResumeDAO {
     private val FIND_RESUME = "select e.experience_id, e.startDate, e.endDate, c.name, j.title, e.description from experience e " +
             "join company c ON c.company_id = e.companyid " +
             "join job j ON j.job_id = e.jobid " +
-            "where c.type = '%s'"
+            "where c.type = '%s' order by e.experience_id desc"
 
     @Autowired
     private val dataSource: DataSource? = null
