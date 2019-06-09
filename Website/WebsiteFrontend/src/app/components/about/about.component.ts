@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SkillDto } from '../../model/skill.model';
 import { ResumeDto } from '../../model/resume.model';
 import { ResumeService } from '../../service/resume.service';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { ResumeData } from '../../model/resumedata.model';
 
 @Component({
   selector: 'app-about',
@@ -11,72 +10,27 @@ import { from } from 'rxjs';
   styleUrls: ['./about.component.css']
 })
 export class AboutComponent implements OnInit {
-  skillsInfo: Array<SkillDto>;
-  experienceInfo: Array<ResumeDto>;
-  educationInfo: Array<ResumeDto>;
+  skillsInfo: SkillDto[] = [];
+  experienceInfo: ResumeData = {} as ResumeData;
+  educationInfo: ResumeDto[] = [];
 
-  constructor(private resumeService: ResumeService) { }
+  constructor(private resumeService: ResumeService) {
+   }
 
   ngOnInit() {
-    this.getExperience();
-    this.getEducation();
-    this.getSkills();
+    this.resumeService.getExistingArsByLab().subscribe(result => {
+      console.log(result)
+    });
+    this.resumeService.getAllExperience().subscribe(result => {
+      this.experienceInfo = result
+      console.log(this.experienceInfo)
+    });
+    this.resumeService.getAllEducation().subscribe(result => {
+      this.educationInfo = result
+    });
+    this.resumeService.getAllSkills().subscribe(result => {
+      this.skillsInfo = result 
+    });
   }
 
-  getHalls() {
-    this.resumeService.init();
-    return this.resumeService.selectCourseById(1);
-  }
-
-  getExperience(): void {
-    this.resumeService.getAllExperience().subscribe(
-      data => {
-        let body = data.text()
-        let dat = JSON.parse(body)
-        this.experienceInfo = <Array<ResumeDto>> dat;
-        console.log(this.experienceInfo);
-              },
-      error=> { 
-                console.log("Error in recieving data"); 
-              },
-      ()   => {
-                //console.log( "Test" );
-              }
-    );
-
-  }
-
-  getEducation(): void {
-    this.resumeService.getAllEducation().subscribe(
-      data => {
-        let body = data.text()
-        let dat = JSON.parse(body)
-        this.educationInfo = <ResumeDto[]> dat;
-              },
-      error=> { 
-                console.log("Error in recieving data"); 
-              },
-      ()   => {
-                //console.log( "Test" );
-              }
-    );
-
-  }
-
-  getSkills(): void {
-    this.resumeService.getAllSkills().subscribe(
-      data => {
-        let body = data.text()
-        let dat = JSON.parse(body)
-        this.skillsInfo = <SkillDto[]> dat;
-              },
-      error=> { 
-                console.log("Error in recieving data"); 
-              },
-      ()   => {
-                //console.log( "Test" );
-              }
-    );
-
-  }
 }

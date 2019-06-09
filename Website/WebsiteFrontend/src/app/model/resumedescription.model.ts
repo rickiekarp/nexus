@@ -1,4 +1,4 @@
-export class ResumeDescription {
+export interface ResumeDescription {
     description: string;
     tasks: string[];
 }

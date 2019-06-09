@@ -14,13 +14,15 @@ import { AboutComponent } from './components/about/about.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ResumeService } from './service/resume.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpModule
+    HttpModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,

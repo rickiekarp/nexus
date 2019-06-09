@@ -8,5 +8,5 @@ class ResumeDTO(
         var endDate: Date?,
         var name: String,
         var jobTitle: String,
-        var description: String
+        var description: ResumeDescriptionDTO
 )

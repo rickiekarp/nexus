@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "http://rickiekarp.net:8080/Website",
+    "target": "https://app.rickiekarp.net/Website",
     "secure": false
   }
 }

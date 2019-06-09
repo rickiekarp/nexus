@@ -1,6 +1,6 @@
 import { ResumeDescription } from '../model/resumedescription.model';
 
-export class ResumeDto {
+export interface ResumeDto {
     id: number;
     startDate: Date;
     endDate: Date;

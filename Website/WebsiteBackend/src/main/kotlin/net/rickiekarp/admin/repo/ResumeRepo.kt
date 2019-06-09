@@ -1,7 +1,9 @@
 package net.rickiekarp.admin.repo
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import net.rickiekarp.admin.dao.ResumeDAO
 import net.rickiekarp.admin.dto.ResumeDTO
+import net.rickiekarp.admin.dto.ResumeDescriptionDTO
 import net.rickiekarp.admin.dto.SkillsDTO
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,6 +12,9 @@ import java.sql.PreparedStatement
 import java.sql.SQLException
 import java.sql.Statement
 import javax.sql.DataSource
+import com.fasterxml.jackson.databind.ObjectMapper
+
+
 
 @Repository
 open class ResumeRepo : ResumeDAO {
@@ -22,6 +27,9 @@ open class ResumeRepo : ResumeDAO {
     @Autowired
     private val dataSource: DataSource? = null
 
+    @Autowired
+    private val jacksonObjectMapper: ObjectMapper? = null
+
     override fun getExperienceData(): List<ResumeDTO> {
         val list = ArrayList<ResumeDTO>()
         var stmt: PreparedStatement? = null
@@ -30,13 +38,14 @@ open class ResumeRepo : ResumeDAO {
 
             val rs = stmt.executeQuery()
             while (rs.next()) {
+                val taskDescription: ResumeDescriptionDTO = jacksonObjectMapper!!.readValue(rs.getString("description"))
                 val user = ResumeDTO(
                         rs.getInt("experience_id"),
                         rs.getDate("startDate"),
                         rs.getDate("endDate"),
                         rs.getString("name"),
                         rs.getString("title"),
-                        rs.getString("description")
+                        taskDescription
                 )
                 list.add(user)
             }
@@ -57,13 +66,15 @@ open class ResumeRepo : ResumeDAO {
 
             val rs = stmt.executeQuery()
             while (rs.next()) {
+                val taskDescription: ResumeDescriptionDTO = jacksonObjectMapper!!.readValue(rs.getString("description"))
+
                 val user = ResumeDTO(
                         rs.getInt("experience_id"),
                         rs.getDate("startDate"),
                         rs.getDate("endDate"),
                         rs.getString("name"),
                         rs.getString("title"),
-                        rs.getString("description")
+                        taskDescription
                 )
                 list.add(user)
             }
