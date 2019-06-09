@@ -14,15 +14,30 @@ import { AboutComponent } from './components/about/about.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ResumeService } from './service/resume.service';
-import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule }    from '@angular/forms';
+
+// used to create fake backend
+import { fakeBackendProvider } from './_helpers';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { routing } from './app-routing.module';
+
+import { AlertComponent } from './_components';
+import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+import { HomeComponent } from './home';
+import { LoginComponent } from './login';
+import { RegisterComponent } from './register';
+
 
 @NgModule({
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    routing
   ],
   declarations: [
     AppComponent,
@@ -31,9 +46,21 @@ import { HttpClientModule } from '@angular/common/http';
     ProjectsComponent,
     ContactComponent,
     SafePipe,
-    AboutComponent
+    AboutComponent,
+    AlertComponent,
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent
     ],
-  providers: [ ContactService, ResumeService ],
+  providers: [ 
+    ContactService, 
+    ResumeService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider 
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

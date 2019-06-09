@@ -1,13 +1,23 @@
 <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
     <div class="container">
-        <a class="navbar-brand">Rickie Karp</a>
         <ul class="nav navbar-nav" routerLinkActive="active">
             <li class="nav-item"><a class="nav-link" routerLink="professional"><label>Professional</label></a></li>
             <li class="nav-item"><a class="nav-link" routerLink="personal"><label>Personal</label></a></li>
             <li class="nav-item"><a class="nav-link" routerLink="about"><label>Résumé</label></a></li>
             <li class="nav-item"><a class="nav-link" routerLink="contact"><label>Contact</label></a></li>
         </ul>
+        <ul class="nav navbar-nav" routerLinkActive="active">
+            <div class="navbar-nav" *ngIf="currentUser; else loggedOut">
+                <li class="nav-item"><a class="nav-link" routerLink="home"><label>Dashboard</label></a></li>
+                <li class="nav-item"><a class="nav-link" (click)="logout()"><label>Logout</label></a></li>
+            </div>
+            <ng-template #loggedOut>
+                <li class="nav-item"><a class="nav-link" routerLink="login"><label>Login</label></a></li>
+            </ng-template>
+        </ul>
     </div>
 </nav>
 
+<!-- main app container -->
+<alert></alert>
 <router-outlet></router-outlet>
