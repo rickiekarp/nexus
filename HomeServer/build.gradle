@@ -1,9 +1,5 @@
 group 'net.rickiekarp.homeserver'
 
-buildscript {
-    apply from: '../module-base/base.gradle.kts'
-}
-
 dependencies {
     compile project(':Foundation')
 }

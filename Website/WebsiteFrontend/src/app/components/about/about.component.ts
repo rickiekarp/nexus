@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { SkillDto } from '../../model/skill.model';
 import { ResumeDto } from '../../model/resume.model';
 import { ResumeService } from '../../service/resume.service';
-import { ResumeData } from '../../model/resumedata.model';
 
 @Component({
   selector: 'app-about',
@@ -11,16 +10,13 @@ import { ResumeData } from '../../model/resumedata.model';
 })
 export class AboutComponent implements OnInit {
   skillsInfo: SkillDto[] = [];
-  experienceInfo: ResumeData = {} as ResumeData;
+  experienceInfo: ResumeDto[] = [];
   educationInfo: ResumeDto[] = [];
 
   constructor(private resumeService: ResumeService) {
    }
 
   ngOnInit() {
-    this.resumeService.getExistingArsByLab().subscribe(result => {
-      console.log(result)
-    });
     this.resumeService.getAllExperience().subscribe(result => {
       this.experienceInfo = result
       console.log(this.experienceInfo)

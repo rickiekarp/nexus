@@ -1,11 +1,9 @@
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { SkillDto } from '../model/skill.model';
-import {BehaviorSubject, Observable, Subject, timer} from 'rxjs';
+import { Observable } from 'rxjs';
 import { ResumeDto } from '../model/resume.model';
-import { BlacklistData } from '../model/blacklistdata.model';
 import { HttpClient } from  "@angular/common/http";
-import { ResumeData } from '../model/resumedata.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +17,8 @@ export class ResumeService {
   constructor(private http: Http, private  httpClient:HttpClient) { 
   }
 
-  getExistingArsByLab(): Observable<BlacklistData> {
-    return this.httpClient.get<BlacklistData>("assets/test.json")
-  }
-
-  getAllExperience(): Observable<ResumeData> {
-    return this.httpClient.get<ResumeData>(this.experienceApiUrl);
+  getAllExperience(): Observable<ResumeDto[]> {
+    return this.httpClient.get<ResumeDto[]>(this.experienceApiUrl);
   }
 
   getAllEducation(): Observable<ResumeDto[]> {
