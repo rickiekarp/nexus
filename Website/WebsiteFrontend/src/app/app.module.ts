@@ -17,16 +17,16 @@ import { ResumeService } from './service/resume.service';
 import { ReactiveFormsModule }    from '@angular/forms';
 
 // used to create fake backend
-import { fakeBackendProvider } from './_helpers';
+import { fakeBackendProvider } from './helpers';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routing } from './app-routing.module';
 
-import { AlertComponent } from './_components';
-import { JwtInterceptor, ErrorInterceptor } from './_helpers';
-import { HomeComponent } from './home';
-import { LoginComponent } from './login';
-import { RegisterComponent } from './register';
+import { AlertComponent } from './components/alert';
+import { JwtInterceptor, ErrorInterceptor } from './helpers';
+import { HomeComponent } from './components/home';
+import { LoginComponent } from './components/login';
+import { RegisterComponent } from './components/register';
 
 
 @NgModule({

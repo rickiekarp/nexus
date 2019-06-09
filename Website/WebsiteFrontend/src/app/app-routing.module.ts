@@ -6,10 +6,10 @@ import { ProjectsComponent } from './components/projects/projects.component';
 import { ContactComponent } from './components/contact/contact.component';
 import {AboutComponent} from "./components/about/about.component";
 import { PersonalComponent } from './components/personal/personal.component';
-import { LoginComponent } from './login';
-import { RegisterComponent } from './register';
-import { AuthGuard } from './_guards';
-import { HomeComponent } from './home';
+import { LoginComponent } from './components/login';
+import { RegisterComponent } from './components/register';
+import { AuthGuard } from './guards';
+import { HomeComponent } from './components/home';
 
 const routes: Routes = [
   { path: '', redirectTo: 'professional', pathMatch: 'full' },
