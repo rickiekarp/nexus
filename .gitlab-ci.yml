@@ -49,10 +49,11 @@ buildWebsiteFrontend:
   stage: build
   image: trion/ng-cli
   script:
+    - cd Website/WebsiteFrontend
     - ng build --prod
   artifacts:
     paths:
-      - dist/
+      - Website/WebsiteFrontend/dist/
     expire_in: 1 week
 
 deploy:
