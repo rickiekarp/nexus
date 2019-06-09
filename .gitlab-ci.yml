@@ -18,7 +18,7 @@ unitTests:
   script:
     - ./gradlew clean test
 
-buildLogin:
+buildLoginServer:
   stage: build
   script:
     - ./gradlew :LoginServer:build
@@ -27,7 +27,7 @@ buildLogin:
     - module-deployment/service-application/webapps/
     expire_in: 1 week
 
-buildHome:
+buildHomeServer:
   stage: build
   script:
     - ./gradlew :HomeServer:build
@@ -36,13 +36,23 @@ buildHome:
       - module-deployment/service-application/webapps/
     expire_in: 1 week
 
-buildWebsite:
+buildWebsiteBackend:
   stage: build
   script:
-    - ./gradlew :WebsiteFrontend:buildClientToSpring :WebsiteBackend:bootWar
+    - ./gradlew :WebsiteBackend:build
   artifacts:
     paths:
       - module-deployment/service-application/webapps/
+    expire_in: 1 week
+
+buildWebsiteFrontend:
+  stage: build
+  image: trion/ng-cli
+  script:
+    - ng build --prod
+  artifacts:
+    paths:
+      - dist/
     expire_in: 1 week
 
 deploy:
