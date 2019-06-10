@@ -6,6 +6,7 @@ import net.rickiekarp.foundation.model.Credentials
 import net.rickiekarp.foundation.model.User
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import net.rickiekarp.loginserver.dao.UserDAO
+import net.rickiekarp.loginserver.utils.HashingUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import org.springframework.web.context.request.RequestContextHolder
@@ -29,6 +30,9 @@ open class UserRepo : UserDAO {
 
     @Autowired
     private val redisRepository: TokenRepository? = null
+
+    @Autowired
+    private val hashingUtil: HashingUtil? = null
 
     override fun getUserFromToken(token: String): User? {
         var userVO: User? = null
@@ -104,7 +108,7 @@ open class UserRepo : UserDAO {
         try {
             stmt = dataSource!!.connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)
             stmt!!.setString(1, user.username)
-            stmt.setString(2, user.password)
+            stmt.setString(2, hashingUtil!!.generateStorngPasswordHash(user.password!!))
             stmt.setInt(3, 2) // user role (1 = ADMIN, 2 = USER)
             stmt.execute()
         } catch (e: SQLException) {

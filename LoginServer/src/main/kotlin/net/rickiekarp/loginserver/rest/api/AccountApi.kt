@@ -10,6 +10,7 @@ import net.rickiekarp.loginserver.dao.UserDAO
 import net.rickiekarp.loginserver.dto.AppObjectDTO
 import net.rickiekarp.loginserver.dto.TokenDTO
 import net.rickiekarp.loginserver.factory.AppObjectBuilder
+import net.rickiekarp.loginserver.utils.HashingUtil
 import org.apache.commons.lang3.RandomStringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -26,6 +27,9 @@ class AccountApi {
 
     @Autowired
     var repo: UserDAO? = null
+
+    @Autowired
+    private val hashingUtil: HashingUtil? = null
 
     /**
      * Checks whether the user is allowed to execute the requested plugin
@@ -58,7 +62,7 @@ class AccountApi {
         val retrievedUser = repo!!.getUserByName(credentialsDTO.username!!)
         if (retrievedUser != null) {
             // validate credentials
-            if (credentialsDTO.password == retrievedUser.password) {
+            if (hashingUtil!!.generateStorngPasswordHash(credentialsDTO.password!!) == retrievedUser.password) {
                 return retrievedUser
             }
         }
