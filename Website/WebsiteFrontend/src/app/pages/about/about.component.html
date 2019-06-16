@@ -52,13 +52,11 @@
 <!-- End #education -->
 
 <!-- skills -->
-<div id="education" *ngIf="skillsInfo.length > 0">
-    <div id="skills">
-        <h2 class="heading">Skills</h2>
-        <ul>
-            <li *ngFor="let skill of skillsInfo">
-                {{ skill.text }}
-            </li>
-        </ul>
-    </div>
+<div id="skills" *ngIf="skillsInfo.length > 0">
+    <h2 class="heading">Skills</h2>
+    <ul>
+        <li *ngFor="let skill of skillsInfo">
+            {{ skill.text }}
+        </li>
+    </ul>
 </div>

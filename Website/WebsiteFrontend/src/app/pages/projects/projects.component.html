@@ -8,7 +8,7 @@
                 <div class="card-content-right">
                     <h5 class="card-title">{{ project.name }}</h5>
                     <p class="card-text">{{ project.description }}</p>
-                    <a href="{{project.projectUrl}}" class="btn btn-primary" target="_blank">Visit</a>
+                    <a href="{{project.projectUrl}}" class="btn btn-info" target="_blank">Visit</a>
                 </div>
             </div>
             <!-- End .project -->
@@ -35,8 +35,7 @@
         <iframe width="900" height="526" [src]="project.trailerUrl | safe" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
-<div class="container">
-    <div class="row-back">
-        <a class="btn btn-primary" [routerLink]="['/professional']">Back</a>
-    </div>
+<div class="row-back">
+        <a class="btn btn-info" [routerLink]="['/professional']">Back</a>
 </div>
+

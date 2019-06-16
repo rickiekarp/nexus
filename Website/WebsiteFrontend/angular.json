@@ -23,9 +23,6 @@
             "styles": [
               "src/styles.css",
               "src/style.less",
-              "node_modules/normalize.css/normalize.css",
-              "node_modules/font-awesome/scss/font-awesome.scss",
-              "node_modules/bootstrap/less/bootstrap.less",
               "node_modules/sweetalert2/dist/sweetalert2.css",
               "node_modules/animate.css/animate.css",
               "src/app/shared/_styles.scss"

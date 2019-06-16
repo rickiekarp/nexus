@@ -1,5 +1,6 @@
 html {
    overflow-y: scroll; 
+   background: #111111;
 }
 
 body{
@@ -234,10 +235,14 @@ footer{
    color: #a3a9ad
 }
 .row-back {
-    font-size:1.5em;
-    display: table;
-    margin: 0 auto;
-    padding-bottom: 50px;
+   background: #1a1c1f;
+   font-size:1.5em;
+   margin: 0 auto;
+   padding-top: 25px;
+   padding-bottom: 25px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
  }
 .top{
    text-align:center
@@ -397,7 +402,7 @@ footer{
 .education-block ul{
    padding:0 0 0 15px
 }
-#projects{
+#projects {
    padding:50px 15px;
    border-bottom:0px solid #dcd9d9;
    background: #111111;
@@ -470,12 +475,13 @@ footer{
 #more-projects{
    display:none
 }
-#skills{
+#skills {
    padding:50px 15px;
-   text-align:center
+   text-align:center;
+   background: #111111;
 }
 #skills h2{
-   color:#a3a9ad;
+   color:#dcd9d9;
    margin-bottom:50px
 }
 #skills ul{
@@ -672,17 +678,15 @@ main {
 }
 
   label {
-    display: inline-block;
-    margin: 0 0 -1px;
+    margin: 0 0 0 0;
     padding: 15px 25px;
     font-weight: 600;
     text-align: center;
     color: #bbb;
-    border: 1px solid transparent;
+    border: 0px solid transparent;
   }
   
   label:before {
-    font-family: fontawesome;
     font-weight: normal;
     margin-right: 10px;
     color: white;
@@ -699,7 +703,7 @@ main {
     border: 0px solid #ddd;
     border-top: 0px solid #fff;
     border-bottom: 0px solid #fff;
-    color: white;
+    color: red;
     background: #111111
   }
 
