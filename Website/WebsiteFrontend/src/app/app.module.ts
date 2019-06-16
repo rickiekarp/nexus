@@ -34,7 +34,7 @@ import { SatPopoverModule } from '@ncstate/sat-popover';
 
 import { EditExample } from './components/popover/edit-example/edit-example.component';
 import { EditForm } from './components/popover/edit-example/edit-form.component';
-import { MenuExample } from './components/popover/menu-example/menu-example.component';
+import { MenuExample } from './components/popover/profile/profile-popover.component';
 
 @NgModule({
   imports: [

@@ -1,5 +1,9 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { SatPopover } from '@ncstate/sat-popover';
+import { Router } from '@angular/router';
+
+import { AuthenticationService } from '../../../service';
+import { User } from '../../../model';
 
 interface MenuItem {
   val: string;
@@ -7,8 +11,8 @@ interface MenuItem {
 }
 
 @Component({
-  selector: 'app-menu-example',
-  styleUrls: ['menu-example.component.scss'],
+  selector: 'app-profile-popover',
+  styleUrls: ['profile-popover.component.scss'],
   template: `
     <button class="button-default" [satPopoverAnchorFor]="menu" (click)="menu.toggle()">
      <i class="fa fa-user fa-2x" aria-hidden="true"></i>
@@ -27,26 +31,34 @@ interface MenuItem {
   `
 })
 export class MenuExample {
-
   @ViewChildren(SatPopover) allPopovers: QueryList<SatPopover>;
-
   selection: string;
-
-  /** For a simplified (ahem, lazy) demo, the menu has max depth of 2. */
+  currentUser: User;  
   menuItems: MenuItem[] = [
     { val: 'Settings' },
     { val: 'Logout' },
   ];
 
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService
+) {
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+}
+
   select(values: string) {
     this.selection = values;
 
-    console.log(values)
+    if (values == "Logout") {
+      this.logout()
+    }
 
     // close all popovers
     this.allPopovers.forEach(p => p.close());
   }
 
-
-
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
+  }
 }

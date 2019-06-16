@@ -9,8 +9,7 @@
         <ul class="nav navbar-nav" routerLinkActive="active">
             <div class="navbar-nav" *ngIf="currentUser; else loggedOut">
                 <li class="nav-item"><a class="nav-link" routerLink="home"><label>Dashboard</label></a></li>
-                <li class="nav-item"><a class="nav-link" (click)="logout()"><label>Logout</label></a></li>
-                <li><app-menu-example></app-menu-example></li>
+                <li><app-profile-popover></app-profile-popover></li>
             </div>
             <ng-template #loggedOut>
                 <li class="nav-item"><a class="nav-link" routerLink="login"><label>Login</label></a></li>
