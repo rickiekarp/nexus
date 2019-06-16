@@ -5,15 +5,15 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { ProfessionalComponent } from './components/professional/professional.component';
-import { ProjectsComponent } from './components/projects/projects.component';
-import { PersonalComponent } from './components/personal/personal.component';
-import { ContactComponent } from './components/contact/contact.component';
+import { ProfessionalComponent } from './pages/professional/professional.component';
+import { ProjectsComponent } from './pages/projects/projects.component';
+import { PersonalComponent } from './pages/personal/personal.component';
+import { ContactComponent } from './pages/contact/contact.component';
 import { ContactService } from './service/contact.service';
 import { SafePipe } from './core/pipe/safepipe.service';
-import { AboutComponent } from './components/about/about.component';
+import { AboutComponent } from './pages/about/about.component';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app.routing';
 import { ResumeService } from './service/resume.service';
 import { ReactiveFormsModule }    from '@angular/forms';
 
@@ -21,20 +21,20 @@ import { ReactiveFormsModule }    from '@angular/forms';
 import { fakeBackendProvider } from './helpers';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { routing } from './app-routing.module';
+import { routing } from './app.routing';
 
-import { AlertComponent } from './components/alert';
 import { JwtInterceptor, ErrorInterceptor } from './helpers';
-import { HomeComponent } from './components/home';
-import { LoginComponent } from './components/login';
-import { RegisterComponent } from './components/register';
+import { HomeComponent } from './pages/home';
+import { LoginComponent } from './pages/login';
+import { RegisterComponent } from './pages/register';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 
-import { EditExample } from './components/popover/edit-example/edit-example.component';
-import { EditForm } from './components/popover/edit-example/edit-form.component';
-import { MenuExample } from './components/popover/profile/profile-popover.component';
+import { EditExample } from './shared/components/popover/edit-example/edit-example.component';
+import { EditForm } from './shared/components/popover/edit-example/edit-form.component';
+import { MenuExample } from './shared/components/popover/profile/profile-popover.component';
+import { PagesModule } from './pages/pages.module';
 
 @NgModule({
   imports: [
@@ -46,7 +46,8 @@ import { MenuExample } from './components/popover/profile/profile-popover.compon
     HttpModule,
     HttpClientModule,
     routing,
-    SatPopoverModule
+    SatPopoverModule,
+    PagesModule
   ],
   declarations: [
     AppComponent,
@@ -56,7 +57,6 @@ import { MenuExample } from './components/popover/profile/profile-popover.compon
     ContactComponent,
     SafePipe,
     AboutComponent,
-    AlertComponent,
     HomeComponent,
     LoginComponent,
     RegisterComponent,
