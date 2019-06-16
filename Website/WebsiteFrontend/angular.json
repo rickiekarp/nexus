@@ -28,7 +28,6 @@
               "node_modules/bootstrap/less/bootstrap.less",
               "node_modules/sweetalert2/dist/sweetalert2.css",
               "node_modules/animate.css/animate.css",
-              "src/assets/iconfonts/iconfont.css",
               "src/app/shared/_styles.scss"
             ],
             "scripts": [
