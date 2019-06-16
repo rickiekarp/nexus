@@ -1,0 +1,48 @@
+@import '../../../../../mixins.scss';
+
+:host {
+  padding: 20px;
+  background: transparent;
+}
+
+.menu-wrapper {
+  @include elevation();
+  background: white;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.button-default {
+    display: inline-block;
+    padding: 5px 25px;
+    color: #bbb;
+    border: 0px solid transparent;
+    background: transparent;
+    height: 59px;
+    &:hover {
+      background: #111111;
+    }
+    &:focus {
+      outline: none;
+    }
+}
+
+.menu-item {
+  display: block;
+  background: black;
+  color: white;
+  padding: 16px;
+  border: none;
+  width: 100%;
+  border-radius: 0;
+
+  &:focus {
+    outline: none;
+    background: rgba(0,0,0,0.06);
+  }
+  &:hover {
+    background: #2a2e35;
+  }
+}

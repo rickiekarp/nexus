@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
@@ -28,16 +29,24 @@ import { HomeComponent } from './components/home';
 import { LoginComponent } from './components/login';
 import { RegisterComponent } from './components/register';
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { SatPopoverModule } from '@ncstate/sat-popover';
+
+import { EditExample } from './components/popover/edit-example/edit-example.component';
+import { EditForm } from './components/popover/edit-example/edit-form.component';
+import { MenuExample } from './components/popover/menu-example/menu-example.component';
 
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
     HttpModule,
     HttpClientModule,
-    routing
+    routing,
+    SatPopoverModule
   ],
   declarations: [
     AppComponent,
@@ -50,13 +59,17 @@ import { RegisterComponent } from './components/register';
     AlertComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    EditExample,
+    EditForm,
+    MenuExample,
     ],
   providers: [ 
     ContactService, 
     ResumeService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
 
     // provider used to create fake backend
     fakeBackendProvider 
