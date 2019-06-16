@@ -7,7 +7,7 @@ import { GlobalService } from '../../services/global.service';
   styleUrls: ['./pages-top.component.scss'],
 })
 export class PagesTopComponent {
-  avatarImgSrc: string = 'assets/images/avatar.png';
+  avatarImgSrc: string = 'assets/images/project.jpg';
   userName: string = 'Folisise Chosielie';
   userPost: string = 'Musician, Player';
 
