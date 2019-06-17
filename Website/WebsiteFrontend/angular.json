@@ -31,7 +31,6 @@
               "src/assets/js/copy.js",
               "src/assets/js/scripts.min.js",
               "node_modules/jquery/dist/jquery.js",
-              "node_modules/bootstrap/dist/js/bootstrap.js",
               "node_modules/sweetalert2/dist/sweetalert2.js",
               "node_modules/echarts/dist/echarts.min.js",
               "node_modules/echarts/map/js/china.js",
