@@ -5,11 +5,6 @@ export let MENU_ITEM = [
         icon: 'dashboard'
     },
     {
-        path: 'editor',
-        title: 'Pell Editor',
-        icon: 'pencil'
-    },
-    {
         path: 'profile',
         title: 'User Profile',
         icon: 'user'
