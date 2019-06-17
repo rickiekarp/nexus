@@ -24,7 +24,7 @@
     "@angular/forms": "^7.2.11",
     "@angular/platform-browser": "^7.2.11",
     "@angular/platform-browser-dynamic": "^7.2.11",
-    "@angular/router": "^7.2.11",
+    "@angular/router": "^8.0.1",
     "@ncstate/sat-popover": "^3.2.0",
     "animate.css": "^3.5.2",
     "core-js": "^2.6.5",
