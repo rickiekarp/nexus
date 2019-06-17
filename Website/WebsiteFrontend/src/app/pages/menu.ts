@@ -27,25 +27,13 @@ export let MENU_ITEM = [
                 title: 'Notification'
             },
             {
-                path: 'tabs',
-                title: 'Tabs'
-            },
-            {
                 path: 'file-tree',
                 title: 'File Tree'
             },
             {
                 path: 'modals',
                 title: 'Modals'
-            },
-            {
-                path: 'progress-bar',
-                title: 'ProgressBar'
-            },
-            /*  {
-                 path: 'loading',
-                 title: 'Loading'
-             }, */
+            }
         ]
     },
     {
