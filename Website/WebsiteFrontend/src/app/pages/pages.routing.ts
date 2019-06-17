@@ -12,12 +12,12 @@ export const childRoutes: Routes = [
         component: PagesComponent,
         children: [
             { path: '', redirectTo: 'index', pathMatch: 'full' },
-            { path: 'index', loadChildren: './index/index.module#IndexModule' },
-            { path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
-            { path: 'form', loadChildren: './form/form.module#FormModule' },
-            { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
-            { path: 'ui', loadChildren: './ui/ui.module#UIModule' },
-            { path: 'table', loadChildren: './table/table.module#TableModule' },
+            { path: 'index', loadChildren: () => import('./index/index.module').then(m => m.IndexModule) },
+            { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) },
+            { path: 'form', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },
+            { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
+            { path: 'ui', loadChildren: () => import('./ui/ui.module').then(m => m.UIModule) },
+            { path: 'table', loadChildren: () => import('./table/table.module').then(m => m.TableModule) },
         ]
     }
 ];
