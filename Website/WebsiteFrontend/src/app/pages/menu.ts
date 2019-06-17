@@ -29,10 +29,6 @@ export let MENU_ITEM = [
             {
                 path: 'file-tree',
                 title: 'File Tree'
-            },
-            {
-                path: 'modals',
-                title: 'Modals'
             }
         ]
     },
