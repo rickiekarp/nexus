@@ -18,13 +18,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import net.rickiekarp.homeassistant.R;
-import net.rickiekarp.homeassistant.preferences.Configuration;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.domain.WorldList;
 import net.rickiekarp.homeassistant.interfaces.IOnCreateAccountResult;
 import net.rickiekarp.homeassistant.interfaces.IOnGetTokenResult;
 import net.rickiekarp.homeassistant.interfaces.IOnLoginResult;
 import net.rickiekarp.homeassistant.net.WorldsCall;
+import net.rickiekarp.homeassistant.preferences.Configuration;
 import net.rickiekarp.homeassistant.preferences.Constants;
 import net.rickiekarp.homeassistant.preferences.IsLoggedIn;
 import net.rickiekarp.homeassistant.preferences.Token;

@@ -3,11 +3,11 @@ package net.rickiekarp.homeassistant.net.communication.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
+import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.net.communication.ApiInterfaces;
 import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.preferences.Configuration;
-import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
-import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.utils.Util;
 
 import java.util.concurrent.TimeUnit;

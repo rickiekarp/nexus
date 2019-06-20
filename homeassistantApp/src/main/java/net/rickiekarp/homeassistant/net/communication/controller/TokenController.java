@@ -6,12 +6,12 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.rickiekarp.homeassistant.interfaces.IOnGetTokenResult;
+import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.net.communication.ApiInterfaces;
 import net.rickiekarp.homeassistant.net.communication.vo.VOCredentials;
 import net.rickiekarp.homeassistant.net.communication.vo.VOToken;
 import net.rickiekarp.homeassistant.preferences.Configuration;
-import net.rickiekarp.homeassistant.interfaces.IOnGetTokenResult;
-import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.preferences.Token;
 
 import java.util.concurrent.TimeUnit;
@@ -28,7 +28,6 @@ import static net.rickiekarp.homeassistant.preferences.Constants.URL.BASE_URL_LO
 /**
  * Created by sebastian on 15.11.17.
  */
-
 public class TokenController implements Callback<VOToken>, IRunController {
 
     private SharedPreferences sp;

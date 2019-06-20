@@ -5,11 +5,11 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.rickiekarp.homeassistant.db.AppDatabase;
+import net.rickiekarp.homeassistant.interfaces.IOnLoginResult;
 import net.rickiekarp.homeassistant.net.communication.ApiInterfaces;
 import net.rickiekarp.homeassistant.net.communication.vo.VOData;
 import net.rickiekarp.homeassistant.preferences.Configuration;
-import net.rickiekarp.homeassistant.db.AppDatabase;
-import net.rickiekarp.homeassistant.interfaces.IOnLoginResult;
 import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.utils.Util;
 
@@ -27,7 +27,6 @@ import static net.rickiekarp.homeassistant.preferences.Constants.URL.BASE_URL_LO
 /**
  * Created by sebastian on 17.11.17.
  */
-
 public class LoginController implements Callback<VOData> {
 
     private SharedPreferences sp;

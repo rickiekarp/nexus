@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 
 import net.rickiekarp.homeassistant.interfaces.IOnGetHistoryNotesResult;
 import net.rickiekarp.homeassistant.net.communication.controller.GetNotesHistoryController;
-import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 
 /**
  * Created by sebastian on 05.12.17.

@@ -4,9 +4,9 @@ import android.content.SharedPreferences;
 
 import net.rickiekarp.homeassistant.domain.ShoppingNoteList;
 import net.rickiekarp.homeassistant.interfaces.IOnGetHistoryNotesResult;
+import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.net.communication.ApiInterfaces;
 import net.rickiekarp.homeassistant.preferences.Configuration;
-import net.rickiekarp.homeassistant.interfaces.IRunController;
 import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.utils.Util;
 
@@ -24,7 +24,6 @@ import static net.rickiekarp.homeassistant.preferences.Constants.URL.BASE_URL_AP
 /**
  * Created by sebastian on 22.11.17.
  */
-
 public class GetNotesHistoryController implements Callback<ShoppingNoteList>, IRunController {
 
     private SharedPreferences sp;

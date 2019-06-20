@@ -16,23 +16,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import net.rickiekarp.homeassistant.preferences.Constants;
 import net.rickiekarp.homeassistant.ItemClickSupport;
 import net.rickiekarp.homeassistant.R;
 import net.rickiekarp.homeassistant.adapter.AdapterCustomRecyclerView;
-import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.db.AppDatabase;
-import net.rickiekarp.homeassistant.ui.dialog.NotesDialog;
 import net.rickiekarp.homeassistant.interfaces.IOnAddNotesResult;
 import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
 import net.rickiekarp.homeassistant.interfaces.IOnUpdateNotesResult;
+import net.rickiekarp.homeassistant.net.communication.vo.VONote;
+import net.rickiekarp.homeassistant.preferences.Constants;
 import net.rickiekarp.homeassistant.preferences.Token;
 import net.rickiekarp.homeassistant.tasks.notes.AddNoteTask;
 import net.rickiekarp.homeassistant.tasks.notes.GetNotesTask;
 import net.rickiekarp.homeassistant.tasks.notes.RemoveNoteTask;
 import net.rickiekarp.homeassistant.tasks.notes.UpdateNoteTask;
+import net.rickiekarp.homeassistant.ui.dialog.NotesDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,6 @@ import java.util.List;
 /**
  * Created by sebastian on 01.11.17.
  */
-
 public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOnAddNotesResult, IOnDialogClick, IOnUpdateNotesResult, IOnRemoveNoteResult {
 
     private final String TAG = "singleNote";
@@ -67,29 +66,23 @@ public class NotesFragment extends Fragment implements IOnGetAllNotesResult, IOn
         itemList = new ArrayList<>();
 
         FloatingActionButton fab = view.findViewById(R.id.fab_notes);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //openSingleNoteFragment();
+        fab.setOnClickListener(view1 -> {
+            //openSingleNoteFragment();
 
-                NotesDialog notesDialog = NotesDialog.newInstance(context,null, database);
-                notesDialog.show(getActivity().getSupportFragmentManager(), "addnote");
-            }
+            NotesDialog notesDialog = NotesDialog.newInstance(context,null, database);
+            notesDialog.show(getActivity().getSupportFragmentManager(), "addnote");
         });
 
         adapter = new AdapterCustomRecyclerView(itemList, sp.getString(Token.KEY, ""), this);
-        RecyclerView myView =  (RecyclerView)view.findViewById(R.id.recyclerView_notes);
-        ItemClickSupport.addTo(myView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+        RecyclerView myView = view.findViewById(R.id.recyclerView_notes);
+        ItemClickSupport.addTo(myView).setOnItemClickListener((recyclerView, position, v) -> {
 
 //                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //                fragmentManager.beginTransaction().replace(R.id.main, new SingleNoteFragment()).addToBackStack(TAG).commit();
 
-                itemId = position;
-                NotesDialog notesDialog = NotesDialog.newInstance(context, adapter.getNoteAtIndex(position), database);
-                notesDialog.show(getActivity().getSupportFragmentManager(), "updatenotes");
-            }
+            itemId = position;
+            NotesDialog notesDialog = NotesDialog.newInstance(context, adapter.getNoteAtIndex(position), database);
+            notesDialog.show(getActivity().getSupportFragmentManager(), "updatenotes");
         });
         myView.setHasFixedSize(true);
         myView.setAdapter(adapter);

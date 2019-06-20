@@ -2,8 +2,8 @@ package net.rickiekarp.homeassistant.net;
 
 import android.os.AsyncTask;
 
-import net.rickiekarp.homeassistant.preferences.Constants;
 import net.rickiekarp.homeassistant.domain.WorldList;
+import net.rickiekarp.homeassistant.preferences.Constants;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -3,8 +3,8 @@ package net.rickiekarp.homeassistant.net.communication.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import net.rickiekarp.homeassistant.preferences.Constants;
 import net.rickiekarp.homeassistant.preferences.Configuration;
+import net.rickiekarp.homeassistant.preferences.Constants;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +15,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by sebastian on 08.12.17.
  */
-
 public class RetrofitHelper {
 
     private String serverType;

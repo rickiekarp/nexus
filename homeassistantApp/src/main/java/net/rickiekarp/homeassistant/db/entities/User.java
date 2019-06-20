@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 /**
  * Created by sebastian on 29.11.17.
  */
-
 @Entity
 public class User {
     @PrimaryKey

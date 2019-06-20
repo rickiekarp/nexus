@@ -1,10 +1,5 @@
 package net.rickiekarp.homeassistant.adapter;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +9,11 @@ import android.widget.TextView;
 
 import net.rickiekarp.homeassistant.R;
 import net.rickiekarp.homeassistant.domain.ShoppingNote;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  *

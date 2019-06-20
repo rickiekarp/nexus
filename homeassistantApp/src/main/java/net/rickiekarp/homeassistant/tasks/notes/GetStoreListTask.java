@@ -3,9 +3,7 @@ package net.rickiekarp.homeassistant.tasks.notes;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
-import net.rickiekarp.homeassistant.interfaces.IOnGetAllNotesResult;
 import net.rickiekarp.homeassistant.interfaces.IOnGetStoreListResult;
-import net.rickiekarp.homeassistant.net.communication.controller.GetNotesHistoryController;
 import net.rickiekarp.homeassistant.net.communication.controller.GetStoreListController;
 
 /**

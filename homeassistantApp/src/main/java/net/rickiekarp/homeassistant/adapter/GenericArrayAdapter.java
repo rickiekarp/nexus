@@ -17,7 +17,7 @@ public abstract class GenericArrayAdapter<T> extends ArrayAdapter<T> {
     // Vars
     private LayoutInflater mInflater;
 
-    public GenericArrayAdapter(Context context, int resourceId, List<ShoppingStore> objects) {
+    GenericArrayAdapter(Context context, int resourceId, List<ShoppingStore> objects) {
         super(context, resourceId, (List<T>) objects);
         init(context);
     }
@@ -62,7 +62,7 @@ public abstract class GenericArrayAdapter<T> extends ArrayAdapter<T> {
         TextView textView;
 
         private ViewHolder(View rootView) {
-            textView = (TextView) rootView.findViewById(android.R.id.text1);
+            textView = rootView.findViewById(android.R.id.text1);
         }
     }
 }

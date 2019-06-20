@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import net.rickiekarp.homeassistant.ui.MainActivity;
 import net.rickiekarp.homeassistant.preferences.IsLoggedIn;
 import net.rickiekarp.homeassistant.preferences.Token;
+import net.rickiekarp.homeassistant.ui.MainActivity;
 
 /**
  * Created by sebastian on 15.11.17.

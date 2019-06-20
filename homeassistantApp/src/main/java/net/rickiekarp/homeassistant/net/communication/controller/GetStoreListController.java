@@ -3,9 +3,6 @@ package net.rickiekarp.homeassistant.net.communication.controller;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import net.rickiekarp.homeassistant.domain.ShoppingStoreList;
 import net.rickiekarp.homeassistant.interfaces.IOnGetStoreListResult;
 import net.rickiekarp.homeassistant.interfaces.IRunController;
@@ -28,7 +25,6 @@ import static net.rickiekarp.homeassistant.preferences.Constants.URL.BASE_URL_AP
 /**
  * Created by sebastian on 22.11.17.
  */
-
 public class GetStoreListController implements Callback<ShoppingStoreList>, IRunController {
 
     private SharedPreferences sp;

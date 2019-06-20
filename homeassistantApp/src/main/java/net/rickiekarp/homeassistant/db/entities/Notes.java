@@ -4,11 +4,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-
 /**
  * Created by sebastian on 17.11.17.
  */
-
 @Entity
 public class Notes {
     @PrimaryKey

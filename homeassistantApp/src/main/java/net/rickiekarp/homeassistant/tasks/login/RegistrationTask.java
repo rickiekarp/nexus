@@ -3,8 +3,8 @@ package net.rickiekarp.homeassistant.tasks.login;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
-import net.rickiekarp.homeassistant.net.communication.controller.CreateAccountController;
 import net.rickiekarp.homeassistant.interfaces.IOnCreateAccountResult;
+import net.rickiekarp.homeassistant.net.communication.controller.CreateAccountController;
 
 /**
  * Created by sebastian on 04.12.17.

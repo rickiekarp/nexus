@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import net.rickiekarp.homeassistant.R;
-import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.interfaces.IOnRemoveNoteResult;
+import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.tasks.notes.MarkAsBoughtNoteTask;
 
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 /**
  * Created by sebastian on 04.12.17.
  */
-
 public class AdapterCustomRecyclerView extends RecyclerView.Adapter<AdapterCustomRecyclerView.MyViewHolder> {
 
     private IOnRemoveNoteResult onRemoveNoteResult;
@@ -61,8 +60,8 @@ public class AdapterCustomRecyclerView extends RecyclerView.Adapter<AdapterCusto
 
         MyViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.notes_title);
-            button = (Button) itemView.findViewById(R.id.remove);
+            title = itemView.findViewById(R.id.notes_title);
+            button = itemView.findViewById(R.id.remove);
         }
     }
 

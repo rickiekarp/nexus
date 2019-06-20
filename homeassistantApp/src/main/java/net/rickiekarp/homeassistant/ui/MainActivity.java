@@ -22,18 +22,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.rickiekarp.homeassistant.R;
+import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.domain.ShoppingStoreList;
+import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
 import net.rickiekarp.homeassistant.interfaces.IOnGetStoreListResult;
+import net.rickiekarp.homeassistant.model.MenuItemInformation;
 import net.rickiekarp.homeassistant.net.communication.controller.GetStoreListController;
 import net.rickiekarp.homeassistant.net.communication.vo.VONote;
-import net.rickiekarp.homeassistant.db.AppDatabase;
+import net.rickiekarp.homeassistant.preferences.Constants;
 import net.rickiekarp.homeassistant.ui.dialog.LogoutDialog;
 import net.rickiekarp.homeassistant.ui.fragments.InfoFragment;
 import net.rickiekarp.homeassistant.ui.fragments.NotesFragment;
 import net.rickiekarp.homeassistant.ui.fragments.NotesHistoryFragment;
-import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
-import net.rickiekarp.homeassistant.model.MenuItemInformation;
-import net.rickiekarp.homeassistant.preferences.Constants;
 import net.rickiekarp.homeassistant.utils.Util;
 
 import java.util.Map;

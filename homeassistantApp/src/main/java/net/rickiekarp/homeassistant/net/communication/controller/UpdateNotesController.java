@@ -3,12 +3,12 @@ package net.rickiekarp.homeassistant.net.communication.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import net.rickiekarp.homeassistant.net.communication.ApiInterfaces;
-import net.rickiekarp.homeassistant.net.communication.vo.VONote;
-import net.rickiekarp.homeassistant.preferences.Configuration;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.interfaces.IOnUpdateNotesResult;
 import net.rickiekarp.homeassistant.interfaces.IRunController;
+import net.rickiekarp.homeassistant.net.communication.ApiInterfaces;
+import net.rickiekarp.homeassistant.net.communication.vo.VONote;
+import net.rickiekarp.homeassistant.preferences.Configuration;
 import net.rickiekarp.homeassistant.utils.Util;
 
 import java.util.concurrent.TimeUnit;
@@ -19,14 +19,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.protobuf.ProtoConverterFactory;
 
 import static net.rickiekarp.homeassistant.preferences.Constants.URL.BASE_URL_APPSERVER;
 
 /**
  * Created by sebastian on 22.11.17.
  */
-
 public class UpdateNotesController implements Callback<VONote>, IRunController {
     private String sp;
     private VONote note;

@@ -5,18 +5,17 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import net.rickiekarp.homeassistant.domain.ShoppingStoreList;
-import net.rickiekarp.homeassistant.net.NetworkApi;
-import net.rickiekarp.homeassistant.net.communication.vo.VOData;
 import net.rickiekarp.homeassistant.db.daos.NotesDAO;
 import net.rickiekarp.homeassistant.db.daos.UserDAO;
 import net.rickiekarp.homeassistant.db.entities.Notes;
 import net.rickiekarp.homeassistant.db.entities.User;
+import net.rickiekarp.homeassistant.domain.ShoppingStoreList;
+import net.rickiekarp.homeassistant.net.NetworkApi;
+import net.rickiekarp.homeassistant.net.communication.vo.VOData;
 
 /**
  * Created by sebastian on 17.11.17.
  */
-
 @Database(entities = {Notes.class, User.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 

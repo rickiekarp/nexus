@@ -2,7 +2,6 @@ package net.rickiekarp.homeassistant.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -17,8 +16,8 @@ import net.rickiekarp.homeassistant.R;
 import net.rickiekarp.homeassistant.adapter.ShoppingStoreArrayAdapter;
 import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.domain.ShoppingStore;
-import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 import net.rickiekarp.homeassistant.interfaces.IOnDialogClick;
+import net.rickiekarp.homeassistant.net.communication.vo.VONote;
 
 /**
  * Created by sebastian on 06.12.17.
@@ -58,7 +57,9 @@ public class NotesDialog extends DialogFragment {
         Spinner storeSpinner = v.findViewById(R.id.note_detail_store_spinner);
         storeSpinner.setAdapter(shoppingStoreArrayAdapter);
 
-        storeSpinner.setSelection(findId(note.getStore_id()));
+        if (note != null) {
+            storeSpinner.setSelection(findId(note.getStore_id()));
+        }
 
         switch (getTag()) {
             case "viewnote":
@@ -67,25 +68,22 @@ public class NotesDialog extends DialogFragment {
 
             case "addnote":
                 builder.setTitle("Create item");
-                builder.setPositiveButton("Hinzufügen", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        final String noteTitle = editTitle.getText().toString();
-                        if (noteTitle.isEmpty()) {
-                            Toast.makeText(getActivity(), "Title can not be empty", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        VONote note = new VONote(noteTitle);
-                        final String priceFieldContent = priceField.getText().toString();
-                        if (!priceFieldContent.isEmpty()) {
-                            final double notePrice = Double.valueOf(priceField.getText().toString());
-                            note.setPrice(notePrice);
-                        }
-                        ShoppingStore store = (ShoppingStore) storeSpinner.getSelectedItem();
-                        note.setStore_id((byte) store.getId());
-                        listener.onPositiveClick(note, "add");
-                        dialogInterface.dismiss();
+                builder.setPositiveButton("Hinzufügen", (dialogInterface, i) -> {
+                    final String noteTitle = editTitle.getText().toString();
+                    if (noteTitle.isEmpty()) {
+                        Toast.makeText(getActivity(), "Title can not be empty", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    VONote note = new VONote(noteTitle);
+                    final String priceFieldContent = priceField.getText().toString();
+                    if (!priceFieldContent.isEmpty()) {
+                        final double notePrice = Double.valueOf(priceField.getText().toString());
+                        note.setPrice(notePrice);
+                    }
+                    ShoppingStore store = (ShoppingStore) storeSpinner.getSelectedItem();
+                    note.setStore_id((byte) store.getId());
+                    listener.onPositiveClick(note, "add");
+                    dialogInterface.dismiss();
                 });
                 break;
             case "updatenotes":
@@ -94,26 +92,20 @@ public class NotesDialog extends DialogFragment {
 
                 priceField.setText(String.valueOf(note.getPrice()));
 
-                builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        note.setTitle(editTitle.getText().toString());
-                        note.setPrice(Double.valueOf(priceField.getText().toString()));
-                        if (storeSpinner.getSelectedItem() != null) {
-                            ShoppingStore store = (ShoppingStore) storeSpinner.getSelectedItem();
-                            note.setStore_id((byte) store.getId());
-                        }
-                        listener.onPositiveClick(note,"update");
-                        dialogInterface.dismiss();
+                builder.setPositiveButton("Update", (dialogInterface, i) -> {
+                    note.setTitle(editTitle.getText().toString());
+                    note.setPrice(Double.valueOf(priceField.getText().toString()));
+                    if (storeSpinner.getSelectedItem() != null) {
+                        ShoppingStore store = (ShoppingStore) storeSpinner.getSelectedItem();
+                        note.setStore_id((byte) store.getId());
+                    }
+                    listener.onPositiveClick(note,"update");
+                    dialogInterface.dismiss();
 
-                    }
                 });
-                builder.setNegativeButton("Löschen", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.onNegativeClick(note.getId());
-                        dismiss();
-                    }
+                builder.setNegativeButton("Löschen", (dialogInterface, i) -> {
+                    listener.onNegativeClick(note.getId());
+                    dismiss();
                 });
                 break;
             default:

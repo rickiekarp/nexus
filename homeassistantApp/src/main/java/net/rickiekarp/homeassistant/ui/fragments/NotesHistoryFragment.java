@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import net.rickiekarp.homeassistant.R;
+import net.rickiekarp.homeassistant.adapter.NoteHistoryListViewAdapter;
+import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.domain.ShoppingNote;
 import net.rickiekarp.homeassistant.domain.ShoppingNoteList;
 import net.rickiekarp.homeassistant.interfaces.IOnGetHistoryNotesResult;
 import net.rickiekarp.homeassistant.preferences.Constants;
-import net.rickiekarp.homeassistant.R;
-import net.rickiekarp.homeassistant.adapter.NoteHistoryListViewAdapter;
-import net.rickiekarp.homeassistant.db.AppDatabase;
 import net.rickiekarp.homeassistant.tasks.notes.GetNotesHistoryTask;
 
 import java.util.ArrayList;
@@ -37,7 +37,6 @@ public class NotesHistoryFragment extends Fragment implements IOnGetHistoryNotes
     private NoteHistoryListViewAdapter adapter;
     private SharedPreferences sp;
     private ProgressDialog progressDialog;
-    private int itemId;
 
     public NotesHistoryFragment() {
     }
