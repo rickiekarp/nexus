@@ -56,6 +56,19 @@ class EmailService {
         sender!!.send(message)
     }
 
+    @Throws(Exception::class)
+    fun sendFromByteArray(mail: EmailDto, bytes: ByteArray) {
+        val message = sender!!.createMimeMessage()
+        val helper = MimeMessageHelper(message)
+
+        helper.setFrom(smtpEmail!!)
+        helper.setTo(mail.to)
+        helper.setSubject(mail.subject)
+        helper.setText(String(bytes), false) // set to html
+
+        sender!!.send(message)
+    }
+
     private fun extractModel(mail: EmailDto, notificationTokenData: NotificationTokenData): Map<String, Any> {
         val model = HashMap<String, Any>()
         model["message"] = mail.message
