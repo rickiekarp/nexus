@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { AuthenticationService } from './service';
 import { User } from './model';
 import { GlobalService } from './shared/services/global.service';
@@ -38,7 +37,7 @@ export class AppComponent {
   constructor(
       private authenticationService: AuthenticationService,
       private _globalService: GlobalService,
-      private router: Router
+      public router: Router
   ) {
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
