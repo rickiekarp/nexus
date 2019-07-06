@@ -1,4 +1,8 @@
 <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+    <div class="collapse-menu" (click)="sidebarToggle()" *ngIf="router.url === '/pages/index'">
+        <i class="fa fa-dedent fa-fw" *ngIf="isSidebarToggle"></i>
+        <i class="fa fa-indent fa-fw" *ngIf="!isSidebarToggle"></i>
+    </div>
     <div class="container">
         <ul class="nav navbar-nav" routerLinkActive="active">
             <li class="nav-item"><a class="nav-link" routerLink="professional"><label>Professional</label></a></li>
