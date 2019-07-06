@@ -49,9 +49,19 @@ export class MenuExample {
   select(values: string) {
     this.selection = values;
 
-    if (values == "Logout") {
-      this.logout()
-    }
+    switch(this.selection) { 
+      case "Settings": { 
+        this.router.navigate(['home']);
+         break; 
+      } 
+      case "Logout": { 
+        this.logout()
+        break; 
+      } 
+      default: { 
+         break; 
+      } 
+   } 
 
     // close all popovers
     this.allPopovers.forEach(p => p.close());
