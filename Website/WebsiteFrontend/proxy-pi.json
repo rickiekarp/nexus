@@ -2,5 +2,9 @@
   "/api/*": {
     "target": "https://app.rickiekarp.net/Website",
     "secure": false
+  },
+  "/loginapi/*": {
+    "target": "https://app.rickiekarp.net/LoginServer",
+    "secure": false
   }
 }

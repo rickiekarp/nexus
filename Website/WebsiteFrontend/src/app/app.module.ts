@@ -18,7 +18,7 @@ import { ResumeService } from './service/resume.service';
 import { ReactiveFormsModule }    from '@angular/forms';
 
 // used to create fake backend
-import { fakeBackendProvider } from './helpers';
+//import { fakeBackendProvider } from './helpers';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routing } from './app.routing';
@@ -35,6 +35,7 @@ import { EditExample } from './shared/components/popover/edit-example/edit-examp
 import { EditForm } from './shared/components/popover/edit-example/edit-form.component';
 import { MenuExample } from './shared/components/popover/profile/profile-popover.component';
 import { PagesModule } from './pages/pages.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { PagesModule } from './pages/pages.module';
     HttpClientModule,
     routing,
     SatPopoverModule,
-    PagesModule
+    PagesModule,
+    SharedModule
   ],
   declarations: [
     AppComponent,
@@ -69,10 +71,10 @@ import { PagesModule } from './pages/pages.module';
     ResumeService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
 
     // provider used to create fake backend
-    fakeBackendProvider 
+     //fakeBackendProvider 
   ],
   bootstrap: [ AppComponent ]
 })
