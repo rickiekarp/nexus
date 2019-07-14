@@ -20,18 +20,18 @@ class CustomAuthenticationProvider : AuthenticationProvider {
 
     @Throws(AuthenticationException::class)
     override fun authenticate(authentication: Authentication): Authentication? {
-        val userid = authentication.name.toInt()
+        val authenticationName: String = authentication.name
         val accessToken = authentication.credentials.toString()
 
         // use the credentials and authenticate against the third-party system
-        val user = retrieveUserFromRedis(userid)
+        val user = retrieveUserFromRedis(authenticationName)
         return if (user.isPresent && user.get().token == accessToken) {
             val updatedAuthorities = ArrayList<SimpleGrantedAuthority>()
             val authority = SimpleGrantedAuthority(user.get().role.second)
             updatedAuthorities.add(authority)
-            UsernamePasswordAuthenticationToken(userid, accessToken, updatedAuthorities)
+            UsernamePasswordAuthenticationToken(authenticationName, accessToken, updatedAuthorities)
         } else {
-            Log.DEBUG.debug("UserId[$userid] could not be authenticated!")
+            Log.DEBUG.debug("UserId[$authenticationName] could not be authenticated!")
             null
         }
     }
@@ -40,7 +40,7 @@ class CustomAuthenticationProvider : AuthenticationProvider {
         return authentication == UsernamePasswordAuthenticationToken::class.java
     }
 
-    private fun retrieveUserFromRedis(userid: Int): Optional<User> {
-        return tokenService!!.findById(userid.toString())
+    private fun retrieveUserFromRedis(userid: String): Optional<User> {
+        return tokenService!!.findById(userid)
     }
 }

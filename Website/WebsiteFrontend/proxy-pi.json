@@ -3,8 +3,8 @@
     "target": "https://app.rickiekarp.net/Website",
     "secure": false
   },
-  "/loginapi/*": {
-    "target": "https://app.rickiekarp.net/LoginServer",
+  "/LoginServer/*": {
+    "target": "https://app.rickiekarp.net",
     "secure": false
   }
 }
