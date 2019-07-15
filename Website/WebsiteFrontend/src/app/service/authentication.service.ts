@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 
 import { User } from '../model';
 
@@ -19,7 +19,7 @@ export class AuthenticationService {
         return this.currentUserSubject.value;
     }
 
-    login(username: string, password: string) {
+    authorize(username: string, password: string) {
         return this.http.post<any>(`/LoginServer/account/authorize`, { username, password })
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
@@ -27,9 +27,22 @@ export class AuthenticationService {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
+
                 }
 
                 return user;
+            }));
+    }
+
+    login() {
+
+        return this.http.post<any>(`/LoginServer/account/login`, null)
+            .pipe(map(user => {
+                // login successful if there's a jwt token in the response
+                this.currentUserValue.username = "placeholder";
+
+                return user;
+
             }));
     }
 

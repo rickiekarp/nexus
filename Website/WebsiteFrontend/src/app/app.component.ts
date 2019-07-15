@@ -3,6 +3,7 @@ import { AuthenticationService } from './service';
 import { User } from './model';
 import { GlobalService } from './shared/services/global.service';
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -39,7 +40,22 @@ export class AppComponent {
       private _globalService: GlobalService,
       public router: Router
   ) {
-      this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+
+    if (this.currentUser != null && this.currentUser.token != null) {
+
+      this.authenticationService.login()
+      .pipe(first())
+      .subscribe(
+          data => {
+            //console.log(data);
+          },
+          error => {
+              console.log("error on automatic login");
+              //this.alertService.error(error);
+              //this.loading = false;
+          });
   }
+    }
   
 }

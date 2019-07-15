@@ -43,7 +43,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             // get users
             if (request.url.endsWith('/users') && request.method === 'GET') {
                 // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
-                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                if (request.headers.get('Authorization') === 'Basic fake-jwt-token') {
                     return of(new HttpResponse({ status: 200, body: users }));
                 } else {
                     // return 401 not authorised if token is null or invalid
@@ -54,7 +54,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             // get user by id
             if (request.url.match(/\/users\/\d+$/) && request.method === 'GET') {
                 // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
-                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                if (request.headers.get('Authorization') === 'Basic fake-jwt-token') {
                     // find user by id in users array
                     let urlParts = request.url.split('/');
                     let id = parseInt(urlParts[urlParts.length - 1]);
@@ -91,7 +91,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             // delete user
             if (request.url.match(/\/users\/\d+$/) && request.method === 'DELETE') {
                 // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
-                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                if (request.headers.get('Authorization') === 'Basic fake-jwt-token') {
                     // find user by id in users array
                     let urlParts = request.url.split('/');
                     let id = parseInt(urlParts[urlParts.length - 1]);
