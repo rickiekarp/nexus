@@ -80,6 +80,8 @@ open class UserRepo : UserDAO {
         userVO.username = resultSet.getString("username")
         userVO.password = resultSet.getString("password")
         userVO.token = resultSet.getString("token")
+        userVO.accountType = resultSet.getByte("type")
+        userVO.isAccountEnabled = resultSet.getBoolean("enabled")
         userVO.role = Pair<Int, String>(resultSet.getInt("roles_id"), resultSet.getString("name"))
         return userVO
     }

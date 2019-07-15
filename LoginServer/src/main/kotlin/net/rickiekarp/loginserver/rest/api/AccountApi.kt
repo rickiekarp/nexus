@@ -61,12 +61,19 @@ class AccountApi {
         // Throw an Exception if the credentials are invalid
         val retrievedUser = repo!!.getUserByName(credentialsDTO.username!!)
         if (retrievedUser != null) {
-            // validate credentials
-            if (hashingUtil!!.generateStorngPasswordHash(credentialsDTO.password!!) == retrievedUser.password) {
-                return retrievedUser
+            if (retrievedUser.isAccountEnabled) {
+                // validate credentials
+                if (hashingUtil!!.generateStorngPasswordHash(credentialsDTO.password!!) == retrievedUser.password) {
+                    return retrievedUser
+                } else {
+                    throw RuntimeException("password incorrect")
+                }
+            } else {
+                throw RuntimeException("account disabled")
             }
+        } else {
+            throw RuntimeException("user not found")
         }
-        throw RuntimeException("user not found")
     }
 
     @PostMapping(value = ["/login"])

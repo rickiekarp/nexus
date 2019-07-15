@@ -9,6 +9,8 @@ import org.springframework.security.core.GrantedAuthority
 class User : Credentials {
     var id: Int = 0
     var token: String? = null
+    var accountType: Byte? = null
+    var isAccountEnabled: Boolean = false
     lateinit var role: kotlin.Pair<Int, String>
 
     constructor() {
