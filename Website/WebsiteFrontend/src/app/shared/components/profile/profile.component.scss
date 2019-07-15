@@ -9,9 +9,9 @@
     .profile-head-bg {
         width: 100%;
         height: auto;
-        filter: blur(20px);
-        -moz-filter: blur(20px);
-        -webkit-filter: blur(20px);
+        filter: blur(40px);
+        -moz-filter: blur(40px);
+        -webkit-filter: blur(40px);
     }
 }
 
@@ -63,16 +63,16 @@
 
 .skills-tag {
     display: inline-block;
-    padding: .2em .4em;
-    margin: 2px;
-    border: 1px solid $border-color;
-    border-radius: 3px;
+    padding: .3em .7em;
+    margin: 5px;
+    border: 0px solid $fonts-color;
+    border-radius: 6px;
     background: transparent;
     text-decoration: none;
     color: rgba($fonts-color, .7);
     @include transition(all .4s);
     &:hover {
-        border: 1px solid $primary;
+        border: 0px solid $primary;
         background: $primary;
         color: $white;
     }
