@@ -33,13 +33,25 @@ nav li {
 }
 
 label {
-    display: inline-block;
-    margin: 0 0 -1px;
+    margin: 0 0 0 0;
     padding: 15px 25px;
     font-weight: 600;
     text-align: center;
     color: #bbb;
-    border: 1px solid transparent;
+    border: 0px solid transparent;
+  }
+
+label:before {
+    font-weight: normal;
+    margin-right: 10px;
+    color: white;
+}
+  
+label:hover {
+    color: #fff;
+    cursor: pointer;
+    border: 0px solid #ddd;
+    background: #171717
 }
 
 label:hover { 
