@@ -2,7 +2,7 @@ CREATE TABLE tracking_weight (
   id INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
   users_id INT unsigned NOT NULL,
   dateAdded TIMESTAMP NOT NULL,
-  weight TINYINT unsigned NOT NULL,
+  weight FLOAT(5, 2) unsigned NOT NULL,
   description VARCHAR(255)
 );
 ALTER TABLE tracking_weight
