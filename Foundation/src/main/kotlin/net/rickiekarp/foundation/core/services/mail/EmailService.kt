@@ -72,7 +72,7 @@ class EmailService {
     private fun extractModel(mail: EmailDto, notificationTokenData: NotificationTokenData): Map<String, Any> {
         val model = HashMap<String, Any>()
         model["message"] = mail.message
-        model["additionalData"] = mail.additionalData as LinkedHashMap<*, *>
+        model["additionalData"] = mail.additionalData as Map<*, *>
         model["job"] = notificationTokenData.name as String
         return model
     }
