@@ -21,7 +21,7 @@ class HashingUtilTest {
     fun testCheckCreateWithUser() {
         val password = "password"
         val expectedPassword = "a4be62c06f472ccb61059b14122c4684e9a415d25f4873f389"
-        val actualPassword = testingObject!!.generateStorngPasswordHash(password)
+        val actualPassword = testingObject!!.generateStrongPasswordHash(password)
         Assert.assertEquals(expectedPassword, actualPassword)
     }
 }

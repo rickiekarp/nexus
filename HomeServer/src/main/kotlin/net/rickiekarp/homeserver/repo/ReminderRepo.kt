@@ -13,6 +13,7 @@ import javax.sql.DataSource
 open class ReminderRepo : ReminderDao {
 
     private val SELECT_REMINDER_LIST = "select * from tracking_todo where users_id = ? AND (reminder_enddate IS NULL OR reminder_enddate < timestamp(DATE_SUB(NOW(), INTERVAL -? DAY)))"
+    private val UPDATE_REMINDER_SEND_DATE = "update tracking_todo set reminder_senddate = now() where id in (?)"
 
     @Autowired
     private val dataSource: DataSource? = null
@@ -28,9 +29,15 @@ open class ReminderRepo : ReminderDao {
             val rs = stmt.executeQuery()
             while (rs.next()) {
                 val userVO = ReminderDto()
+                userVO.id = rs.getInt("id")
                 userVO.user_id = rs.getInt("users_id")
-                userVO.reminder_senddate = rs.getDate("reminder_senddate")
+                userVO.dateAdded = rs.getDate("dateAdded")
                 userVO.description = rs.getString("description")
+                userVO.reminder_interval = rs.getByte("reminder_interval")
+                userVO.reminder_senddate = rs.getDate("reminder_senddate")
+                userVO.reminder_enddate = rs.getDate("reminder_enddate")
+                userVO.isDeleted = rs.getBoolean("isDeleted")
+                userVO.lastUpdated = rs.getDate("lastUpdated")
                 notesList.add(userVO)
             }
         } catch (e: SQLException) {
@@ -40,6 +47,26 @@ open class ReminderRepo : ReminderDao {
             DatabaseUtil.close(dataSource!!.connection)
         }
         return notesList
+    }
+
+    override fun updateReminderSendDate(reminderListToUpdate: Map<String, ReminderDto>) {
+        val reminderIdList = ArrayList<Int>()
+        reminderListToUpdate.forEach { (_, v) ->
+            reminderIdList.add(v.id)
+        }
+        val output = reminderIdList.joinToString(",", prefix = "", postfix = "", limit = reminderIdList.size, truncated = "")
+        val query = UPDATE_REMINDER_SEND_DATE.replace("?", output)
+
+        var stmt: PreparedStatement? = null
+        try {
+            stmt = dataSource!!.connection.prepareStatement(query)
+            stmt.executeQuery()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        } finally {
+            DatabaseUtil.close(stmt)
+            DatabaseUtil.close(dataSource!!.connection)
+        }
     }
 
 }

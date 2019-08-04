@@ -10,10 +10,15 @@ import net.rickiekarp.foundation.data.dto.EmailDto
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.model.NotificationTokenData
 import net.rickiekarp.homeserver.dao.ReminderDao
+import net.rickiekarp.homeserver.dto.ReminderDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import kotlin.collections.HashMap
 
 @RestController
 @RequestMapping("reminder")
@@ -39,14 +44,14 @@ class ReminderApi {
             if (notificationData != null) {
                 val reminderList = reminderDao!!.getActiveReminders(BaseConfig.get().getUserId(), daysOfFutureReminders)
                 if (reminderList.isNotEmpty()) {
-                    val reminderMap = HashMap<String, Any>()
-                    for (i in 0 until reminderList.size) {
-                        reminderMap[(i+1).toString()] = reminderList[i]
+                    val reminderMap = getFinalReminders(reminderList)
+                    if (reminderMap.size > 0) {
+                        mail.additionalData = reminderMap
+                        emailService!!.sendInfoMail(mail, notificationData)
+                        reminderDao!!.updateReminderSendDate(reminderMap)
+                    } else {
+                        Log.DEBUG.info("No reminder data found for user (${BaseConfig.get().getUserId()})!")
                     }
-                    mail.additionalData = reminderMap
-                    emailService!!.sendInfoMail(mail, notificationData)
-                } else {
-                    Log.DEBUG.info("No reminder data found for user (${BaseConfig.get().getUserId()})!")
                 }
                 return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
             } else {
@@ -60,5 +65,29 @@ class ReminderApi {
     @PostMapping(value = ["add"])
     fun addReminder(): ResponseEntity<ResultDTO> {
         return ResponseEntity(ResultDTO("not_available_yet"), HttpStatus.OK)
+    }
+
+    private fun getFinalReminders(reminderList: List<ReminderDto>): HashMap<String, ReminderDto> {
+        val reminderMap = HashMap<String, ReminderDto>()
+        for (i in 0 until reminderList.size) {
+            val sendDate = reminderList[i].reminder_senddate
+            if (sendDate != null)  {
+                if (!isSendingPending(
+                                Instant.ofEpochMilli(sendDate.time).atZone(ZoneId.systemDefault()).toLocalDate(),
+                                reminderList[i].reminder_interval!!)
+                ) {
+                    continue
+                }
+            }
+            reminderMap[(i+1).toString()] = reminderList[i]
+        }
+        return reminderMap
+    }
+
+    private fun isSendingPending(fromDate: LocalDate, interval: Byte): Boolean {
+        if (fromDate.plusDays(interval.toLong()).isEqual(LocalDate.now())) {
+            return true
+        }
+        return false
     }
 }

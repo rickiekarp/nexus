@@ -63,7 +63,7 @@ class AccountApi {
         if (retrievedUser != null) {
             if (retrievedUser.isAccountEnabled) {
                 // validate credentials
-                if (hashingUtil!!.generateStorngPasswordHash(credentialsDTO.password!!) == retrievedUser.password) {
+                if (hashingUtil!!.generateStrongPasswordHash(credentialsDTO.password!!) == retrievedUser.password) {
                     return retrievedUser
                 } else {
                     throw RuntimeException("password incorrect")

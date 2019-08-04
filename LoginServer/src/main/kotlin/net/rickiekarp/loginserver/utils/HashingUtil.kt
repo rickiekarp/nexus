@@ -13,7 +13,7 @@ import kotlin.system.measureTimeMillis
 class HashingUtil {
 
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
-    fun generateStorngPasswordHash(password: String): String {
+    fun generateStrongPasswordHash(password: String): String {
         val iterations = 16
         val chars = password.toCharArray()
         val salt = password.toByteArray()
@@ -46,7 +46,7 @@ class HashingUtil {
     private fun measureTime() {
         val password = "password"
         val time = measureTimeMillis {
-            generateStorngPasswordHash(password)
+            generateStrongPasswordHash(password)
         }
         println("$time ms")
     }

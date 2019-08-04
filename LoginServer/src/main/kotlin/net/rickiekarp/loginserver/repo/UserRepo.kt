@@ -110,7 +110,7 @@ open class UserRepo : UserDAO {
         try {
             stmt = dataSource!!.connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)
             stmt!!.setString(1, user.username)
-            stmt.setString(2, hashingUtil!!.generateStorngPasswordHash(user.password!!))
+            stmt.setString(2, hashingUtil!!.generateStrongPasswordHash(user.password!!))
             stmt.setInt(3, 2) // user role (1 = ADMIN, 2 = USER)
             stmt.execute()
         } catch (e: SQLException) {
