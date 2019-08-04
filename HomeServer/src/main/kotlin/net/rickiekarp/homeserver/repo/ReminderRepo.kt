@@ -13,7 +13,7 @@ import javax.sql.DataSource
 open class ReminderRepo : ReminderDao {
 
     private val SELECT_REMINDER_LIST = "select * from tracking_todo where users_id = ? AND (reminder_enddate IS NULL OR reminder_enddate < timestamp(DATE_SUB(NOW(), INTERVAL -? DAY)))"
-    private val UPDATE_REMINDER_SEND_DATE = "update tracking_todo set reminder_senddate = now() where id in (?)"
+    private val UPDATE_REMINDER_SEND_DATE = "update tracking_todo set reminder_senddate = now(), lastUpdated = now() where id in (?)"
 
     @Autowired
     private val dataSource: DataSource? = null
@@ -60,7 +60,7 @@ open class ReminderRepo : ReminderDao {
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(query)
-            stmt.executeQuery()
+            stmt.executeUpdate()
         } catch (e: SQLException) {
             e.printStackTrace()
         } finally {
