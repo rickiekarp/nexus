@@ -113,4 +113,9 @@ class AccountApi {
         }
         return Base64.getEncoder().encodeToString((user.id.toString() + ":" + token).toByteArray())
     }
+
+    @PostMapping(value = ["/recover"])
+    fun recoverAccount(@RequestBody credentials: Credentials): ResponseEntity<Any> {
+        return ResponseEntity(ResultDTO("not_implemented_yet"), HttpStatus.OK)
+    }
 }
