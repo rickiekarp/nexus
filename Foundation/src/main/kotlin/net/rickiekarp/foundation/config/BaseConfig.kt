@@ -14,7 +14,7 @@ import java.util.Properties
  */
 class BaseConfig private constructor(builder: ConfigBuilder) {
     private val applicationProperties: HashMap<String, Properties>
-    val applicationIdentifier: String
+    private val applicationIdentifier: String
     var setupDirectory: String? = null
 
     init {
