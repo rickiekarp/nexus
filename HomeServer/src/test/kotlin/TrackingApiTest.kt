@@ -1,3 +1,4 @@
+import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.homeserver.dao.TrackingDao
 import net.rickiekarp.homeserver.dto.WeightDto
 import net.rickiekarp.homeserver.rest.api.TrackingApi
@@ -25,7 +26,11 @@ class TrackingApiTest {
 
     @Before
     fun initMocks() {
-        val user = ArrayList<WeightDto>()
+        val builder = BaseConfig.ConfigBuilder()
+        builder.setupDirectory = "test"
+        builder.applicationIdentifier = "identifier"
+        BaseConfig.create(builder)
+
         MockitoAnnotations.initMocks(this)
     }
 
