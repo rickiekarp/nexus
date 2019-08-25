@@ -1,5 +1,5 @@
 // language
-extra.set("kotlinVersion", "1.3.41")
+extra.set("kotlinVersion", "1.3.50")
 
 // build system
 extra.set("gradleVersion", "5.5.1")
