@@ -16,7 +16,12 @@ import org.springframework.security.web.firewall.HttpFirewall
 open class HomeServerSecurityConfig : WebSecurityConfigurerAdapter() {
 
     companion object {
-        private val NOT_SECURED = arrayOf("/statistics/shoppingValue")
+        private val NOT_SECURED = arrayOf(
+                "/api/contact",
+                "/api/resume/experience",
+                "/api/resume/education",
+                "/api/resume/skills",
+                "/statistics/shoppingValue")
     }
 
     @Autowired

@@ -1,7 +1,7 @@
-package net.rickiekarp.admin.dao
+package net.rickiekarp.homeserver.dao
 
-import net.rickiekarp.admin.dto.ResumeDTO
-import net.rickiekarp.admin.dto.SkillsDTO
+import net.rickiekarp.homeserver.dto.ResumeDTO
+import net.rickiekarp.homeserver.dto.SkillsDTO
 
 interface ResumeDAO {
     fun getExperienceData(): List<ResumeDTO>

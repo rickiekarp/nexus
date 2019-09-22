@@ -1,8 +1,8 @@
-package net.rickiekarp.admin.repo
+package net.rickiekarp.homeserver.repo
 
-import net.rickiekarp.admin.dao.InformationDAO
-import net.rickiekarp.admin.dto.ContactDTO
 import net.rickiekarp.foundation.utils.DatabaseUtil
+import net.rickiekarp.homeserver.dao.InformationDAO
+import net.rickiekarp.homeserver.dto.ContactDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement

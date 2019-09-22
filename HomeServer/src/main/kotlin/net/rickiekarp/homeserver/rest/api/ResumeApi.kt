@@ -1,9 +1,10 @@
-package net.rickiekarp.admin.rest.api
+package net.rickiekarp.homeserver.rest.api
 
-import net.rickiekarp.admin.dao.ResumeDAO
-import net.rickiekarp.admin.dto.ResumeDTO
-import net.rickiekarp.admin.dto.SkillsDTO
+import net.rickiekarp.homeserver.dao.ResumeDAO
+import net.rickiekarp.homeserver.dto.ResumeDTO
+import net.rickiekarp.homeserver.dto.SkillsDTO
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -14,17 +15,17 @@ class ResumeApi {
     @Autowired
     var repo: ResumeDAO? = null
 
-    @RequestMapping("resume/experience")
+    @GetMapping("resume/experience")
     fun experienceData(): List<ResumeDTO> {
         return repo!!.getExperienceData()
     }
 
-    @RequestMapping("resume/education")
+    @GetMapping("resume/education")
     fun educationData(): List<ResumeDTO> {
         return repo!!.getEducationData()
     }
 
-    @RequestMapping("resume/skills")
+    @GetMapping("resume/skills")
     fun skillsData(): List<SkillsDTO> {
         return repo!!.getSkillsData()
     }

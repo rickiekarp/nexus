@@ -1,10 +1,6 @@
-package net.rickiekarp.admin.repo
+package net.rickiekarp.homeserver.repo
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import net.rickiekarp.admin.dao.ResumeDAO
-import net.rickiekarp.admin.dto.ResumeDTO
-import net.rickiekarp.admin.dto.ResumeDescriptionDTO
-import net.rickiekarp.admin.dto.SkillsDTO
 import net.rickiekarp.foundation.utils.DatabaseUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -13,8 +9,10 @@ import java.sql.SQLException
 import java.sql.Statement
 import javax.sql.DataSource
 import com.fasterxml.jackson.databind.ObjectMapper
-
-
+import net.rickiekarp.homeserver.dao.ResumeDAO
+import net.rickiekarp.homeserver.dto.ResumeDTO
+import net.rickiekarp.homeserver.dto.ResumeDescriptionDTO
+import net.rickiekarp.homeserver.dto.SkillsDTO
 
 @Repository
 open class ResumeRepo : ResumeDAO {

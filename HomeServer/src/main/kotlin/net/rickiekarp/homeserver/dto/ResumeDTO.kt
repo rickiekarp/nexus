@@ -1,4 +1,4 @@
-package net.rickiekarp.admin.dto
+package net.rickiekarp.homeserver.dto
 
 import java.util.*
 
