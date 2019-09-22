@@ -36,15 +36,6 @@ buildHomeServer:
       - module-deployment/service-application/webapps/
     expire_in: 1 week
 
-buildWebsiteBackend:
-  stage: build
-  script:
-    - ./gradlew :WebsiteBackend:build
-  artifacts:
-    paths:
-      - module-deployment/service-application/webapps/
-    expire_in: 1 week
-
 buildWebsiteFrontend:
   stage: build
   image: trion/ng-cli
@@ -72,13 +63,4 @@ dokka:
       - Foundation/build/dokka/
       - LoginServer/build/dokka/
       - HomeServer/build/dokka/
-    expire_in: 1 week
-
-javadoc:
-  stage: report
-  script:
-    - ./gradlew :WebsiteBackend:javadoc
-  artifacts:
-    paths:
-      - Website/WebsiteBackend/build/docs/javadoc/
     expire_in: 1 week
