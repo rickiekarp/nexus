@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "http://localhost:8080/Website",
+    "target": "http://localhost:8080/HomeServer",
     "secure": false
   },
   "/LoginServer/*": {
