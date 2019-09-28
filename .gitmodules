@@ -1,3 +1,12 @@
+[submodule "docs/infrastructure"]
+	path = docs/infrastructure
+	url = ../infrastructure
+[submodule "libs/module-base"]
+	path = libs/module-base
+	url = ../module-base
+[submodule "libs/module-deployment"]
+	path = libs/module-deployment
+	url = git@pi:module-deployment
 [submodule "edu/uni"]
 	path = edu/uni
 	url = ../uni
@@ -10,15 +19,6 @@
 [submodule "projects/JavaFXApps"]
 	path = projects/JavaFXApps
 	url = ../JavaFXApps
-[submodule "libs/module-base"]
-	path = libs/module-base
-	url = ../module-base
-[submodule "libs/module-deployment"]
-	path = libs/module-deployment
-	url = ../module-deployment
-[submodule "docs/infrastructure"]
-	path = docs/infrastructure
-	url = ../infrastructure
 [submodule "projects/infrastructure-raspberrypi"]
 	path = projects/infrastructure-raspberrypi
 	url = git@pi:infrastructure-raspberrypi
