@@ -10,3 +10,9 @@
 [submodule "projects/JavaFXApps"]
 	path = projects/JavaFXApps
 	url = git@pi:JavaFXApps
+[submodule "libs/module-base"]
+	path = libs/module-base
+	url = git@pi:module-base
+[submodule "libs/module-deployment"]
+	path = libs/module-deployment
+	url = git@pi:module-deployment
