@@ -1,6 +1,6 @@
 [submodule "edu/uni"]
 	path = edu/uni
-	url = git@pi:uni
+	url = ../uni
 [submodule "projects/BackendServices"]
 	path = projects/BackendServices
 	url = git@pi:BackendServices
