@@ -4,3 +4,6 @@
 [submodule "projects/BackendServices"]
 	path = projects/BackendServices
 	url = git@pi:BackendServices
+[submodule "projects/MobileApps"]
+	path = projects/MobileApps
+	url = git@pi:MobileApps
