@@ -3,16 +3,16 @@
 	url = ../uni
 [submodule "projects/BackendServices"]
 	path = projects/BackendServices
-	url = git@pi:BackendServices
+	url = ../BackendServices
 [submodule "projects/MobileApps"]
 	path = projects/MobileApps
-	url = git@pi:MobileApps
+	url = ../MobileApps
 [submodule "projects/JavaFXApps"]
 	path = projects/JavaFXApps
-	url = git@pi:JavaFXApps
+	url = ../JavaFXApps
 [submodule "libs/module-base"]
 	path = libs/module-base
-	url = git@pi:module-base
+	url = ../module-base
 [submodule "libs/module-deployment"]
 	path = libs/module-deployment
-	url = git@pi:module-deployment
+	url = ../module-deployment
