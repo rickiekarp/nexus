@@ -1,0 +1,3 @@
+[submodule "edu/uni"]
+	path = edu/uni
+	url = git@pi:uni
