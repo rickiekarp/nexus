@@ -22,3 +22,6 @@
 [submodule "projects/infrastructure-raspberrypi"]
 	path = projects/infrastructure-raspberrypi
 	url = git@pi:infrastructure-raspberrypi
+[submodule "projects/website"]
+	path = projects/website
+	url = git@pi:website
