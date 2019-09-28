@@ -7,3 +7,6 @@
 [submodule "projects/MobileApps"]
 	path = projects/MobileApps
 	url = git@pi:MobileApps
+[submodule "projects/JavaFXApps"]
+	path = projects/JavaFXApps
+	url = git@pi:JavaFXApps
