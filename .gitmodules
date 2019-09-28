@@ -16,3 +16,6 @@
 [submodule "libs/module-deployment"]
 	path = libs/module-deployment
 	url = ../module-deployment
+[submodule "docs/infrastructure"]
+	path = docs/infrastructure
+	url = ../infrastructure
