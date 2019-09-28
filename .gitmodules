@@ -19,3 +19,6 @@
 [submodule "docs/infrastructure"]
 	path = docs/infrastructure
 	url = ../infrastructure
+[submodule "projects/infrastructure-raspberrypi"]
+	path = projects/infrastructure-raspberrypi
+	url = git@pi:infrastructure-raspberrypi
