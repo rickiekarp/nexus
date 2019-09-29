@@ -8,8 +8,8 @@
 	path = libs/module-deployment
 	url = git@pi:module-deployment
 [submodule "edu/uni"]
-	path = edu/uni
-	url = ../uni
+	path = edu/university
+	url = ../university
 [submodule "projects/BackendServices"]
 	path = projects/BackendServices
 	url = ../BackendServices
