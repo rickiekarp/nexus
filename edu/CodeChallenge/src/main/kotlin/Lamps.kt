@@ -1,5 +1,3 @@
-import org.junit.Test;
-
 /**
  * Stellt Euch 100 Glühbirnen in einer langen Reihe vor. Zu jeder Glühbirne gehört ein Ein/Aus-Schalter.
  *
@@ -9,36 +7,34 @@ import org.junit.Test;
  *
  * Und jetzt die große Preisfrage: Wie viele Lampen brennen nach dieser Aktion noch?
  */
-public class Lampen {
+fun main(args : Array<String>) {
+    val array = BooleanArray(100)
 
-    @Test
-    public void testLampen() {
-        boolean[] array = new boolean[100];
-
-        //first step: set all bools to true
-        for (int i = 0; i < array.length; i++) {
-            array[i] = true;
-        }
-
-        //second step: update bools with each iteration
-        for (int i = 2; i <= 100; i++) {
-            for (int a = 0; a < array.length; a += i) {
-                if (i <= a) {
-                    array[a] = !array[a];
-                }
-            }
-        }
-
-        System.out.println("Lamps active: " + getTrueCount(array));
+    //first step: set all bools to true
+    for (i in array.indices) {
+        array[i] = true
     }
 
-    private int getTrueCount(final boolean[] array) {
-        int boolCounter = 0;
-        for (boolean anArray : array) {
-            if (anArray) {
-                boolCounter++;
+    //second step: update bools with each iteration
+    for (i in 2..100) {
+        var a = 0
+        while (a < array.size) {
+            if (i <= a) {
+                array[a] = !array[a]
             }
+            a += i
         }
-        return boolCounter;
     }
+
+    println("Lamps active: " + getTrueCount(array))
+}
+
+private fun getTrueCount(array: BooleanArray): Int {
+    var boolCounter = 0
+    for (anArray in array) {
+        if (anArray) {
+            boolCounter++
+        }
+    }
+    return boolCounter
 }

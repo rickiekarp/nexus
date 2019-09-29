@@ -1,7 +1,6 @@
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.HashSet;
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import java.util.HashSet
 
 /**
  * Write a function:
@@ -21,32 +20,32 @@ import java.util.HashSet;
  * N is an integer within the range [1..100,000];
  * each element of array A is an integer within the range [−1,000,000..1,000,000].
  */
-public class MissingInteger {
+class MissingInteger {
 
-    private int[] one = {1,3,6,4,1,2};
-    private int[] two = {1,2,3};
-    private int[] three = {-1,-3};
+    private val one = intArrayOf(1, 3, 6, 4, 1, 2)
+    private val two = intArrayOf(1, 2, 3)
+    private val three = intArrayOf(-1, -3)
 
     /**
      * O(n**2)
      * @param array
      * @return
      */
-    private int getResult(int[] array) {
-        int result = 1;
+    private fun getResult(array: IntArray): Int {
+        var result = 1
 
-        for (int i = 1; i <= array.length; i++) {
-            if (array[i-1] > 0) {
+        for (i in 1..array.size) {
+            if (array[i - 1] > 0) {
                 if (contains(array, i)) {
-                    result++;
+                    result++
                 } else {
-                    result = i;
-                    break;
+                    result = i
+                    break
                 }
             }
         }
 
-        return result;
+        return result
     }
 
     /**
@@ -54,62 +53,62 @@ public class MissingInteger {
      * @param array Array to search in
      * @return Smallest positive integer
      */
-    private int getResultNew(int[] array) {
-        HashSet<Integer> seen = new HashSet<>();
-        int min = 1;
+    private fun getResultNew(array: IntArray): Int {
+        val seen = HashSet<Int>()
+        val min = 1
 
-        for (int anArray : array) {
+        for (anArray in array) {
             if (anArray > 0) {
-                seen.add(anArray);
+                seen.add(anArray)
             }
         }
 
-        for(int i = 1 ; i < Integer.MAX_VALUE; i++) {
-            if(!seen.contains(i)) {
-                return i;
+        for (i in 1 until Integer.MAX_VALUE) {
+            if (!seen.contains(i)) {
+                return i
             }
         }
 
-        return min;
+        return min
     }
 
-    private boolean contains(final int[] array, final int key) {
-        for (final int i : array) {
+    private fun contains(array: IntArray, key: Int): Boolean {
+        for (i in array) {
             if (i == key) {
-                return true;
+                return true
             }
         }
-        return false;
+        return false
     }
 
     @Test
-    public void testOne() {
-        Assert.assertEquals(5, getResult(one));
+    fun testOne() {
+        assertEquals(5, getResult(one))
     }
 
     @Test
-    public void testTwo() {
-        Assert.assertEquals(4, getResult(two));
+    fun testTwo() {
+        assertEquals(4, getResult(two))
     }
 
     @Test
-    public void testThree() {
-        Assert.assertEquals(1, getResult(three));
+    fun testThree() {
+        assertEquals(1, getResult(three))
     }
 
     @Test
-    public void testOneNew() {
-        Assert.assertEquals(5, getResultNew(one));
+    fun testOneNew() {
+        assertEquals(5, getResultNew(one))
     }
 
     @Test
-    public void testTwoNew() {
-        Assert.assertEquals(4, getResultNew(two));
+    fun testTwoNew() {
+        assertEquals(4, getResultNew(two))
     }
 
     @Test
-    public void testThreeNew() {
-        Assert.assertEquals(1, getResultNew(three));
+    fun testThreeNew() {
+        assertEquals(1, getResultNew(three))
     }
 
 
