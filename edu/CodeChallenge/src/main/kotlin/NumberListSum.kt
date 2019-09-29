@@ -1,9 +1,11 @@
+import kotlin.system.exitProcess
+
 // Given a list of numbers and a number k, return whether any two numbers from the list add up to k
 
 fun main(args : Array<String>) {
     if (args.size < 3) {
         println("you need at least 3 arguments")
-        System.exit(0)
+        exitProcess(1)
     }
     val numberList = ArrayList<Int>(args.size)
     val result: Any
