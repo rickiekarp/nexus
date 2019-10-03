@@ -1,0 +1,30 @@
+buildscript {
+    apply from: '../module-base/base.gradle.kts'
+    apply from: '../module-base/libs.gradle.kts'
+    apply from: '../module-base/logging.gradle.kts'
+}
+
+dependencies {
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: project.ext.log4jVersion
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: project.ext.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: project.ext.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: project.ext.springBootVersion
+
+    //mail
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: project.ext.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: project.ext.springBootVersion
+    
+    //redis
+    compile group: 'org.springframework.data', name: 'spring-data-redis', version: project.ext.springBootVersion
+    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+
+    compile group: 'com.google.code.gson', name: 'gson', version: project.ext.gsonVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jacksonVersion
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: project.ext.jacksonVersion
+
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.13'
+    compile group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flywayVersion
+
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.6'
+}

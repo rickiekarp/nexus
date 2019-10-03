@@ -1,0 +1,17 @@
+@import '../../../../../../mixins.scss';
+
+:host {
+  @include elevation();
+  display: block;
+  background: rgba(182, 182, 245, 0.05);
+}
+
+input {
+  line-height: 48px;
+  font-size: 20px;
+  padding: 0 16px;
+
+  &:focus {
+    outline: none;
+  }
+}

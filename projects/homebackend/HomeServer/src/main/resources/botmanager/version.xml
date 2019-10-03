@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<versions>
+<module file="bot-manager.jar" id="App" updateEnable="true" version="1706111316"/>
+<module file="corelib.jar" id="LibCore" updateEnable="true" version="1706111316"/>
+<module file="botlib.jar" id="LibBot" updateEnable="true" version="1706111316"/>
+</versions>

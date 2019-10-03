@@ -1,0 +1,66 @@
+image: openjdk:11.0.3-jdk
+
+variables:
+  GIT_SUBMODULE_STRATEGY: "recursive"
+  TEST_VARIABLE: "Test"
+
+before_script:
+  - echo This is a $TEST_VARIABLE
+
+stages:
+  - test
+  - build
+  - deploy
+  - report
+
+unitTests:
+  stage: test
+  script:
+    - ./gradlew clean test
+
+buildLoginServer:
+  stage: build
+  script:
+    - ./gradlew :LoginServer:build
+  artifacts:
+    paths:
+    - module-deployment/service-application/webapps/
+    expire_in: 1 week
+
+buildHomeServer:
+  stage: build
+  script:
+    - ./gradlew :HomeServer:build
+  artifacts:
+    paths:
+      - module-deployment/service-application/webapps/
+    expire_in: 1 week
+
+buildWebsiteFrontend:
+  stage: build
+  image: trion/ng-cli
+  script:
+    - cd Website/WebsiteFrontend
+    - npm install
+    - ng build --prod
+  artifacts:
+    paths:
+      - Website/WebsiteFrontend/dist/
+    expire_in: 1 week
+
+deploy:
+  stage: deploy
+  script: echo This is the deployment
+
+dokka:
+  stage: report
+  script:
+    - ./gradlew :Foundation:dokka
+    - ./gradlew :LoginServer:dokka
+    - ./gradlew :HomeServer:dokka
+  artifacts:
+    paths:
+      - Foundation/build/dokka/
+      - LoginServer/build/dokka/
+      - HomeServer/build/dokka/
+    expire_in: 1 week

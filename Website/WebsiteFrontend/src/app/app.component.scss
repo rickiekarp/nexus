@@ -1,0 +1,23 @@
+@import 'src/app/shared/theme/conf';
+
+.collapse-menu {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    color: $sidebar-fonts-color;
+    font-size: 24px;
+    cursor: pointer;
+    @include center(40px, 40px);
+    @include transition(all .2s);
+    &:hover {
+        color: $primary;
+    }
+    .toggle-on {
+        transform: rotate(0);
+        @include transition(all .5s);
+    }
+    .toggle-off {
+        transform: rotate(-270deg);
+        @include transition(all .5s);
+    }
+}

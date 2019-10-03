@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<changelog>
+<change version="1.170305.1">Bugfixes</change>
+<change version="1.161120.1">Plugin support improvements</change>
+<change version="1.0.1610.1">Add plugin support</change>
+<change version="1.0.1609.1">Add Android bot support</change>
+<change version="1.0.1608.2">Add Bot Setup view</change>
+</changelog>

@@ -1,0 +1,21 @@
+#Project files
+.gradle/
+.idea/
+*.iml
+build/
+out/
+
+*.jar
+*.war
+*.war.original
+*.setup
+
+module-deployment/service-application/setup
+module-deployment/service-application/webapps
+module-deployment/logs
+
+# Front End Dependency Generated
+Website/WebsiteFrontend/dist/
+Website/WebsiteFrontend/node/
+Website/WebsiteFrontend/node_modules/
+Website/WebsiteBackend/src/main/resources/static

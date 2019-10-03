@@ -1,0 +1,41 @@
+<div id="projects" class="background-alt">
+        <div class="row">
+
+            <div class="centerDiv">
+                <div class="card-image-left">
+                    <img class="card-img-top" src="assets/{{project.projectImage}}" alt="image">
+                </div>
+                <div class="card-content-right">
+                    <h5 class="card-title">{{ project.name }}</h5>
+                    <p class="card-text">{{ project.description }}</p>
+                    <a href="{{project.projectUrl}}" class="btn btn-info" target="_blank">Visit</a>
+                </div>
+            </div>
+            <!-- End .project -->
+
+            <div id="education">
+                <div class="education-block">
+                    <span class="education-date">{{ project.projectDuration}}</span>
+                    <h3>{{ project.company }}</h3><br><br>
+                        {{ project.text }}
+                        <ul style="margin-left: 20px;">
+                            <li *ngFor="let task of project.tasks">
+                                {{ task }}
+                            </li>
+                        </ul>
+                </div>
+                <!-- End .education-block -->
+
+
+            </div>
+            <!-- End #education -->
+
+        </div>
+
+        <iframe width="900" height="526" [src]="project.trailerUrl | safe" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+<div class="row-back">
+        <a class="btn btn-info" [routerLink]="['/professional']">Back</a>
+</div>
+

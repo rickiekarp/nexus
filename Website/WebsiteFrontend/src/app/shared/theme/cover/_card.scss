@@ -1,0 +1,14 @@
+.card {
+    width: auto;
+    height: auto;
+    background: $sidebar-bg;
+    position: relative;
+    border-radius: 2px;
+    color: $fonts-color;
+    margin-bottom: 0px; //@include box-shadow(-1px 2px 10px rgba($black, .1));
+}
+
+.card-block {
+    display: block;
+    padding: 10px;
+}
