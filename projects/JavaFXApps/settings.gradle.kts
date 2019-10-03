@@ -16,7 +16,4 @@ for (project in rootProject.children) {
             }
         }
     }
-    project.apply {
-        buildFileName = "build.gradle.kts"
-    }
 }
