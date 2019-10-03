@@ -76,7 +76,7 @@ public class ChangelogScene {
         contentPane.setBottom(controls);
 
         WindowScene modalDialogScene = new WindowScene(new WindowStage("changelog", stage), contentPane, 1);
-        ThemeSelector.setTheme(modalDialogScene);
+        ThemeSelector.setTheme(modalDialogScene, this.getClass().getClassLoader());
 
         stage.setScene(modalDialogScene);
         stage.show();

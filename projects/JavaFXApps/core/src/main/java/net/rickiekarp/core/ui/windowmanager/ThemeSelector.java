@@ -18,15 +18,15 @@ public class ThemeSelector {
      * Sets the theme according to the current themeState.
      * @param scene The scene
      */
-    public static void setTheme(Scene scene) {
+    public static void setTheme(Scene scene, ClassLoader loader) {
         switch (Configuration.themeState) {
             case 0:
-                URL darkStyle = ThemeSelector.class.getResource(DARK_THEME_CSS);
+                URL darkStyle = loader.getResource(DARK_THEME_CSS);
                 if(!scene.getStylesheets().contains(DARK_THEME_CSS)) { scene.getStylesheets().clear(); }
                 scene.getStylesheets().add(darkStyle.toString());
                 break;
             case 1:
-                URL lightStyle = ThemeSelector.class.getResource(LIGHT_THEME_CSS);
+                URL lightStyle = loader.getResource(LIGHT_THEME_CSS);
                 if(!scene.getStylesheets().contains(LIGHT_THEME_CSS)) { scene.getStylesheets().clear(); }
                 scene.getStylesheets().add(lightStyle.toString());
                 break;
@@ -39,10 +39,10 @@ public class ThemeSelector {
     public static void onThemeChange()
     {
         System.out.println("fixme: onThemeChange()");
-        if (MainScene.mainScene.getWindowScene() != null) { setTheme(MainScene.mainScene.getWindowScene().getWin().getWindowStage().getStage().getScene()); }
-        if (SettingsScene.settingsScene != null) { setTheme(SettingsScene.settingsScene.getSettingsWindow().getWin().getWindowStage().getStage().getScene()); }
-//        if (AboutScene.aboutScene != null) { setTheme(AboutScene.aboutScene.getAboutWindow().getWin().getWindowStage().getScene()); }
-        if (CommandsScene.commandsScene != null) { setTheme(CommandsScene.commandsScene.getCommandsWindow().getWin().getScene()); }
+//        if (MainScene.mainScene.getWindowScene() != null) { setTheme(MainScene.mainScene.getWindowScene().getWin().getWindowStage().getStage().getScene()); }
+//        if (SettingsScene.settingsScene != null) { setTheme(SettingsScene.settingsScene.getSettingsWindow().getWin().getWindowStage().getStage().getScene()); }
+////        if (AboutScene.aboutScene != null) { setTheme(AboutScene.aboutScene.getAboutWindow().getWin().getWindowStage().getScene()); }
+//        if (CommandsScene.commandsScene != null) { setTheme(CommandsScene.commandsScene.getCommandsWindow().getWin().getScene()); }
     }
 
 

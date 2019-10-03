@@ -37,7 +37,7 @@ public class WindowScene extends Scene {
         super(root);
 
         //add custom button style for settings/about scene button
-        URL buttonStyle = WindowScene.class.getResource("components/button/ButtonStyle.css");
+        URL buttonStyle = this.getClass().getClassLoader().getResource("components/button/ButtonStyle.css");
         root.getStylesheets().add(buttonStyle.toString());
 
         // behaviour when using system borders instead of custom implementation
@@ -64,6 +64,6 @@ public class WindowScene extends Scene {
             window.installAccelerators(this, winType);
         }
 
-        ThemeSelector.setTheme(this);
+        ThemeSelector.setTheme(this, this.getClass().getClassLoader());
     }
 }

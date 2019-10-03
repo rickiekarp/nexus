@@ -64,7 +64,7 @@ public class AccountScene {
         contentPane.setCenter(vbox);
         contentPane.setBottom(controls);
 
-        ThemeSelector.setTheme(modalDialogScene);
+        ThemeSelector.setTheme(modalDialogScene, this.getClass().getClassLoader());
 
         stage.setScene(modalDialogScene);
         stage.show();
