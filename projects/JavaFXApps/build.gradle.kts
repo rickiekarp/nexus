@@ -3,9 +3,9 @@ import org.openjfx.gradle.JavaFXOptions
 
 buildscript {
     project.apply {
-        from("module-base/base.gradle.kts")
-        from("module-base/libs.gradle.kts")
-        from("module-base/ui.gradle.kts")
+        from("../../libs/kotlin/dep/latest/base.gradle.kts")
+        from("../../libs/kotlin/dep/latest/libs.gradle.kts")
+        from("../../libs/kotlin/dep/latest/ui.gradle.kts")
     }
 
     repositories {
