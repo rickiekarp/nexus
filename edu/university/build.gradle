@@ -1,0 +1,46 @@
+buildscript {
+    apply from: 'module-base/base.gradle'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" as Object
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+group 'com.rkarp'
+version '1.0-SNAPSHOT'
+
+def javaVersion = JavaVersion.VERSION_1_10
+
+allprojects {
+    apply plugin: 'kotlin'
+
+    sourceCompatibility = javaVersion
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+        testCompile group: 'junit', name: 'junit', version: junit4Version
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
+}
+
+wrapper {
+    gradleVersion = project.gradleVersion
+}
