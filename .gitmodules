@@ -4,12 +4,6 @@
 [submodule "libs/module-deployment"]
 	path = libs/module-deployment
 	url = git@pi:module-deployment
-[submodule "projects/MobileApps"]
-	path = projects/MobileApps
-	url = ../MobileApps
-[submodule "projects/JavaFXApps"]
-	path = projects/JavaFXApps
-	url = ../JavaFXApps
 [submodule "projects/infrastructure-raspberrypi"]
 	path = projects/infrastructure-raspberrypi
 	url = git@pi:infrastructure-raspberrypi
