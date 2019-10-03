@@ -1,5 +1,5 @@
 buildscript {
-    apply from: '../../libs/module-base/base.gradle.kts'
+    apply from: '../../libs/kotlin/dep/base.gradle.kts'
 
     repositories {
         mavenCentral()
