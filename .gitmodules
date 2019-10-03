@@ -4,9 +4,6 @@
 [submodule "libs/module-deployment"]
 	path = libs/module-deployment
 	url = git@pi:module-deployment
-[submodule "edu/university"]
-	path = edu/university
-	url = ../university
 [submodule "projects/BackendServices"]
 	path = projects/BackendServices
 	url = ../BackendServices
