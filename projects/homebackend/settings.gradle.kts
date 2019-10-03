@@ -1,4 +1,4 @@
-rootProject.name = "Backend"
+rootProject.name = "homebackend"
 
 include("Foundation")
 include("HomeServer")
