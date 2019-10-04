@@ -5,17 +5,17 @@ import net.rickiekarp.core.debug.ExceptionHandler;
 import net.rickiekarp.core.util.crypt.ColorCoder;
 import net.rickiekarp.core.util.crypt.HexCoder;
 import net.rickiekarp.core.util.crypt.SHA1Coder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HexTest {
+class HexTest {
 
     @Test
-    public void testHex() {
+    void testHex() {
         String expected = "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3";
         String actual = null;
         try {
@@ -27,7 +27,7 @@ public class HexTest {
     }
 
     @Test
-    public void testHexColorEncryption() {
+    void testHexColorEncryption() {
         String[] expectedArray = {
                 "064c21023e5e72af550940a5951d274a1fc8422b", //blue
                 "c6b4de3528f2f9d55340974b36a9097e5b4ec0c2", //black

@@ -3,17 +3,17 @@ package crypt;
 import net.rickiekarp.core.util.crypt.Base64Coder;
 import net.rickiekarp.core.util.crypt.ColorCoder;
 import net.rickiekarp.core.util.crypt.SHA1Coder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Base64Test {
+class Base64Test {
 
     @Test
-    public void testBase64() {
+    void testBase64() {
         String expected = "qUqP5cyxm6YcTAhz05Hph5gvu9M=";
         String actual = null;
         try {
@@ -25,7 +25,7 @@ public class Base64Test {
     }
 
     @Test
-    public void testBase64ColorEncryption() {
+    void testBase64ColorEncryption() {
         String[] expectedArray = {
                 "BkwhAj5ecq9VCUCllR0nSh/IQis=", //blue
                 "xrTeNSjy+dVTQJdLNqkJfltOwMI=", //black

@@ -5,7 +5,7 @@ extra.set("kotlinVersion", "1.3.50")
 extra.set("gradleVersion", "5.5.1")
 
 // testing
-extra.set("junitVersion", "5.5.1")
+extra.set("junitVersion", "5.5.2")
 
 // analysis
 extra.set("dokkaVersion", "0.9.17")

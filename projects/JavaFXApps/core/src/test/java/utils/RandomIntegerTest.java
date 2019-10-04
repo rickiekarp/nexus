@@ -1,14 +1,14 @@
 package utils;
 
 import net.rickiekarp.core.util.CommonUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RandomIntegerTest {
+class RandomIntegerTest {
 
     @Test
-    public void testNumberGeneration() {
+    void testNumberGeneration() {
         int actual;
         for (int i = 1; i <= 10; i++) {
             actual = CommonUtil.randInt(1, i);

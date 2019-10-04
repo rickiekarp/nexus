@@ -1,4 +1,4 @@
-package net.rickiekarp.sha1pass;
+package net.rickiekarp.sha1pass.launcher;
 
 import javafx.stage.Stage;
 import net.rickiekarp.core.AppStarter;

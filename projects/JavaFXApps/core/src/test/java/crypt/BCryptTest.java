@@ -1,13 +1,13 @@
 package crypt;
 
 import net.rickiekarp.core.util.crypt.BCryptCoder;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * JUnit unit tests for BCryptCoder routines
  */
-public class BCryptTest {
+class BCryptTest {
 	private String test_vectors[][] = {
 			{ "", 
 			"$2a$06$DCq7YPn5Rq63x1Lad4cll.",
@@ -75,14 +75,14 @@ public class BCryptTest {
 	 * Test method for 'BCryptCoder.hashpw(String, String)'
 	 */
 	@Test
-	public void testHashpw() {
+	void testHashpw() {
 		System.out.print("BCryptCoder.hashpw(): ");
-		for (int i = 0; i < test_vectors.length; i++) {
-			String plain = test_vectors[i][0];
-			String salt = test_vectors[i][1];
-			String expected = test_vectors[i][2];
+		for (String[] test_vector : test_vectors) {
+			String plain = test_vector[0];
+			String salt = test_vector[1];
+			String expected = test_vector[2];
 			String hashed = BCryptCoder.hashpw(plain, salt);
-			Assert.assertEquals(hashed, expected);
+			Assertions.assertEquals(hashed, expected);
 			System.out.print(".");
 		}
 		System.out.println("");
@@ -92,7 +92,7 @@ public class BCryptTest {
 	 * Test method for 'BCryptCoder.gensalt(int)'
 	 */
 	@Test
-	public void testGensaltInt() {
+	void testGensaltInt() {
 		System.out.print("BCryptCoder.gensalt(log_rounds):");
 		for (int i = 4; i <= 12; i++) {
 			System.out.print(" " + Integer.toString(i) + ":");
@@ -101,7 +101,7 @@ public class BCryptTest {
 				String salt = BCryptCoder.gensalt(i);
 				String hashed1 = BCryptCoder.hashpw(plain, salt);
 				String hashed2 = BCryptCoder.hashpw(plain, hashed1);
-				Assert.assertEquals(hashed1, hashed2);
+				Assertions.assertEquals(hashed1, hashed2);
 				System.out.print(".");
 			}
 		}
@@ -112,14 +112,14 @@ public class BCryptTest {
 	 * Test method for 'BCryptCoder.gensalt()'
 	 */
 	@Test
-	public void testGensalt() {
+	void testGensalt() {
 		System.out.print("BCryptCoder.gensalt(): ");
 		for (int i = 0; i < test_vectors.length; i += 4) {
 			String plain = test_vectors[i][0];
 			String salt = BCryptCoder.gensalt();
 			String hashed1 = BCryptCoder.hashpw(plain, salt);
 			String hashed2 = BCryptCoder.hashpw(plain, hashed1);
-			Assert.assertEquals(hashed1, hashed2);
+			Assertions.assertEquals(hashed1, hashed2);
 			System.out.print(".");
 		}
 		System.out.println("");
@@ -130,12 +130,12 @@ public class BCryptTest {
 	 * expecting success
 	 */
 	@Test
-	public void testCheckpw_success() {
+	void testCheckpw_success() {
 		System.out.print("BCryptCoder.checkpw w/ good passwords: ");
-		for (int i = 0; i < test_vectors.length; i++) {
-			String plain = test_vectors[i][0];
-			String expected = test_vectors[i][2];
-			Assert.assertTrue(BCryptCoder.checkpw(plain, expected));
+		for (String[] test_vector : test_vectors) {
+			String plain = test_vector[0];
+			String expected = test_vector[2];
+			Assertions.assertTrue(BCryptCoder.checkpw(plain, expected));
 			System.out.print(".");
 		}
 		System.out.println("");
@@ -146,13 +146,13 @@ public class BCryptTest {
 	 * expecting failure
 	 */
 	@Test
-	public void testCheckpw_failure() {
+	void testCheckpw_failure() {
 		System.out.print("BCryptCoder.checkpw w/ bad passwords: ");
 		for (int i = 0; i < test_vectors.length; i++) {
 			int broken_index = (i + 4) % test_vectors.length;
 			String plain = test_vectors[i][0];
 			String expected = test_vectors[broken_index][2];
-			Assert.assertFalse(BCryptCoder.checkpw(plain, expected));
+			Assertions.assertFalse(BCryptCoder.checkpw(plain, expected));
 			System.out.print(".");
 		}
 		System.out.println("");
@@ -162,17 +162,17 @@ public class BCryptTest {
 	 * Test for correct hashing of non-US-ASCII passwords
 	 */
 	@Test
-	public void testInternationalChars() {
+	void testInternationalChars() {
 		System.out.print("BCryptCoder.hashpw w/ international chars: ");
 		String pw1 = "\u2605\u2605\u2605\u2605\u2605\u2605\u2605\u2605";
 		String pw2 = "????????";
 
 		String h1 = BCryptCoder.hashpw(pw1, BCryptCoder.gensalt());
-		Assert.assertFalse(BCryptCoder.checkpw(pw2, h1));
+		Assertions.assertFalse(BCryptCoder.checkpw(pw2, h1));
 		System.out.print(".");
 
 		String h2 = BCryptCoder.hashpw(pw2, BCryptCoder.gensalt());
-		Assert.assertFalse(BCryptCoder.checkpw(pw1, h2));
+		Assertions.assertFalse(BCryptCoder.checkpw(pw1, h2));
 		System.out.print(".");
 		System.out.println("");
 	}
