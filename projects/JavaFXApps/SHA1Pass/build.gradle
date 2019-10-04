@@ -23,7 +23,7 @@ javafx {
     modules = [ 'javafx.controls' ]
 }
 
-mainClassName = 'net.rickiekarp.sha1pass.MainApp'
+mainClassName = 'net.rickiekarp.sha1pass.Launcher'
 
 jar {
     println("Building " + project.name)
@@ -44,6 +44,10 @@ jar {
                 'Build-Time': new SimpleDateFormat("yyMMddHHmm").format(new Date()),
                 'Version': publicVersion
         )
+
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 compileKotlin {
