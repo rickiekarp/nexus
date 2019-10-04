@@ -22,17 +22,17 @@ public class ImageLoader {
         return appIconSmall;
     }
 
-    static Image getMenu() {
+    static Image getMenu(ClassLoader loader) {
         if (menu == null) {
-            menu = new Image(String.valueOf(ImageLoader.class.getResource("components/titlebar/menu.png")));
+            menu = new Image(String.valueOf(loader.getResource("components/titlebar/menu.png")));
         }
         System.out.println(menu);
         return menu;
     }
 
-    static Image getMenuHover() {
+    static Image getMenuHover(ClassLoader loader) {
         if (menuHover == null) {
-            menuHover = new Image(String.valueOf(ImageLoader.class.getResource("components/titlebar/menu-hover.png")));
+            menuHover = new Image(String.valueOf(loader.getResource("components/titlebar/menu-hover.png")));
         }
         System.out.println(menuHover);
         return menuHover;

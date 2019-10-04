@@ -275,11 +275,11 @@ public class Window extends StackPane {
         //defines the type of the menu bar
         switch (type) {
             case 0:
-                ImageView imageView = new ImageView(ImageLoader.getMenu());
+                ImageView imageView = new ImageView(ImageLoader.getMenu(this.getClass().getClassLoader()));
                 imageView.setViewport(new Rectangle2D(AnimationHandler.OFFSET_X, AnimationHandler.OFFSET_Y, AnimationHandler.WIDTH, TITLEBAR_HEIGHT));
                 imageView.setPickOnBounds(true);
-                imageView.setOnMouseEntered(event -> imageView.setImage(ImageLoader.getMenuHover()));
-                imageView.setOnMouseExited(event -> imageView.setImage(ImageLoader.getMenu()));
+                imageView.setOnMouseEntered(event -> imageView.setImage(ImageLoader.getMenuHover(this.getClass().getClassLoader())));
+                imageView.setOnMouseExited(event -> imageView.setImage(ImageLoader.getMenu(this.getClass().getClassLoader())));
                 imageView.setOnMouseClicked(event -> toggleSideBar());
 
                 //creates menu button animation
