@@ -7,3 +7,6 @@
 [submodule "projects/website"]
 	path = projects/website
 	url = ../website
+[submodule "projects/module-deployment"]
+	path = projects/module-deployment
+	url = git@pi:module-deployment
