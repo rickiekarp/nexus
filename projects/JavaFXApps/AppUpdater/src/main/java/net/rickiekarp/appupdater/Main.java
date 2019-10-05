@@ -1,4 +1,4 @@
-package net.rickiekarp.sha1pass;
+package net.rickiekarp.appupdater;
 
 /**
  * Using a Main.class as a wrapper to work around JavaFX module loading requirement
@@ -6,6 +6,6 @@ package net.rickiekarp.sha1pass;
  */
 public class Main {
     public static void main(String[] args) {
-        MainApp.main(args);
+        UpdateMain.main(args);
     }
 }

@@ -1,4 +1,4 @@
-package net.rickiekarp.sha1pass;
+package net.rickiekarp.flc;
 
 /**
  * Using a Main.class as a wrapper to work around JavaFX module loading requirement
