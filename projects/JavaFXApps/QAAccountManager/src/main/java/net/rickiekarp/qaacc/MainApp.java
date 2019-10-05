@@ -2,10 +2,11 @@ package net.rickiekarp.qaacc;
 
 import javafx.stage.Stage;
 import net.rickiekarp.core.AppStarter;
+import net.rickiekarp.core.controller.AppLaunch;
 import net.rickiekarp.qaacc.settings.AppConfiguration;
 import net.rickiekarp.qaacc.view.MainLayout;
 
-public class MainApp extends AppStarter {
+public class MainApp extends AppStarter implements AppLaunch {
 
     /**
      * Main Method
@@ -28,6 +29,12 @@ public class MainApp extends AppStarter {
         setLayout(new MainLayout());
 
         super.start(stage);
+        postLaunch();
+    }
+
+    @Override
+    public void postLaunch() {
+
     }
 
 //    public void start(Stage stage) throws Exception {

@@ -6,10 +6,10 @@ import net.rickiekarp.core.AppContext;
 import net.rickiekarp.core.AppStarter;
 import net.rickiekarp.core.account.ILoginHandler;
 import net.rickiekarp.core.components.button.SidebarButton;
+import net.rickiekarp.core.controller.AppLaunch;
 import net.rickiekarp.core.controller.LanguageController;
 import net.rickiekarp.core.debug.LogFileHandler;
 import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.ui.tray.ToolTrayIcon;
 import net.rickiekarp.core.util.FileUtil;
 import net.rickiekarp.core.view.MainScene;
 import net.rickiekarp.core.view.MessageDialog;
@@ -29,7 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class MainApp extends AppStarter implements ILoginHandler {
+public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
 
     /**
      * Main Method
@@ -53,7 +53,11 @@ public class MainApp extends AppStarter implements ILoginHandler {
         setLayout(new MainLayout());
 
         super.start(stage);
+        postLaunch();
+    }
 
+    @Override
+    public void postLaunch() {
         AppContext.getContext().initAccountManager();
 
         LoginMaskLayout loginMaskLayout = new LoginMaskLayout();
@@ -70,11 +74,6 @@ public class MainApp extends AppStarter implements ILoginHandler {
             new BotCommands().addBotCommands();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
-        }
-
-        //post launch settings
-        if (Configuration.showTrayIcon) {
-            new ToolTrayIcon();
         }
 
         //disable settings and bot setup views if no config file is present
