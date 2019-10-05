@@ -30,9 +30,6 @@ public class AppStarter extends Application {
     public void start(Stage stage) {
         AppContext.create(mainClazz.getPackage().getName());
 
-//        final HelloService service = HelloFactory.createService();
-//        System.out.println(service.hi("hello " + AppContext.getContext().getApplicationName()));
-
         //load config file
         Configuration.config = new Configuration("config.xml", mainClazz);
         boolean isConfigLoaded = Configuration.config.load();
@@ -49,7 +46,7 @@ public class AppStarter extends Application {
         }
 
         //load language properties file
-        LanguageController.loadLangFile(mainClazz.getResourceAsStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties"));
+        LanguageController.loadLangFile(mainClazz.getClassLoader().getResourceAsStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties"));
 
         //set the default exception handler
         if (!DebugHelper.DEBUGVERSION) {
