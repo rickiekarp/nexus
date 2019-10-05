@@ -1,7 +1,3 @@
-stages:
-  - test
-  - build
-
 unittest:
   stage: test
   image: openjdk:11.0.4-jdk
