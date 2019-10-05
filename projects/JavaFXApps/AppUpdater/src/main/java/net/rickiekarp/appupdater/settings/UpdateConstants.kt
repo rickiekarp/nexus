@@ -1,5 +1,5 @@
-package net.rickiekarp.appupdater.settings;
+package net.rickiekarp.appupdater.settings
 
-public class UpdateConstants {
-    public static String internalVersion;
+object UpdateConstants {
+    var internalVersion: String? = null
 }

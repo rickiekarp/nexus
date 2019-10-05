@@ -1,107 +1,127 @@
-package net.rickiekarp.appupdater.updatemanager;
+package net.rickiekarp.appupdater.updatemanager
 
-import net.rickiekarp.appupdater.UpdateMain;
-import net.rickiekarp.appupdater.ui.UpdateCheckerGUI;
+import net.rickiekarp.appupdater.UpdateMain
+import net.rickiekarp.appupdater.ui.UpdateCheckerGUI
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
+import java.io.File
+import java.io.IOException
+import java.net.URISyntaxException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
+import java.util.ArrayList
 
-public class UpdateInstaller {
+class UpdateInstaller {
 
-    private File jarFile;
+    private var jarFile: File? = null
 
-    public UpdateInstaller() {
+    init {
         try {
-            jarFile = new File(UpdateMain.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-        } catch (URISyntaxException e) {
-            UpdateCheckerGUI.updateChecker.appendMessage(UpdateMain.getExceptionString(e));
-            e.printStackTrace();
+            jarFile = File(UpdateMain::class.java.protectionDomain.codeSource.location.toURI().path)
+        } catch (e: URISyntaxException) {
+            UpdateCheckerGUI.updateChecker!!.appendMessage(getExceptionString(e))
+            e.printStackTrace()
         }
+
     }
 
-    public void installFiles()
-    {
+    fun installFiles() {
         //update location
-        File file = new File(jarFile.getParent() + File.separator + "data/update/");
+        val file = File(jarFile!!.parent + File.separator + "data/update/")
 
         if (file.exists()) {
             //list all files in directory
-            File[] listOfFiles = file.listFiles();
+            val listOfFiles = file.listFiles()
 
-            if (listOfFiles.length > 0) {
-                Path copyTo = new File(jarFile.getParent()).toPath();
+            if (listOfFiles!!.size > 0) {
+                val copyTo = File(jarFile!!.parent).toPath()
 
                 //iterate through directory
-                for (File afile : listOfFiles) {
-                    Path copyFrom = afile.toPath();
+                for (afile in listOfFiles) {
+                    val copyFrom = afile.toPath()
 
                     try {
-                        Files.copy(copyFrom, copyTo.resolve(copyFrom.getFileName()), StandardCopyOption.REPLACE_EXISTING);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        UpdateCheckerGUI.updateChecker.appendMessage(UpdateMain.getExceptionString(e));
+                        Files.copy(copyFrom, copyTo.resolve(copyFrom.fileName), StandardCopyOption.REPLACE_EXISTING)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        UpdateCheckerGUI.updateChecker!!.appendMessage(getExceptionString(e))
                     }
+
                 }
-                cleanup(listOfFiles);
-            }
-            else
-            {
-                UpdateCheckerGUI updateChecker = new UpdateCheckerGUI();
-                updateChecker.setMessage("Can not find any files to update!");
+                cleanup(listOfFiles)
+            } else {
+                val updateChecker = UpdateCheckerGUI()
+                updateChecker.message = "Can not find any files to update!"
                 try {
-                    launchProgram();
-                } catch (URISyntaxException | IOException e) {
-                    e.printStackTrace();
-                    UpdateCheckerGUI.updateChecker.appendMessage(UpdateMain.getExceptionString(e));
+                    launchProgram()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                    UpdateCheckerGUI.updateChecker!!.appendMessage(getExceptionString(e))
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    UpdateCheckerGUI.updateChecker!!.appendMessage(getExceptionString(e))
                 }
+
             }
-        }
-        else
-        {
-            UpdateCheckerGUI updateChecker = new UpdateCheckerGUI();
-            updateChecker.setMessage("Can not find update directory " + file.getPath());
+        } else {
+            val updateChecker = UpdateCheckerGUI()
+            updateChecker.message = "Can not find update directory " + file.path
         }
     }
 
-    private void cleanup(File[] files)
-    {
-        System.out.println("Preforming clean up...");
+    private fun cleanup(files: Array<File>) {
+        println("Preforming clean up...")
 
         //iterate through start directory
-        for (File afile : files) {
-            System.out.println("deleting: " + afile);
+        for (afile in files) {
+            println("deleting: $afile")
 
-            afile.delete();
+            afile.delete()
         }
 
-        System.out.println("Cleaned up...");
-        System.out.println("Update done!");
+        println("Cleaned up...")
+        println("Update done!")
 
         try {
-            launchProgram();
-        } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();
-            UpdateCheckerGUI.updateChecker.appendMessage(UpdateMain.getExceptionString(e));
+            launchProgram()
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+            UpdateCheckerGUI.updateChecker!!.appendMessage(getExceptionString(e))
+        } catch (e: IOException) {
+            e.printStackTrace()
+            UpdateCheckerGUI.updateChecker!!.appendMessage(getExceptionString(e))
         }
+
     }
 
-    private void launchProgram() throws URISyntaxException, IOException {
-        final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
-        final File currentJar = new File(UpdateMain.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+    @Throws(URISyntaxException::class, IOException::class)
+    private fun launchProgram() {
+        val javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"
+        val currentJar = File(UpdateMain::class.java.protectionDomain.codeSource.location.toURI())
 
         /* Build command: java -jar application.jar */
-        final ArrayList<String> command = new ArrayList<String>();
-        command.add(javaBin);
-        command.add("-jar");
-        command.add(currentJar.getParent() + File.separator + UpdateMain.getArgs()[1]);
+        val command = ArrayList<String>()
+        command.add(javaBin)
+        command.add("-jar")
+        command.add(currentJar.parent + File.separator + UpdateMain.getArgs()[1])
 
-        final ProcessBuilder builder = new ProcessBuilder(command);
-        builder.start();
-        System.exit(0);
+        val builder = ProcessBuilder(command)
+        builder.start()
+        System.exit(0)
+    }
+
+    /**
+     * Returns exception string
+     */
+    fun getExceptionString(t: Throwable): String {
+        val sb = StringBuilder()
+
+        sb.append(t.toString()).append(System.getProperty("line.separator"))
+
+        val trace = t.stackTrace
+        for (aTrace in trace) {
+            sb.append("       at ").append(aTrace.toString()).append(System.getProperty("line.separator"))
+        }
+        return sb.toString()
     }
 }

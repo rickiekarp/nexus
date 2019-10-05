@@ -1,18 +1,11 @@
 package net.rickiekarp.appupdater;
 
-import net.rickiekarp.appupdater.settings.UpdateConstants;
 import net.rickiekarp.appupdater.ui.UpdateCheckerGUI;
 import net.rickiekarp.appupdater.updatemanager.UpdateInstaller;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
-
 public class UpdateMain extends Application {
-
     private static String[] savedArgs;
     public static String[] getArgs() {
         return savedArgs;
@@ -24,10 +17,6 @@ public class UpdateMain extends Application {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        //read manifest version
-        UpdateConstants.internalVersion = readManifestProperty("Build-Time");
-
         savedArgs = args;
         launch(args);
     }
@@ -40,52 +29,22 @@ public class UpdateMain extends Application {
                         UpdateInstaller installer = new UpdateInstaller();
                         installer.installFiles();
                     } else {
-                        UpdateCheckerGUI.updateChecker = new UpdateCheckerGUI();
-                        UpdateCheckerGUI.updateChecker.setMessage("Jar to update has not been defined! Check your program arguments!");
+                        UpdateCheckerGUI.Companion.setUpdateChecker(new UpdateCheckerGUI());
+                        UpdateCheckerGUI.Companion.getUpdateChecker().setMessage("Jar to update has not been defined! Check your program arguments!");
                     }
                     break;
                 case "check":
-                    UpdateCheckerGUI.updateChecker = new UpdateCheckerGUI();
-                    UpdateCheckerGUI.updateChecker.setMessage("Checking for updates...");
+                    UpdateCheckerGUI.Companion.setUpdateChecker(new UpdateCheckerGUI());
+                    UpdateCheckerGUI.Companion.getUpdateChecker().setMessage("Checking for updates...");
                     break;
                 default:
-                    UpdateCheckerGUI.updateChecker = new UpdateCheckerGUI();
-                    UpdateCheckerGUI.updateChecker.setMessage("Parameter invalid! Please try again with a valid argument!");
+                    UpdateCheckerGUI.Companion.setUpdateChecker(new UpdateCheckerGUI());
+                    UpdateCheckerGUI.Companion.getUpdateChecker().setMessage("Parameter invalid! Please try again with a valid argument!");
                     break;
             }
         } catch (IndexOutOfBoundsException e) {
-            UpdateCheckerGUI.updateChecker = new UpdateCheckerGUI();
-            UpdateCheckerGUI.updateChecker.setMessage("No parameter found. Please try again with a valid parameter.");
-        }
-    }
-
-    /**
-     * Returns exception string
-     */
-    public static String getExceptionString(Throwable t) {
-
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(String.valueOf(t)).append(System.getProperty("line.separator"));
-
-        StackTraceElement[] trace = t.getStackTrace();
-        for (StackTraceElement aTrace : trace) {
-            sb.append("       at ").append(String.valueOf(aTrace)).append(System.getProperty("line.separator"));
-        }
-        return sb.toString();
-    }
-
-    public static String readManifestProperty(String key) {
-        InputStream manifestStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/MANIFEST.MF");
-        try {
-            Manifest manifest = new Manifest(manifestStream);
-            Attributes attributes = manifest.getMainAttributes();
-            String value = attributes.getValue(key);
-            manifestStream.close();
-            return value;
-        } catch(IOException ex) {
-            ex.printStackTrace();
-            return null;
+            UpdateCheckerGUI.Companion.setUpdateChecker(new UpdateCheckerGUI());
+            UpdateCheckerGUI.Companion.getUpdateChecker().setMessage("No parameter found. Please try again with a valid parameter.");
         }
     }
 }

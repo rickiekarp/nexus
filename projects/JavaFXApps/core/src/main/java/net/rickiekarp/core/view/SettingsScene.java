@@ -153,7 +153,7 @@ public class SettingsScene {
         tab1ContentGrid[0].getChildren().add(appLanguage);
 
         langCB = new ComboBox<>(localeData);
-        langCB.setValue(localeData.get(LanguageController.getCurrentLocale()));
+        langCB.setValue(localeData.get(LanguageController.INSTANCE.getCurrentLocale()));
         GridPane.setConstraints(langCB, 0, 1);
         tab1ContentGrid[0].getChildren().add(langCB);
 

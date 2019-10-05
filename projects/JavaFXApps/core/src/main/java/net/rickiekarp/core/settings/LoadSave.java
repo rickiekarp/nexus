@@ -14,7 +14,7 @@ public @interface LoadSave {
     /** settings defaults **/
     String host = "https://app.rickiekarp/";
     int updateChannel = 0;
-    int language = LanguageController.getLocale();
+    int language = LanguageController.INSTANCE.getLocale();
     int themeState = 0;
     int colorScheme = 0;
     boolean animations = true;
