@@ -2,7 +2,7 @@ test-homebackend:
   stage: test
   image: openjdk:11.0.4-jdk
   script:
-    - cd projects/homebackend/
+    - cd projects/homebackend
     - ./gradlew clean test
   only:
     changes:
