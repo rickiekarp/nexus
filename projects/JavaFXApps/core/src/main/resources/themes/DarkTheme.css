@@ -1,32 +1,27 @@
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/Roboto-Regular.ttf');
-}
-
 .root{
     -fx-font-size: 14pt;
-    -fx-font-family: "Roboto";
+    -fx-font-family: "Verdana";
     -fx-base: #1d1d1d;
     -fx-background-color: derive(#1d1d1d,10%);
 }
 
 .label {
     -fx-font-size: 11pt;
-    -fx-font-family: "Roboto";
+    -fx-font-family: "Verdana";
     -fx-text-fill: white;
     -fx-opacity: 0.6;
 }
 
 .label-bright {
     -fx-font-size: 11pt;
-    -fx-font-family: "Roboto";
+    -fx-font-family: "Verdana";
     -fx-text-fill: white;
     -fx-opacity: 1;
 }
 
 .label-header {
     -fx-font-size: 32pt;
-    -fx-font-family: "Roboto";
+    -fx-font-family: "Verdana";
     -fx-text-fill: white;
     -fx-opacity: 1;
 }
@@ -115,7 +110,7 @@
     -fx-border-width: 2;
     -fx-background-radius: 0;
     -fx-background-color: #1d1d1d;
-    -fx-font-family: "Roboto";
+    -fx-font-family: "Verdana";
     -fx-font-size: 11pt;
     -fx-text-fill: #d8d8d8;
 }
@@ -166,7 +161,7 @@
     -fx-border-width: 2;
     -fx-background-radius: 0;
     -fx-background-color: derive(-fx-base, 10%);
-    -fx-font-family: "Roboto";
+    -fx-font-family: "Verdana";
     -fx-font-size: 11pt;
     -fx-text-fill: #d8d8d8;
 }
@@ -202,7 +197,7 @@
 
  .sidebar-button {
      -fx-border-width: 0;
-     -fx-font-family: 'Roboto';
+     -fx-font-family: 'Verdana';
      -fx-text-fill: #d8d8d8;
      -fx-background-color: derive(#3a3a3a, 20%);
      -fx-font-size: 10pt;
@@ -455,7 +450,7 @@
 
  .menu-bar .label {
      -fx-font-size: 14pt;
-     -fx-font-family: "Roboto";
+     -fx-font-family: "Verdana";
      -fx-text-fill: white;
      -fx-opacity: 0.9;
  }
@@ -480,7 +475,7 @@
 .menu-item .label {
     -fx-padding: 0em 0.5em 0em 0em;
     -fx-text-fill: white;
-    -fx-font-family: "Roboto";
+    -fx-font-family: "Verdana";
     -fx-font-size: 11pt;
 }
 
@@ -769,7 +764,7 @@
 
 .text-field {
     -fx-font-size: 12pt;
-    -fx-font-family: "Roboto";
+    -fx-font-family: "Verdana";
     -fx-background-color: black;
     -fx-text-fill: white;
 }
