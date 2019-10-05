@@ -24,9 +24,9 @@ public class MainApp extends AppStarter implements AppLaunch {
 
         setWinType((byte) 0);
         setMinWidth(800);
-        setMinHeight(550);
-        setWidth(900);
-        setHeight(600);
+        setMinHeight(600);
+        setWidth(1024);
+        setHeight(768);
         setResizable(true);
         setLayout(new MainLayout());
 

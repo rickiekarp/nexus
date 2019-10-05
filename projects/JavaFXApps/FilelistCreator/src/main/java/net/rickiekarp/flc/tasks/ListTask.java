@@ -18,7 +18,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class ListTask extends Task<Void> {
 
     public static ListTask listTask;
@@ -42,16 +41,16 @@ public class ListTask extends Task<Void> {
                     //is it a file?
                     if (file.isFile()) {
 
-                        AppConfiguration.dirData.get(listIdx).setFilesInDir(1); //increase file count
-                        AppConfiguration.dirData.get(listIdx).setFileSizeInDir(file.length());
+                        AppConfiguration.INSTANCE.getDirData().get(listIdx).setFilesInDir(1); //increase file count
+                        AppConfiguration.INSTANCE.getDirData().get(listIdx).setFileSizeInDir(file.length());
 
                         BasicFileAttributes attrs = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
 
-                        AppConfiguration.fileData.add(new Filelist(
+                        AppConfiguration.INSTANCE.getFileData().add(new Filelist(
                                         file.getName(),
-                                        Filelist.getExtension(file.getName()),
+                                        Filelist.Companion.getExtension(file.getName()),
                                         file.getParentFile().getPath(),
-                                        Filelist.calcFileSize(file),
+                                        Filelist.Companion.calcFileSize(file),
                                         new SimpleDateFormat("dd-MM-yyyy HH-mm-ss").format(attrs.creationTime().toMillis()),
                                         new SimpleDateFormat("dd-MM-yyyy HH-mm-ss").format(new Date(file.lastModified())),
                                         new SimpleDateFormat("dd-MM-yyyy HH-mm-ss").format(attrs.lastAccessTime().toMillis()),
@@ -62,8 +61,8 @@ public class ListTask extends Task<Void> {
 
                     //is it a folder?
                     else if (file.isDirectory()) {
-                        AppConfiguration.dirData.get(listIdx).setFoldersInDir(1); //increase foler count
-                        AppConfiguration.dirData.add(new Directorylist(file.getPath(), 0, 0, 0, 0)); //add new directory
+                        AppConfiguration.INSTANCE.getDirData().get(listIdx).setFoldersInDir(1); //increase foler count
+                        AppConfiguration.INSTANCE.getDirData().add(new Directorylist(file.getPath(), 0, 0, 0, 0)); //add new directory
                     }
                 } else {
                     LogFileHandler.logger.warning("Couldn't read files in directory: " + file.getPath());
@@ -71,13 +70,13 @@ public class ListTask extends Task<Void> {
             }
         }
 
-        int filesTotal = AppConfiguration.dirData.get(listIdx).getFilesInDir() + AppConfiguration.dirData.get(listIdx).getFoldersInDir();
-        AppConfiguration.dirData.get(listIdx).setFilesTotal(filesTotal);
+        int filesTotal = AppConfiguration.INSTANCE.getDirData().get(listIdx).getFilesInDir() + AppConfiguration.INSTANCE.getDirData().get(listIdx).getFoldersInDir();
+        AppConfiguration.INSTANCE.getDirData().get(listIdx).setFilesTotal(filesTotal);
 
-        if (AppConfiguration.subFolderCheck) {
+        if (AppConfiguration.INSTANCE.getSubFolderCheck()) {
             listIdx++;
-            if (listIdx < AppConfiguration.dirData.size()) {
-                selectedDirectory = new File(AppConfiguration.dirData.get(listIdx).getDir());
+            if (listIdx < AppConfiguration.INSTANCE.getDirData().size()) {
+                selectedDirectory = new File(AppConfiguration.INSTANCE.getDirData().get(listIdx).getDir());
                 call();
             }
         }
@@ -95,8 +94,8 @@ public class ListTask extends Task<Void> {
         this.setOnSucceeded(event1 -> {
 
             //set items to fileTable
-            MainLayout.fileTable.setItems(AppConfiguration.fileData);
-            MainLayout.dirTable.setItems(AppConfiguration.dirData);
+            MainLayout.fileTable.setItems(AppConfiguration.INSTANCE.getFileData());
+            MainLayout.dirTable.setItems(AppConfiguration.INSTANCE.getDirData());
             MainLayout.fileControls.getChildren().add(MainLayout.btn_removeAll);
             MainLayout.saveControls.getChildren().addAll(MainLayout.cbox_saveFormat, MainLayout.btn_saveFileList);
 
@@ -110,7 +109,7 @@ public class ListTask extends Task<Void> {
 
             MainLayout.mainLayout.setStatus("neutral", LanguageController.getString("ready"));
 
-            LogFileHandler.logger.info("fileScan.COMPLETE - " + AppConfiguration.fileData.size() + " files / " + AppConfiguration.dirData.size() + " folders scanned!");
+            LogFileHandler.logger.info("fileScan.COMPLETE - " + AppConfiguration.INSTANCE.getFileData().size() + " files / " + AppConfiguration.INSTANCE.getDirData().size() + " folders scanned!");
 
         });
 
@@ -151,8 +150,8 @@ public class ListTask extends Task<Void> {
 
     public void deleteData() {
         //delete already scanned data
-        AppConfiguration.fileData.clear();
-        AppConfiguration.dirData.clear();
+        AppConfiguration.INSTANCE.getFileData().clear();
+        AppConfiguration.INSTANCE.getDirData().clear();
         MainLayout.fileTable.setItems(null);
         MainLayout.dirTable.setItems(null);
     }

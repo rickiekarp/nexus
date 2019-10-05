@@ -1,31 +1,25 @@
-package net.rickiekarp.flc.model;
+package net.rickiekarp.flc.model
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleStringProperty
 
 /**
  * This is the model class for all formats of the FileList (.txt / .html etc.)
  */
-public class FilelistFormats {
-    private final SimpleStringProperty filetypeName;
-    private final SimpleStringProperty filetypeEnding;
+class FilelistFormats(aFile1: String, aFile2: String) {
+    private val filetypeName: SimpleStringProperty = SimpleStringProperty(aFile1)
+    private val filetypeEnding: SimpleStringProperty = SimpleStringProperty(aFile2)
 
-    public FilelistFormats(String aFile1, String aFile2 ) {
+    val fileTypeName: String
+        get() = filetypeName.get()
 
-        this.filetypeName = new SimpleStringProperty(aFile1);
-        this.filetypeEnding = new SimpleStringProperty(aFile2);
+    val fileTypeEnding: String
+        get() = filetypeEnding.get()
+
+    fun setFiletypeName(aFile1: String) {
+        filetypeName.set(aFile1)
     }
 
-    public String getFileTypeName() {
-        return filetypeName.get();
-    }
-    public void setFiletypeName(String aFile1) {
-        filetypeName.set(aFile1);
-    }
-
-    public String getFileTypeEnding() {
-        return filetypeEnding.get();
-    }
-    public void setFiletypeEnding(String aFile2) {
-        filetypeEnding.set(aFile2);
+    fun setFiletypeEnding(aFile2: String) {
+        filetypeEnding.set(aFile2)
     }
 }

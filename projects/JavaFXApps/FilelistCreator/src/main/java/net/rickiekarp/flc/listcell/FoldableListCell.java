@@ -192,7 +192,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
         cbox_sorting.setMinWidth(100);
 
         ComboBox<String> cbox_unit = new ComboBox<>();
-        cbox_unit.getItems().addAll(AppConfiguration.unitList);
+        cbox_unit.getItems().addAll(AppConfiguration.INSTANCE.getUnitList());
         cbox_unit.getSelectionModel().select(FilelistController.UNIT_IDX);
         cbox_unit.setMinWidth(100);
 
@@ -204,7 +204,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
 
         cbox_sorting.valueProperty().addListener((ov, t, t1) -> {
             FilelistController.sortingIdx = cbox_sorting.getSelectionModel().getSelectedIndex();
-            if (AppConfiguration.fileData.size() > 0) {
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) {
                 new FilelistPreviewTask();
             }
             switch (cbox_sorting.getSelectionModel().getSelectedIndex()) {
@@ -215,14 +215,14 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
 
         cbox_unit.valueProperty().addListener((ov, t, t1) -> {
             FilelistController.UNIT_IDX = cbox_unit.getSelectionModel().getSelectedIndex();
-            if (AppConfiguration.fileData.size() > 0) {
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) {
                 new FileSizeTask();
             }
         });
 
         header.setOnAction(event -> {
             FilelistController.canShowHeader = header.isSelected();
-            if (AppConfiguration.fileData.size() > 0) {
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) {
                 new FilelistPreviewTask();
             }
 
@@ -230,7 +230,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
 
         empty.setOnAction(event -> {
             FilelistController.canShowEmptyFolder = empty.isSelected();
-            if (AppConfiguration.fileData.size() > 0) {
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) {
                 new FilelistPreviewTask();
             }
         });
@@ -266,7 +266,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
         filename.setOnAction(event -> {
             FilelistController.option[0] = !FilelistController.option[0];
             LogFileHandler.logger.config("change_filename_option: " + !FilelistController.option[0] + " -> " + FilelistController.option[0]);
-            if (AppConfiguration.fileData.size() > 0) { new FilelistPreviewTask(); }
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
         });
 
         CheckBox type = new CheckBox(LanguageController.getString("ftype"));
@@ -274,7 +274,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
         type.setOnAction(event -> {
             FilelistController.option[1] = !FilelistController.option[1];
             LogFileHandler.logger.config("change_type_option: " + !FilelistController.option[1] + " -> " + FilelistController.option[1]);
-            if (AppConfiguration.fileData.size() > 0) { new FilelistPreviewTask(); }
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
         });
 
         CheckBox path = new CheckBox(LanguageController.getString("fpath"));
@@ -282,7 +282,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
         path.setOnAction(event -> {
             FilelistController.option[2] = !FilelistController.option[2];
             LogFileHandler.logger.config("change_path_option: " + !FilelistController.option[2] + " -> " + FilelistController.option[2]);
-            if (AppConfiguration.fileData.size() > 0) { new FilelistPreviewTask(); }
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
         });
 
         CheckBox size = new CheckBox(LanguageController.getString("fsize"));
@@ -290,7 +290,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
         size.setOnAction(event -> {
             FilelistController.option[3] = !FilelistController.option[3];
             LogFileHandler.logger.config("change_filesize_option: " + !FilelistController.option[3] + " -> " + FilelistController.option[3]);
-            if (AppConfiguration.fileData.size() > 0) { new FilelistPreviewTask(); }
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
         });
 
         CheckBox created = new CheckBox(LanguageController.getString("fcreation"));
@@ -298,7 +298,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
         created.setOnAction(event -> {
             FilelistController.option[4] = !FilelistController.option[4];
             LogFileHandler.logger.config("change_creationdate_option: " + !FilelistController.option[4] + " -> " + FilelistController.option[4]);
-            if (AppConfiguration.fileData.size() > 0) { new FilelistPreviewTask(); }
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
         });
 
         CheckBox changed = new CheckBox(LanguageController.getString("fmodif"));
@@ -306,7 +306,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
         changed.setOnAction(event -> {
             FilelistController.option[5] = !FilelistController.option[5];
             LogFileHandler.logger.config("change_lastchanged_option: " + !FilelistController.option[5] + " -> " + FilelistController.option[5]);
-            if (AppConfiguration.fileData.size() > 0) { new FilelistPreviewTask(); }
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
         });
 
         CheckBox lastAccess = new CheckBox(LanguageController.getString("faccessed"));
@@ -314,7 +314,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
         lastAccess.setOnAction(event -> {
             FilelistController.option[6] = !FilelistController.option[6];
             LogFileHandler.logger.config("change_lastaccess_option: " + !FilelistController.option[6] + " -> " + FilelistController.option[6]);
-            if (AppConfiguration.fileData.size() > 0) { new FilelistPreviewTask(); }
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
         });
 
         CheckBox hidden = new CheckBox(LanguageController.getString("fhidden"));
@@ -322,7 +322,7 @@ public class FoldableListCell extends ListCell<FilelistSettings> {
         hidden.setOnAction(event -> {
             FilelistController.option[7] = !FilelistController.option[7];
             LogFileHandler.logger.config("change_hidden: " + !FilelistController.option[7] + " -> " + FilelistController.option[7]);
-            if (AppConfiguration.fileData.size() > 0) { new FilelistPreviewTask(); }
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
         });
 
         content.getChildren().addAll(option2_desc, filename, type, path, size, created, changed, lastAccess, hidden);

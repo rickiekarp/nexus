@@ -41,14 +41,15 @@ public class DebugHelper {
         switch (state) {
             case "start":
                 if (startTime == 0) {
-                    startTime = System.currentTimeMillis();
+                    startTime = System.nanoTime();
                     LogFileHandler.logger.info("Start monitoring " + name);
                     break;
                 } else { LogFileHandler.logger.warning("Profiler already started!"); break; }
             case "stop":
                 if (startTime != 0) {
-                    long endTime = System.currentTimeMillis();
-                    LogFileHandler.logger.info("Stop monitoring " + name + "! Total execution time: " + (endTime - startTime) + "ms");
+                    long endTime = System.nanoTime();
+                    double elapsedTimeInMillis = (double) (endTime - startTime) / 1_000_000;
+                    LogFileHandler.logger.info("Stop monitoring " + name + "! Total execution time: " + elapsedTimeInMillis + "ms");
                     startTime = 0;
                     break;
                 } else { LogFileHandler.logger.warning("Profiler not started!"); break; }

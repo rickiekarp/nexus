@@ -1,74 +1,62 @@
-package net.rickiekarp.flc.model;
+package net.rickiekarp.flc.model
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleLongProperty
+import javafx.beans.property.SimpleStringProperty
 
 /**
  * This is the model class for all sub-directories of the filelist.
  * dir: Path of the sub-directory
  * filesindir: How many files are in the directory
  */
-public class Directorylist {
-    private final SimpleStringProperty dir;
-    private final SimpleIntegerProperty filesTotal;
-    private final SimpleIntegerProperty filesindir;
-    private final SimpleIntegerProperty foldersindir;
-    private final SimpleLongProperty filesizeindir;
+class Directorylist(directory: String, filestotal: Int, fileAmount: Int, folderAmount: Int, fileSize: Long) {
+    private val dir: SimpleStringProperty = SimpleStringProperty(directory)
+    private val filesTotal: SimpleIntegerProperty = SimpleIntegerProperty(filestotal)
+    private val filesindir: SimpleIntegerProperty = SimpleIntegerProperty(fileAmount)
+    private val foldersindir: SimpleIntegerProperty = SimpleIntegerProperty(folderAmount)
+    private val filesizeindir: SimpleLongProperty = SimpleLongProperty(fileSize)
 
-    public Directorylist(String directory, int filestotal,int fileAmount, int folderAmount, long fileSize) {
+    var filesInDir: Int
+        get() = filesindir.get()
+        set(amount) = filesindir.set(filesInDir + amount)
 
-        this.dir = new SimpleStringProperty(directory);
-        this.filesTotal = new SimpleIntegerProperty(filestotal);
-        this.filesindir = new SimpleIntegerProperty(fileAmount);
-        this.foldersindir = new SimpleIntegerProperty(folderAmount);
-        this.filesizeindir = new SimpleLongProperty(fileSize);
-    }
+    var foldersInDir: Int
+        get() = foldersindir.get()
+        set(amount) = foldersindir.set(foldersInDir + amount)
 
-    public String getDir() {
-        return dir.get();
-    }
-    public void setDir(String aFile1) {
-        dir.set(aFile1);
-    }
+    var fileSizeInDir: Long
+        get() = filesizeindir.get()
+        set(size) = filesizeindir.set(fileSizeInDir + size)
 
-    public int getFilesTotal() {
-        return filesTotal.get();
-    }
-    public void setFilesTotal(int amount) {
-        filesTotal.set(getFilesTotal() + amount);
-    }
-    public void setFilesFromTotal(int amount) {
-        filesTotal.set(getFilesTotal() - amount);
+    fun getDir(): String {
+        return dir.get()
     }
 
-    public int getFilesInDir() {
-        return filesindir.get();
-    }
-    public void setFilesInDir(int amount) {
-        filesindir.set(getFilesInDir() + amount);
-    }
-    public void setFilesFromDir(int amount) {
-        filesindir.set(getFilesInDir() - amount);
+    fun setDir(aFile1: String) {
+        dir.set(aFile1)
     }
 
-    public int getFoldersInDir() {
-        return foldersindir.get();
-    }
-    public void setFoldersInDir(int amount) {
-        foldersindir.set(getFoldersInDir() + amount);
-    }
-    public void setFoldersFromDir(int amount) {
-        foldersindir.set(getFoldersInDir() - amount);
+    fun getFilesTotal(): Int {
+        return filesTotal.get()
     }
 
-    public long getFileSizeInDir() {
-        return filesizeindir.get();
+    fun setFilesTotal(amount: Int) {
+        filesTotal.set(getFilesTotal() + amount)
     }
-    public void setFileSizeInDir(long size) {
-        filesizeindir.set(getFileSizeInDir() + size);
+
+    fun setFilesFromTotal(amount: Int) {
+        filesTotal.set(getFilesTotal() - amount)
     }
-    public void setFileSizeFromDir(long size) {
-        filesizeindir.set(getFileSizeInDir() - size);
+
+    fun setFilesFromDir(amount: Int) {
+        filesindir.set(filesInDir - amount)
+    }
+
+    fun setFoldersFromDir(amount: Int) {
+        foldersindir.set(foldersInDir - amount)
+    }
+
+    fun setFileSizeFromDir(size: Long) {
+        filesizeindir.set(fileSizeInDir - size)
     }
 }

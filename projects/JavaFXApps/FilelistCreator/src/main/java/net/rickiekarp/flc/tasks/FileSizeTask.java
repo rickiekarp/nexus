@@ -18,13 +18,13 @@ public class FileSizeTask extends Task<Void> {
     protected Void call() throws Exception {
 
         //calculate new file amount
-        for (int i = 0; i < AppConfiguration.fileData.size(); i++) {
-            final Filelist flist = AppConfiguration.fileData.get(i);
-            final File file = new File(flist.getFilepath() + File.separator + AppConfiguration.fileData.get(i).getFilename());
-            final long fileSize = Filelist.calcFileSize(file);
+        for (int i = 0; i < AppConfiguration.INSTANCE.getFileData().size(); i++) {
+            final Filelist flist = AppConfiguration.INSTANCE.getFileData().get(i);
+            final File file = new File(flist.getFilepath() + File.separator + AppConfiguration.INSTANCE.getFileData().get(i).getFilename());
+            final long fileSize = Filelist.Companion.calcFileSize(file);
 
             final int finalI = i;
-            Platform.runLater(() -> AppConfiguration.fileData.set(finalI, flist).setSize(fileSize));
+            Platform.runLater(() -> AppConfiguration.INSTANCE.getFileData().set(finalI, flist).setSize(fileSize));
         }
         return null;
     }

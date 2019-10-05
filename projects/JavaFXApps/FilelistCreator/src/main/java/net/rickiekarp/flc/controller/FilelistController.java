@@ -85,24 +85,24 @@ public class FilelistController {
                 sb.append(separatorLine);
                 sb.append("\n");
 
-                for (int pos = 0; pos < AppConfiguration.fileData.size(); pos++) {
+                for (int pos = 0; pos < AppConfiguration.INSTANCE.getFileData().size(); pos++) {
                     if (option[0]) {
-                        sb.append(AppConfiguration.fileData.get(pos).getFilename());
-                        int diff = lenght[0] - AppConfiguration.fileData.get(pos).getFilename().length() + MainLayout.fileColumn[0].getText().length() - lenght[0] + diffColumn[0];
+                        sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getFilename());
+                        int diff = lenght[0] - AppConfiguration.INSTANCE.getFileData().get(pos).getFilename().length() + MainLayout.fileColumn[0].getText().length() - lenght[0] + diffColumn[0];
                         for (int i = 0; i < diff; i++) { sb.append(" "); }
                     }
 
                     if (option[1]) {
-                        sb.append(AppConfiguration.fileData.get(pos).getFiletype());
-                        int diff1 = lenght[1] - AppConfiguration.fileData.get(pos).getFiletype().length() + MainLayout.fileColumn[1].getText().length() - lenght[1] + diffColumn[1];
+                        sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getFiletype());
+                        int diff1 = lenght[1] - AppConfiguration.INSTANCE.getFileData().get(pos).getFiletype().length() + MainLayout.fileColumn[1].getText().length() - lenght[1] + diffColumn[1];
                         for (int i = 0; i < diff1; i++) {
                             sb.append(" ");
                         }
                     }
 
                     if (option[2]) {
-                        sb.append(AppConfiguration.fileData.get(pos).getFilepath());
-                        int diff2 = lenght[2] - AppConfiguration.fileData.get(pos).getFilepath().length() + MainLayout.fileColumn[2].getText().length() - lenght[2] + diffColumn[2];
+                        sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getFilepath());
+                        int diff2 = lenght[2] - AppConfiguration.INSTANCE.getFileData().get(pos).getFilepath().length() + MainLayout.fileColumn[2].getText().length() - lenght[2] + diffColumn[2];
                         for (int i = 0; i < diff2; i++) { sb.append(" "); }
                     }
 
@@ -113,26 +113,26 @@ public class FilelistController {
                     }
 
                     if (option[4]) {
-                        sb.append(AppConfiguration.fileData.get(pos).getCreationDate());
-                        int diff4 = lenght[4] - AppConfiguration.fileData.get(pos).getCreationDate().length() + MainLayout.fileColumn[4].getText().length() - lenght[4] + diffColumn[4];
+                        sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getCreationDate());
+                        int diff4 = lenght[4] - AppConfiguration.INSTANCE.getFileData().get(pos).getCreationDate().length() + MainLayout.fileColumn[4].getText().length() - lenght[4] + diffColumn[4];
                         for (int i = 0; i < diff4; i++) { sb.append(" "); }
                     }
 
                     if (option[5]) {
-                        sb.append(AppConfiguration.fileData.get(pos).getLastModif());
-                        int diff5 = lenght[5] - AppConfiguration.fileData.get(pos).getLastModif().length() + MainLayout.fileColumn[5].getText().length() - lenght[5] + diffColumn[5];
+                        sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getLastModif());
+                        int diff5 = lenght[5] - AppConfiguration.INSTANCE.getFileData().get(pos).getLastModif().length() + MainLayout.fileColumn[5].getText().length() - lenght[5] + diffColumn[5];
                         for (int i = 0; i < diff5; i++) { sb.append(" "); }
                     }
 
                     if (option[6]) {
-                        sb.append(AppConfiguration.fileData.get(pos).getLastAccessDate());
-                        int diff6 = lenght[6] - AppConfiguration.fileData.get(pos).getLastAccessDate().length() + MainLayout.fileColumn[6].getText().length() - lenght[6] + diffColumn[6];
+                        sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getLastAccessDate());
+                        int diff6 = lenght[6] - AppConfiguration.INSTANCE.getFileData().get(pos).getLastAccessDate().length() + MainLayout.fileColumn[6].getText().length() - lenght[6] + diffColumn[6];
                         for (int i = 0; i < diff6; i++) { sb.append(" "); }
                     }
 
                     if (option[7]) {
-                        sb.append(AppConfiguration.fileData.get(pos).getIsHidden());
-                        int diff7 = lenght[7] - AppConfiguration.fileData.get(pos).getIsHidden().length() + MainLayout.fileColumn[7].getText().length() - lenght[7] + diffColumn[7];
+                        sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getIsHidden());
+                        int diff7 = lenght[7] - AppConfiguration.INSTANCE.getFileData().get(pos).getIsHidden().length() + MainLayout.fileColumn[7].getText().length() - lenght[7] + diffColumn[7];
                         for (int i = 0; i < diff7; i++) { sb.append(" "); }
                     }
 
@@ -144,18 +144,18 @@ public class FilelistController {
                 //total file/size amount
                 sb.append("\n");
 
-                if (AppConfiguration.subFolderCheck) {
+                if (AppConfiguration.INSTANCE.getSubFolderCheck()) {
                     long totalSize = 0;
-                    for (int i = 0; i < AppConfiguration.dirData.size(); i++) {
-                        totalSize += AppConfiguration.dirData.get(i).getFileSizeInDir();
+                    for (int i = 0; i < AppConfiguration.INSTANCE.getDirData().size(); i++) {
+                        totalSize += AppConfiguration.INSTANCE.getDirData().get(i).getFileSizeInDir();
                     }
-                    sb.append(AppConfiguration.fileData.size())
+                    sb.append(AppConfiguration.INSTANCE.getFileData().size())
                             .append(" ").append(LanguageController.getString("files")).append("; ")
                             .append(totalSize).append(" Bytes");
                 } else {
-                    sb.append(AppConfiguration.dirData.get(0).getFilesInDir())
+                    sb.append(AppConfiguration.INSTANCE.getDirData().get(0).getFilesInDir())
                             .append(" ").append(LanguageController.getString("files")).append("; ")
-                            .append(AppConfiguration.dirData.get(0).getFileSizeInDir()).append(" Bytes");
+                            .append(AppConfiguration.INSTANCE.getDirData().get(0).getFileSizeInDir()).append(" Bytes");
                 }
                 break;
 
@@ -164,37 +164,37 @@ public class FilelistController {
                 sb.append(separatorLine);
                 sb.append("\n");
 
-                for (int pos1 = 0; pos1 < AppConfiguration.dirData.size(); pos1++) {
+                for (int pos1 = 0; pos1 < AppConfiguration.INSTANCE.getDirData().size(); pos1++) {
 
-                    if (AppConfiguration.dirData.get(pos1).getFilesInDir() > 0 || canShowEmptyFolder) {
+                    if (AppConfiguration.INSTANCE.getDirData().get(pos1).getFilesInDir() > 0 || canShowEmptyFolder) {
 
                         //add path
-                        sb.append(AppConfiguration.dirData.get(pos1).getDir()).append("\n");
+                        sb.append(AppConfiguration.INSTANCE.getDirData().get(pos1).getDir()).append("\n");
                         sb.append(separatorLine);
                         sb.append("\n");
 
                         //add files of subdir
-                        for (int pos = 0; pos < AppConfiguration.fileData.size(); pos++) {
-                            if (AppConfiguration.fileData.get(pos).getFilepath().equals(AppConfiguration.dirData.get(pos1).getDir())) {
+                        for (int pos = 0; pos < AppConfiguration.INSTANCE.getFileData().size(); pos++) {
+                            if (AppConfiguration.INSTANCE.getFileData().get(pos).getFilepath().equals(AppConfiguration.INSTANCE.getDirData().get(pos1).getDir())) {
                                 if (option[0]) {
-                                    sb.append(AppConfiguration.fileData.get(pos).getFilename());
-                                    int diff = lenght[0] - AppConfiguration.fileData.get(pos).getFilename().length() + MainLayout.fileColumn[0].getText().length() - lenght[0] + diffColumn[0];
+                                    sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getFilename());
+                                    int diff = lenght[0] - AppConfiguration.INSTANCE.getFileData().get(pos).getFilename().length() + MainLayout.fileColumn[0].getText().length() - lenght[0] + diffColumn[0];
                                     for (int i = 0; i < diff; i++) {
                                         sb.append(" ");
                                     }
                                 }
 
                                 if (option[1]) {
-                                    sb.append(AppConfiguration.fileData.get(pos).getFiletype());
-                                    int diff1 = lenght[1] - AppConfiguration.fileData.get(pos).getFiletype().length() + MainLayout.fileColumn[1].getText().length() - lenght[1] + diffColumn[1];
+                                    sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getFiletype());
+                                    int diff1 = lenght[1] - AppConfiguration.INSTANCE.getFileData().get(pos).getFiletype().length() + MainLayout.fileColumn[1].getText().length() - lenght[1] + diffColumn[1];
                                     for (int i = 0; i < diff1; i++) {
                                         sb.append(" ");
                                     }
                                 }
 
                                 if (option[2]) {
-                                    sb.append(AppConfiguration.fileData.get(pos).getFilepath());
-                                    int diff2 = lenght[2] - AppConfiguration.fileData.get(pos).getFilepath().length() + MainLayout.fileColumn[2].getText().length() - lenght[2] + diffColumn[2];
+                                    sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getFilepath());
+                                    int diff2 = lenght[2] - AppConfiguration.INSTANCE.getFileData().get(pos).getFilepath().length() + MainLayout.fileColumn[2].getText().length() - lenght[2] + diffColumn[2];
                                     for (int i = 0; i < diff2; i++) {
                                         sb.append(" ");
                                     }
@@ -209,32 +209,32 @@ public class FilelistController {
                                 }
 
                                 if (option[4]) {
-                                    sb.append(AppConfiguration.fileData.get(pos).getCreationDate());
-                                    int diff4 = lenght[4] - AppConfiguration.fileData.get(pos).getCreationDate().length() + MainLayout.fileColumn[4].getText().length() - lenght[4] + diffColumn[4];
+                                    sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getCreationDate());
+                                    int diff4 = lenght[4] - AppConfiguration.INSTANCE.getFileData().get(pos).getCreationDate().length() + MainLayout.fileColumn[4].getText().length() - lenght[4] + diffColumn[4];
                                     for (int i = 0; i < diff4; i++) {
                                         sb.append(" ");
                                     }
                                 }
 
                                 if (option[5]) {
-                                    sb.append(AppConfiguration.fileData.get(pos).getLastModif());
-                                    int diff5 = lenght[5] - AppConfiguration.fileData.get(pos).getLastModif().length() + MainLayout.fileColumn[5].getText().length() - lenght[5] + diffColumn[5];
+                                    sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getLastModif());
+                                    int diff5 = lenght[5] - AppConfiguration.INSTANCE.getFileData().get(pos).getLastModif().length() + MainLayout.fileColumn[5].getText().length() - lenght[5] + diffColumn[5];
                                     for (int i = 0; i < diff5; i++) {
                                         sb.append(" ");
                                     }
                                 }
 
                                 if (option[6]) {
-                                    sb.append(AppConfiguration.fileData.get(pos).getLastAccessDate());
-                                    int diff6 = lenght[6] - AppConfiguration.fileData.get(pos).getLastAccessDate().length() + MainLayout.fileColumn[6].getText().length() - lenght[6] + diffColumn[6];
+                                    sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getLastAccessDate());
+                                    int diff6 = lenght[6] - AppConfiguration.INSTANCE.getFileData().get(pos).getLastAccessDate().length() + MainLayout.fileColumn[6].getText().length() - lenght[6] + diffColumn[6];
                                     for (int i = 0; i < diff6; i++) {
                                         sb.append(" ");
                                     }
                                 }
 
                                 if (option[7]) {
-                                    sb.append(AppConfiguration.fileData.get(pos).getIsHidden());
-                                    int diff7 = lenght[7] - AppConfiguration.fileData.get(pos).getIsHidden().length() + MainLayout.fileColumn[7].getText().length() - lenght[7] + diffColumn[7];
+                                    sb.append(AppConfiguration.INSTANCE.getFileData().get(pos).getIsHidden());
+                                    int diff7 = lenght[7] - AppConfiguration.INSTANCE.getFileData().get(pos).getIsHidden().length() + MainLayout.fileColumn[7].getText().length() - lenght[7] + diffColumn[7];
                                     for (int i = 0; i < diff7; i++) {
                                         sb.append(" ");
                                     }
@@ -247,9 +247,9 @@ public class FilelistController {
 
                         //file/size amount of current folder
                         sb.append("\n");
-                        sb.append(AppConfiguration.dirData.get(pos1).getFilesInDir())
+                        sb.append(AppConfiguration.INSTANCE.getDirData().get(pos1).getFilesInDir())
                                 .append(" ").append(LanguageController.getString("files")).append("; ")
-                                .append(AppConfiguration.dirData.get(pos1).getFileSizeInDir()).append(" Bytes");
+                                .append(AppConfiguration.INSTANCE.getDirData().get(pos1).getFileSizeInDir()).append(" Bytes");
 
                         sb.append("\n\n");
                     }
@@ -260,10 +260,10 @@ public class FilelistController {
 
                 //total file/size amount
                 long totalSize = 0;
-                for (int i = 0; i < AppConfiguration.dirData.size(); i++) {
-                    totalSize += AppConfiguration.dirData.get(i).getFileSizeInDir();
+                for (int i = 0; i < AppConfiguration.INSTANCE.getDirData().size(); i++) {
+                    totalSize += AppConfiguration.INSTANCE.getDirData().get(i).getFileSizeInDir();
                 }
-                sb.append(AppConfiguration.fileData.size())
+                sb.append(AppConfiguration.INSTANCE.getFileData().size())
                         .append(" ").append(LanguageController.getString("files")).append("; ")
                         .append(totalSize).append(" Bytes");
                 break;
@@ -286,20 +286,20 @@ public class FilelistController {
     }
 
     public void calcColumnLenght() {
-        for (int i = 0; i < AppConfiguration.fileData.size(); i++) {
-            if (lenght[0] < AppConfiguration.fileData.get(i).getFilename().length()) { lenght[0] = AppConfiguration.fileData.get(i).getFilename().length(); }
-            if (lenght[1] < AppConfiguration.fileData.get(i).getFiletype().length()) { lenght[1] = AppConfiguration.fileData.get(i).getFiletype().length(); }
-            if (lenght[2] < AppConfiguration.fileData.get(i).getFilepath().length()) { lenght[2] = AppConfiguration.fileData.get(i).getFilepath().length(); }
+        for (int i = 0; i < AppConfiguration.INSTANCE.getFileData().size(); i++) {
+            if (lenght[0] < AppConfiguration.INSTANCE.getFileData().get(i).getFilename().length()) { lenght[0] = AppConfiguration.INSTANCE.getFileData().get(i).getFilename().length(); }
+            if (lenght[1] < AppConfiguration.INSTANCE.getFileData().get(i).getFiletype().length()) { lenght[1] = AppConfiguration.INSTANCE.getFileData().get(i).getFiletype().length(); }
+            if (lenght[2] < AppConfiguration.INSTANCE.getFileData().get(i).getFilepath().length()) { lenght[2] = AppConfiguration.INSTANCE.getFileData().get(i).getFilepath().length(); }
             if (lenght[3] < String.valueOf(MainLayout.fileTable.getColumns().get(3).getCellData(i)).length()) { lenght[3] = String.valueOf(MainLayout.fileTable.getColumns().get(3).getCellData(i)).length(); }
-            if (lenght[4] < AppConfiguration.fileData.get(i).getCreationDate().length()) { lenght[4] = AppConfiguration.fileData.get(i).getCreationDate().length(); }
-            if (lenght[5] < AppConfiguration.fileData.get(i).getLastModif().length()) { lenght[5] = AppConfiguration.fileData.get(i).getLastModif().length(); }
-            if (lenght[6] < AppConfiguration.fileData.get(i).getLastAccessDate().length()) { lenght[6] = AppConfiguration.fileData.get(i).getLastAccessDate().length(); }
-            if (lenght[7] < AppConfiguration.fileData.get(i).getIsHidden().length()) { lenght[7] = AppConfiguration.fileData.get(i).getIsHidden().length(); }
+            if (lenght[4] < AppConfiguration.INSTANCE.getFileData().get(i).getCreationDate().length()) { lenght[4] = AppConfiguration.INSTANCE.getFileData().get(i).getCreationDate().length(); }
+            if (lenght[5] < AppConfiguration.INSTANCE.getFileData().get(i).getLastModif().length()) { lenght[5] = AppConfiguration.INSTANCE.getFileData().get(i).getLastModif().length(); }
+            if (lenght[6] < AppConfiguration.INSTANCE.getFileData().get(i).getLastAccessDate().length()) { lenght[6] = AppConfiguration.INSTANCE.getFileData().get(i).getLastAccessDate().length(); }
+            if (lenght[7] < AppConfiguration.INSTANCE.getFileData().get(i).getIsHidden().length()) { lenght[7] = AppConfiguration.INSTANCE.getFileData().get(i).getIsHidden().length(); }
         }
         //System.out.println("Longest filelength: " + lenght[0] + " " + lenght[1] + " " + lenght[2] + " " + lenght[3] + " " + lenght[4]);
 
-        for (int i = 0; i < AppConfiguration.dirData.size(); i++) {
-            if (dirlenght < AppConfiguration.dirData.get(i).getDir().length()) { dirlenght = AppConfiguration.dirData.get(i).getDir().length(); }
+        for (int i = 0; i < AppConfiguration.INSTANCE.getDirData().size(); i++) {
+            if (dirlenght < AppConfiguration.INSTANCE.getDirData().get(i).getDir().length()) { dirlenght = AppConfiguration.INSTANCE.getDirData().get(i).getDir().length(); }
         }
         //System.out.println("Longest dirlength: " + dirlenght);
     }
@@ -326,15 +326,15 @@ public class FilelistController {
     private String getHTML() {
         StringBuilder html = new StringBuilder();
         html.append("<table border=\"1\" style=\"width:100%\">\n" + "<h1>File List</h1>\n" + "<h2>Created: ").append(CommonUtil.getDate("dd.MM.yyyy")).append(" at ").append(CommonUtil.getTime("HH:mm")).append("</h2>\n");
-        for (int i = 0; AppConfiguration.fileData.size() > i; i++) {
-            html.append("<tr>\n" + " <td>").append(AppConfiguration.fileData.get(i).getFilename()).append("</td>\n")
-                    .append("    <td>").append(AppConfiguration.fileData.get(i).getFiletype()).append("</td>\n")
-                    .append("    <td>").append(AppConfiguration.fileData.get(i).getFilepath()).append("</td>\n")
+        for (int i = 0; AppConfiguration.INSTANCE.getFileData().size() > i; i++) {
+            html.append("<tr>\n" + " <td>").append(AppConfiguration.INSTANCE.getFileData().get(i).getFilename()).append("</td>\n")
+                    .append("    <td>").append(AppConfiguration.INSTANCE.getFileData().get(i).getFiletype()).append("</td>\n")
+                    .append("    <td>").append(AppConfiguration.INSTANCE.getFileData().get(i).getFilepath()).append("</td>\n")
                     .append("    <td>").append(MainLayout.fileTable.getColumns().get(3).getCellData(i)).append("</td>\n")
-                    .append("    <td>").append(AppConfiguration.fileData.get(i).getCreationDate()).append("</td>\n")
-                    .append("    <td>").append(AppConfiguration.fileData.get(i).getLastModif()).append("</td>\n")
-                    .append("    <td>").append(AppConfiguration.fileData.get(i).getLastAccessDate()).append("</td>\n")
-                    .append("    <td>").append(AppConfiguration.fileData.get(i).getIsHidden()).append("</td>\n")
+                    .append("    <td>").append(AppConfiguration.INSTANCE.getFileData().get(i).getCreationDate()).append("</td>\n")
+                    .append("    <td>").append(AppConfiguration.INSTANCE.getFileData().get(i).getLastModif()).append("</td>\n")
+                    .append("    <td>").append(AppConfiguration.INSTANCE.getFileData().get(i).getLastAccessDate()).append("</td>\n")
+                    .append("    <td>").append(AppConfiguration.INSTANCE.getFileData().get(i).getIsHidden()).append("</td>\n")
                     .append("</tr>\n");
         }
         html.append("</table>");

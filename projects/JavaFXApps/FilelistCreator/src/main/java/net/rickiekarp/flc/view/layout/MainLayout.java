@@ -55,7 +55,7 @@ public class MainLayout implements AppLayout {
         mainLayout = this;
     }
 
-    public Node getMainLayout() {
+    private Node getMainLayout() {
 
         BorderPane mainContent = new BorderPane();
 
@@ -91,7 +91,7 @@ public class MainLayout implements AppLayout {
         fileGrid.getChildren().add(btn_browse);
 
         CheckBox subFolderBox = new CheckBox(LanguageController.getString("inclSubdir")); //cb_subFolders.setSelected(subDirs);
-        subFolderBox.setSelected(AppConfiguration.subFolderCheck);
+        subFolderBox.setSelected(AppConfiguration.INSTANCE.getSubFolderCheck());
         fileGrid.getChildren().add(subFolderBox);
 
         //FILE TABLE
@@ -113,7 +113,7 @@ public class MainLayout implements AppLayout {
         fileColumn[3] = new TableColumn<>(LanguageController.getString("fsize"));
         fileColumn[3].setCellValueFactory(p -> {
             if (p.getValue() != null) {
-                return new SimpleStringProperty(p.getValue().getSize() + " " + AppConfiguration.unitList.get(FilelistController.UNIT_IDX));
+                return new SimpleStringProperty(p.getValue().getSize() + " " + AppConfiguration.INSTANCE.getUnitList().get(FilelistController.UNIT_IDX));
             } else {
                 return new SimpleStringProperty("null");
             }
@@ -232,7 +232,6 @@ public class MainLayout implements AppLayout {
         mainContent.setBottom(controls);
 
         btn_browse.setOnAction(event -> {
-
             status.setText(LanguageController.getString("files_loading"));
 
             DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -243,14 +242,14 @@ public class MainLayout implements AppLayout {
             } else {
 
                 //clear all data
-                if (AppConfiguration.fileData.size() > 0 || AppConfiguration.dirData.size() > 0) {
+                if (AppConfiguration.INSTANCE.getFileData().size() > 0 || AppConfiguration.INSTANCE.getDirData().size() > 0) {
                     removeAllFiles();
                 }
 
                 pathTF.setText(selectedDirectory.getPath());
 
                 //add start directory entry
-                AppConfiguration.dirData.add(new Directorylist(selectedDirectory.getPath(), 0, 0, 0, 0));
+                AppConfiguration.INSTANCE.getDirData().add(new Directorylist(selectedDirectory.getPath(), 0, 0, 0, 0));
 
                 new ListTask(selectedDirectory);
             }
@@ -271,9 +270,9 @@ public class MainLayout implements AppLayout {
                 }
             } else {
                 fileControls.getChildren().remove(btn_remove);
-                if (AppConfiguration.fileData.size() == 0) {
+                if (AppConfiguration.INSTANCE.getFileData().size() == 0) {
                     fileTable.setItems(null);
-                    AppConfiguration.dirData.clear();
+                    AppConfiguration.INSTANCE.getDirData().clear();
                     dirTable.setItems(null);
                     ListTask.listTask.resetTask();
                     previewTA.clear();
@@ -309,7 +308,7 @@ public class MainLayout implements AppLayout {
                 }
             } else {
                 fileControls.getChildren().remove(btn_remove);
-                if (AppConfiguration.dirData.size() == 0) {
+                if (AppConfiguration.INSTANCE.getDirData().size() == 0) {
                     dirTable.setItems(null);
                     ListTask.listTask.resetTask();
                     previewTA.clear();
@@ -341,7 +340,7 @@ public class MainLayout implements AppLayout {
         });
 
         subFolderBox.setOnAction(event -> {
-                    AppConfiguration.subFolderCheck = subFolderBox.isSelected();
+                    AppConfiguration.INSTANCE.setSubFolderCheck(subFolderBox.isSelected());
                     if (subFolderBox.isSelected()) { status.setText(LanguageController.getString("incl_sub_on")); }
                     else { status.setText(LanguageController.getString("incl_sub_off")); }
                 }
@@ -399,17 +398,17 @@ public class MainLayout implements AppLayout {
 
             //calculate new file amount
             Directorylist dir;
-            for (int i = 0; i < AppConfiguration.dirData.size(); i++) {
-                if (AppConfiguration.fileData.get(fileTable.getSelectionModel().getSelectedIndex()).getFilepath().equals(AppConfiguration.dirData.get(i).getDir())) {
-                    dir = AppConfiguration.dirData.get(i);
-                    AppConfiguration.dirData.set(i, dir).setFilesFromDir(1);
-                    AppConfiguration.dirData.set(i, dir).setFilesFromTotal(1);
-                    AppConfiguration.dirData.set(i, dir).setFileSizeFromDir(AppConfiguration.fileData.get(fileTable.getSelectionModel().getSelectedIndex()).getSize());
+            for (int i = 0; i < AppConfiguration.INSTANCE.getDirData().size(); i++) {
+                if (AppConfiguration.INSTANCE.getFileData().get(fileTable.getSelectionModel().getSelectedIndex()).getFilepath().equals(AppConfiguration.INSTANCE.getDirData().get(i).getDir())) {
+                    dir = AppConfiguration.INSTANCE.getDirData().get(i);
+                    AppConfiguration.INSTANCE.getDirData().set(i, dir).setFilesFromDir(1);
+                    AppConfiguration.INSTANCE.getDirData().set(i, dir).setFilesFromTotal(1);
+                    AppConfiguration.INSTANCE.getDirData().set(i, dir).setFileSizeFromDir(AppConfiguration.INSTANCE.getFileData().get(fileTable.getSelectionModel().getSelectedIndex()).getSize());
                 }
             }
 
             //remove selected index
-            AppConfiguration.fileData.remove(fileTable.getSelectionModel().getSelectedIndex());
+            AppConfiguration.INSTANCE.getFileData().remove(fileTable.getSelectionModel().getSelectedIndex());
 
             //if no files are in the filelist, remove the directory from the table
 //        if (AppConfiguration.dirData.get(selIdx).getFilesTotal() == 0) {
@@ -420,7 +419,7 @@ public class MainLayout implements AppLayout {
 //            }
 //        }
 
-            if (AppConfiguration.fileData.size() > 0) {
+            if (AppConfiguration.INSTANCE.getFileData().size() > 0) {
                 new FilelistPreviewTask();
                 status.setText(LanguageController.getString("remove_file_success"));
             } else {
@@ -428,7 +427,7 @@ public class MainLayout implements AppLayout {
             }
         } else if (dirTable.getSelectionModel().isSelected(dirTable.getSelectionModel().getSelectedIndex())) {
             removeFolder();
-            if (AppConfiguration.dirData.size() > 0) {
+            if (AppConfiguration.INSTANCE.getDirData().size() > 0) {
                 status.setText(LanguageController.getString("remove_folder_success"));
             } else {
                 status.setText(LanguageController.getString("clear_filelist_success"));
@@ -444,8 +443,8 @@ public class MainLayout implements AppLayout {
         ObservableList<Integer> toDelList = FXCollections.observableArrayList();
 
         //iterate through filedata and add 'to delete items' to a list
-        for (int i = 0; i < AppConfiguration.fileData.size(); i++) {
-            if (AppConfiguration.fileData.get(i).getFilepath().equals(AppConfiguration.dirData.get(dirTable.getSelectionModel().getSelectedIndex()).getDir())) {
+        for (int i = 0; i < AppConfiguration.INSTANCE.getFileData().size(); i++) {
+            if (AppConfiguration.INSTANCE.getFileData().get(i).getFilepath().equals(AppConfiguration.INSTANCE.getDirData().get(dirTable.getSelectionModel().getSelectedIndex()).getDir())) {
                 toDelList.add(i);
             }
         }
@@ -456,14 +455,14 @@ public class MainLayout implements AppLayout {
         //delete items from list
         for (Integer aList : toDelList) {
             Filelist test = fileTable.getItems().get(aList);
-            AppConfiguration.fileData.remove(test);
+            AppConfiguration.INSTANCE.getFileData().remove(test);
         }
 
         //remove directory entry from dirTable
-        AppConfiguration.dirData.remove(dirTable.getSelectionModel().getSelectedIndex());
+        AppConfiguration.INSTANCE.getDirData().remove(dirTable.getSelectionModel().getSelectedIndex());
 
-        if (AppConfiguration.fileData.size() > 0) { new FilelistPreviewTask(); }
-        else if (AppConfiguration.fileData.size() == 0) { AppConfiguration.dirData.clear(); }
+        if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
+        else if (AppConfiguration.INSTANCE.getFileData().size() == 0) { AppConfiguration.INSTANCE.getDirData().clear(); }
     }
 
     /**

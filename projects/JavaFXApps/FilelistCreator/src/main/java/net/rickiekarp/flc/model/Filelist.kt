@@ -1,121 +1,122 @@
-package net.rickiekarp.flc.model;
+package net.rickiekarp.flc.model
 
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.flc.controller.FilelistController;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.flc.controller.FilelistController
+import javafx.beans.property.SimpleLongProperty
+import javafx.beans.property.SimpleStringProperty
 
-import java.io.File;
+import java.io.File
 
 /**
  * This is the model class for all files of the filelist.
  */
-public class Filelist {
-    private final SimpleStringProperty filename;
-    private final SimpleStringProperty filetype;
-    private final SimpleStringProperty filepath;
-    private final SimpleLongProperty size;
-    private final SimpleStringProperty creationDate;
-    private final SimpleStringProperty moodifDate;
-    private final SimpleStringProperty lastAccessDate;
-    private final SimpleStringProperty isHidden;
+class Filelist(aName: String, aType: String, aPath: String, aSize: Long, aCreationTime: String, aMoodifDate: String, aAccessDate: String, hidden: Boolean) {
+    private val filename: SimpleStringProperty = SimpleStringProperty(aName)
+    private val filetype: SimpleStringProperty = SimpleStringProperty(aType)
+    private val filepath: SimpleStringProperty = SimpleStringProperty(aPath)
+    private val size: SimpleLongProperty = SimpleLongProperty(aSize)
+    private val creationDate: SimpleStringProperty = SimpleStringProperty(aCreationTime)
+    private val moodifDate: SimpleStringProperty = SimpleStringProperty(aMoodifDate)
+    private val lastAccessDate: SimpleStringProperty = SimpleStringProperty(aAccessDate)
+    private val isHidden: SimpleStringProperty
 
-    public Filelist(String aName, String aType, String aPath, long aSize, String aCreationTime, String aMoodifDate, String aAccessDate, boolean hidden ) {
+    var lastModif: String
+        get() = moodifDate.get()
+        set(aFile5) = moodifDate.set(aFile5)
 
-        this.filename = new SimpleStringProperty(aName);
-        this.filetype = new SimpleStringProperty(aType);
-        this.filepath = new SimpleStringProperty(aPath);
-        this.size = new SimpleLongProperty(aSize);
-        this.creationDate = new SimpleStringProperty(aCreationTime);
-        this.moodifDate = new SimpleStringProperty(aMoodifDate);
-        this.lastAccessDate = new SimpleStringProperty(aAccessDate);
-
-        if (hidden) { this.isHidden = new SimpleStringProperty(LanguageController.getString("yes")); }
-        else { this.isHidden = new SimpleStringProperty(LanguageController.getString("no")); }
-    }
-
-    /**
-     * Returns the filesize in a certain format
-     */
-    public static long calcFileSize(File file) {
-
-        switch (FilelistController.UNIT_IDX) {
-            case 0: return file.length();
-            case 1:
-                if (file.length() > 0 && file.length() < 1024) { return 1; }
-                else { return file.length() / 1024; }
-            case 2: return file.length() / 1024 / 1024;
-            case 3: return file.length() / 1024 / 1024 / 1024;
-            case 4: return file.length() / 1024 / 1024 / 1024 / 1024;
+    init {
+        if (hidden) {
+            this.isHidden = SimpleStringProperty(LanguageController.getString("yes"))
+        } else {
+            this.isHidden = SimpleStringProperty(LanguageController.getString("no"))
         }
-        return -1;
     }
 
-    /**
-     * Returns the file extension of a given fileName
-     */
-    public static String getExtension(String fileName) {
-        String extension = "";
-        int i = fileName.lastIndexOf('.');
-        if (i > 0) {
-            extension = fileName.substring(i+1).toUpperCase();
+    fun getFilename(): String {
+        return filename.get()
+    }
+
+    fun setFilename(aFile1: String) {
+        filename.set(aFile1)
+    }
+
+    fun getFiletype(): String {
+        return filetype.get()
+    }
+
+    fun setFiletype(aFile2: String) {
+        filetype.set(aFile2)
+    }
+
+    fun getFilepath(): String {
+        return filepath.get()
+    }
+
+    fun setFilepath(aFile3: String) {
+        filepath.set(aFile3)
+    }
+
+    fun getSize(): Long {
+        return size.get()
+    }
+
+    fun setSize(aSize: Long) {
+        size.set(aSize)
+    }
+
+    fun getCreationDate(): String {
+        return creationDate.get()
+    }
+
+    fun setCreationDate(aCreationDate: String) {
+        creationDate.set(aCreationDate)
+    }
+
+    fun getLastAccessDate(): String {
+        return lastAccessDate.get()
+    }
+
+    fun setLastAccessDate(aAccessDate: String) {
+        lastAccessDate.set(aAccessDate)
+    }
+
+    fun getIsHidden(): String {
+        return isHidden.get()
+    }
+
+    fun setIsHidden(hidden: String) {
+        isHidden.set(hidden)
+    }
+
+    companion object {
+        /**
+         * Returns the filesize in a certain format
+         */
+        fun calcFileSize(file: File): Long {
+            when (FilelistController.UNIT_IDX) {
+                0 -> return file.length()
+                1 -> return if (file.length() > 0 && file.length() < 1024) {
+                    1
+                } else {
+                    file.length() / 1024
+                }
+                2 -> return file.length() / 1024 / 1024
+                3 -> return file.length() / 1024 / 1024 / 1024
+                4 -> return file.length() / 1024 / 1024 / 1024 / 1024
+            }
+            return -1
         }
-        return extension;
-    }
 
-    public String getFilename() {
-        return filename.get();
-    }
-    public void setFilename(String aFile1) {
-        filename.set(aFile1);
-    }
-
-    public String getFiletype() {
-        return filetype.get();
-    }
-    public void setFiletype(String aFile2) {
-        filetype.set(aFile2);
-    }
-
-    public String getFilepath() {
-        return filepath.get();
-    }
-    public void setFilepath(String aFile3) {
-        filepath.set(aFile3);
-    }
-
-    public long getSize() {
-        return size.get();
-    }
-    public void setSize(long aSize) {
-        size.set(aSize);
-    }
-
-    public String getCreationDate() {
-        return creationDate.get();
-    }
-    public void setCreationDate(String aCreationDate) {
-        creationDate.set(aCreationDate);
-    }
-
-    public String getLastModif() {
-        return moodifDate.get();
-    }
-    public void setLastModif(String aFile5) {
-        moodifDate.set(aFile5);
-    }
-
-    public String getLastAccessDate() {
-        return lastAccessDate.get();
-    }
-    public void setLastAccessDate(String aAccessDate) {
-        lastAccessDate.set(aAccessDate);
-    }
-
-    public String getIsHidden() {
-        return isHidden.get();
-    }
-    public void setIsHidden(String hidden) {
-        isHidden.set(hidden);
+        /**
+         * Returns the file extension of a given fileName
+         */
+        fun getExtension(fileName: String): String {
+            var extension = ""
+            val i = fileName.lastIndexOf('.')
+            if (i > 0) {
+                extension = fileName.substring(i + 1).toUpperCase()
+            }
+            return extension
+        }
     }
 }
