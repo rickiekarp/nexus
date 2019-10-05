@@ -1,0 +1,2 @@
+include:
+  - local: 'projects/JavaFXApps/.gitlab-ci.yml'
