@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * A handler to add a layer of abstraction between network layer and implementation
  */
 class ConnectionHandler {
-	private static final String API_STRING							= "/api/";
+	private static final String API_STRING							= "/";
 	private static final MediaType MEDIA_TYPE_MARKDOWN              = MediaType.parse("application/json");
 	private static final int MAX_CONNECTION_TIMEOUT_MILLISECONDS    = 15000;
 	private static final int MAX_DATA_TRANSFER_TIMEOUT_MILLISECONDS = 40000;
@@ -86,6 +86,7 @@ class ConnectionHandler {
             if (response.code() == RESPONSE_ERROR_CODE_SERVER_UNAVAILABLE) {
                 throw new RuntimeException("Error");
             }
+            //LogFileHandler.logger.info(String.valueOf(response.code()));
 			//printResponseHeaders(response);
             return response;
         } catch (ConnectException e) {

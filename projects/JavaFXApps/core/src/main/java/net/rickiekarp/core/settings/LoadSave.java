@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface LoadSave {
 
     /** settings defaults **/
-    String host = "http://localhost:8080/";
+    String host = "https://app.rickiekarp/";
     int updateChannel = 0;
     int language = LanguageController.getLocale();
     int themeState = 0;

@@ -8,9 +8,9 @@ import okhttp3.Response;
 import java.io.InputStream;
 
 public class NetworkApi {
-    protected static String AUTH_DOMAIN = "auth";
+    protected static String ACCOUNT_DOMAIN = "account";
     protected static String INFO_DOMAIN = "info";
-    private static String TOKEN_ACTION = "token";
+    private static String TOKEN_ACTION = "authorize";
     private static String REGISTER_ACTION = "create";
     private static String LOGIN_ACTION = "login";
     private static String UPDATE_ACTION = "update";
@@ -31,19 +31,19 @@ public class NetworkApi {
         NetworkParameterProvider provider = NetworkParameterProvider.create();
         provider.put("username", account.getUser());
         provider.put("password", account.getPassword());
-        return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(AUTH_DOMAIN).setAction(TOKEN_ACTION).setParameters(provider).setMethod("POST").build();
+        return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(TOKEN_ACTION).setParameters(provider).setMethod("POST").build();
     }
 
 
     public static NetworkAction requestLoginData() {
-        return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(AUTH_DOMAIN).setAction(LOGIN_ACTION).setMethod("POST").build();
+        return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(LOGIN_ACTION).setMethod("POST").build();
     }
 
     public static NetworkAction requestCreateAccount(Account account) {
         NetworkParameterProvider provider = NetworkParameterProvider.create();
         provider.put("username", account.getUser());
         provider.put("password", account.getPassword());
-        return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(AUTH_DOMAIN).setAction(REGISTER_ACTION).setParameters(provider).setMethod("POST").build();
+        return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(REGISTER_ACTION).setParameters(provider).setMethod("POST").build();
     }
 
     public static NetworkAction requestVersionInfo(int updateChannel) {

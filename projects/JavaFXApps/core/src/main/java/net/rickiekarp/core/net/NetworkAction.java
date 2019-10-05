@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class NetworkAction {
     static final String LOGINSERVER = "LoginServer";
-    public static final String DATASERVER = "AppServer";
+    public static final String DATASERVER = "HomeServer";
     private String mMethod;
     private final Map<String, String> parameterMap;
     private String mHostUrl;
