@@ -1,7 +1,60 @@
 stages:
+  - test
   - build
 
-build:
+unittest:
+  stage: test
+  image: openjdk:11.0.4-jdk
+  script:
+    - cd projects/JavaFXApps
+    - ./gradlew clean :core:test
+  only:
+    changes:
+      - projects/JavaFXApps/*
+
+build-BotManager:
+  stage: build
+  image: openjdk:11.0.4-jdk
+  script:
+    - cd projects/JavaFXApps
+    - ./gradlew clean :BotManager:distZip
+  artifacts:
+    paths:
+    - projects/JavaFXApps/BotManager/build/distributions
+    expire_in: 1 week
+  only:
+    changes:
+      - projects/JavaFXApps/*
+
+build-FilelistCreator:
+  stage: build
+  image: openjdk:11.0.4-jdk
+  script:
+    - cd projects/JavaFXApps
+    - ./gradlew clean :FilelistCreator:distZip
+  artifacts:
+    paths:
+    - projects/JavaFXApps/FilelistCreator/build/distributions
+    expire_in: 1 week
+  only:
+    changes:
+      - projects/JavaFXApps/*
+
+build-QAAccountManager:
+  stage: build
+  image: openjdk:11.0.4-jdk
+  script:
+    - cd projects/JavaFXApps
+    - ./gradlew clean :QAAccountManager:distZip
+  artifacts:
+    paths:
+    - projects/JavaFXApps/QAAccountManager/build/distributions
+    expire_in: 1 week
+  only:
+    changes:
+      - projects/JavaFXApps/*
+
+build-SHA1Pass:
   stage: build
   image: openjdk:11.0.4-jdk
   script:
