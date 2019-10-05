@@ -1,4 +1,4 @@
-package net.rickiekarp.sha1pass.launcher;
+package net.rickiekarp.sha1pass;
 
 /**
  * https://stackoverflow.com/questions/52569724/javafx-11-create-a-jar-file-with-gradle/52571719#52571719
