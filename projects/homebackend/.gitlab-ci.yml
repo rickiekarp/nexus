@@ -16,7 +16,7 @@ build-LoginServer:
     - ./gradlew :LoginServer:build
   artifacts:
     paths:
-    - module-deployment/service-application/webapps/
+    - projects/homebackend/module-deployment/service-application/webapps/
     expire_in: 1 week
   only:
     changes:
