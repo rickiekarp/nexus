@@ -17,6 +17,7 @@ import net.rickiekarp.core.view.layout.AppLayout;
 public class AppStarter extends Application {
     private Class mainClazz;
     private Class configClazz;
+    protected boolean isConfigLoaded;
     private byte winType;
     private int minWidth;
     private int minHeight;
@@ -32,7 +33,7 @@ public class AppStarter extends Application {
 
         //load config file
         Configuration.config = new Configuration("config.xml", mainClazz);
-        boolean isConfigLoaded = Configuration.config.load();
+        isConfigLoaded = Configuration.config.load();
         if (isConfigLoaded) {
             //load additional application related configuration
             Configuration.config.loadProperties(configClazz);

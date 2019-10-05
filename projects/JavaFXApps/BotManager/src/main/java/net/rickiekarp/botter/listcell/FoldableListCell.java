@@ -1,4 +1,4 @@
-package net.rickiekarp.botter.components.listcell;
+package net.rickiekarp.botter.listcell;
 
 import net.rickiekarp.core.debug.DebugHelper;
 import net.rickiekarp.botlib.plugin.BotSetting;

@@ -1,34 +1,33 @@
-package net.rickiekarp.core.model;
+package net.rickiekarp.core.model
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleStringProperty
 
-public class SettingsList {
-    private final SimpleStringProperty settingName;
-    private final SimpleStringProperty setting;
-    private final SimpleStringProperty desc;
+class SettingsList(settingName: String, setting: String, desc: String) {
+    private val settingName: SimpleStringProperty = SimpleStringProperty(settingName)
+    private val setting: SimpleStringProperty = SimpleStringProperty(setting)
+    private val desc: SimpleStringProperty = SimpleStringProperty(desc)
 
-    public SettingsList(String settingName, String setting, String desc) {
-        this.settingName = new SimpleStringProperty(settingName);
-        this.setting = new SimpleStringProperty(setting);
-        this.desc = new SimpleStringProperty(desc);
+    fun getSettingName(): String {
+        return settingName.get()
     }
 
-    public String getSettingName() {
-        return settingName.get();
+    fun setSettingName(fName: String) {
+        settingName.set(fName)
     }
-    public void setSettingName(String fName) {
-        settingName.set(fName);
+
+    fun getSetting(): String {
+        return setting.get()
     }
-    public String getSetting() {
-        return setting.get();
+
+    fun setSetting(fName: String) {
+        setting.set(fName)
     }
-    public void setSetting(String fName) {
-        setting.set(fName);
+
+    fun getDesc(): String {
+        return desc.get()
     }
-    public String getDesc() {
-        return desc.get();
-    }
-    public void setDesc(String fName) {
-        desc.set(fName);
+
+    fun setDesc(fName: String) {
+        desc.set(fName)
     }
 }

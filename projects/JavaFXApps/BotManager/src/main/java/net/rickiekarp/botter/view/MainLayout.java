@@ -20,7 +20,7 @@ import net.rickiekarp.botlib.model.PluginData;
 import net.rickiekarp.botlib.plugin.BotSetting;
 import net.rickiekarp.botlib.plugin.PluginExecutor;
 import net.rickiekarp.botter.botservice.BotTask;
-import net.rickiekarp.botter.components.listcell.FoldableListCell;
+import net.rickiekarp.botter.listcell.FoldableListCell;
 import net.rickiekarp.botter.settings.AppConfiguration;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;

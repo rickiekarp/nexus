@@ -1,13 +1,18 @@
 package net.rickiekarp.botter;
 
+import net.rickiekarp.botter.botservice.BotCommands;
 import net.rickiekarp.botter.settings.AppConfiguration;
+import net.rickiekarp.core.AppContext;
 import net.rickiekarp.core.AppStarter;
 import net.rickiekarp.core.account.ILoginHandler;
 import net.rickiekarp.core.components.button.SidebarButton;
+import net.rickiekarp.core.controller.LanguageController;
 import net.rickiekarp.core.debug.LogFileHandler;
 import net.rickiekarp.core.settings.Configuration;
+import net.rickiekarp.core.ui.tray.ToolTrayIcon;
 import net.rickiekarp.core.util.FileUtil;
 import net.rickiekarp.core.view.MainScene;
+import net.rickiekarp.core.view.MessageDialog;
 import net.rickiekarp.core.view.layout.LoginMaskLayout;
 import net.rickiekarp.botlib.BotConfig;
 import net.rickiekarp.botlib.PluginConfig;
@@ -48,56 +53,37 @@ public class MainApp extends AppStarter implements ILoginHandler {
         setLayout(new MainLayout());
 
         super.start(stage);
-    }
 
-//    /**
-//     * Main Method
-//     * @param args Program arguments
-//     */
-//    public static void main(String[] args) {
-//
-//        //check if the program was started with a parameter
-//        if (args.length > 0) {
-//
-////            BotLauncher bot;
-////            switch (args[0]) {
-////                case "0":
-////                    bot = new BotLauncher();
-////                    // set up bot GiveawayController
-////                    new GiveawayController();
-////                    GiveawayController.manager.setGiftSite(0);
-////                    if (args[1] != null) { GiveawayController.manager.setGiftPointLimit(Integer.parseInt(args[1])); }
-////                    if (bot.isValid()) {
-////                        bot.launch();
-////                    }
-////                    break;
-////                case "1":
-////                    bot = new BotLauncher();
-////                    // set up bot GiveawayController
-////                    new GiveawayController();
-////                    GiveawayController.manager.setGiftSite(1);
-////                    if (args[1] != null) { GiveawayController.manager.setGiftPointLimit(Integer.parseInt(args[1])); }
-////                    if (bot.isValid()) {
-////                        bot.launch();
-////                    }
-////                    break;
-////                case "2":
-////                    bot = new BotLauncher();
-////                    // set up bot GiveawayController
-////                    new GiveawayController();
-////                    GiveawayController.manager.setGiftSite(2);
-////                    if (args[1] != null) { GiveawayController.manager.setGiftPointLimit(Integer.parseInt(args[1])); }
-////                    if (bot.isValid()) {
-////                        bot.launch();
-////                    }
-////                    break;
-////                case "help": printHelp(); System.exit(0); break;
-////                default: System.out.println("Invalid command!"); printHelp(); System.exit(0);
-////            }
-//        } else {
-//            launch(args);
-//        }
-//    }
+        AppContext.getContext().initAccountManager();
+
+        LoginMaskLayout loginMaskLayout = new LoginMaskLayout();
+        setAppContextLoginBehaviour(loginMaskLayout);
+        MainScene.mainScene.getSceneViewStack().push(loginMaskLayout.getMaskNode());
+
+        //auto login
+        if (AppContext.getContext().getAccountManager().isAutoLogin()) {
+            MainScene.mainScene.getBorderPane().setCenter(loginMaskLayout.getMaskNode());
+            new Thread(loginMaskLayout.getLoginTask()).start();
+        }
+
+        try {
+            new BotCommands().addBotCommands();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        //post launch settings
+        if (Configuration.showTrayIcon) {
+            new ToolTrayIcon();
+        }
+
+        //disable settings and bot setup views if no config file is present
+        if (!isConfigLoaded) {
+            new MessageDialog(0, LanguageController.getString("config_not_found"), 500, 250);
+            MainScene.mainScene.getWindowScene().getWin().getSidebarButtonBox().getChildren().get(0).setDisable(true);
+            MainScene.mainScene.getWindowScene().getWin().getSidebarButtonBox().getChildren().get(1).setDisable(true);
+        }
+    }
 
 //    @Override
 //    public void start(Stage stage) {
@@ -119,49 +105,7 @@ public class MainApp extends AppStarter implements ILoginHandler {
 //            LanguageController.setCurrentLocale();
 //        }
 //
-//        //load language properties file
-//        LanguageController.loadLangFile();
 //
-//        //set the default exception handler
-//        if (!DebugHelper.DEBUGVERSION) {
-//            Thread.setDefaultUncaughtExceptionHandler((t, e) -> Platform.runLater(() -> new ExceptionHandler(t, e)));
-//            Thread.currentThread().setUncaughtExceptionHandler(ExceptionHandler::new);
-//        }
-//
-//        //application related configuration
-//        stage.setTitle(AppContext.getContext().getApplicationName());
-//        stage.setMinWidth(730); stage.setMinHeight(350);
-//        stage.setWidth(900); stage.setHeight(600);
-//        stage.getIcons().add(ImageLoader.getAppIconSmall());
-//
-//        //create and show the main scene
-//        new MainScene(stage);
-//
-//        AppContext.getContext().initAccountManager();
-//
-//        LoginMaskLayout loginMaskLayout = new LoginMaskLayout();
-//        setAppContextLoginBehaviour(loginMaskLayout);
-//        MainScene.mainScene.getSceneViewStack().push(loginMaskLayout.getMaskNode());
-//
-//        //auto login
-//        if (AppContext.getContext().getAccountManager().isAutoLogin()) {
-//            MainScene.mainScene.getBorderPane().setCenter(loginMaskLayout.getMaskNode());
-//            new Thread(loginMaskLayout.getLoginTask()).start();
-//        }
-//
-//        new BotCommands().addBotCommands();
-//
-//        //post launch settings
-//        if (Configuration.showTrayIcon) {
-//            new ToolTrayIcon();
-//        }
-//
-//        //disable settings and bot setup views if no config file is present
-//        if (!isConfigLoaded) {
-//            new MessageDialog(0, LanguageController.getString("config_not_found"), 500, 250);
-//            MainScene.mainScene.getWindowScene().getWin().getSidebarButtonBox().getChildren().get(0).setDisable(true);
-//            MainScene.mainScene.getWindowScene().getWin().getSidebarButtonBox().getChildren().get(1).setDisable(true);
-//        }
 //    }
 
     private void loadLocalPlugins() throws IOException {
@@ -224,7 +168,7 @@ public class MainApp extends AppStarter implements ILoginHandler {
                 }
 
                 //add additional buttons in the sidebar
-                //addSidebarButtons(MainScene.mainScene.getLayoutRegion().getHeight());
+                addSidebarButtons(MainScene.mainScene.getBorderPane().getHeight());
 
             } else {
                 final Task<Boolean> retryTask = loginMaskLayout.doLogin();
