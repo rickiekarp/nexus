@@ -1,63 +1,43 @@
-package net.rickiekarp.qaacc.model;
+package net.rickiekarp.qaacc.model
 
-import net.rickiekarp.qaacc.view.AccountEditDialog;
-import javafx.beans.property.SimpleStringProperty;
+import net.rickiekarp.qaacc.view.AccountEditDialog
+import javafx.beans.property.SimpleStringProperty
 
-public class Account {
-	private final SimpleStringProperty name;
-	private final SimpleStringProperty mail;
-	private final SimpleStringProperty level;
-	private final SimpleStringProperty alliance;
+class Account(aName: String, aMail: String, aLevel: String, aAlli: String) {
+    private val name: SimpleStringProperty = SimpleStringProperty(aName)
+    private val mail: SimpleStringProperty = SimpleStringProperty(aMail)
+    private val level: SimpleStringProperty = SimpleStringProperty(aLevel)
+    private val alliance: SimpleStringProperty = SimpleStringProperty(aAlli)
 
-	public Account(String aName, String aMail, String aLevel, String aAlli) {
+    var accName: String
+        get() = name.get()
+        set(aName) = name.set(aName)
 
-		this.name = new SimpleStringProperty(aName);
-		this.mail = new SimpleStringProperty(aMail);
-		this.level = new SimpleStringProperty(aLevel);
-		this.alliance = new SimpleStringProperty(aAlli);
-	}
+    var accMail: String
+        get() = mail.get()
+        set(aMail) = mail.set(aMail)
 
-	public static void setAccount(Account acc) {
+    var accLevel: String
+        get() = level.get()
+        set(aLevel) = level.set(aLevel)
 
-		acc.setAccName(AccountEditDialog.accNameTF.getText());
-		acc.setAccMail(AccountEditDialog.accMailTF.getText());
-		acc.setAccLevel(AccountEditDialog.accLevelTF.getText());
-		acc.setAccAlliance(AccountEditDialog.accAllianceTF.getText());
-	}
+    var accAlliance: String
+        get() = alliance.get()
+        set(aAlli) = alliance.set(aAlli)
 
-	public static void showAccountDetails(Account acc) {
+    companion object {
+        fun setAccount(acc: Account) {
+            acc.accName = AccountEditDialog.accNameTF.text
+            acc.accMail = AccountEditDialog.accMailTF.text
+            acc.accLevel = AccountEditDialog.accLevelTF.text
+            acc.accAlliance = AccountEditDialog.accAllianceTF.text
+        }
 
-		AccountEditDialog.accNameTF.setText(acc.getAccName());
-		AccountEditDialog.accMailTF.setText(acc.getAccMail());
-		AccountEditDialog.accLevelTF.setText(acc.getAccLevel());
-		AccountEditDialog.accAllianceTF.setText(acc.getAccAlliance());
-	}
-
-	public String getAccName() {
-		return name.get();
-	}
-	public void setAccName(String aName) {
-		name.set(aName);
-	}
-
-	public String getAccMail() {
-		return mail.get();
-	}
-	public void setAccMail(String aMail) {
-		mail.set(aMail);
-	}
-
-	public String getAccLevel() {
-		return level.get();
-	}
-	public void setAccLevel(String aLevel) {
-		level.set(aLevel);
-	}
-
-	public String getAccAlliance() {
-		return alliance.get();
-	}
-	public void setAccAlliance(String aAlli) {
-		alliance.set(aAlli);
-	}
+        fun showAccountDetails(acc: Account) {
+            AccountEditDialog.accNameTF.text = acc.accName
+            AccountEditDialog.accMailTF.text = acc.accMail
+            AccountEditDialog.accLevelTF.text = acc.accLevel
+            AccountEditDialog.accAllianceTF.text = acc.accAlliance
+        }
+    }
 }

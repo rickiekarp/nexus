@@ -1,282 +1,292 @@
-package net.rickiekarp.qaacc.view;
+package net.rickiekarp.qaacc.view
 
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.ui.windowmanager.WindowScene;
-import net.rickiekarp.core.ui.windowmanager.WindowStage;
-import net.rickiekarp.core.ui.windowmanager.ImageLoader;
-import net.rickiekarp.qaacc.factory.AccountXmlFactory;
-import net.rickiekarp.qaacc.model.Account;
-import net.rickiekarp.qaacc.settings.AppConfiguration;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.ui.windowmanager.WindowScene
+import net.rickiekarp.core.ui.windowmanager.WindowStage
+import net.rickiekarp.core.ui.windowmanager.ImageLoader
+import net.rickiekarp.qaacc.factory.AccountXmlFactory
+import net.rickiekarp.qaacc.model.Account
+import net.rickiekarp.qaacc.settings.AppConfiguration
+import javafx.geometry.Insets
+import javafx.geometry.Pos
+import javafx.scene.Node
+import javafx.scene.control.*
+import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.GridPane
+import javafx.scene.layout.HBox
+import javafx.stage.Stage
 
-import java.net.MalformedURLException;
-import java.util.logging.Level;
+import java.net.MalformedURLException
+import java.util.logging.Level
 
-public class AccountOverview {
+class AccountOverview(projectID: Int) {
+    var accOverviewScene: WindowScene? = null
+        private set
 
-    public static AccountOverview overview;
-    private WindowScene accOverviewScene;
-    static TableView<Account> tableview;
-
-    public static Button editAcc, delAcc;
-    public static Label nameTF,  mailTF, alliTF, lvTF, accCount, status;
-
-    public AccountOverview(int projectID) {
-        AccountOverview accOverview = AccountOverview.overview;
+    init {
+        val accOverview = AccountOverview.overview
         if (accOverview == null) {
-            overview = this;
-            create(projectID);
+            overview = this
+            create(projectID)
         } else {
-            if (accOverview.getAccOverviewScene().getWin().getWindowStage().getStage().isShowing()) {
-                accOverview.getAccOverviewScene().getWin().getWindowStage().getStage().requestFocus();
+            if (accOverview.accOverviewScene!!.win.windowStage.stage.isShowing) {
+                accOverview.accOverviewScene!!.win.windowStage.stage.requestFocus()
             } else {
-                overview = this;
-                create(projectID);
+                overview = this
+                create(projectID)
             }
         }
     }
 
-    private void create(int projectID) {
-        Stage overviewStage = new Stage();
-        overviewStage.setTitle(AppConfiguration.projectData.get(projectID).getProjectName() + " - " + LanguageController.getString("account_manager"));
-        overviewStage.getIcons().add(ImageLoader.getAppIcon());
-        overviewStage.setResizable(true);
-        overviewStage.setWidth(770); overviewStage.setHeight(450);
-        overviewStage.setMinWidth(750); overviewStage.setMinHeight(430);
+    private fun create(projectID: Int) {
+        val overviewStage = Stage()
+        overviewStage.title = AppConfiguration.projectData[projectID].getProjectName() + " - " + LanguageController.getString("account_manager")
+        overviewStage.icons.add(ImageLoader.getAppIcon())
+        overviewStage.isResizable = true
+        overviewStage.width = 770.0
+        overviewStage.height = 450.0
+        overviewStage.minWidth = 750.0
+        overviewStage.minHeight = 430.0
 
-        BorderPane borderpane = new BorderPane();
-        Node contentNode = getLayout(projectID);
+        val borderpane = BorderPane()
+        val contentNode = getLayout(projectID)
 
         // The UI (Client Area) to display
-        borderpane.setCenter(contentNode);
+        borderpane.center = contentNode
 
-        accOverviewScene = new WindowScene(new WindowStage("overview", overviewStage), borderpane, 1);
+        accOverviewScene = WindowScene(WindowStage("overview", overviewStage), borderpane, 1)
 
-        overviewStage.setScene(accOverviewScene);
-        overviewStage.show();
+        overviewStage.scene = accOverviewScene
+        overviewStage.show()
         //if (DebugHelper.isDebugVersion()) { DebugHelper.debugAccOverview(); }
-        LogFileHandler.logger.log(Level.INFO, "open.AccountOverview{" + projectID + "}");
+        LogFileHandler.logger.log(Level.INFO, "open.AccountOverview{$projectID}")
     }
 
 
-    private Node getLayout(int projectID) {
-        BorderPane mainContent = new BorderPane();
-        mainContent.getStyleClass().add("background");
+    private fun getLayout(projectID: Int): Node {
+        val mainContent = BorderPane()
+        mainContent.styleClass.add("background")
 
-        SplitPane splitPane = new SplitPane();
-        AnchorPane anchor1 = new AnchorPane();
-        AnchorPane anchor2 = new AnchorPane();
+        val splitPane = SplitPane()
+        val anchor1 = AnchorPane()
+        val anchor2 = AnchorPane()
 
-        splitPane.getItems().add(0, anchor1);
-        splitPane.getItems().add(1, anchor2);
-        splitPane.setDividerPositions(0.35);
+        splitPane.items.add(0, anchor1)
+        splitPane.items.add(1, anchor2)
+        splitPane.setDividerPositions(0.35)
 
-        GridPane gridpane = new GridPane();
-        gridpane.setAlignment(Pos.BASELINE_LEFT);
-        gridpane.setVgap(15);
-        gridpane.setHgap(25);
+        val gridpane = GridPane()
+        gridpane.alignment = Pos.BASELINE_LEFT
+        gridpane.vgap = 15.0
+        gridpane.hgap = 25.0
 
-        HBox controls = new HBox();
-        controls.setPadding(new Insets(15, 12, 15, 12));  //padding top, left, bottom, right
-        controls.setSpacing(10);
-        controls.setAlignment(Pos.CENTER_RIGHT);
+        val controls = HBox()
+        controls.padding = Insets(15.0, 12.0, 15.0, 12.0)  //padding top, left, bottom, right
+        controls.spacing = 10.0
+        controls.alignment = Pos.CENTER_RIGHT
 
-        tableview = new TableView<>();
-        tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        tableview.setPlaceholder(new Label(LanguageController.getString("no_account_found")));
+        tableview = TableView()
+        tableview.columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+        tableview.placeholder = Label(LanguageController.getString("no_account_found"))
 
 
-        TableColumn column1 = new TableColumn<>(LanguageController.getString("name"));
-        column1.setCellValueFactory(new PropertyValueFactory<>("accName"));
-        TableColumn column2 = new TableColumn<>(LanguageController.getString("mail")); column2.setVisible(false);
-        column2.setCellValueFactory(new PropertyValueFactory<>("accMail"));
-        TableColumn column3 = new TableColumn<>(LanguageController.getString("level")); column3.setVisible(false);
-        column3.setCellValueFactory(new PropertyValueFactory<>("accLevel"));
-        TableColumn column4 = new TableColumn<>(); column4.setVisible(false);
-        column4.setCellValueFactory(new PropertyValueFactory<>("accAlliance"));
+        val column1 = TableColumn<Account, Any>(LanguageController.getString("name"))
+        column1.setCellValueFactory(PropertyValueFactory("accName"))
+        val column2 = TableColumn<Account, Any>(LanguageController.getString("mail"))
+        column2.isVisible = false
+        column2.setCellValueFactory(PropertyValueFactory("accMail"))
+        val column3 = TableColumn<Account, Any>(LanguageController.getString("level"))
+        column3.isVisible = false
+        column3.setCellValueFactory(PropertyValueFactory("accLevel"))
+        val column4 = TableColumn<Account, Any>()
+        column4.isVisible = false
+        column4.setCellValueFactory(PropertyValueFactory("accAlliance"))
 
-        AnchorPane.setTopAnchor(tableview, 0.0);
-        AnchorPane.setRightAnchor(tableview, 0.0);
-        AnchorPane.setBottomAnchor(tableview, 0.0);
-        AnchorPane.setLeftAnchor(tableview, 0.0);
+        AnchorPane.setTopAnchor(tableview, 0.0)
+        AnchorPane.setRightAnchor(tableview, 0.0)
+        AnchorPane.setBottomAnchor(tableview, 0.0)
+        AnchorPane.setLeftAnchor(tableview, 0.0)
 
-        AnchorPane.setTopAnchor(gridpane, 75.0);
-        AnchorPane.setLeftAnchor(gridpane, 15.0);
-        AnchorPane.setRightAnchor(gridpane, 15.0);
+        AnchorPane.setTopAnchor(gridpane, 75.0)
+        AnchorPane.setLeftAnchor(gridpane, 15.0)
+        AnchorPane.setRightAnchor(gridpane, 15.0)
 
-        AnchorPane.setRightAnchor(controls, 10.0);
-        AnchorPane.setBottomAnchor(controls, 10.0);
+        AnchorPane.setRightAnchor(controls, 10.0)
+        AnchorPane.setBottomAnchor(controls, 10.0)
 
-        tableview.setItems(AppConfiguration.accountData);
-        tableview.tableMenuButtonVisibleProperty().set(true);
-        tableview.getColumns().setAll(column1, column2, column3, column4);
+        tableview.setItems(AppConfiguration.accountData)
+        tableview.tableMenuButtonVisibleProperty().set(true)
+        tableview.columns.setAll(column1, column2, column3, column4)
 
 
         //add components
-        Label header = new Label("Account Details:");
-        header.getStyleClass().add("label-header");
-        anchor2.getChildren().add(0, header);
-        AnchorPane.setTopAnchor(header, 5.0);
-        AnchorPane.setLeftAnchor(header, 10.0);
+        val header = Label("Account Details:")
+        header.styleClass.add("label-header")
+        anchor2.children.add(0, header)
+        AnchorPane.setTopAnchor(header, 5.0)
+        AnchorPane.setLeftAnchor(header, 10.0)
 
-        Label nameL = new Label(LanguageController.getString("name"));
-        GridPane.setConstraints(nameL, 0, 0);
-        gridpane.getChildren().add(nameL);
+        val nameL = Label(LanguageController.getString("name"))
+        GridPane.setConstraints(nameL, 0, 0)
+        gridpane.children.add(nameL)
 
-        nameTF = new Label();
-        GridPane.setConstraints(nameTF, 1, 0);
-        gridpane.getChildren().add(nameTF);
+        nameTF = Label()
+        GridPane.setConstraints(nameTF, 1, 0)
+        gridpane.children.add(nameTF)
 
-        Label mailL = new Label(LanguageController.getString("mail"));
-        GridPane.setConstraints(mailL, 0, 1);
-        gridpane.getChildren().add(mailL);
+        val mailL = Label(LanguageController.getString("mail"))
+        GridPane.setConstraints(mailL, 0, 1)
+        gridpane.children.add(mailL)
 
-        mailTF = new Label();
-        mailTF.setMinWidth(300);
-        GridPane.setConstraints(mailTF, 1, 1);
-        gridpane.getChildren().add(mailTF);
+        mailTF = Label()
+        mailTF.minWidth = 300.0
+        GridPane.setConstraints(mailTF, 1, 1)
+        gridpane.children.add(mailTF)
 
-        Label lvL = new Label(LanguageController.getString("level"));
-        GridPane.setConstraints(lvL, 0, 2);
-        gridpane.getChildren().add(lvL);
+        val lvL = Label(LanguageController.getString("level"))
+        GridPane.setConstraints(lvL, 0, 2)
+        gridpane.children.add(lvL)
 
-        lvTF = new Label();
-        GridPane.setConstraints(lvTF, 1, 2);
-        GridPane.setFillWidth(lvTF, false);
-        gridpane.getChildren().add(lvTF);
+        lvTF = Label()
+        GridPane.setConstraints(lvTF, 1, 2)
+        GridPane.setFillWidth(lvTF, false)
+        gridpane.children.add(lvTF)
 
-        Label alliL = new Label();
-        GridPane.setConstraints(alliL, 0, 3);
-        gridpane.getChildren().add(alliL);
+        val alliL = Label()
+        GridPane.setConstraints(alliL, 0, 3)
+        gridpane.children.add(alliL)
 
-        alliTF = new Label();
-        GridPane.setConstraints(alliTF, 1, 3);
-        gridpane.getChildren().add(alliTF);
+        alliTF = Label()
+        GridPane.setConstraints(alliTF, 1, 3)
+        gridpane.children.add(alliTF)
 
-        accCount = new Label();
-        anchor2.getChildren().add(1, accCount);
-        AnchorPane.setBottomAnchor(accCount, 75.0);
-        AnchorPane.setRightAnchor(accCount, 250.0);
+        accCount = Label()
+        anchor2.children.add(1, accCount)
+        AnchorPane.setBottomAnchor(accCount, 75.0)
+        AnchorPane.setRightAnchor(accCount, 250.0)
 
-        status = new Label(LanguageController.getString("ready"));
-        anchor2.getChildren().add(2, status);
-        AnchorPane.setBottomAnchor(status, 75.0);
-        AnchorPane.setRightAnchor(status, 60.0);
+        status = Label(LanguageController.getString("ready"))
+        anchor2.children.add(2, status)
+        AnchorPane.setBottomAnchor(status, 75.0)
+        AnchorPane.setRightAnchor(status, 60.0)
 
-        Button newAcc = new Button(LanguageController.getString("create"));
-        controls.getChildren().add(newAcc);
+        val newAcc = Button(LanguageController.getString("create"))
+        controls.children.add(newAcc)
 
-        editAcc = new Button(LanguageController.getString("edit"));
-        controls.getChildren().add(editAcc);
+        editAcc = Button(LanguageController.getString("edit"))
+        controls.children.add(editAcc)
 
-        delAcc = new Button(LanguageController.getString("delete"));
-        controls.getChildren().add(delAcc);
+        delAcc = Button(LanguageController.getString("delete"))
+        controls.children.add(delAcc)
 
         //set project specific names
-        switch (projectID)
-        {
-            case 2:
-                alliL.setText(LanguageController.getString("cooperative"));
-                column4.setText(LanguageController.getString("cooperative"));
-                break;
-            default:
-                alliL.setText(LanguageController.getString("alliance"));
-                column4.setText(LanguageController.getString("alliance"));
-                break;
+        when (projectID) {
+            2 -> {
+                alliL.text = LanguageController.getString("cooperative")
+                column4.setText(LanguageController.getString("cooperative"))
+            }
+            else -> {
+                alliL.text = LanguageController.getString("alliance")
+                column4.setText(LanguageController.getString("alliance"))
+            }
         }
 
 
         //load all accounts for selected project
-        AppConfiguration.accountData.clear();
-        AccountXmlFactory.loadAccData(projectID);
+        AppConfiguration.accountData.clear()
+        AccountXmlFactory.loadAccData(projectID)
 
-        if (AppConfiguration.accountData.size() == 0) {
-            editAcc.setDisable(true);
-            delAcc.setDisable(true);
-            accCount.setText("0 " + LanguageController.getString("accs_loaded"));
-        }
-        else if (AppConfiguration.accountData.size() == 1) {
-            accCount.setText("1 " + LanguageController.getString("acc_loaded"));
-            tableview.getSelectionModel().select(0);
-        }
-        else {
-            accCount.setText(String.valueOf(AppConfiguration.accountData.size()) + " " + LanguageController.getString("accs_loaded"));
-            tableview.getSelectionModel().select(0);
+        if (AppConfiguration.accountData.size == 0) {
+            editAcc.isDisable = true
+            delAcc.isDisable = true
+            accCount.text = "0 " + LanguageController.getString("accs_loaded")
+        } else if (AppConfiguration.accountData.size == 1) {
+            accCount.text = "1 " + LanguageController.getString("acc_loaded")
+            tableview.selectionModel.select(0)
+        } else {
+            accCount.text = AppConfiguration.accountData.size.toString() + " " + LanguageController.getString("accs_loaded")
+            tableview.selectionModel.select(0)
         }
 
         //add to AnchorPane Layout
-        anchor1.getChildren().add(0, tableview);
-        anchor2.getChildren().add(0, gridpane);
-        anchor2.getChildren().add(1, controls);
+        anchor1.children.add(0, tableview)
+        anchor2.children.add(0, gridpane)
+        anchor2.children.add(1, controls)
 
         //add SplitPane to borderpane layout
-        mainContent.setCenter(splitPane);
+        mainContent.center = splitPane
 
-        newAcc.setOnAction(event -> new AccountEditDialog(projectID, "new", -1, null));
+        newAcc.setOnAction { event -> AccountEditDialog(projectID, "new", -1, null) }
 
-        editAcc.setOnAction(event -> {
-            int selectedIndex = tableview.getSelectionModel().getFocusedIndex();
-            Account selectedAccount = tableview.getSelectionModel().getSelectedItem();
+        editAcc.setOnAction { event ->
+            val selectedIndex = tableview.selectionModel.focusedIndex
+            val selectedAccount = tableview.selectionModel.selectedItem
 
-            new AccountEditDialog(projectID, "edit", selectedIndex, selectedAccount);
-            Account.showAccountDetails(selectedAccount);
-        });
+            AccountEditDialog(projectID, "edit", selectedIndex, selectedAccount)
+            Account.showAccountDetails(selectedAccount)
+        }
 
-        delAcc.setOnAction(event -> {
-            int selectedIndex = tableview.getSelectionModel().getFocusedIndex();
+        delAcc.setOnAction { event ->
+            val selectedIndex = tableview.selectionModel.focusedIndex
             try {
-                AccountXmlFactory.removeAccountFromXml(projectID, selectedIndex);
+                AccountXmlFactory.removeAccountFromXml(projectID, selectedIndex)
                 if (selectedIndex >= 0) {
-                    AppConfiguration.accountData.remove(selectedIndex); tableview.getSelectionModel().select(selectedIndex);
+                    AppConfiguration.accountData.removeAt(selectedIndex)
+                    tableview.selectionModel.select(selectedIndex)
                 }
-            } catch (MalformedURLException e1) {
-                if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
+            } catch (e1: MalformedURLException) {
+                if (DebugHelper.DEBUGVERSION) {
+                    e1.printStackTrace()
+                } else {
+                    ExceptionHandler(Thread.currentThread(), e1)
+                }
             }
-        });
+        }
 
         //Add change listener
-        tableview.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+        tableview.selectionModel.selectedItemProperty().addListener { observableValue, oldValue, newValue ->
             //Check whether item is selected
-            if (tableview.getSelectionModel().getSelectedItem() != null) {
-                editAcc.setDisable(false);
-                delAcc.setDisable(false);
-                Account selectedAccount = tableview.getSelectionModel().getSelectedItem();
-                nameTF.setText(selectedAccount.getAccName());
-                mailTF.setText(selectedAccount.getAccMail());
-                lvTF.setText(selectedAccount.getAccLevel());
-                alliTF.setText(selectedAccount.getAccAlliance());
+            if (tableview.selectionModel.selectedItem != null) {
+                editAcc.isDisable = false
+                delAcc.isDisable = false
+                val selectedAccount = tableview.selectionModel.selectedItem
+                nameTF.text = selectedAccount.accName
+                mailTF.text = selectedAccount.accMail
+                lvTF.text = selectedAccount.accLevel
+                alliTF.text = selectedAccount.accAlliance
+            } else {
+                editAcc.isDisable = true
+                delAcc.isDisable = true
             }
-            else
-            {
-                editAcc.setDisable(true);
-                delAcc.setDisable(true);
-            }
-        });
+        }
 
-        return mainContent;
+        return mainContent
     }
 
-    //refreshes the table
-    static void refreshPersonTable(int selectedIdx) {
-        tableview.setItems(null);
-        tableview.layout();
-        tableview.setItems(AppConfiguration.accountData);
-        tableview.getSelectionModel().select(selectedIdx);
-    }
+    companion object {
+        var overview: AccountOverview? = null
+        lateinit var tableview: TableView<Account>
 
-    public WindowScene getAccOverviewScene() {
-        return accOverviewScene;
+        lateinit var editAcc: Button
+        lateinit var delAcc: Button
+        lateinit var nameTF: Label
+        lateinit var mailTF: Label
+        lateinit var alliTF: Label
+        lateinit var lvTF: Label
+        lateinit var accCount: Label
+        lateinit var status: Label
+
+        //refreshes the table
+        fun refreshPersonTable(selectedIdx: Int) {
+            tableview.items = null
+            tableview.layout()
+            tableview.items = AppConfiguration.accountData
+            tableview.selectionModel.select(selectedIdx)
+        }
     }
 }

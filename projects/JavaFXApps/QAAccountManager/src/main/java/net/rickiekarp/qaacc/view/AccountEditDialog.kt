@@ -1,235 +1,261 @@
-package net.rickiekarp.qaacc.view;
+package net.rickiekarp.qaacc.view
 
-import net.rickiekarp.core.components.textfield.CustomTextField;
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.ui.windowmanager.WindowScene;
-import net.rickiekarp.core.ui.windowmanager.WindowStage;
-import net.rickiekarp.core.ui.windowmanager.ImageLoader;
-import net.rickiekarp.core.view.MessageDialog;
-import net.rickiekarp.qaacc.factory.AccountXmlFactory;
-import net.rickiekarp.qaacc.model.Account;
-import net.rickiekarp.qaacc.settings.AppConfiguration;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import org.xml.sax.SAXException;
+import net.rickiekarp.core.components.textfield.CustomTextField
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.ui.windowmanager.WindowScene
+import net.rickiekarp.core.ui.windowmanager.WindowStage
+import net.rickiekarp.core.ui.windowmanager.ImageLoader
+import net.rickiekarp.core.view.MessageDialog
+import net.rickiekarp.qaacc.factory.AccountXmlFactory
+import net.rickiekarp.qaacc.model.Account
+import net.rickiekarp.qaacc.settings.AppConfiguration
+import javafx.geometry.Insets
+import javafx.geometry.Pos
+import javafx.scene.Node
+import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.control.TextField
+import javafx.scene.layout.*
+import javafx.stage.Stage
+import org.xml.sax.SAXException
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.logging.Level;
+import javax.xml.parsers.ParserConfigurationException
+import javax.xml.transform.TransformerException
+import java.io.IOException
+import java.net.MalformedURLException
+import java.util.logging.Level
 
-public class AccountEditDialog {
-
-    private static AccountEditDialog editDialog;
-    private WindowScene accEditScene;
-
-    public static TextField accNameTF;
-    public static TextField accMailTF;
-    public static CustomTextField accLevelTF;
-    public static TextField accAllianceTF;
+class AccountEditDialog internal constructor(GAME_ID: Int, sceneType: String, selectedIdx: Int, selectedItem: Account?) {
+    private var accEditScene: WindowScene? = null
 
 
-    AccountEditDialog(int GAME_ID, String sceneType, int selectedIdx, Account selectedItem) {
-        AccountEditDialog accEdit = AccountEditDialog.editDialog;
+    init {
+        val accEdit = editDialog
         if (accEdit == null) {
-            editDialog = this;
-            create(GAME_ID, sceneType, selectedIdx, selectedItem);
+            editDialog = this
+            create(GAME_ID, sceneType, selectedIdx, selectedItem!!)
         } else {
-            if (accEdit.getAccEditScene().getWin().getWindowStage().getStage().isShowing()) {
-                accEdit.getAccEditScene().getWin().getWindowStage().getStage().requestFocus();
+            if (accEdit.accEditScene!!.win.windowStage.stage.isShowing) {
+                accEdit.accEditScene!!.win.windowStage.stage.requestFocus()
             } else {
-                editDialog = this;
-                create(GAME_ID, sceneType, selectedIdx, selectedItem);
+                editDialog = this
+                create(GAME_ID, sceneType, selectedIdx, selectedItem!!)
             }
         }
     }
 
-    private void create(int GAME_ID, String SceneType, int selectedIdx, Account selectedItem) {
-        Stage editStage = new Stage();
-        editStage.setWidth(360); editStage.setHeight(380);
-        switch (SceneType)
-        {
-            case "new":
-                editStage.setTitle(LanguageController.getString("addAcc"));
-                editStage.getIcons().add(ImageLoader.getAppIconSmall());
-                break;
+    private fun create(GAME_ID: Int, SceneType: String, selectedIdx: Int, selectedItem: Account) {
+        val editStage = Stage()
+        editStage.width = 360.0
+        editStage.height = 380.0
+        when (SceneType) {
+            "new" -> {
+                editStage.title = LanguageController.getString("addAcc")
+                editStage.icons.add(ImageLoader.getAppIconSmall())
+            }
 
-            case "edit":
-                editStage.setTitle(LanguageController.getString("editAcc"));
-                editStage.getIcons().add(ImageLoader.getAppIconSmall());
-                break;
+            "edit" -> {
+                editStage.title = LanguageController.getString("editAcc")
+                editStage.icons.add(ImageLoader.getAppIconSmall())
+            }
         }
-        editStage.setResizable(false);
+        editStage.isResizable = false
 
-        BorderPane borderpane = new BorderPane();
-        Node contentNode = getLayout(GAME_ID, SceneType, selectedIdx, selectedItem);
+        val borderpane = BorderPane()
+        val contentNode = getLayout(GAME_ID, SceneType, selectedIdx, selectedItem)
 
         // The UI (Client Area) to display
-        borderpane.setCenter(contentNode);
+        borderpane.center = contentNode
 
-        accEditScene = new WindowScene(new WindowStage("edit", editStage), borderpane, 1);
+        accEditScene = WindowScene(WindowStage("edit", editStage), borderpane, 1)
 
-        editStage.setScene(accEditScene);
-        editStage.show();
+        editStage.scene = accEditScene
+        editStage.show()
 
         //if (DebugHelper.isDebugVersion()) { DebugHelper.debugAccEdit(); }
-        LogFileHandler.logger.log(Level.INFO, "open.AccountEditDialog{" + SceneType + "," + selectedIdx + "}");
+        LogFileHandler.logger.log(Level.INFO, "open.AccountEditDialog{$SceneType,$selectedIdx}")
     }
 
 
-    private Node getLayout(int GAME_ID, String SceneType, int selectedIdx, Account selectedItem) {
+    private fun getLayout(GAME_ID: Int, SceneType: String, selectedIdx: Int, selectedItem: Account): Node {
 
-        BorderPane mainContent = new BorderPane();
-        mainContent.getStyleClass().add("background");
+        val mainContent = BorderPane()
+        mainContent.styleClass.add("background")
 
-        AnchorPane anchor = new AnchorPane();
-        GridPane maingrid = new GridPane();
+        val anchor = AnchorPane()
+        val maingrid = GridPane()
 
-        ColumnConstraints column1 = new ColumnConstraints(); column1.setPercentWidth(40);
-        ColumnConstraints column2 = new ColumnConstraints(); column2.setPercentWidth(60);
-        maingrid.getColumnConstraints().addAll(column1, column2);
-        maingrid.setVgap(15);
+        val column1 = ColumnConstraints()
+        column1.percentWidth = 40.0
+        val column2 = ColumnConstraints()
+        column2.percentWidth = 60.0
+        maingrid.columnConstraints.addAll(column1, column2)
+        maingrid.vgap = 15.0
 
-        AnchorPane.setTopAnchor(maingrid, 15.0);
-        AnchorPane.setRightAnchor(maingrid, 15.0);
-        AnchorPane.setLeftAnchor(maingrid, 15.0);
-        AnchorPane.setBottomAnchor(maingrid, 15.0);
+        AnchorPane.setTopAnchor(maingrid, 15.0)
+        AnchorPane.setRightAnchor(maingrid, 15.0)
+        AnchorPane.setLeftAnchor(maingrid, 15.0)
+        AnchorPane.setBottomAnchor(maingrid, 15.0)
 
-        HBox controls = new HBox();
+        val controls = HBox()
 
         //add components
-        Label accName = new Label(LanguageController.getString("name"));
-        GridPane.setConstraints(accName, 0, 0);
-        maingrid.getChildren().add(accName);
+        val accName = Label(LanguageController.getString("name"))
+        GridPane.setConstraints(accName, 0, 0)
+        maingrid.children.add(accName)
 
-        accNameTF = new TextField();
-        GridPane.setConstraints(accNameTF, 1, 0);
-        maingrid.getChildren().add(accNameTF);
+        accNameTF = TextField()
+        GridPane.setConstraints(accNameTF, 1, 0)
+        maingrid.children.add(accNameTF)
 
-        Label accMail = new Label(LanguageController.getString("mail"));
-        GridPane.setConstraints(accMail, 0, 1);
-        maingrid.getChildren().add(accMail);
+        val accMail = Label(LanguageController.getString("mail"))
+        GridPane.setConstraints(accMail, 0, 1)
+        maingrid.children.add(accMail)
 
-        accMailTF = new TextField();
-        GridPane.setConstraints(accMailTF, 1, 1);
-        maingrid.getChildren().add(accMailTF);
+        accMailTF = TextField()
+        GridPane.setConstraints(accMailTF, 1, 1)
+        maingrid.children.add(accMailTF)
 
-        Label accLevel = new Label(LanguageController.getString("level"));
-        GridPane.setConstraints(accLevel, 0, 2);
-        maingrid.getChildren().add(accLevel);
+        val accLevel = Label(LanguageController.getString("level"))
+        GridPane.setConstraints(accLevel, 0, 2)
+        maingrid.children.add(accLevel)
 
-        accLevelTF = new CustomTextField();
-        accLevelTF.setRestrict("[0-9]");
-        GridPane.setConstraints(accLevelTF, 1, 2);
-        maingrid.getChildren().add(accLevelTF);
+        accLevelTF = CustomTextField()
+        accLevelTF.restrict = "[0-9]"
+        GridPane.setConstraints(accLevelTF, 1, 2)
+        maingrid.children.add(accLevelTF)
 
-        Label accAlliance = new Label();
-        GridPane.setConstraints(accAlliance, 0, 3);
-        maingrid.getChildren().add(accAlliance);
+        val accAlliance = Label()
+        GridPane.setConstraints(accAlliance, 0, 3)
+        maingrid.children.add(accAlliance)
 
-        accAllianceTF = new TextField();
-        GridPane.setConstraints(accAllianceTF, 1, 3);
-        maingrid.getChildren().add(accAllianceTF);
+        accAllianceTF = TextField()
+        GridPane.setConstraints(accAllianceTF, 1, 3)
+        maingrid.children.add(accAllianceTF)
 
 
         //controls
-        Button saveCfg = new Button();
-        controls.getChildren().add(saveCfg);
+        val saveCfg = Button()
+        controls.children.add(saveCfg)
 
-        controls.setPadding(new Insets(15, 12, 15, 12));  //padding top, left, bottom, right
-        controls.setSpacing(10);
-        controls.setAlignment(Pos.CENTER_RIGHT);
+        controls.padding = Insets(15.0, 12.0, 15.0, 12.0)  //padding top, left, bottom, right
+        controls.spacing = 10.0
+        controls.alignment = Pos.CENTER_RIGHT
 
-        switch (SceneType)
-        {
-            case "new":
-                saveCfg.setText(LanguageController.getString("addAcc"));
-                saveCfg.setOnAction(event -> {
+        when (SceneType) {
+            "new" -> {
+                saveCfg.text = LanguageController.getString("addAcc")
+                saveCfg.setOnAction { event ->
 
-                    if (accNameTF.getText().isEmpty()) { new MessageDialog(0, LanguageController.getString("enterName"), 350, 220); }
-                    else
-                    {
+                    if (accNameTF.text.isEmpty()) {
+                        MessageDialog(0, LanguageController.getString("enterName"), 350, 220)
+                    } else {
                         try {
-                            AccountXmlFactory.addAccount(GAME_ID, accNameTF.getText(), accMailTF.getText(), accLevelTF.getText(), accAllianceTF.getText());
-                        } catch (TransformerException | ParserConfigurationException | IOException | SAXException e1) {
-                            if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
+                            AccountXmlFactory.addAccount(GAME_ID, accNameTF.text, accMailTF.text, accLevelTF.text, accAllianceTF.text)
+                        } catch (e1: TransformerException) {
+                            if (DebugHelper.DEBUGVERSION) {
+                                e1.printStackTrace()
+                            } else {
+                                ExceptionHandler(Thread.currentThread(), e1)
+                            }
+                        } catch (e1: ParserConfigurationException) {
+                            if (DebugHelper.DEBUGVERSION) {
+                                e1.printStackTrace()
+                            } else {
+                                ExceptionHandler(Thread.currentThread(), e1)
+                            }
+                        } catch (e1: IOException) {
+                            if (DebugHelper.DEBUGVERSION) {
+                                e1.printStackTrace()
+                            } else {
+                                ExceptionHandler(Thread.currentThread(), e1)
+                            }
+                        } catch (e1: SAXException) {
+                            if (DebugHelper.DEBUGVERSION) {
+                                e1.printStackTrace()
+                            } else {
+                                ExceptionHandler(Thread.currentThread(), e1)
+                            }
                         }
-                        AppConfiguration.accountData.add(new Account(
-                                accNameTF.getText(),
-                                accMailTF.getText(),
-                                accLevelTF.getText(),
-                                accAllianceTF.getText()));
-                        getAccEditScene().getWin().getWindowStage().getStage().close();
-                        AccountOverview.status.setStyle("-fx-text-fill: #55c4fe;"); AccountOverview.status.setText(LanguageController.getString("accAdded"));
-                        LogFileHandler.logger.log(Level.INFO, "new account added: " + accNameTF.getText());
 
-                        if (AppConfiguration.accountData.size() == 1) {
-                            AccountOverview.accCount.setText("1 " + LanguageController.getString("acc_loaded"));
-                            AccountOverview.editAcc.setDisable(false); AccountOverview.delAcc.setDisable(false);
-                            AccountOverview.tableview.getSelectionModel().select(0);
+                        AppConfiguration.accountData.add(Account(
+                                accNameTF.text,
+                                accMailTF.text,
+                                accLevelTF.text,
+                                accAllianceTF.text))
+                        accEditScene!!.win.windowStage.stage.close()
+                        AccountOverview.status.style = "-fx-text-fill: #55c4fe;"
+                        AccountOverview.status.text = LanguageController.getString("accAdded")
+                        LogFileHandler.logger.log(Level.INFO, "new account added: " + accNameTF.text)
+
+                        if (AppConfiguration.accountData.size == 1) {
+                            AccountOverview.accCount.text = "1 " + LanguageController.getString("acc_loaded")
+                            AccountOverview.editAcc.isDisable = false
+                            AccountOverview.delAcc.isDisable = false
+                            AccountOverview.tableview.selectionModel.select(0)
                         } else {
-                            AccountOverview.accCount.setText(String.valueOf(AppConfiguration.accountData.size()) + " " + LanguageController.getString("accs_loaded"));
+                            AccountOverview.accCount.text = AppConfiguration.accountData.size.toString() + " " + LanguageController.getString("accs_loaded")
                         }
                     }
 
 
-                });
-                break;
+                }
+            }
 
-            case "edit":
-                saveCfg.setText(LanguageController.getString("saveAcc"));
-                saveCfg.setOnAction(event -> {
+            "edit" -> {
+                saveCfg.text = LanguageController.getString("saveAcc")
+                saveCfg.setOnAction { event ->
                     try {
-                        AccountXmlFactory.saveAccXml(GAME_ID, selectedIdx);
-                        getAccEditScene().getWin().getWindowStage().getStage().close();
-                    } catch (MalformedURLException e1) {
-                        if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
+                        AccountXmlFactory.saveAccXml(GAME_ID, selectedIdx)
+                        accEditScene!!.win.windowStage.stage.close()
+                    } catch (e1: MalformedURLException) {
+                        if (DebugHelper.DEBUGVERSION) {
+                            e1.printStackTrace()
+                        } else {
+                            ExceptionHandler(Thread.currentThread(), e1)
+                        }
                     }
-                    Account.setAccount(selectedItem);
-                    AccountOverview.refreshPersonTable(selectedIdx);
-                });
-                break;
+
+                    Account.setAccount(selectedItem)
+                    AccountOverview.refreshPersonTable(selectedIdx)
+                }
+            }
         }
 
         //set project specific names
-        switch (GAME_ID)
-        {
-            case 2:
-                accAlliance.setText(LanguageController.getString("cooperative"));
-                break;
-            default:
-                accAlliance.setText(LanguageController.getString("alliance"));
-                break;
+        when (GAME_ID) {
+            2 -> accAlliance.text = LanguageController.getString("cooperative")
+            else -> accAlliance.text = LanguageController.getString("alliance")
         }
 
-        anchor.getChildren().add(maingrid);
+        anchor.children.add(maingrid)
 
         //set borderpane layout
-        mainContent.setCenter(anchor);
-        mainContent.setBottom(controls);
+        mainContent.center = anchor
+        mainContent.bottom = controls
 
 
-        accNameTF.textProperty().addListener((observable, oldValue, newValue) -> {
+        accNameTF.textProperty().addListener { observable, oldValue, newValue ->
             try {
-                if(newValue.length() > 16)   //maxLength of text field
-                    accNameTF.setText(oldValue);
-            } catch (Exception e) { accNameTF.setText(oldValue); }
-        });
+                if (newValue.length > 16)
+                //maxLength of text field
+                    accNameTF.text = oldValue
+            } catch (e: Exception) {
+                accNameTF.text = oldValue
+            }
+        }
 
-        return mainContent;
+        return mainContent
     }
 
-    private WindowScene getAccEditScene() {
-        return accEditScene;
+    companion object {
+        private var editDialog: AccountEditDialog? = null
+        lateinit var accNameTF: TextField
+        lateinit var accMailTF: TextField
+        lateinit var accLevelTF: CustomTextField
+        lateinit var accAllianceTF: TextField
     }
 }
