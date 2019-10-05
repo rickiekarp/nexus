@@ -111,8 +111,8 @@ public class AboutScene {
         GridPane.setConstraints(logo, 0, 1);
         grid.getChildren().add(logo);
 
-        Label version = new Label("Version: " + AppContext.getContext().getVersionNumber());
-        version.setStyle("-fx-font-size: 12pt;");
+        Label version = new Label(AppContext.getContext().getVersionNumber());
+        version.setStyle("-fx-font-size: 11pt;");
         GridPane.setHalignment(version, HPos.CENTER);
         GridPane.setConstraints(version, 0, 2);
         grid.getChildren().add(version);

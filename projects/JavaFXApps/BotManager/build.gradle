@@ -23,7 +23,7 @@ javafx {
     modules = [ 'javafx.controls' ]
 }
 
-mainClassName = 'net.rickiekarp.botter.Launcher'
+mainClassName = 'net.rickiekarp.botter.Main'
 
 jar {
     println("Building " + project.name)

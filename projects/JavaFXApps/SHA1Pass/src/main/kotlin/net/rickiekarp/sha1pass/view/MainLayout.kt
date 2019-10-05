@@ -91,7 +91,7 @@ class MainLayout : AppLayout {
             mainGrid.hgap = 5.0
             mainGrid.vgap = 5.0
             val sentence_label = Label(LanguageController.getString("u_sentence"))
-            sentence_label.style = "-fx-font-size: 10pt;"
+            sentence_label.style = "-fx-font-size: 9pt;"
             GridPane.setConstraints(sentence_label, 0, 0)
             mainGrid.children.add(sentence_label)
             sentence_label.tooltip = Tooltip(LanguageController.getString("type_sentence_tip"))
@@ -113,7 +113,7 @@ class MainLayout : AppLayout {
             mainGrid.children.add(sentence_tf)
 
             val word_label = Label(LanguageController.getString("u_word"))
-            word_label.style = "-fx-font-size: 10pt;"
+            word_label.style = "-fx-font-size: 9pt;"
             word_label.tooltip = Tooltip(LanguageController.getString("type_word_tip"))
             word_label.prefWidth = 35.0
             wordBox!!.children.add(word_label)
@@ -149,14 +149,14 @@ class MainLayout : AppLayout {
             mainGrid.children.add(secureMode)
 
             val hmacMode = CheckBox(LanguageController.getString("hm"))
-            hmacMode.style = "-fx-font-size: 9pt;"
+            hmacMode.style = "-fx-font-size: 8pt;"
             hmacMode.tooltip = Tooltip(LanguageController.getString("hmac_tip"))
             hmacMode.isSelected = hmac
             GridPane.setConstraints(hmacMode, 3, 1)
             mainGrid.children.add(hmacMode)
 
             val complexMode = CheckBox(LanguageController.getString("comp"))
-            complexMode.style = "-fx-font-size: 9pt;"
+            complexMode.style = "-fx-font-size: 8pt;"
             complexMode.tooltip = Tooltip(LanguageController.getString("comp_tip"))
             complexMode.isSelected = complex
             GridPane.setConstraints(complexMode, 4, 1)
@@ -403,9 +403,8 @@ class MainLayout : AppLayout {
         Clipboard.getSystemClipboard().setContent(content)
     }
 
-    override fun getLayout(): Node {
-        return mainLayout
-    }
+    override val layout: Node
+        get() = mainLayout
 
     override fun postInit() {
         sentence_tf_mask!!.requestFocus()
