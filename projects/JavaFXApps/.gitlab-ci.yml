@@ -3,13 +3,13 @@ stages:
 
 build:
   stage: build
-  image: openjdk:11.0.3-jdk
+  image: openjdk:11.0.4-jdk
   script:
     - cd projects/JavaFXApps
     - ./gradlew clean :SHA1Pass:distZip
   artifacts:
     paths:
-    - SHA1Pass/build/distributions
+    - projects/JavaFXApps/SHA1Pass/build/distributions
     expire_in: 1 week
   only:
     changes:
