@@ -1,9 +1,6 @@
 [submodule "docs/infrastructure"]
 	path = docs/infrastructure
 	url = ../infrastructure
-[submodule "libs/module-deployment"]
-	path = libs/module-deployment
-	url = git@pi:module-deployment
 [submodule "projects/infrastructure-raspberrypi"]
 	path = projects/infrastructure-raspberrypi
 	url = git@pi:infrastructure-raspberrypi
