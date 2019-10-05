@@ -1,4 +1,4 @@
-unitTests:
+test-homebackend:
   stage: test
   image: openjdk:11.0.4-jdk
   script:
@@ -8,7 +8,7 @@ unitTests:
     changes:
       - projects/homebackend/*
 
-buildLoginServer:
+build-LoginServer:
   stage: build
   image: openjdk:11.0.4-jdk
   script:
@@ -22,7 +22,7 @@ buildLoginServer:
     changes:
       - projects/homebackend/*
 
-buildHomeServer:
+build-HomeServer:
   stage: build
   image: openjdk:11.0.4-jdk
   script:
@@ -36,7 +36,7 @@ buildHomeServer:
     changes:
       - projects/homebackend/*
 
-buildWebsiteFrontend:
+build-WebsiteFrontend:
   stage: build
   image: trion/ng-cli
   script:

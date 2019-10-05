@@ -1,4 +1,4 @@
-unittest:
+test-javafxapps:
   stage: test
   image: openjdk:11.0.4-jdk
   script:
