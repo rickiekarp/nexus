@@ -6,6 +6,7 @@ import net.rickiekarp.core.net.provider.NetworkParameterProvider;
 import net.rickiekarp.botlib.model.PluginData;
 
 public class BotNetworkApi extends NetworkApi {
+    private static String AUTH_DOMAIN = "auth";
     private static String PLUGIN_DOMAIN = "plugin";
     private static String VALIDATE_ACTION = "validate";
     private static String PLUGIN_DATA_ACTION = "data";
@@ -14,7 +15,7 @@ public class BotNetworkApi extends NetworkApi {
     public static NetworkAction requestValidation(PluginData plugin) {
         NetworkParameterProvider provider = NetworkParameterProvider.create();
         provider.put("plugin", plugin.getPluginName());
-        return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(ACCOUNT_DOMAIN).setAction(VALIDATE_ACTION).setParameters(provider).setMethod("POST").build();
+        return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(AUTH_DOMAIN).setAction(VALIDATE_ACTION).setParameters(provider).setMethod("POST").build();
     }
 
     public static NetworkAction requestPlugins() {
