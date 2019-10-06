@@ -1,8 +1,8 @@
-package net.rickiekarp.loginserver.repo
+package net.rickiekarp.homeserver.repo
 
 import net.rickiekarp.foundation.utils.DatabaseUtil
-import net.rickiekarp.loginserver.dto.ApplicationDTO
-import net.rickiekarp.loginserver.dao.UpdateDAO
+import net.rickiekarp.homeserver.dao.UpdateDAO
+import net.rickiekarp.homeserver.dto.ApplicationDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement

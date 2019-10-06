@@ -1,19 +1,18 @@
-//package net.rickiekarp.homeserver.rest.api;
-//
-//import net.rickiekarp.foundation.dto.exception.ErrorDTO;
-//
-//import javax.ws.rs.GET;
-//import javax.ws.rs.Path;
-//import javax.ws.rs.Produces;
-//import javax.ws.rs.QueryParam;
-//import javax.ws.rs.core.MediaType;
-//import javax.ws.rs.core.Response;
-//import java.io.File;
-//
-//@Path("file")
-//public class FileApi {
-//
-//    @GET
+package net.rickiekarp.homeserver.rest.api
+
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
+
+import java.io.IOException
+
+@RestController
+@RequestMapping("file")
+class FileApi {
+
+    //    @GET
 //    @Path("download")
 //    @Produces(MediaType.APPLICATION_OCTET_STREAM)
 //    public Response getFile(
@@ -29,4 +28,13 @@
 //            return Response.ok(errorDTO, MediaType.APPLICATION_JSON).build();
 //        }
 //    }
-//}
+
+    val file: ByteArray
+        @GetMapping(value = ["get"], produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+        @ResponseBody
+        @Throws(IOException::class)
+        get() {
+            val `in` = this.javaClass.classLoader.getResourceAsStream("botmanager/changelog.xml")
+            return `in`!!.readAllBytes()
+        }
+}

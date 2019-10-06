@@ -1,4 +1,4 @@
-package net.rickiekarp.loginserver.dto
+package net.rickiekarp.homeserver.dto
 
 class ApplicationDTO {
 

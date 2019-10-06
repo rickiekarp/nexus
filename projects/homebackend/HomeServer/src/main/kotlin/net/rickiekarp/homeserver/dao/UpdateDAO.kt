@@ -1,6 +1,6 @@
-package net.rickiekarp.loginserver.dao
+package net.rickiekarp.homeserver.dao
 
-import net.rickiekarp.loginserver.dto.ApplicationDTO
+import net.rickiekarp.homeserver.dto.ApplicationDTO
 
 interface UpdateDAO {
     fun findByName(identifier: String, updateChannel: Int): List<ApplicationDTO>
