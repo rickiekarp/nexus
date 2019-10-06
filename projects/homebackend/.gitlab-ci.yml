@@ -16,7 +16,7 @@ build-LoginServer:
     - ./gradlew :LoginServer:build
   artifacts:
     paths:
-    - projects/module-deployment/service-application/webapps/
+    - projects/module-deployment/service-tomcat/webapps/
     expire_in: 1 week
   only:
     changes:
@@ -30,7 +30,7 @@ build-HomeServer:
     - ./gradlew :HomeServer:build
   artifacts:
     paths:
-      - projects/module-deployment/service-application/webapps/
+      - projects/module-deployment/service-tomcat/webapps/
     expire_in: 1 week
   only:
     changes:

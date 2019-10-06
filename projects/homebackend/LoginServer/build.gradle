@@ -8,7 +8,7 @@ apply plugin: 'war'
 build {
     war {
         archivesBaseName = 'LoginServer'
-        libsDirName = new File(projectDir, "/../../module-deployment/service-application/webapps")
+        libsDirName = new File(projectDir, "/../../module-deployment/service-tomcat/webapps")
         manifest {
             attributes 'Implementation-Version': new Date().format('yyMMddHHmm')
         }
