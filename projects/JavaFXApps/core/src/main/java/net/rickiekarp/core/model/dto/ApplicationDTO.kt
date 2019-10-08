@@ -1,41 +1,15 @@
-package net.rickiekarp.core.model.dto;
+package net.rickiekarp.core.model.dto
 
-public class ApplicationDTO {
-    private String identifier;
-    private int version;
-    private boolean updateEnable;
+class ApplicationDTO {
+    var identifier: String? = null
+    var version: Int = 0
+    var isUpdateEnable: Boolean = false
 
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public boolean isUpdateEnable() {
-        return updateEnable;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
-    public void setUpdateEnable(boolean updateEnable) {
-        this.updateEnable = updateEnable;
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Application{" +
-                "identifier='" + identifier + '\'' +
+                "identifier='" + identifier + '\''.toString() +
                 ", version=" + version +
-                ", updateEnable=" + updateEnable +
-                '}';
+                ", updateEnable=" + isUpdateEnable +
+                '}'.toString()
     }
-
 }

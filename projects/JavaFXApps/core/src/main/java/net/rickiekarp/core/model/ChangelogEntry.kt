@@ -1,30 +1,25 @@
-package net.rickiekarp.core.model;
+package net.rickiekarp.core.model
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleStringProperty
 
 /**
  * Created by rickie on 3/12/2016.
  */
-public class ChangelogEntry {
+class ChangelogEntry(version: String, date: String, desc: String) {
+    private val version: SimpleStringProperty = SimpleStringProperty(version)
+    private val date: SimpleStringProperty = SimpleStringProperty(date)
+    private val desc: SimpleStringProperty = SimpleStringProperty(desc)
 
-    private final SimpleStringProperty version;
-    private final SimpleStringProperty date;
-    private final SimpleStringProperty desc;
-
-    public ChangelogEntry(String version, String date, String desc) {
-        this.version = new SimpleStringProperty(version);
-        this.date = new SimpleStringProperty(date);
-        this.desc = new SimpleStringProperty(desc);
+    fun getVersion(): String {
+        return version.get()
     }
 
-    public String getVersion() {
-        return version.get();
+    fun getDate(): String {
+        return date.get()
     }
-    public String getDate() {
-        return date.get();
-    }
-    public String getDesc() {
-        return desc.get();
+
+    fun getDesc(): String {
+        return desc.get()
     }
 
 }

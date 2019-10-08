@@ -12,7 +12,7 @@ import java.net.URL;
 public class ThemeSelector {
 
     public final static String DARK_THEME_CSS = "themes/DarkTheme.css";
-    public final static String LIGHT_THEME_CSS = "themes/LightTheme.css";
+    private final static String LIGHT_THEME_CSS = "themes/LightTheme.css";
 
     /**
      * Sets the theme according to the current themeState.
@@ -54,55 +54,55 @@ public class ThemeSelector {
         switch (schemeIdx) {
             case 0:
                 Window.colorTheme = "darkgray";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             case 1:
                 Window.colorTheme = "gray";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             case 2:
                 Window.colorTheme = "black";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             case 3:
                 Window.colorTheme = "red";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             case 4:
                 Window.colorTheme = "orange";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             case 5:
                 Window.colorTheme = "yellow";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             case 6:
                 Window.colorTheme = "blue";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             case 7:
                 Window.colorTheme = "magenta";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             case 8:
                 Window.colorTheme = "purple";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             case 9:
                 Window.colorTheme = "green";
-                MainScene.mainScene.getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
             default:
                 Window.colorTheme = "darkgray";
-                MainScene.mainScene.getWindowScene().getWin().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+                MainScene.Companion.getMainScene().getWindowScene().getWin().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
                 break;
         }
 
-        for (int i = 0; i < MainScene.mainScene.getSceneViewStack().size(); i++) {
-            MainScene.mainScene.getSceneViewStack().get(i).setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+        for (int i = 0; i < MainScene.Companion.getMainScene().getSceneViewStack().size(); i++) {
+            MainScene.Companion.getMainScene().getSceneViewStack().get(i).setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
         }
 
-        MainScene.mainScene.getWindowScene().getWin().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
+        MainScene.Companion.getMainScene().getWindowScene().getWin().setStyle("-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";");
     }
 
     /**
@@ -126,10 +126,10 @@ public class ThemeSelector {
     {
         System.out.println("fixme: onThemeChange()");
         Configuration.decorationColor = Color.valueOf(newValue);
-        if (MainScene.mainScene.getWindowScene() != null) { MainScene.mainScene.getWindowScene().getWin().setDecorationColor(); }
-        if (SettingsScene.settingsScene != null) { SettingsScene.settingsScene.getSettingsWindow().getWin().setDecorationColor(); }
+        if (MainScene.Companion.getMainScene().getWindowScene() != null) { MainScene.Companion.getMainScene().getWindowScene().getWin().setDecorationColor(); }
+//        if (SettingsScene.Companion.getSettingsScene() != null) { SettingsScene.Companion.getSettingsScene().getSettingsWindow().getWin().setDecorationColor(); }
 //        if (AboutScene.aboutScene != null) { AboutScene.aboutScene.getAboutWindow().getWin().setDecorationColor(); }
-        if (CommandsScene.commandsScene != null) { CommandsScene.commandsScene.getCommandsWindow().getWin().setDecorationColor(); }
+//        if (CommandsScene.Companion.getCommandsScene() != null) { CommandsScene.Companion.getCommandsScene().getCommandsWindow().getWin().setDecorationColor(); }
     }
 
     /**

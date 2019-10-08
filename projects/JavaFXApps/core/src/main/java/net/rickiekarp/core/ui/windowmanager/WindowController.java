@@ -74,7 +74,7 @@ public class WindowController {
         final WindowStage stage = window.getWindowStage();
         LogFileHandler.logger.info("close." + stage.getIdentifier());
         Platform.runLater(() -> stage.getStage().fireEvent(new WindowEvent(stage.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST)));
-        MainScene.stageStack.pop(stage.getIdentifier());
+        MainScene.Companion.getStageStack().pop(stage.getIdentifier());
     }
 
     public void minimize() {

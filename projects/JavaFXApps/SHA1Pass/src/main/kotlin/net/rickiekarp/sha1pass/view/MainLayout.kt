@@ -99,7 +99,7 @@ class MainLayout : AppLayout {
 
             sentence_tf_mask = CustomTextField()
             sentence_tf_mask!!.tooltip = Tooltip(LanguageController.getString("type_sentence_tip"))
-            sentence_tf_mask!!.skin = CustomTextFieldSkin(sentence_tf_mask)
+            sentence_tf_mask!!.skin = CustomTextFieldSkin(sentence_tf_mask!!)
             GridPane.setConstraints(sentence_tf_mask, 1, 0)
             GridPane.setColumnSpan(sentence_tf_mask, 3)
             mainGrid.children.add(sentence_tf_mask)

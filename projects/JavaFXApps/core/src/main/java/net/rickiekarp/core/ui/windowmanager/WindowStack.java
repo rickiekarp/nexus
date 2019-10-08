@@ -13,10 +13,10 @@ public class WindowStack extends Stack<Node> {
     public Node push(Node item) {
         //System.out.println("Push " + item);
         addElement(item);
-        MainScene.mainScene.getBorderPane().setCenter(item);
+        MainScene.Companion.getMainScene().getBorderPane().setCenter(item);
         if (this.size() == 2) {
             initializeBackButton();
-            MainScene.mainScene.getWindowScene().getWin().getTitlebarButtonBox().getChildren().add(backButton);
+            MainScene.Companion.getMainScene().getWindowScene().getWin().getTitlebarButtonBox().getChildren().add(backButton);
         }
         return item;
     }
@@ -31,9 +31,9 @@ public class WindowStack extends Stack<Node> {
         backButton = new Button("Back");
         backButton.setOnAction(event -> {
             this.pop();
-            MainScene.mainScene.getBorderPane().setCenter(super.peek());
+            MainScene.Companion.getMainScene().getBorderPane().setCenter(super.peek());
             if (this.size() == 1) {
-                MainScene.mainScene.getWindowScene().getWin().getTitlebarButtonBox().getChildren().remove(backButton);
+                MainScene.Companion.getMainScene().getWindowScene().getWin().getTitlebarButtonBox().getChildren().remove(backButton);
                 backButton = null;
             }
         });

@@ -1,33 +1,20 @@
-package net.rickiekarp.core.model;
+package net.rickiekarp.core.model
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleStringProperty
 
 /**
  * This is the model class for all ConsoleCommands
  */
-public class ConsoleCommands {
-    private final SimpleStringProperty command_name;
-    private final SimpleStringProperty command_helper;
-    private final SimpleStringProperty command_desc;
-    private final Class<?> clz;
+class ConsoleCommands(aCommandName: String, aCommandHelper: String, aCommandDesc: String, val method: Class<*>) {
+    private val command_name: SimpleStringProperty = SimpleStringProperty(aCommandName)
+    private val command_helper: SimpleStringProperty = SimpleStringProperty(aCommandHelper)
+    private val command_desc: SimpleStringProperty = SimpleStringProperty(aCommandDesc)
 
-    public ConsoleCommands(String aCommandName, String aCommandHelper, String aCommandDesc, Class<?> clazz) {
-        this.clz = clazz;
-        this.command_name = new SimpleStringProperty(aCommandName);
-        this.command_helper = new SimpleStringProperty(aCommandHelper);
-        this.command_desc = new SimpleStringProperty(aCommandDesc);
-    }
+    val commandName: String
+        get() = command_name.get()
+    val commandHelper: String
+        get() = command_helper.get()
+    val commandDesc: String
+        get() = command_desc.get()
 
-    public String getCommandName() {
-        return command_name.get();
-    }
-    public String getCommandHelper() {
-        return command_helper.get();
-    }
-    public String getCommandDesc() {
-        return command_desc.get();
-    }
-    public Class<?> getMethod() {
-        return clz;
-    }
 }

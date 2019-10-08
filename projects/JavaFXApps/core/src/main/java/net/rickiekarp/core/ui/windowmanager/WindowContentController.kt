@@ -1,59 +1,46 @@
-package net.rickiekarp.core.ui.windowmanager;
+package net.rickiekarp.core.ui.windowmanager
 
-import net.rickiekarp.core.components.button.SidebarButton;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import net.rickiekarp.core.components.button.SidebarButton
+import javafx.scene.layout.HBox
+import javafx.scene.layout.VBox
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList
 
-public class WindowContentController {
-    private List<SidebarButton> sidebarNodes;
-    private HBox titlebarRightButtonBox;
-    private VBox sidebarButtonBox;
+class WindowContentController internal constructor() {
+    private val sidebarNodes: MutableList<SidebarButton>
+    var titlebarButtonBox: HBox? = null
+        private set
+    var sidebarButtonBox: VBox? = null
 
-    WindowContentController() {
-        sidebarNodes = new ArrayList<>(3);
+    val list: List<SidebarButton>
+        get() = sidebarNodes
+
+    init {
+        sidebarNodes = ArrayList(3)
     }
 
-    public void addSidebarItem(int position, SidebarButton node) {
-        sidebarNodes.add(position, node);
+    fun addSidebarItem(position: Int, node: SidebarButton) {
+        sidebarNodes.add(position, node)
     }
 
-    void addSidebarItem(SidebarButton node) {
-        addSidebarItem(sidebarNodes.size(), node);
+    fun addSidebarItem(node: SidebarButton) {
+        addSidebarItem(sidebarNodes.size, node)
     }
 
     /**
      * Removes a SidebarButton item by its given identifier
      * @param identifier SidebarButton identifier
      */
-    public void removeSidebarItemByIdentifier(String identifier) {
-        for (int i = 0; i < sidebarNodes.size(); i++) {
-            if (sidebarNodes.get(i).getIdentifier().equals(identifier)) {
-                sidebarNodes.remove(i);
+    fun removeSidebarItemByIdentifier(identifier: String) {
+        for (i in sidebarNodes.indices) {
+            if (sidebarNodes[i].identifier == identifier) {
+                sidebarNodes.removeAt(i)
             }
         }
-        sidebarButtonBox.getChildren().setAll(sidebarNodes);
+        sidebarButtonBox!!.children.setAll(sidebarNodes)
     }
 
-    List<SidebarButton> getList() {
-        return sidebarNodes;
-    }
-
-    HBox getTitlebarButtonBox() {
-        return titlebarRightButtonBox;
-    }
-
-    VBox getSidebarButtonBox() {
-        return sidebarButtonBox;
-    }
-
-    void setTitlebarRightButtonBox(HBox titlebar) {
-        this.titlebarRightButtonBox = titlebar;
-    }
-
-    void setSidebarButtonBox(VBox sidebar) {
-        this.sidebarButtonBox = sidebar;
+    fun setTitlebarRightButtonBox(titlebar: HBox) {
+        this.titlebarButtonBox = titlebar
     }
 }

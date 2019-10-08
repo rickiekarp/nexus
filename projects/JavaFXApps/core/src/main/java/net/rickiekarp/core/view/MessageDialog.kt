@@ -1,302 +1,321 @@
-package net.rickiekarp.core.view;
+package net.rickiekarp.core.view
 
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.net.update.UpdateChecker;
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.ui.windowmanager.WindowScene;
-import net.rickiekarp.core.ui.windowmanager.WindowStage;
-import net.rickiekarp.core.ui.windowmanager.ImageLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.net.update.UpdateChecker
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.ui.windowmanager.WindowScene
+import net.rickiekarp.core.ui.windowmanager.WindowStage
+import net.rickiekarp.core.ui.windowmanager.ImageLoader
+import javafx.geometry.Insets
+import javafx.geometry.Pos
+import javafx.scene.control.Button
+import javafx.scene.control.CheckBox
+import javafx.scene.control.Label
+import javafx.scene.layout.*
+import javafx.stage.Modality
+import javafx.stage.Stage
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.IOException
+import java.net.URISyntaxException
 
 /**
  * This class is used for creating different message dialogs.
  * Example: Error Message
  */
-public class MessageDialog {
+class MessageDialog(type: Int, msg: String, width: Int, height: Int) {
 
-    public MessageDialog(int type, String msg, int width, int height) {
-        switch (type) {
-            case 0: createDialog("error", msg, width, height); break;
-            case 1: createDialog("info", msg, width, height); break;
+    init {
+        when (type) {
+            0 -> createDialog("error", msg, width, height)
+            1 -> createDialog("info", msg, width, height)
         }
     }
 
-    private static void createDialog(String title, String msg, int width, int height) {
-        Stage modalDialog = new Stage();
-        modalDialog.getIcons().add(ImageLoader.getAppIconSmall());
-        modalDialog.initModality(Modality.APPLICATION_MODAL);
-        modalDialog.setResizable(false);
-        modalDialog.setWidth(width); modalDialog.setHeight(height);
-        modalDialog.setTitle(LanguageController.getString(title));
+    companion object {
 
-        //Layout
-        BorderPane contentPane = new BorderPane();
+        private fun createDialog(title: String, msg: String, width: Int, height: Int) {
+            val modalDialog = Stage()
+            modalDialog.icons.add(ImageLoader.getAppIconSmall())
+            modalDialog.initModality(Modality.APPLICATION_MODAL)
+            modalDialog.isResizable = false
+            modalDialog.width = width.toDouble()
+            modalDialog.height = height.toDouble()
+            modalDialog.title = LanguageController.getString(title)
 
-        VBox vbox = new VBox();
-        vbox.setPadding(new Insets(20,0,0,20));
+            //Layout
+            val contentPane = BorderPane()
 
-        HBox controls = new HBox();
-        controls.setPadding(new Insets(10, 0, 10, 0));  //padding top, left, bottom, right
-        controls.setAlignment(Pos.CENTER);
+            val vbox = VBox()
+            vbox.padding = Insets(20.0, 0.0, 0.0, 20.0)
 
-        //Components
-        Label label = new Label(msg);
-        vbox.getChildren().addAll(label);
-        label.setWrapText(true);
+            val controls = HBox()
+            controls.padding = Insets(10.0, 0.0, 10.0, 0.0)  //padding top, left, bottom, right
+            controls.alignment = Pos.CENTER
 
-        Button okButton = new Button("OK");
-        okButton.setOnAction(arg0 -> modalDialog.close());
-        controls.getChildren().add(okButton);
+            //Components
+            val label = Label(msg)
+            vbox.children.addAll(label)
+            label.isWrapText = true
 
-        // The UI (Client Area) to display
-        contentPane.setCenter(vbox);
-        contentPane.setBottom(controls);
+            val okButton = Button("OK")
+            okButton.setOnAction { arg0 -> modalDialog.close() }
+            controls.children.add(okButton)
 
-        WindowScene modalDialogScene = new WindowScene(new WindowStage("message", modalDialog), contentPane, 1);
+            // The UI (Client Area) to display
+            contentPane.center = vbox
+            contentPane.bottom = controls
 
-        modalDialog.setScene(modalDialogScene);
-        modalDialog.show();
+            val modalDialogScene = WindowScene(WindowStage("message", modalDialog), contentPane, 1)
 
-        LogFileHandler.logger.info("open.MessageDialog(" + title + ")");
-    }
+            modalDialog.scene = modalDialogScene
+            modalDialog.show()
 
-    static boolean confirmDialog(String msg, int width, int height) {
-        Stage modalDialog = new Stage();
-        modalDialog.getIcons().add(ImageLoader.getAppIconSmall());
-        modalDialog.initModality(Modality.APPLICATION_MODAL);
-        modalDialog.setResizable(false);
-        modalDialog.setWidth(width); modalDialog.setHeight(height);
-        modalDialog.setTitle(LanguageController.getString("confirm"));
-
-        final boolean[] bool = new boolean[1];
-
-        BorderPane borderpane = new BorderPane();
-
-        VBox contentVbox = new VBox();
-        contentVbox.setSpacing(20);
-
-        HBox optionHBox = new HBox();
-        optionHBox.setSpacing(20);
-        optionHBox.setAlignment(Pos.CENTER);
-        optionHBox.setPadding(new Insets(5, 0, 15, 0));
-
-        //components
-        Label label = new Label(LanguageController.getString(msg));
-        label.setWrapText(true);
-        label.setPadding(new Insets(20, 10, 10, 20));
-
-        Button yesButton = new Button(LanguageController.getString("yes"));
-        yesButton.setOnAction(event -> {
-            bool[0] = true;
-            modalDialog.close();
-        });
-
-        Button noButton = new Button(LanguageController.getString("no"));
-        noButton.setOnAction(event -> {
-            bool[0] = false;
-            modalDialog.close();
-        });
-
-        if (DebugHelper.isDebugVersion()) {
-            contentVbox.setStyle("-fx-background-color: gray");
-            optionHBox.setStyle("-fx-background-color: #444444;");
+            LogFileHandler.logger.info("open.MessageDialog($title)")
         }
 
-        optionHBox.getChildren().addAll(yesButton, noButton);
+        fun confirmDialog(msg: String, width: Int, height: Int): Boolean {
+            val modalDialog = Stage()
+            modalDialog.icons.add(ImageLoader.getAppIconSmall())
+            modalDialog.initModality(Modality.APPLICATION_MODAL)
+            modalDialog.isResizable = false
+            modalDialog.width = width.toDouble()
+            modalDialog.height = height.toDouble()
+            modalDialog.title = LanguageController.getString("confirm")
 
-        // The UI (Client Area) to display
-        contentVbox.getChildren().addAll(label, optionHBox);
-        VBox.setVgrow(contentVbox, Priority.ALWAYS);
+            val bool = BooleanArray(1)
 
-        borderpane.setCenter(contentVbox);
-        borderpane.setBottom(optionHBox);
+            val borderpane = BorderPane()
 
-        // The Window as a Scene
-        WindowScene modalDialogScene = new WindowScene(new WindowStage("confirm", modalDialog), borderpane, 1);
+            val contentVbox = VBox()
+            contentVbox.spacing = 20.0
 
-        modalDialog.setScene(modalDialogScene);
+            val optionHBox = HBox()
+            optionHBox.spacing = 20.0
+            optionHBox.alignment = Pos.CENTER
+            optionHBox.padding = Insets(5.0, 0.0, 15.0, 0.0)
 
-        LogFileHandler.logger.info("open.confirmDialog");
+            //components
+            val label = Label(LanguageController.getString(msg))
+            label.isWrapText = true
+            label.padding = Insets(20.0, 10.0, 10.0, 20.0)
 
-        modalDialog.showAndWait();
+            val yesButton = Button(LanguageController.getString("yes"))
+            yesButton.setOnAction { event ->
+                bool[0] = true
+                modalDialog.close()
+            }
 
-        return bool[0];
-    }
+            val noButton = Button(LanguageController.getString("no"))
+            noButton.setOnAction { event ->
+                bool[0] = false
+                modalDialog.close()
+            }
 
-    static boolean restartDialog(String msg, int width, int height) {
-        Stage modalDialog = new Stage();
-        modalDialog.getIcons().add(ImageLoader.getAppIconSmall());
-        modalDialog.initModality(Modality.APPLICATION_MODAL);
-        modalDialog.setResizable(false);
-        modalDialog.setWidth(width); modalDialog.setHeight(height);
-        modalDialog.setTitle(LanguageController.getString("restartApp"));
+            if (DebugHelper.isDebugVersion()) {
+                contentVbox.style = "-fx-background-color: gray"
+                optionHBox.style = "-fx-background-color: #444444;"
+            }
 
-        final boolean[] bool = new boolean[1];
+            optionHBox.children.addAll(yesButton, noButton)
 
-        BorderPane borderpane = new BorderPane();
+            // The UI (Client Area) to display
+            contentVbox.children.addAll(label, optionHBox)
+            VBox.setVgrow(contentVbox, Priority.ALWAYS)
 
-        VBox contentVbox = new VBox();
-        contentVbox.setSpacing(20);
+            borderpane.center = contentVbox
+            borderpane.bottom = optionHBox
 
-        HBox optionHBox = new HBox();
-        optionHBox.setSpacing(20);
-        optionHBox.setAlignment(Pos.CENTER);
-        optionHBox.setPadding(new Insets(5, 0, 15, 0));
+            // The Window as a Scene
+            val modalDialogScene = WindowScene(WindowStage("confirm", modalDialog), borderpane, 1)
 
-        //components
-        Label label = new Label(LanguageController.getString(msg));
-        label.setWrapText(true);
-        label.setPadding(new Insets(20, 10, 10, 20));
+            modalDialog.scene = modalDialogScene
 
-        Button yesButton = new Button(LanguageController.getString("yes"));
-        yesButton.setOnAction(event -> {
-            try {
-                //save settings
+            LogFileHandler.logger.info("open.confirmDialog")
+
+            modalDialog.showAndWait()
+
+            return bool[0]
+        }
+
+        fun restartDialog(msg: String, width: Int, height: Int): Boolean {
+            val modalDialog = Stage()
+            modalDialog.icons.add(ImageLoader.getAppIconSmall())
+            modalDialog.initModality(Modality.APPLICATION_MODAL)
+            modalDialog.isResizable = false
+            modalDialog.width = width.toDouble()
+            modalDialog.height = height.toDouble()
+            modalDialog.title = LanguageController.getString("restartApp")
+
+            val bool = BooleanArray(1)
+
+            val borderpane = BorderPane()
+
+            val contentVbox = VBox()
+            contentVbox.spacing = 20.0
+
+            val optionHBox = HBox()
+            optionHBox.spacing = 20.0
+            optionHBox.alignment = Pos.CENTER
+            optionHBox.padding = Insets(5.0, 0.0, 15.0, 0.0)
+
+            //components
+            val label = Label(LanguageController.getString(msg))
+            label.isWrapText = true
+            label.padding = Insets(20.0, 10.0, 10.0, 20.0)
+
+            val yesButton = Button(LanguageController.getString("yes"))
+            yesButton.setOnAction { event ->
                 try {
-                    Configuration.config.save();
-                } catch (Exception e1) {
+                    //save settings
+                    try {
+                        Configuration.config.save()
+                    } catch (e1: Exception) {
+                        if (DebugHelper.DEBUGVERSION) {
+                            e1.printStackTrace()
+                        } else {
+                            ExceptionHandler(Thread.currentThread(), e1)
+                        }
+                    }
+
+                    //restart
+                    DebugHelper.restartApplication()
+                } catch (e1: URISyntaxException) {
                     if (DebugHelper.DEBUGVERSION) {
-                        e1.printStackTrace();
+                        e1.printStackTrace()
                     } else {
-                        new ExceptionHandler(Thread.currentThread(), e1);
+                        ExceptionHandler(Thread.currentThread(), e1)
+                    }
+                } catch (e1: IOException) {
+                    if (DebugHelper.DEBUGVERSION) {
+                        e1.printStackTrace()
+                    } else {
+                        ExceptionHandler(Thread.currentThread(), e1)
                     }
                 }
-
-                //restart
-                DebugHelper.restartApplication();
-            } catch (URISyntaxException | IOException e1) {
-                if (DebugHelper.DEBUGVERSION) {
-                    e1.printStackTrace();
-                } else {
-                    new ExceptionHandler(Thread.currentThread(), e1);
-                }
             }
-        });
 
-        Button noButton = new Button(LanguageController.getString("restartLater"));
-        noButton.setOnAction(event -> {
-            bool[0] = false;
-            modalDialog.close();
-        });
+            val noButton = Button(LanguageController.getString("restartLater"))
+            noButton.setOnAction { event ->
+                bool[0] = false
+                modalDialog.close()
+            }
 
-        if (DebugHelper.isDebugVersion()) {
-            contentVbox.setStyle("-fx-background-color: gray");
-            optionHBox.setStyle("-fx-background-color: #444444;");
+            if (DebugHelper.isDebugVersion()) {
+                contentVbox.style = "-fx-background-color: gray"
+                optionHBox.style = "-fx-background-color: #444444;"
+            }
+
+            optionHBox.children.addAll(yesButton, noButton)
+
+            // The UI (Client Area) to display
+            contentVbox.children.addAll(label, optionHBox)
+            VBox.setVgrow(contentVbox, Priority.ALWAYS)
+
+            borderpane.center = contentVbox
+            borderpane.bottom = optionHBox
+
+            // The Window as a Scene
+            val modalDialogScene = WindowScene(WindowStage("restart", modalDialog), borderpane, 1)
+
+            modalDialog.scene = modalDialogScene
+
+            LogFileHandler.logger.info("open.errorMessageDialog")
+
+            modalDialog.showAndWait()
+
+            return bool[0]
         }
 
-        optionHBox.getChildren().addAll(yesButton, noButton);
+        fun installUpdateDialog(msg: String, width: Int, height: Int): Stage {
+            val modalDialog = Stage()
+            modalDialog.icons.add(ImageLoader.getAppIconSmall())
+            modalDialog.initModality(Modality.APPLICATION_MODAL)
+            modalDialog.isResizable = false
+            modalDialog.width = width.toDouble()
+            modalDialog.height = height.toDouble()
+            modalDialog.title = LanguageController.getString("installUpdate")
 
-        // The UI (Client Area) to display
-        contentVbox.getChildren().addAll(label, optionHBox);
-        VBox.setVgrow(contentVbox, Priority.ALWAYS);
+            val borderpane = BorderPane()
 
-        borderpane.setCenter(contentVbox);
-        borderpane.setBottom(optionHBox);
+            val contentVbox = VBox()
+            contentVbox.spacing = 20.0
 
-        // The Window as a Scene
-        WindowScene modalDialogScene = new WindowScene(new WindowStage("restart", modalDialog), borderpane, 1);
+            val options = AnchorPane()
+            options.minHeight = 50.0
 
-        modalDialog.setScene(modalDialogScene);
+            val optionHBox = HBox()
+            optionHBox.spacing = 10.0
 
-        LogFileHandler.logger.info("open.errorMessageDialog");
+            //components
+            val label = Label(LanguageController.getString("update_desc"))
+            label.isWrapText = true
+            label.padding = Insets(20.0, 10.0, 10.0, 20.0)
 
-        modalDialog.showAndWait();
+            val remember = CheckBox(LanguageController.getString("hideThis"))
+            remember.isDisable = true
+            remember.setOnAction { event1 -> println(remember.isSelected) }
 
-        return bool[0];
-    }
-
-    static Stage installUpdateDialog(String msg, int width, int height) {
-        Stage modalDialog = new Stage();
-        modalDialog.getIcons().add(ImageLoader.getAppIconSmall());
-        modalDialog.initModality(Modality.APPLICATION_MODAL);
-        modalDialog.setResizable(false);
-        modalDialog.setWidth(width); modalDialog.setHeight(height);
-        modalDialog.setTitle(LanguageController.getString("installUpdate"));
-
-        BorderPane borderpane = new BorderPane();
-
-        VBox contentVbox = new VBox();
-        contentVbox.setSpacing(20);
-
-        AnchorPane options = new AnchorPane();
-        options.setMinHeight(50);
-
-        HBox optionHBox = new HBox();
-        optionHBox.setSpacing(10);
-
-        //components
-        Label label = new Label(LanguageController.getString("update_desc"));
-        label.setWrapText(true);
-        label.setPadding(new Insets(20, 10, 10, 20));
-
-        CheckBox remember = new CheckBox(LanguageController.getString("hideThis"));
-        remember.setDisable(true);
-        remember.setOnAction(event1 -> {
-            System.out.println(remember.isSelected());
-        });
-
-        Button yesButton = new Button(LanguageController.getString("yes"));
-        yesButton.setOnAction(event -> {
-            try {
-                //remove tray icon before installing update
-//                if (ToolTrayIcon.icon != null ) {
-//                    if (ToolTrayIcon.icon.getSystemTray().getTrayIcons().length > 0) {
-//                        ToolTrayIcon.icon.removeTrayIcon();
-//                    }
-//                }
-                UpdateChecker.installUpdate();
-            } catch (URISyntaxException | IOException e1) {
-                if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
+            val yesButton = Button(LanguageController.getString("yes"))
+            yesButton.setOnAction { event ->
+                try {
+                    //remove tray icon before installing update
+                    //                if (ToolTrayIcon.icon != null ) {
+                    //                    if (ToolTrayIcon.icon.getSystemTray().getTrayIcons().length > 0) {
+                    //                        ToolTrayIcon.icon.removeTrayIcon();
+                    //                    }
+                    //                }
+                    UpdateChecker.installUpdate()
+                } catch (e1: URISyntaxException) {
+                    if (DebugHelper.DEBUGVERSION) {
+                        e1.printStackTrace()
+                    } else {
+                        ExceptionHandler(Thread.currentThread(), e1)
+                    }
+                } catch (e1: IOException) {
+                    if (DebugHelper.DEBUGVERSION) {
+                        e1.printStackTrace()
+                    } else {
+                        ExceptionHandler(Thread.currentThread(), e1)
+                    }
+                }
             }
-        });
 
-        Button noButton = new Button(LanguageController.getString("no"));
-        noButton.setOnAction(event -> {
-            modalDialog.close();
-        });
+            val noButton = Button(LanguageController.getString("no"))
+            noButton.setOnAction { event -> modalDialog.close() }
 
-//        if (DebugHelper.isDebugVersion()) {
-//            contentVbox.setStyle("-fx-background-color: gray");
-//            optionHBox.setStyle("-fx-background-color: #444444;");
-//        }
+            //        if (DebugHelper.isDebugVersion()) {
+            //            contentVbox.setStyle("-fx-background-color: gray");
+            //            optionHBox.setStyle("-fx-background-color: #444444;");
+            //        }
 
-        optionHBox.getChildren().addAll(yesButton, noButton);
+            optionHBox.children.addAll(yesButton, noButton)
 
-        // The UI (Client Area) to display
-        contentVbox.getChildren().addAll(label);
-        options.getChildren().addAll(remember, optionHBox);
+            // The UI (Client Area) to display
+            contentVbox.children.addAll(label)
+            options.children.addAll(remember, optionHBox)
 
-        AnchorPane.setRightAnchor(optionHBox, 5.0);
-        AnchorPane.setBottomAnchor(optionHBox, 5.0);
-        AnchorPane.setLeftAnchor(remember, 10.0);
-        AnchorPane.setBottomAnchor(remember, 10.0);
+            AnchorPane.setRightAnchor(optionHBox, 5.0)
+            AnchorPane.setBottomAnchor(optionHBox, 5.0)
+            AnchorPane.setLeftAnchor(remember, 10.0)
+            AnchorPane.setBottomAnchor(remember, 10.0)
 
 
 
-        borderpane.setCenter(contentVbox);
-        borderpane.setBottom(options);
+            borderpane.center = contentVbox
+            borderpane.bottom = options
 
-        // The Window as a Scene
-        WindowScene modalDialogScene = new WindowScene(new WindowStage("installUpdate", modalDialog), borderpane, 1);
+            // The Window as a Scene
+            val modalDialogScene = WindowScene(WindowStage("installUpdate", modalDialog), borderpane, 1)
 
 
-        modalDialog.setScene(modalDialogScene);
+            modalDialog.scene = modalDialogScene
 
-        LogFileHandler.logger.info("open.installUpdateDialog");
+            LogFileHandler.logger.info("open.installUpdateDialog")
 
-        return modalDialog;
+            return modalDialog
+        }
     }
 }

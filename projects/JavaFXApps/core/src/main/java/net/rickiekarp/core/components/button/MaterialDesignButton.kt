@@ -1,102 +1,97 @@
-package net.rickiekarp.core.components.button;
+package net.rickiekarp.core.components.button
 
-import javafx.animation.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Skin;
-import javafx.scene.control.skin.ButtonSkin;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
+import javafx.animation.*
+import javafx.scene.control.Button
+import javafx.scene.control.Skin
+import javafx.scene.control.skin.ButtonSkin
+import javafx.scene.input.MouseEvent
+import javafx.scene.paint.Color
+import javafx.scene.shape.Circle
+import javafx.scene.shape.Rectangle
+import javafx.util.Duration
 
-public class MaterialDesignButton extends Button {
+class MaterialDesignButton(text: String) : Button(text) {
+    private var circleRipple: Circle? = null
+    private val rippleClip = Rectangle()
+    private val rippleDuration = Duration.millis(250.0)
+    private var lastRippleHeight = 0.0
+    private var lastRippleWidth = 0.0
+    private val rippleColor = Color(0.0, 0.0, 0.0, 0.61)
 
-    private Circle circleRipple;
-    private Rectangle rippleClip = new Rectangle();
-    private Duration rippleDuration =  Duration.millis(250);
-    private double lastRippleHeight = 0;
-    private double lastRippleWidth = 0;
-    private Color rippleColor = new Color(0, 0, 0, 0.61);
+    init {
 
-    public MaterialDesignButton(String text) {
-        super(text);
+        styleClass.addAll("md-button")
 
-        getStyleClass().addAll("md-button");
-
-        createRippleEffect();
+        createRippleEffect()
     }
 
-    @Override
-    protected Skin<?> createDefaultSkin() {
-        final ButtonSkin buttonSkin = new ButtonSkin(this);
-        this.getChildren().add(0, circleRipple);
-        return buttonSkin;
+    override fun createDefaultSkin(): Skin<*> {
+        val buttonSkin = ButtonSkin(this)
+        this.children.add(0, circleRipple)
+        return buttonSkin
     }
 
-    private void createRippleEffect() {
-        circleRipple = new Circle(0.1, rippleColor);
-        circleRipple.setOpacity(0.0);
+    private fun createRippleEffect() {
+        circleRipple = Circle(0.1, rippleColor)
+        circleRipple!!.opacity = 0.0
         //Optional: BoxBlur effect
         //circleRipple.setEffect(new BoxBlur(10, 3, 2));
 
         // Fade effect bit longer to show edges on the end
-        final FadeTransition fadeTransition = new FadeTransition(rippleDuration, circleRipple);
-        fadeTransition.setInterpolator(Interpolator.EASE_OUT);
-        fadeTransition.setFromValue(1.0);
-        fadeTransition.setToValue(0.0);
+        val fadeTransition = FadeTransition(rippleDuration, circleRipple)
+        fadeTransition.interpolator = Interpolator.EASE_OUT
+        fadeTransition.fromValue = 1.0
+        fadeTransition.toValue = 0.0
 
-        final Timeline scaleRippleTimeline = new Timeline();
+        val scaleRippleTimeline = Timeline()
 
-        final SequentialTransition parallelTransition = new SequentialTransition();
-        parallelTransition.getChildren().addAll(
+        val parallelTransition = SequentialTransition()
+        parallelTransition.children.addAll(
                 scaleRippleTimeline,
                 fadeTransition
-        );
+        )
 
-        parallelTransition.setOnFinished(event1 -> {
-            circleRipple.setOpacity(0.0);
-            circleRipple.setRadius(0.1);
-        });
+        parallelTransition.setOnFinished { event1 ->
+            circleRipple!!.opacity = 0.0
+            circleRipple!!.radius = 0.1
+        }
 
-        this.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            parallelTransition.stop();
-            parallelTransition.getOnFinished().handle(null);
+        this.addEventHandler(MouseEvent.MOUSE_PRESSED) { event ->
+            parallelTransition.stop()
+            parallelTransition.onFinished.handle(null)
 
-            circleRipple.setCenterX(event.getX());
-            circleRipple.setCenterY(event.getY());
+            circleRipple!!.centerX = event.x
+            circleRipple!!.centerY = event.y
 
             // Recalculate ripple size if size of button from last time was changed
-            if (getWidth() != lastRippleWidth || getHeight() != lastRippleHeight)
-            {
-                lastRippleWidth = getWidth();
-                lastRippleHeight = getHeight();
+            if (width != lastRippleWidth || height != lastRippleHeight) {
+                lastRippleWidth = width
+                lastRippleHeight = height
 
-                rippleClip.setWidth(lastRippleWidth);
-                rippleClip.setHeight(lastRippleHeight);
+                rippleClip.width = lastRippleWidth
+                rippleClip.height = lastRippleHeight
 
                 try {
-                    rippleClip.setArcHeight(this.getBackground().getFills().get(0).getRadii().getTopLeftHorizontalRadius());
-                    rippleClip.setArcWidth(this.getBackground().getFills().get(0).getRadii().getTopLeftHorizontalRadius());
-                    circleRipple.setClip(rippleClip);
-                } catch (Exception e) {
+                    rippleClip.arcHeight = this.background.fills[0].radii.topLeftHorizontalRadius
+                    rippleClip.arcWidth = this.background.fills[0].radii.topLeftHorizontalRadius
+                    circleRipple!!.clip = rippleClip
+                } catch (e: Exception) {
 
                 }
 
                 // Getting 45% of longest button's length, because we want edge of ripple effect always visible
-                double circleRippleRadius = Math.max(getHeight(), getWidth()) * 0.45;
-                final KeyValue keyValue = new KeyValue(circleRipple.radiusProperty(), circleRippleRadius, Interpolator.EASE_OUT);
-                final KeyFrame keyFrame = new KeyFrame(rippleDuration, keyValue);
-                scaleRippleTimeline.getKeyFrames().clear();
-                scaleRippleTimeline.getKeyFrames().add(keyFrame);
+                val circleRippleRadius = Math.max(height, width) * 0.45
+                val keyValue = KeyValue(circleRipple!!.radiusProperty(), circleRippleRadius, Interpolator.EASE_OUT)
+                val keyFrame = KeyFrame(rippleDuration, keyValue)
+                scaleRippleTimeline.keyFrames.clear()
+                scaleRippleTimeline.keyFrames.add(keyFrame)
             }
 
-            parallelTransition.playFromStart();
-        });
+            parallelTransition.playFromStart()
+        }
     }
 
-    public void setRippleColor(Color color) {
-        circleRipple.setFill(color);
+    fun setRippleColor(color: Color) {
+        circleRipple!!.fill = color
     }
-
 }

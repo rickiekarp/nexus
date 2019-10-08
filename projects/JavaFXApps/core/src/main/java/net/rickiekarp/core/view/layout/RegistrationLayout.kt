@@ -1,87 +1,82 @@
-package net.rickiekarp.core.view.layout;
+package net.rickiekarp.core.view.layout
 
-import net.rickiekarp.core.AppContext;
-import net.rickiekarp.core.account.Account;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.net.NetResponse;
-import net.rickiekarp.core.net.NetworkApi;
-import net.rickiekarp.core.view.MessageDialog;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import okhttp3.Response;
-import org.json.JSONObject;
+import net.rickiekarp.core.AppContext
+import net.rickiekarp.core.account.Account
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.net.NetResponse
+import net.rickiekarp.core.net.NetworkApi
+import net.rickiekarp.core.view.MessageDialog
+import javafx.geometry.Pos
+import javafx.scene.Node
+import javafx.scene.control.*
+import javafx.scene.layout.GridPane
+import javafx.scene.layout.VBox
 
-import java.io.InputStream;
-import java.util.logging.Level;
+import java.util.logging.Level
 
 /**
  * Main Login Mask layout class.
  */
-class RegistrationLayout {
-    private VBox main;
-    private GridPane grid;
-    private Label loginLabel;
-    private TextField username;
-    private PasswordField password;
+internal class RegistrationLayout {
+    private val main: VBox = VBox()
+    private val grid: GridPane
+    private val loginLabel: Label
+    private val username: TextField
+    private val password: PasswordField
 
-    RegistrationLayout() {
-        main = new VBox();
-        main.setSpacing(20);
-        main.setAlignment(Pos.CENTER);
-        grid = new GridPane();
+    val maskNode: Node
+        get() = main
+
+    init {
+        main.spacing = 20.0
+        main.alignment = Pos.CENTER
+        grid = GridPane()
         //grid.setGridLinesVisible(true);
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        loginLabel = new Label("Register");
-        main.getChildren().add(loginLabel);
+        grid.alignment = Pos.CENTER
+        grid.hgap = 10.0
+        grid.vgap = 10.0
+        loginLabel = Label("Register")
+        main.children.add(loginLabel)
 
-        Label usernameLabel = new Label("User");
-        grid.add(usernameLabel, 0, 1);
+        val usernameLabel = Label("User")
+        grid.add(usernameLabel, 0, 1)
 
-        username = new TextField();
-        grid.add(username, 1, 1);
+        username = TextField()
+        grid.add(username, 1, 1)
 
-        Label passwordLabel = new Label("Password");
-        grid.add(passwordLabel, 0, 2);
+        val passwordLabel = Label("Password")
+        grid.add(passwordLabel, 0, 2)
 
-        password = new PasswordField();
-        grid.add(password, 1, 2);
+        password = PasswordField()
+        grid.add(password, 1, 2)
 
-        Button registerButton = new Button("Submit");
-        registerButton.setOnAction(arg0 -> {
-            if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
-                Account account = new Account(username.getText(), password.getText());
-                InputStream inputStream = AppContext.getContext().getNetworkApi().runNetworkAction(NetworkApi.requestCreateAccount(account));
-                JSONObject responseJson = NetResponse.getResponseJson(inputStream);
+        val registerButton = Button("Submit")
+        registerButton.setOnAction { arg0 ->
+            if (!username.text.isEmpty() && !password.text.isEmpty()) {
+                val account = Account(username.text, password.text)
+                val inputStream = AppContext.getContext().networkApi.runNetworkAction(NetworkApi.requestCreateAccount(account))
+                val responseJson = NetResponse.getResponseJson(inputStream)
             } else {
-                new MessageDialog(0, "Enter account details!", 400, 200);
+                MessageDialog(0, "Enter account details!", 400, 200)
             }
-        });
+        }
 
-        main.getChildren().add(grid);
-        main.getChildren().add(registerButton);
+        main.children.add(grid)
+        main.children.add(registerButton)
     }
 
-    public Node getMaskNode() {
-        return main;
-    }
-
-    private boolean requestLogin(Account account) {
-        Response tokenAction = AppContext.getContext().getNetworkApi().requestResponse(
+    private fun requestLogin(account: Account): Boolean {
+        val tokenAction = AppContext.getContext().networkApi.requestResponse(
                 NetworkApi.requestAccessToken(account)
-        );
+        )
 
-        LogFileHandler.logger.log(Level.INFO, String.valueOf(tokenAction.code()));
-        switch (tokenAction.code()) {
-            case 200:
-                AppContext.getContext().getAccountManager().setAccount(account);
-                return true;
-            default:
-                return false;
+        LogFileHandler.logger.log(Level.INFO, tokenAction.code.toString())
+        when (tokenAction.code) {
+            200 -> {
+                AppContext.getContext().accountManager.account = account
+                return true
+            }
+            else -> return false
         }
     }
 }

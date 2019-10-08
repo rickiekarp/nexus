@@ -117,7 +117,7 @@ public class BotSetupLayout {
                 searchNode.setOnAction(event -> {
                     DirectoryChooser directoryChooser = new DirectoryChooser();
                     directoryChooser.setInitialDirectory(Configuration.config.getJarFile().getParentFile());
-                    File selectedDirectory = directoryChooser.showDialog(MainScene.mainScene.getWindowScene().getWindow());
+                    File selectedDirectory = directoryChooser.showDialog(MainScene.Companion.getMainScene().getWindowScene().getWindow());
 
                     if (selectedDirectory != null) {
                         setupGrid.getChildren().clear();
@@ -278,7 +278,7 @@ public class BotSetupLayout {
                 searchChrome.setAlignment(Pos.CENTER);
                 searchChrome.setOnAction(event -> {
                     DirectoryChooser directoryChooser = new DirectoryChooser();
-                    File selectedDirectory = directoryChooser.showDialog(MainScene.mainScene.getWindowScene().getWindow());
+                    File selectedDirectory = directoryChooser.showDialog(MainScene.Companion.getMainScene().getWindowScene().getWindow());
 
                     if (selectedDirectory != null) {
                         setupGrid.getChildren().clear();
@@ -300,9 +300,9 @@ public class BotSetupLayout {
                 writeBrowserSetting(); //save browser selection
                 Configuration.config.saveProperties(PluginConfig.class);
                 Configuration.config.saveProperties(BotConfig.class);
-                MainScene.mainScene.getBorderPane().setCenter(null);
+                MainScene.Companion.getMainScene().getBorderPane().setCenter(null);
                 MainLayout layout = new MainLayout();
-                MainScene.mainScene.getBorderPane().setTop(layout.getLaunchNode());
+                MainScene.Companion.getMainScene().getBorderPane().setTop(layout.getLaunchNode());
                 break;
         }
     }

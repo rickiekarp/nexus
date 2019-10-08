@@ -114,7 +114,7 @@ public class BotTask extends Task<Void> {
                                     isTimerTaskRunning = false;
                                 }
 
-                                if (!MainScene.mainScene.getWindowScene().getWin().getWindowStage().getStage().isShowing() && !Configuration.showTrayIcon) {
+                                if (!MainScene.Companion.getMainScene().getWindowScene().getWin().getWindowStage().getStage().isShowing() && !Configuration.showTrayIcon) {
                                     this.cancel();
                                     timer.cancel();
                                 }
@@ -129,7 +129,7 @@ public class BotTask extends Task<Void> {
                                 });
 
                                 if (Configuration.showTrayIcon && countdownInMillis == 15000) {
-                                    ToolTrayIcon.icon.displayTrayMessage();
+                                    ToolTrayIcon.Companion.getIcon().displayTrayMessage();
                                 }
 
                                 if (countdownInMillis == 0) {

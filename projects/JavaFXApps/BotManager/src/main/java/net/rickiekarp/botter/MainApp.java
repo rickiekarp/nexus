@@ -62,11 +62,11 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
 
         LoginMaskLayout loginMaskLayout = new LoginMaskLayout();
         setAppContextLoginBehaviour(loginMaskLayout);
-        MainScene.mainScene.getSceneViewStack().push(loginMaskLayout.getMaskNode());
+        MainScene.Companion.getMainScene().getSceneViewStack().push(loginMaskLayout.getMaskNode());
 
         //auto login
         if (AppContext.getContext().getAccountManager().isAutoLogin()) {
-            MainScene.mainScene.getBorderPane().setCenter(loginMaskLayout.getMaskNode());
+            MainScene.Companion.getMainScene().getBorderPane().setCenter(loginMaskLayout.getMaskNode());
             new Thread(loginMaskLayout.getLoginTask()).start();
         }
 
@@ -79,8 +79,8 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
         //disable settings and bot setup views if no config file is present
         if (!isConfigLoaded) {
             new MessageDialog(0, LanguageController.getString("config_not_found"), 500, 250);
-            MainScene.mainScene.getWindowScene().getWin().getSidebarButtonBox().getChildren().get(0).setDisable(true);
-            MainScene.mainScene.getWindowScene().getWin().getSidebarButtonBox().getChildren().get(1).setDisable(true);
+            MainScene.Companion.getMainScene().getWindowScene().getWin().getSidebarButtonBox().getChildren().get(0).setDisable(true);
+            MainScene.Companion.getMainScene().getWindowScene().getWin().getSidebarButtonBox().getChildren().get(1).setDisable(true);
         }
     }
 
@@ -153,10 +153,10 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
 
                 //set up the Client Area to display
                 if (isValidConfig()) {
-                    MainScene.mainScene.getBorderPane().setTop(MainLayout.getInstance().getLaunchNode());
-                    MainScene.mainScene.getBorderPane().setCenter(null);
+                    MainScene.Companion.getMainScene().getBorderPane().setTop(MainLayout.getInstance().getLaunchNode());
+                    MainScene.Companion.getMainScene().getBorderPane().setCenter(null);
                 } else {
-                    MainScene.mainScene.getBorderPane().setCenter(new BotSetupLayout().getLayout());
+                    MainScene.Companion.getMainScene().getBorderPane().setCenter(new BotSetupLayout().getLayout());
                 }
 
                 //load plugins
@@ -167,7 +167,7 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
                 }
 
                 //add additional buttons in the sidebar
-                addSidebarButtons(MainScene.mainScene.getBorderPane().getHeight());
+                addSidebarButtons(MainScene.Companion.getMainScene().getBorderPane().getHeight());
 
             } else {
                 final Task<Boolean> retryTask = loginMaskLayout.doLogin();
@@ -204,10 +204,10 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
         SidebarButton pluginButton = new SidebarButton("pluginmanager");
         pluginButton.setOnAction(event -> {
             new PluginManagerLayout();
-            MainScene.mainScene.getWindowScene().getWin().toggleSideBar();
+            MainScene.Companion.getMainScene().getWindowScene().getWin().toggleSideBar();
         });
 
-        MainScene.mainScene.getWindowScene().getWin().getContentController().addSidebarItem(1, pluginButton);
-        MainScene.mainScene.getWindowScene().getWin().calcSidebarButtonSize(stageHeight);
+        MainScene.Companion.getMainScene().getWindowScene().getWin().getContentController().addSidebarItem(1, pluginButton);
+        MainScene.Companion.getMainScene().getWindowScene().getWin().calcSidebarButtonSize(stageHeight);
     }
 }

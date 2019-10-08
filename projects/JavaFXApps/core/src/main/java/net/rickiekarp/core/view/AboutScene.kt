@@ -1,174 +1,188 @@
-package net.rickiekarp.core.view;
+package net.rickiekarp.core.view
 
-import net.rickiekarp.core.AppContext;
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.ui.windowmanager.WindowScene;
-import net.rickiekarp.core.ui.windowmanager.WindowStage;
-import net.rickiekarp.core.ui.windowmanager.ImageLoader;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
+import net.rickiekarp.core.AppContext
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.ui.windowmanager.WindowScene
+import net.rickiekarp.core.ui.windowmanager.WindowStage
+import net.rickiekarp.core.ui.windowmanager.ImageLoader
+import javafx.geometry.HPos
+import javafx.geometry.Insets
+import javafx.geometry.Orientation
+import javafx.geometry.Pos
+import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.control.Separator
+import javafx.scene.image.ImageView
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.GridPane
+import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
+import javafx.stage.Stage
 
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.awt.*
+import java.io.IOException
+import java.net.URI
+import java.net.URISyntaxException
 
 /**
  * About Stage GUI.
  */
-public class AboutScene {
-    private GridPane grid;
-    private GridPane grid2;
-    private HBox controls;
-    private final String WEBSITE = "www.rickiekarp.net";
+class AboutScene {
+    private var grid: GridPane? = null
+    private var grid2: GridPane? = null
+    private var controls: HBox? = null
+    private val WEBSITE = "www.rickiekarp.net"
 
-    public AboutScene() {
-        create();
+
+    private//padding top, left, bottom, right
+    //padding top, left, bottom, right
+    //grid2.setMaxWidth(250);
+    //add Grids to VBox Layout
+    //add components
+    //padding top, left, bottom, right
+    //add vbox & controls pane to borderpane layout
+    //TODO: fix the urlBtn for Linux systems
+    val content: BorderPane
+        get() {
+
+            val borderpane = BorderPane()
+            borderpane.style = "-fx-background-color: #1d1d1d;"
+
+            val hbox = HBox()
+
+            grid = GridPane()
+            grid2 = GridPane()
+            controls = HBox()
+
+            hbox.alignment = Pos.CENTER_LEFT
+
+            val separator2 = Separator()
+            separator2.orientation = Orientation.VERTICAL
+            separator2.maxHeight = 160.0
+            separator2.padding = Insets(0.0, 0.0, 0.0, 0.0)
+            if (DebugHelper.isDebugVersion()) {
+                separator2.style = "-fx-background-color: red;"
+            }
+
+            grid!!.vgap = 8.0
+            grid!!.padding = Insets(20.0, 15.0, 0.0, 20.0)
+            grid!!.minWidth = 180.0
+
+            grid2!!.vgap = 20.0
+            grid2!!.padding = Insets(20.0, 15.0, 0.0, 20.0)
+
+            HBox.setHgrow(grid2, Priority.ALWAYS)
+            hbox.children.add(0, grid)
+            hbox.children.add(1, separator2)
+            hbox.children.add(2, grid2)
+            val title = Label(AppContext.getContext().applicationName)
+            title.style = "-fx-font-size: 16pt;"
+            GridPane.setHalignment(title, HPos.CENTER)
+            GridPane.setConstraints(title, 0, 0)
+            grid!!.children.add(title)
+
+            val logo = ImageView(ImageLoader.getAppIcon())
+            logo.fitHeightProperty().setValue(60)
+            logo.fitWidthProperty().setValue(60)
+            GridPane.setHalignment(logo, HPos.CENTER)
+            GridPane.setConstraints(logo, 0, 1)
+            grid!!.children.add(logo)
+
+            val version = Label(AppContext.getContext().versionNumber)
+            version.style = "-fx-font-size: 11pt;"
+            GridPane.setHalignment(version, HPos.CENTER)
+            GridPane.setConstraints(version, 0, 2)
+            grid!!.children.add(version)
+
+            val description = Label(LanguageController.getString("desc"))
+            description.setMaxSize(350.0, 200.0)
+            description.isWrapText = true
+            GridPane.setConstraints(description, 0, 0)
+            grid2!!.children.add(description)
+
+            val copyright = Label(LanguageController.getString("copyright"))
+            copyright.style = "-fx-font-size: 10pt;"
+            GridPane.setConstraints(copyright, 0, 1)
+            grid2!!.children.add(copyright)
+
+            val clBtn = Button(LanguageController.getString("changelog"))
+            controls!!.children.add(clBtn)
+
+            val urlBtn = Button(LanguageController.getString("website"))
+            controls!!.children.add(urlBtn)
+
+            controls!!.padding = Insets(10.0, 7.0, 10.0, 7.0)
+            controls!!.spacing = 10.0
+            controls!!.alignment = Pos.CENTER_RIGHT
+            borderpane.center = hbox
+            borderpane.bottom = controls
+
+            clBtn.setOnAction { e -> ChangelogScene() }
+            urlBtn.setOnAction { e ->
+                try {
+                    Desktop.getDesktop().browse(URI(WEBSITE))
+                } catch (e1: IOException) {
+                    if (DebugHelper.DEBUGVERSION) {
+                        e1.printStackTrace()
+                    } else {
+                        ExceptionHandler(Thread.currentThread(), e1)
+                    }
+                } catch (e1: URISyntaxException) {
+                    if (DebugHelper.DEBUGVERSION) {
+                        e1.printStackTrace()
+                    } else {
+                        ExceptionHandler(Thread.currentThread(), e1)
+                    }
+                }
+            }
+
+            return borderpane
+        }
+
+    init {
+        create()
     }
 
-    private void create() {
-        Stage infoStage = new Stage();
-        infoStage.setTitle(LanguageController.getString("about") + " " + AppContext.getContext().getApplicationName());
-        infoStage.getIcons().add(ImageLoader.getAppIconSmall());
-        infoStage.setResizable(false);
+    private fun create() {
+        val infoStage = Stage()
+        infoStage.title = LanguageController.getString("about") + " " + AppContext.getContext().applicationName
+        infoStage.icons.add(ImageLoader.getAppIconSmall())
+        infoStage.isResizable = false
         //infoStage.setMinWidth(500); infoStage.setMinHeight(320);
-        infoStage.setWidth(500); infoStage.setHeight(320);
+        infoStage.width = 500.0
+        infoStage.height = 320.0
 
-        BorderPane contentVbox = new BorderPane();
+        val contentVbox = BorderPane()
 
         // The UI (Client Area) to display
-        contentVbox.setCenter(getContent());
+        contentVbox.center = content
 
         // The Window as a Scene
-        WindowScene aboutWindow = new WindowScene(new WindowStage("about", infoStage), contentVbox, 1);
+        val aboutWindow = WindowScene(WindowStage("about", infoStage), contentVbox, 1)
 
-        infoStage.setScene(aboutWindow);
-        infoStage.show();
+        infoStage.scene = aboutWindow
+        infoStage.show()
 
-        debugAbout();
+        debugAbout()
 
-        MainScene.stageStack.push(new WindowStage("about", infoStage));
+        MainScene.stageStack.push(WindowStage("about", infoStage))
     }
 
-
-    private BorderPane getContent() {
-
-        BorderPane borderpane = new BorderPane();
-        borderpane.setStyle("-fx-background-color: #1d1d1d;");
-
-        HBox hbox = new HBox();
-
-        grid = new GridPane();
-        grid2 = new GridPane();
-        controls = new HBox();
-
-        hbox.setAlignment(Pos.CENTER_LEFT);
-
-        Separator separator2 = new Separator();
-        separator2.setOrientation(Orientation.VERTICAL);
-        separator2.setMaxHeight(160);
-        separator2.setPadding(new Insets(0, 0, 0, 0));
-        if (DebugHelper.isDebugVersion()) { separator2.setStyle("-fx-background-color: red;"); }
-
-        grid.setVgap(8);
-        grid.setPadding(new Insets(20, 15, 0, 20));  //padding top, left, bottom, right
-        grid.setMinWidth(180);
-
-        grid2.setVgap(20);
-        grid2.setPadding(new Insets(20, 15, 0, 20));  //padding top, left, bottom, right
-        //grid2.setMaxWidth(250);
-
-        HBox.setHgrow(grid2, Priority.ALWAYS);
-
-
-        //add Grids to VBox Layout
-        hbox.getChildren().add(0, grid);
-        hbox.getChildren().add(1, separator2);
-        hbox.getChildren().add(2, grid2);
-
-        //add components
-        Label title = new Label(AppContext.getContext().getApplicationName());
-        title.setStyle("-fx-font-size: 16pt;");
-        GridPane.setHalignment(title, HPos.CENTER);
-        GridPane.setConstraints(title, 0, 0);
-        grid.getChildren().add(title);
-
-        ImageView logo = new ImageView(ImageLoader.getAppIcon()); logo.fitHeightProperty().setValue(60); logo.fitWidthProperty().setValue(60);
-        GridPane.setHalignment(logo, HPos.CENTER);
-        GridPane.setConstraints(logo, 0, 1);
-        grid.getChildren().add(logo);
-
-        Label version = new Label(AppContext.getContext().getVersionNumber());
-        version.setStyle("-fx-font-size: 11pt;");
-        GridPane.setHalignment(version, HPos.CENTER);
-        GridPane.setConstraints(version, 0, 2);
-        grid.getChildren().add(version);
-
-        Label description = new Label(LanguageController.getString("desc"));
-        description.setMaxSize(350, 200);
-        description.setWrapText(true);
-        GridPane.setConstraints(description, 0, 0);
-        grid2.getChildren().add(description);
-
-        Label copyright = new Label(LanguageController.getString("copyright"));
-        copyright.setStyle("-fx-font-size: 10pt;");
-        GridPane.setConstraints(copyright, 0, 1);
-        grid2.getChildren().add(copyright);
-
-        Button clBtn = new Button(LanguageController.getString("changelog"));
-        controls.getChildren().add(clBtn);
-
-        Button urlBtn = new Button(LanguageController.getString("website"));
-        controls.getChildren().add(urlBtn);
-
-        controls.setPadding(new Insets(10, 7, 10, 7));  //padding top, left, bottom, right
-        controls.setSpacing(10);
-        controls.setAlignment(Pos.CENTER_RIGHT);
-
-        //add vbox & controls pane to borderpane layout
-        borderpane.setCenter(hbox);
-        borderpane.setBottom(controls);
-
-        clBtn.setOnAction(e -> new ChangelogScene());
-
-        //TODO: fix the urlBtn for Linux systems
-        urlBtn.setOnAction(e -> {
-            try { Desktop.getDesktop().browse(new URI(WEBSITE));
-            }
-            catch (IOException | URISyntaxException e1) {
-                if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
-            }
-        });
-
-        return borderpane;
-    }
-
-    private void debugAbout() {
+    private fun debugAbout() {
         if (DebugHelper.isDebugVersion()) {
-            grid.setGridLinesVisible(true);
-            grid.setStyle("-fx-background-color: #333333;");
-            grid2.setGridLinesVisible(true);
-            grid2.setStyle("-fx-background-color: #444444;");
-            controls.setStyle("-fx-background-color: #336699;");
+            grid!!.isGridLinesVisible = true
+            grid!!.style = "-fx-background-color: #333333;"
+            grid2!!.isGridLinesVisible = true
+            grid2!!.style = "-fx-background-color: #444444;"
+            controls!!.style = "-fx-background-color: #336699;"
         } else {
-            grid.setGridLinesVisible(false);
-            grid.setStyle(null);
-            grid2.setGridLinesVisible(false);
-            grid2.setStyle(null);
-            controls.setStyle(null);
+            grid!!.isGridLinesVisible = false
+            grid!!.style = null
+            grid2!!.isGridLinesVisible = false
+            grid2!!.style = null
+            controls!!.style = null
         }
     }
 }

@@ -1,88 +1,87 @@
-package net.rickiekarp.core.components.textfield;
+package net.rickiekarp.core.components.textfield
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.TextField;
+import javafx.beans.property.IntegerProperty
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.StringProperty
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
+import javafx.scene.control.TextField
 
 /**
  * This class creates a basic TextField that can be configured in the following ways:
  * Restrict max text lenght, Restrict user input to certain characters e.g. [0-9]
  */
-public class CustomTextField extends TextField {
+class CustomTextField : TextField() {
 
-    private IntegerProperty maxLength = new SimpleIntegerProperty(this, "maxLength", -1);
-    private StringProperty restrict = new SimpleStringProperty(this, "restrict");
+    private val maxLength = SimpleIntegerProperty(this, "maxLength", -1)
+    private val restrict = SimpleStringProperty(this, "restrict")
 
-    public CustomTextField() {
+    init {
 
-        textProperty().addListener(new ChangeListener<String>() {
+        textProperty().addListener(object : ChangeListener<String> {
 
-            private boolean ignore;
+            private var ignore: Boolean = false
 
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String s1) {
+            override fun changed(observableValue: ObservableValue<out String>, s: String, s1: String?) {
                 if (ignore || s1 == null)
-                    return;
+                    return
 
-                if (maxLength.get() > -1 && s1.length() > maxLength.get()) {
-                    ignore = true;
-                    setText(s1.substring(0, maxLength.get()));
-                    ignore = false;
+                if (maxLength.get() > -1 && s1.length > maxLength.get()) {
+                    ignore = true
+                    text = s1.substring(0, maxLength.get())
+                    ignore = false
                 }
 
-                if (restrict.get() != null && !restrict.get().equals("") && !s1.matches(restrict.get() + "*")) {
-                    ignore = true;
-                    setText(s);
-                    ignore = false;
+                if (restrict.get() != null && restrict.get() != "" && !s1.matches((restrict.get() + "*").toRegex())) {
+                    ignore = true
+                    text = s
+                    ignore = false
                 }
             }
-        });
+        })
     }
 
     /**
      * Max TextField length property
      */
-    public IntegerProperty maxLengthProperty() {
-        return maxLength;
+    fun maxLengthProperty(): IntegerProperty {
+        return maxLength
     }
 
     /**
      * Gets Max TextField length
      */
-    public int getMaxLength() {
-        return maxLength.get();
+    fun getMaxLength(): Int {
+        return maxLength.get()
     }
 
     /**
      * Sets Max TextField length
      */
-    public void setMaxLength(int maxLength) {
-        this.maxLength.set(maxLength);
+    fun setMaxLength(maxLength: Int) {
+        this.maxLength.set(maxLength)
     }
 
     /**
      * Restrict property
      */
-    public StringProperty restrictProperty() {
-        return restrict;
+    fun restrictProperty(): StringProperty {
+        return restrict
     }
 
     /**
      * Gets the expression character class that restricts user input
      */
-    public String getRestrict() {
-        return restrict.get();
+    fun getRestrict(): String {
+        return restrict.get()
     }
 
     /**
      * Sets the expression character class that restricts user input
      * Example: [0-9] only allows numeric values
      */
-    public void setRestrict(String restrict) {
-        this.restrict.set(restrict);
+    fun setRestrict(restrict: String) {
+        this.restrict.set(restrict)
     }
 }

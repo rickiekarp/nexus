@@ -1,5 +1,5 @@
-package net.rickiekarp.core.account;
+package net.rickiekarp.core.account
 
-public interface ISessionHandler {
-    void updateSession();
+interface ISessionHandler {
+    fun updateSession()
 }

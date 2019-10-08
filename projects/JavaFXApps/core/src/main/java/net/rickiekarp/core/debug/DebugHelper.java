@@ -12,7 +12,6 @@ import java.util.ArrayList;
  * This class contains helper functions used for debugging purposes.
  */
 public class DebugHelper {
-
     public static final boolean DEBUGVERSION = false;
     private static long startTime = 0;
 

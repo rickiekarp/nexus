@@ -136,8 +136,8 @@ public class MainLayout implements AppLayout {
         modCBox.valueProperty().addListener((ov, t, t1) -> {
             if (t == null) {
                 runBtn.setDisable(false);
-                MainScene.mainScene.getBorderPane().setRight(getSettingsNode());
-                MainScene.mainScene.getBorderPane().setBottom(getControlsNode());
+                MainScene.Companion.getMainScene().getBorderPane().setRight(getSettingsNode());
+                MainScene.Companion.getMainScene().getBorderPane().setBottom(getControlsNode());
             }
 
             PluginConfig.settingsList.clear();
@@ -177,10 +177,10 @@ public class MainLayout implements AppLayout {
             setStatus("neutral", "Loading bot...");
             setLoadBarVisible(true);
             switchMode();
-            MainScene.mainScene.getBorderPane().setCenter(null);
+            MainScene.Companion.getMainScene().getBorderPane().setCenter(null);
 
             //remove all buttons from control node
-            AnchorPane pane = (AnchorPane) MainScene.mainScene.getBorderPane().getBottom();
+            AnchorPane pane = (AnchorPane) MainScene.Companion.getMainScene().getBorderPane().getBottom();
             HBox controls = (HBox) pane.getChildren().get(0);
             for (int size = controls.getChildren().size() - 1; size >= 0; size--) {
                 controls.getChildren().remove(size);

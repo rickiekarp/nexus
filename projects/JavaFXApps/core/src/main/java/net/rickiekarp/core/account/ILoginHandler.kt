@@ -1,8 +1,8 @@
-package net.rickiekarp.core.account;
+package net.rickiekarp.core.account
 
-import net.rickiekarp.core.view.layout.LoginMaskLayout;
+import net.rickiekarp.core.view.layout.LoginMaskLayout
 
-public interface ILoginHandler {
-    void setAppContextLoginBehaviour(LoginMaskLayout loginMaskLayout);
-    void setOnLogout();
+interface ILoginHandler {
+    fun setAppContextLoginBehaviour(loginMaskLayout: LoginMaskLayout)
+    fun setOnLogout()
 }

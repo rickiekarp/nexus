@@ -65,7 +65,7 @@ public class AppStarter extends Application {
         new MainScene(stage, winType);
 
         //set up the Client Area to display
-        MainScene.mainScene.getBorderPane().setCenter(node.getLayout());
+        MainScene.Companion.getMainScene().getBorderPane().setCenter(node.getLayout());
         node.postInit();
 
         //post launch settings
@@ -76,7 +76,7 @@ public class AppStarter extends Application {
         //disable settings view if no config file is present
         if (!isConfigLoaded) {
             new MessageDialog(0, LanguageController.getString("config_not_found"), 500, 250);
-            MainScene.mainScene.getWindowScene().getWin().getSidebarButtonBox().getChildren().get(0).setDisable(true);
+            MainScene.Companion.getMainScene().getWindowScene().getWin().getSidebarButtonBox().getChildren().get(0).setDisable(true);
         }
     }
 

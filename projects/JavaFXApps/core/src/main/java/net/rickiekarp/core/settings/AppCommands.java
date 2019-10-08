@@ -107,7 +107,7 @@ public class AppCommands {
     }
 
     public static void help() {
-        CommandsScene commands = CommandsScene.commandsScene;
+        CommandsScene commands = CommandsScene.Companion.getCommandsScene();
         if (commands == null) {
             new CommandsScene();
         } else {

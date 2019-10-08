@@ -1,24 +1,19 @@
-package net.rickiekarp.core.components.textfield;
+package net.rickiekarp.core.components.textfield
 
-import javafx.scene.control.TextField;
-import javafx.scene.control.skin.TextFieldSkin;
+import javafx.scene.control.skin.TextFieldSkin
 
-public class CustomTextFieldSkin extends TextFieldSkin {
+class CustomTextFieldSkin(passwordField: CustomTextField) : TextFieldSkin(passwordField) {
 
-    public CustomTextFieldSkin(CustomTextField passwordField) {
-        super(passwordField);
-    }
+    override fun maskText(txt: String): String {
+        val textField = skinnable
 
-    @Override protected String maskText(String txt) {
-        TextField textField = getSkinnable();
-
-        int n = textField.getLength();
-        StringBuilder passwordBuilder = new StringBuilder(n);
-        for (int i=0; i<n; i++) {
-            char BULLET = '\u2022';
-            passwordBuilder.append(BULLET);
+        val n = textField.length
+        val passwordBuilder = StringBuilder(n)
+        for (i in 0 until n) {
+            val bullet = '\u2022'
+            passwordBuilder.append(bullet)
         }
 
-        return passwordBuilder.toString();
+        return passwordBuilder.toString()
     }
 }

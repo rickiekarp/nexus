@@ -1,102 +1,109 @@
-package net.rickiekarp.core.view;
+package net.rickiekarp.core.view
 
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.settings.AppCommands;
-import net.rickiekarp.core.ui.windowmanager.WindowScene;
-import net.rickiekarp.core.ui.windowmanager.WindowStage;
-import net.rickiekarp.core.ui.windowmanager.ImageLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.settings.AppCommands
+import net.rickiekarp.core.ui.windowmanager.WindowScene
+import net.rickiekarp.core.ui.windowmanager.WindowStage
+import net.rickiekarp.core.ui.windowmanager.ImageLoader
+import javafx.geometry.Insets
+import javafx.geometry.Pos
+import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.layout.*
+import javafx.stage.Stage
 
-import java.util.logging.Level;
+import java.util.logging.Level
 
-public class CommandsScene {
+class CommandsScene {
+    var commandsWindow: WindowScene? = null
+        private set
 
-    public static CommandsScene commandsScene;
-    private WindowScene commandsWindow;
-    public WindowScene getCommandsWindow() {
-        return commandsWindow;
+    init {
+        commandsScene = this
+        createStage()
     }
 
-    public CommandsScene() {
-            commandsScene = this;
-            createStage();
-    }
+    private fun createStage() {
+        val commandsStage = Stage()
+        commandsStage.icons.add(ImageLoader.getAppIconSmall())
+        commandsStage.isResizable = true
+        commandsStage.width = 640.0
+        commandsStage.height = (200 + AppCommands.commandsList.size * 35).toDouble()
+        commandsStage.minWidth = 620.0
+        commandsStage.minHeight = (180 + AppCommands.commandsList.size * 35).toDouble()
+        commandsStage.title = LanguageController.getString("commands")
 
-    private void createStage() {
-        Stage commandsStage = new Stage();
-        commandsStage.getIcons().add(ImageLoader.getAppIconSmall());
-        commandsStage.setResizable(true);
-        commandsStage.setWidth(640); commandsStage.setHeight(200 + AppCommands.commandsList.size() * 35);
-        commandsStage.setMinWidth(620); commandsStage.setMinHeight(180 + AppCommands.commandsList.size() * 35);
-        commandsStage.setTitle(LanguageController.getString("commands"));
+        val contentVbox = VBox()
 
-        VBox contentVbox = new VBox();
+        val borderpane = BorderPane()
 
-        BorderPane borderpane = new BorderPane();
-
-        GridPane grid = new GridPane();
-        HBox controls = new HBox();
-        controls.setPadding(new Insets(15, 12, 15, 12));  //padding top, left, bottom, right
-        controls.setSpacing(10);
-        controls.setAlignment(Pos.CENTER_RIGHT);
+        val grid = GridPane()
+        val controls = HBox()
+        controls.padding = Insets(15.0, 12.0, 15.0, 12.0)  //padding top, left, bottom, right
+        controls.spacing = 10.0
+        controls.alignment = Pos.CENTER_RIGHT
 
         //set Layout
-        ColumnConstraints column1 = new ColumnConstraints(); column1.setPercentWidth(45);
-        ColumnConstraints column2 = new ColumnConstraints(); column2.setPercentWidth(45);
-        grid.getColumnConstraints().addAll(column1, column2);
+        val column1 = ColumnConstraints()
+        column1.percentWidth = 45.0
+        val column2 = ColumnConstraints()
+        column2.percentWidth = 45.0
+        grid.columnConstraints.addAll(column1, column2)
 
         if (DebugHelper.isDebugVersion()) {
-            grid.setStyle("-fx-background-color: gray;");
-            grid.setGridLinesVisible(true);
-            controls.setStyle("-fx-background-color: #336699;");
+            grid.style = "-fx-background-color: gray;"
+            grid.isGridLinesVisible = true
+            controls.style = "-fx-background-color: #336699;"
         }
 
-        for (int i = 0; i < AppCommands.commandsList.size(); i++) {
+        for (i in AppCommands.commandsList.indices) {
 
             //build the commandNameLabel string
-            StringBuilder sb = new StringBuilder();
-            sb.append(AppCommands.commandsList.get(i).getCommandName());
-            if (!AppCommands.commandsList.get(i).getCommandHelper().isEmpty()) { sb.append(" ").append(AppCommands.commandsList.get(i).getCommandHelper()); }
+            val sb = StringBuilder()
+            sb.append(AppCommands.commandsList[i].commandName)
+            if (!AppCommands.commandsList[i].commandHelper.isEmpty()) {
+                sb.append(" ").append(AppCommands.commandsList[i].commandHelper)
+            }
 
-            Label commandNameLabel = new Label(sb.toString());
-            GridPane.setConstraints(commandNameLabel, 0, i);
-            grid.getChildren().add(commandNameLabel);
+            val commandNameLabel = Label(sb.toString())
+            GridPane.setConstraints(commandNameLabel, 0, i)
+            grid.children.add(commandNameLabel)
 
-            Label commandDescLabel = new Label(AppCommands.commandsList.get(i).getCommandDesc());
-            GridPane.setConstraints(commandDescLabel, 1, i);
-            grid.getChildren().add(commandDescLabel);
+            val commandDescLabel = Label(AppCommands.commandsList[i].commandDesc)
+            GridPane.setConstraints(commandDescLabel, 1, i)
+            grid.children.add(commandDescLabel)
         }
 
-        Button okButton = new Button(LanguageController.getString("close"));
-        controls.getChildren().add(okButton);
+        val okButton = Button(LanguageController.getString("close"))
+        controls.children.add(okButton)
 
-        grid.setAlignment(Pos.BASELINE_CENTER);
-        grid.setHgap(25); grid.setVgap(15);
-        grid.setPadding(new Insets(15, 0, 0, 0));
+        grid.alignment = Pos.BASELINE_CENTER
+        grid.hgap = 25.0
+        grid.vgap = 15.0
+        grid.padding = Insets(15.0, 0.0, 0.0, 0.0)
 
-        borderpane.setCenter(grid);
-        borderpane.setBottom(controls);
+        borderpane.center = grid
+        borderpane.bottom = controls
 
-        okButton.setOnAction(arg0 -> commandsStage.close());
+        okButton.setOnAction { arg0 -> commandsStage.close() }
 
 
         // The UI (Client Area) to display
-        contentVbox.getChildren().addAll(borderpane);
-        VBox.setVgrow(borderpane, Priority.ALWAYS);
+        contentVbox.children.addAll(borderpane)
+        VBox.setVgrow(borderpane, Priority.ALWAYS)
 
         // The Window as a Scene
-        commandsWindow = new WindowScene(new WindowStage("commands", commandsStage), contentVbox, 1);
+        commandsWindow = WindowScene(WindowStage("commands", commandsStage), contentVbox, 1)
 
-        commandsStage.setScene(commandsWindow);
-        commandsStage.show();
+        commandsStage.scene = commandsWindow
+        commandsStage.show()
 
-        LogFileHandler.logger.log(Level.INFO, "open.CommandsDialog");
+        LogFileHandler.logger.log(Level.INFO, "open.CommandsDialog")
+    }
+
+    companion object {
+        lateinit var commandsScene: CommandsScene
     }
 }

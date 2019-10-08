@@ -1,55 +1,59 @@
-package net.rickiekarp.core.settings;
+package net.rickiekarp.core.settings
 
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.ui.windowmanager.ThemeSelector;
-import javafx.scene.paint.Color;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.ui.windowmanager.ThemeSelector
+import javafx.scene.paint.Color
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.NodeList
+import org.xml.sax.SAXException
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
+import javax.xml.parsers.DocumentBuilder
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.parsers.ParserConfigurationException
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.Transformer
+import javax.xml.transform.TransformerException
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
+import java.io.File
+import java.io.IOException
+import java.lang.reflect.Field
 
 /**
  * This class handles reading and writing of the config.xml file.
  */
-public class SettingsXmlFactory {
+class SettingsXmlFactory {
 
     /**
      * Saves the current state of the program to the config.xml file.
      */
-    void createConfigXML() {
+    fun createConfigXML() {
 
         try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = docFactory.newDocumentBuilder();
-            Document doc = dBuilder.newDocument();
-            doc.setXmlVersion("1.1");
+            val docFactory = DocumentBuilderFactory.newInstance()
+            val dBuilder = docFactory.newDocumentBuilder()
+            val doc = dBuilder.newDocument()
+            doc.xmlVersion = "1.1"
 
             // root element
-            Element rootElement = doc.createElement("settings");
-            doc.appendChild(rootElement);
+            val rootElement = doc.createElement("settings")
+            doc.appendChild(rootElement)
 
             // create all elements
-            for (Field f : LoadSave.class.getDeclaredFields()) {
-                createElement(doc, f.getName(), getFieldValueString(f));
+            for (f in LoadSave::class.java.declaredFields) {
+                createElement(doc, f.name, getFieldValueString(f))
             }
-        } catch (Exception e)
-        {
-            if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e); }
+        } catch (e: Exception) {
+            if (DebugHelper.DEBUGVERSION) {
+                e.printStackTrace()
+            } else {
+                ExceptionHandler(Thread.currentThread(), e)
+            }
         }
+
     }
 
     /**
@@ -57,122 +61,148 @@ public class SettingsXmlFactory {
      * @param doc  the config.xml Document
      * @param name the value of the element
      */
-    private void createElement(Document doc, String name, Object value) {
-        Element root = doc.getDocumentElement();
+    private fun createElement(doc: Document, name: String, value: Any?) {
+        val root = doc.documentElement
 
-        Element element = doc.createElement("entry");
-        element.setAttribute("key", name);
+        val element = doc.createElement("entry")
+        element.setAttribute("key", name)
         if (value != null) {
-            element.appendChild(doc.createTextNode(String.valueOf(value)));
+            element.appendChild(doc.createTextNode(value.toString()))
         }
 
-        root.appendChild(element);
+        root.appendChild(element)
 
         // write content into xml file
         try {
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(Configuration.config.getConfigDirFile() + File.separator + Configuration.config.getConfigFileName());
-            transformer.transform(source, result);
-        } catch (TransformerException e) {
-            if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e); }
-        }
-    }
-
-    private Object getFieldValueString(Field f) {
-        try {
-            if (f.getType() == Color.class) {
-                return ThemeSelector.getColorHexString(Color.valueOf(String.valueOf(f.get(LoadSave.class))));
+            val transformerFactory = TransformerFactory.newInstance()
+            val transformer = transformerFactory.newTransformer()
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes")
+            val source = DOMSource(doc)
+            val result = StreamResult(Configuration.config.configDirFile.toString() + File.separator + Configuration.config.configFileName)
+            transformer.transform(source, result)
+        } catch (e: TransformerException) {
+            if (DebugHelper.DEBUGVERSION) {
+                e.printStackTrace()
             } else {
-                return f.get(LoadSave.class);
+                ExceptionHandler(Thread.currentThread(), e)
             }
-        } catch (IllegalAccessException e) {
-            if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e); }
-            return null;
         }
+
     }
 
-    String getElementValue(String key, Class clazz) {
-        File configFile = new File(Configuration.config.getConfigDirFile() + File.separator + Configuration.config.getConfigFileName());
+    private fun getFieldValueString(f: Field): Any? {
         try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = docFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(configFile);
-            doc.getDocumentElement().normalize();
+            return if (f.type == Color::class.java) {
+                ThemeSelector.getColorHexString(Color.valueOf(f.get(LoadSave::class.java).toString()))
+            } else {
+                f.get(LoadSave::class.java)
+            }
+        } catch (e: IllegalAccessException) {
+            if (DebugHelper.DEBUGVERSION) {
+                e.printStackTrace()
+            } else {
+                ExceptionHandler(Thread.currentThread(), e)
+            }
+            return null
+        }
+
+    }
+
+    fun getElementValue(key: String, clazz: Class<*>): String? {
+        val configFile = File(Configuration.config.configDirFile.toString() + File.separator + Configuration.config.configFileName)
+        try {
+            val docFactory = DocumentBuilderFactory.newInstance()
+            val dBuilder = docFactory.newDocumentBuilder()
+            val doc = dBuilder.parse(configFile)
+            doc.documentElement.normalize()
 
             try {
-                checkXmlNode(doc, clazz.getDeclaredField(key));
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
+                checkXmlNode(doc, clazz.getDeclaredField(key))
+            } catch (e: NoSuchFieldException) {
+                e.printStackTrace()
             }
 
-            NodeList nList = doc.getElementsByTagName("entry");
+            val nList = doc.getElementsByTagName("entry")
 
-            for (int i = 0; i < nList.getLength(); i++) {
-                if (nList.item(i).getAttributes().getNamedItem("key").getNodeValue().equals(key) && !nList.item(i).getTextContent().isEmpty()) {
-                    return nList.item(i).getTextContent();
+            for (i in 0 until nList.length) {
+                if (nList.item(i).attributes.getNamedItem("key").nodeValue == key && !nList.item(i).textContent.isEmpty()) {
+                    return nList.item(i).textContent
                 }
             }
-        } catch (SAXException | ParserConfigurationException | IOException e) {
-            e.printStackTrace();
+        } catch (e: SAXException) {
+            e.printStackTrace()
+        } catch (e: ParserConfigurationException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-        return null;
+
+        return null
     }
 
-    void setElementValue(String key, String value) {
+    fun setElementValue(key: String, value: String) {
         try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = docFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(new File(Configuration.config.getConfigDirFile() + File.separator + Configuration.config.getConfigFileName()));
+            val docFactory = DocumentBuilderFactory.newInstance()
+            val dBuilder = docFactory.newDocumentBuilder()
+            val doc = dBuilder.parse(File(Configuration.config.configDirFile.toString() + File.separator + Configuration.config.configFileName))
 
-            doc.getDocumentElement().normalize();
+            doc.documentElement.normalize()
 
-            NodeList nList = doc.getElementsByTagName("entry");
+            val nList = doc.getElementsByTagName("entry")
 
-            for (int i = 0; i < nList.getLength(); i++) {
-                if (nList.item(i).getAttributes().getNamedItem("key").getNodeValue().equals(key)) {
-                    nList.item(i).setTextContent(value);
-                    break;
+            for (i in 0 until nList.length) {
+                if (nList.item(i).attributes.getNamedItem("key").nodeValue == key) {
+                    nList.item(i).textContent = value
+                    break
                 }
             }
 
             // write content into xml file
             try {
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                Transformer transformer = transformerFactory.newTransformer();
-                transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-                DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(Configuration.config.getConfigDirFile() + File.separator + Configuration.config.getConfigFileName());
-                transformer.transform(source, result);
-            } catch (TransformerException e1) {
-                if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
+                val transformerFactory = TransformerFactory.newInstance()
+                val transformer = transformerFactory.newTransformer()
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes")
+                val source = DOMSource(doc)
+                val result = StreamResult(Configuration.config.configDirFile.toString() + File.separator + Configuration.config.configFileName)
+                transformer.transform(source, result)
+            } catch (e1: TransformerException) {
+                if (DebugHelper.DEBUGVERSION) {
+                    e1.printStackTrace()
+                } else {
+                    ExceptionHandler(Thread.currentThread(), e1)
+                }
             }
-        } catch (SAXException | ParserConfigurationException | IOException e) {
-            e.printStackTrace();
+
+        } catch (e: SAXException) {
+            e.printStackTrace()
+        } catch (e: ParserConfigurationException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
+
     }
 
     /**
      * Checks if all xml nodes exist. If a node does not exist it is created.
      * @param doc The xml Document
      */
-    private void checkXmlNode(Document doc, Field f) {
-        NodeList nList = doc.getElementsByTagName("entry");
-        boolean insertNewKey = true;
-        for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getAttributes().getNamedItem("key").getNodeValue().equals(f.getName())) {
-                insertNewKey = false;
-                break;
+    private fun checkXmlNode(doc: Document, f: Field) {
+        val nList = doc.getElementsByTagName("entry")
+        var insertNewKey = true
+        for (i in 0 until nList.length) {
+            if (nList.item(i).attributes.getNamedItem("key").nodeValue == f.name) {
+                insertNewKey = false
+                break
             }
         }
         if (insertNewKey) {
             try {
-                createElement(doc, f.getName(), getFieldValueString(LoadSave.class.getDeclaredField(f.getName())));
-            } catch (NoSuchFieldException e) {
-                createElement(doc, f.getName(), getFieldValueString(f));
+                createElement(doc, f.name, getFieldValueString(LoadSave::class.java.getDeclaredField(f.name)))
+            } catch (e: NoSuchFieldException) {
+                createElement(doc, f.name, getFieldValueString(f))
             }
+
         }
     }
 
@@ -180,12 +210,12 @@ public class SettingsXmlFactory {
      * Checks if all xml nodes exist. If a node does not exist it is created.
      * @param doc The xml Document
      */
-    @Deprecated
-    private void checkXmlNodes(Document doc) {
-        Field[] fields = LoadSave.class.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
+    @Deprecated("")
+    private fun checkXmlNodes(doc: Document) {
+        val fields = LoadSave::class.java.declaredFields
+        for (i in fields.indices) {
             if (doc.getElementsByTagName("entry").item(i) == null) {
-                createElement(doc, fields[i].getName(), getFieldValueString(fields[i]));
+                createElement(doc, fields[i].name, getFieldValueString(fields[i]))
             }
         }
     }
@@ -195,17 +225,36 @@ public class SettingsXmlFactory {
      * @param nodeName Node name
      * @return Node List of the given node name
      */
-    public NodeList getNodeList(String nodeName) {
-        File configFile = new File(Configuration.config.getConfigDirFile() + File.separator + Configuration.config.getConfigFileName());
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+    fun getNodeList(nodeName: String): NodeList? {
+        val configFile = File(Configuration.config.configDirFile.toString() + File.separator + Configuration.config.configFileName)
+        val docFactory = DocumentBuilderFactory.newInstance()
         try {
-            DocumentBuilder dBuilder = docFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(configFile);
-            doc.getDocumentElement().normalize();
-            return doc.getElementsByTagName(nodeName);
-        } catch (SAXException | ParserConfigurationException | IOException e) {
-            if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e); }
-            return null;
+            val dBuilder = docFactory.newDocumentBuilder()
+            val doc = dBuilder.parse(configFile)
+            doc.documentElement.normalize()
+            return doc.getElementsByTagName(nodeName)
+        } catch (e: SAXException) {
+            if (DebugHelper.DEBUGVERSION) {
+                e.printStackTrace()
+            } else {
+                ExceptionHandler(Thread.currentThread(), e)
+            }
+            return null
+        } catch (e: ParserConfigurationException) {
+            if (DebugHelper.DEBUGVERSION) {
+                e.printStackTrace()
+            } else {
+                ExceptionHandler(Thread.currentThread(), e)
+            }
+            return null
+        } catch (e: IOException) {
+            if (DebugHelper.DEBUGVERSION) {
+                e.printStackTrace()
+            } else {
+                ExceptionHandler(Thread.currentThread(), e)
+            }
+            return null
         }
+
     }
 }

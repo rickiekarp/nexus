@@ -76,7 +76,7 @@ public class SettingsScene {
         }
     }
 
-    public WindowScene getSettingsWindow() {
+    private WindowScene getSettingsWindow() {
         return settingsWindow;
     }
 
@@ -230,7 +230,7 @@ public class SettingsScene {
                         case 1:
                             updStatusApp.setText(LanguageController.getString("update_available"));
                             appbox.getChildren().add(btn_downloadAppUpdate);
-                            MainScene.mainScene.getWindowScene().getWin().getWindowStage().getStage().setTitle(AppContext.getContext().getApplicationName() + " - " + LanguageController.getString("update_available"));
+                            MainScene.Companion.getMainScene().getWindowScene().getWin().getWindowStage().getStage().setTitle(AppContext.getContext().getApplicationName() + " - " + LanguageController.getString("update_available"));
                             break;
                         case 2:
                             updStatusApp.setText(LanguageController.getString("no_connection"));
@@ -287,7 +287,7 @@ public class SettingsScene {
         });
 
         btn_installAppUpdate.setOnAction(event1 -> {
-            Stage stage = MessageDialog.installUpdateDialog("update", 500, 220);
+            Stage stage = MessageDialog.Companion.installUpdateDialog("update", 500, 220);
             stage.showAndWait();
         });
 
@@ -500,13 +500,13 @@ public class SettingsScene {
             if (trayIconCBox.isSelected() != Configuration.showTrayIcon) {
                 LogFileHandler.logger.config("change_systray: " + Configuration.showTrayIcon + " -> " + trayIconCBox.isSelected());
                 if (trayIconCBox.isSelected()) {
-                    if (ToolTrayIcon.icon == null) {
-                        ToolTrayIcon.icon = new ToolTrayIcon();
+                    if (ToolTrayIcon.Companion.getIcon() == null) {
+                        ToolTrayIcon.Companion.setIcon(new ToolTrayIcon());
                     } else {
-                        ToolTrayIcon.icon.addAppToTray();
+                        ToolTrayIcon.Companion.getIcon().addAppToTray();
                     }
                 } else {
-                    ToolTrayIcon.icon.removeTrayIcon();
+                    ToolTrayIcon.Companion.getIcon().removeTrayIcon();
                 }
                 Configuration.showTrayIcon = trayIconCBox.isSelected();
             }
@@ -528,7 +528,7 @@ public class SettingsScene {
 
             //show restart dialog if a setting that requires it has changed
             if (shouldRestart) {
-                MessageDialog.restartDialog("restartApp_desc", 535, 230);
+                MessageDialog.Companion.restartDialog("restartApp_desc", 535, 230);
             }
 
 
@@ -580,7 +580,7 @@ public class SettingsScene {
         });
 
         reset.setOnAction(event -> {
-            if (MessageDialog.confirmDialog("reset_desc", 535, 230)) {
+            if (MessageDialog.Companion.confirmDialog("reset_desc", 535, 230)) {
                 Configuration.config.setDefaults();
             }
         });
@@ -756,7 +756,7 @@ public class SettingsScene {
     private void updateGui(Field f) throws IllegalAccessException {
         switch (f.getName()) {
             case "language":
-                if (!MessageDialog.restartDialog("restartApp_desc", 535, 230)) {
+                if (!MessageDialog.Companion.restartDialog("restartApp_desc", 535, 230)) {
                     Configuration.config.save();
                 }
                 break;
@@ -775,7 +775,7 @@ public class SettingsScene {
                 animateCBox.setSelected(Configuration.animations);
                 break;
             case "useSystemBorders":
-                if (!MessageDialog.restartDialog("restartApp_desc", 535, 230)) {
+                if (!MessageDialog.Companion.restartDialog("restartApp_desc", 535, 230)) {
                     sysBorderCBox.setSelected(Configuration.useSystemBorders);
                     Configuration.config.save();
                 }

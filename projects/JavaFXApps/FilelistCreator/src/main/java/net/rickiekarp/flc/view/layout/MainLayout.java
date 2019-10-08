@@ -235,7 +235,7 @@ public class MainLayout implements AppLayout {
             status.setText(LanguageController.getString("files_loading"));
 
             DirectoryChooser directoryChooser = new DirectoryChooser();
-            File selectedDirectory = directoryChooser.showDialog(MainScene.mainScene.getWindowScene().getWindow());
+            File selectedDirectory = directoryChooser.showDialog(MainScene.Companion.getMainScene().getWindowScene().getWindow());
 
             if (selectedDirectory == null) {
                 status.setText(LanguageController.getString("no_dir_selected"));
@@ -354,7 +354,7 @@ public class MainLayout implements AppLayout {
                             fileListFormats.get(fileformatIDx).getFileTypeName(),
                             fileListFormats.get(fileformatIDx).getFileTypeEnding())
             );
-            File file = fileChooser.showSaveDialog(MainScene.mainScene.getWindowScene().getWindow());
+            File file = fileChooser.showSaveDialog(MainScene.Companion.getMainScene().getWindowScene().getWindow());
 
             if (file != null) {
                 FilelistController.flController.saveToFile(file, fileformatIDx);

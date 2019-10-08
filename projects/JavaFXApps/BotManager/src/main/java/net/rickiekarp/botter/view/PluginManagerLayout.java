@@ -132,7 +132,7 @@ public class PluginManagerLayout {
         pluginStage.setScene(aboutWindow);
         pluginStage.show();
 
-        MainScene.stageStack.push(windowStage);
+        MainScene.Companion.getStageStack().push(windowStage);
 
         LogFileHandler.logger.info("open.pluginmanager");
     }

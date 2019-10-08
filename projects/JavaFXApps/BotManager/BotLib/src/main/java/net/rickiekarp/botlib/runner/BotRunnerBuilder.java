@@ -34,7 +34,7 @@ public class BotRunnerBuilder {
 
                     @Override
                     public void setLayout(Node node) {
-                        Platform.runLater(() -> MainScene.mainScene.getBorderPane().setCenter(node));
+                        Platform.runLater(() -> MainScene.Companion.getMainScene().getBorderPane().setCenter(node));
                     }
 
                     @Override
@@ -49,7 +49,7 @@ public class BotRunnerBuilder {
                     @Override
                     public void addControlButton(Button... node) {
                         Platform.runLater(() -> {
-                            AnchorPane pane = (AnchorPane) MainScene.mainScene.getBorderPane().getBottom();
+                            AnchorPane pane = (AnchorPane) MainScene.Companion.getMainScene().getBorderPane().getBottom();
                             HBox controls = (HBox) pane.getChildren().get(0);
                             controls.getChildren().addAll(node);
                         });
@@ -58,7 +58,7 @@ public class BotRunnerBuilder {
                     @Override
                     public void removeControlButton(int index) {
                         Platform.runLater(() -> {
-                            AnchorPane pane = (AnchorPane) MainScene.mainScene.getBorderPane().getBottom();
+                            AnchorPane pane = (AnchorPane) MainScene.Companion.getMainScene().getBorderPane().getBottom();
                             HBox controls = (HBox) pane.getChildren().get(0);
                             controls.getChildren().remove(index);
                         });
@@ -74,7 +74,7 @@ public class BotRunnerBuilder {
 
                     @Override
                     public void setLayout(Node node) {
-                        Platform.runLater(() -> MainScene.mainScene.getBorderPane().setCenter(node));
+                        Platform.runLater(() -> MainScene.Companion.getMainScene().getBorderPane().setCenter(node));
                     }
 
                     @Override
@@ -87,7 +87,7 @@ public class BotRunnerBuilder {
                     @Override
                     public void addControlButton(Button... node) {
                         Platform.runLater(() -> {
-                            AnchorPane pane = (AnchorPane) MainScene.mainScene.getBorderPane().getBottom();
+                            AnchorPane pane = (AnchorPane) MainScene.Companion.getMainScene().getBorderPane().getBottom();
                             HBox controls = (HBox) pane.getChildren().get(0);
                             controls.getChildren().addAll(node);
                         });
@@ -96,7 +96,7 @@ public class BotRunnerBuilder {
                     @Override
                     public void removeControlButton(int index) {
                         Platform.runLater(() -> {
-                            AnchorPane pane = (AnchorPane) MainScene.mainScene.getBorderPane().getBottom();
+                            AnchorPane pane = (AnchorPane) MainScene.Companion.getMainScene().getBorderPane().getBottom();
                             HBox controls = (HBox) pane.getChildren().get(0);
                             controls.getChildren().remove(index);
                         });
