@@ -8,33 +8,36 @@ import net.rickiekarp.core.settings.Configuration;
 import net.rickiekarp.core.settings.LoadSave;
 import net.rickiekarp.botlib.model.PluginData;
 import net.rickiekarp.botlib.net.BotNetworkApi;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 
-public class BotNetworkApiTest {
-    private PluginData plugin;
+class BotNetworkApiTest {
+    private static PluginData plugin;
 
-    @Before
-    public void setBefore() {
-        Configuration.config = new Configuration("config.xml", this.getClass());
-        AppContext.create("bot-manager", new BotNetworkApi());
+    @BeforeAll
+    static void setBefore() {
+        BotNetworkApi api = new BotNetworkApi();
+        AppContext.create("bot-manager", api);
+        Configuration.config = new Configuration("config.xml", api.getClass());
         plugin = new PluginData(null, "PluginOne", null, null, null);
         Configuration.host = LoadSave.host;
+        AppContext.getContext().initAccountManager();
         AppContext.getContext().getAccountManager().setAccount(new Account("a", "a"));
-        AppContext.getContext().getAccountManager().updateAccessToken();
+        Assertions.assertTrue(AppContext.getContext().getAccountManager().updateAccessToken());
     }
 
     @Test
-    public void testPlugin() {
+    void testPlugin() {
         NetworkAction validationAction = BotNetworkApi.requestValidation(plugin);
         InputStream inputStream = AppContext.getContext().getNetworkApi().runNetworkAction(validationAction);
         System.out.println(NetResponse.getResponseString(inputStream));
     }
 
     @Test
-    public void testPluginData() {
+    void testPluginData() {
         NetworkAction validationAction = BotNetworkApi.requestLoginData();
         InputStream inputStream = AppContext.getContext().getNetworkApi().runNetworkAction(validationAction);
         System.out.println(NetResponse.getResponseString(inputStream));

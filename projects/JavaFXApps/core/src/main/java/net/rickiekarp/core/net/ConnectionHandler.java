@@ -78,8 +78,8 @@ class ConnectionHandler {
 
 		final Request request = builder.build();
 		LogFileHandler.logger.info(request.method() + ": " + decodedUrl);
-		//printRequestHeaders(request);
-		//printRequestBody(request);
+//		printRequestHeaders(request);
+//		printRequestBody(request);
 
         try {
             final Response response = mHttpClient.newCall(request).execute();

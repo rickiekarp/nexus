@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface LoadSave {
 
     /** settings defaults **/
-    String host = "https://app.rickiekarp/";
+    String host = "https://app.rickiekarp.net/";
     int updateChannel = 0;
     int language = LanguageController.INSTANCE.getLocale();
     int themeState = 0;
