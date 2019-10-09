@@ -89,7 +89,7 @@ class MainLayout : AppLayout {
         inputGrid!!.children.add(acronymLabel)
 
         acronymTextField = CustomTextField()
-        acronymTextField!!.maxLength = 4
+        acronymTextField!!.setMaxLength(4)
         GridPane.setConstraints(acronymTextField, 1, 0)
         inputGrid!!.children.add(acronymTextField)
 

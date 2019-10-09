@@ -124,7 +124,7 @@ class AccountEditDialog internal constructor(GAME_ID: Int, sceneType: String, se
         maingrid.children.add(accLevel)
 
         accLevelTF = CustomTextField()
-        accLevelTF.restrict = "[0-9]"
+        accLevelTF.setRestrict("[0-9]")
         GridPane.setConstraints(accLevelTF, 1, 2)
         maingrid.children.add(accLevelTF)
 
