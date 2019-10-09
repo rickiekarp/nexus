@@ -18,17 +18,10 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
 
 public class FoldableListCell extends ListCell<FilelistSettings> {
-
-    public static FoldableListCell foldableListCell;
     private final ListView list;
-
-    private VBox vboxContent_0;
-    private VBox vboxContent_1;
-    private VBox vboxContent_2;
 
     public FoldableListCell(ListView list) {
         this.list = list;
-        foldableListCell = this;
     }
 
     @Override
