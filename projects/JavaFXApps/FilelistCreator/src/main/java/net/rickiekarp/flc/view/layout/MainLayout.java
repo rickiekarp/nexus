@@ -45,8 +45,6 @@ public class MainLayout implements AppLayout {
     public static TextArea previewTA;
     private Label status;
     public static ComboBox<String> cbox_saveFormat;
-    private GridPane fileGrid, settingsGrid;
-    private AnchorPane controls;
     public static HBox fileControls, saveControls;
     public static TableColumn<Filelist, String> fileColumn[] = new TableColumn[8];
     private ObservableList<FilelistFormats> fileListFormats = FXCollections.observableArrayList();
@@ -59,19 +57,19 @@ public class MainLayout implements AppLayout {
 
         BorderPane mainContent = new BorderPane();
 
-        fileGrid = new GridPane();
+        GridPane fileGrid = new GridPane();
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setFillWidth(true);
         columnConstraints.setHgrow(Priority.ALWAYS);
         fileGrid.getColumnConstraints().add(columnConstraints);
 
-        settingsGrid = new GridPane();
+        GridPane settingsGrid = new GridPane();
         settingsGrid.setPrefWidth(200);
         settingsGrid.setVgap(10);
         settingsGrid.setPadding(new Insets(5, 0, 0, 0));  //padding top, left, bottom, right
         settingsGrid.setAlignment(Pos.BASELINE_CENTER);
 
-        controls = new AnchorPane();
+        AnchorPane controls = new AnchorPane();
         controls.setMinHeight(50);
 
         fileControls = new HBox(5);

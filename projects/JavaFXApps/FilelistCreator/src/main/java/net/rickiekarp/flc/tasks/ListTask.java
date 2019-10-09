@@ -1,6 +1,7 @@
 package net.rickiekarp.flc.tasks;
 
 import net.rickiekarp.core.controller.LanguageController;
+import net.rickiekarp.core.debug.DebugHelper;
 import net.rickiekarp.core.debug.LogFileHandler;
 import net.rickiekarp.core.util.FileUtil;
 import net.rickiekarp.core.view.MessageDialog;
@@ -92,6 +93,7 @@ public class ListTask extends Task<Void> {
         selectedDirectory = selDir;
 
         this.setOnSucceeded(event1 -> {
+            DebugHelper.profile("stop", "ListTask");
 
             //set items to fileTable
             MainLayout.fileTable.setItems(AppConfiguration.INSTANCE.getFileData());
@@ -114,6 +116,7 @@ public class ListTask extends Task<Void> {
         });
 
         this.setOnCancelled(event1 -> {
+            DebugHelper.profile("stop", "ListTask");
 
             //delete already scanned data
             deleteData();
@@ -130,6 +133,7 @@ public class ListTask extends Task<Void> {
         });
 
         this.setOnFailed(event -> {
+            DebugHelper.profile("stop", "ListTask");
             progressDialog.close();
             new MessageDialog(0, LanguageController.getString("unknownError"), 450, 220);
             LogFileHandler.logger.info("fileScan.failed");
@@ -137,6 +141,8 @@ public class ListTask extends Task<Void> {
 
         listTask = this;
         FilelistController.flController = new FilelistController();
+
+        DebugHelper.profile("start", "ListTask");
 
         //start the task in a new thread
         Thread listThread = new Thread(listTask);

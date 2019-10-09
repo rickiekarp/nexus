@@ -19,7 +19,6 @@ public class FilelistPreviewTask extends Task<Void> {
     }
 
     public FilelistPreviewTask() {
-
         this.setOnRunning(event -> {
             MainLayout.mainLayout.setStatus("neutral", LanguageController.getString("status_build_fileList"));
         });
