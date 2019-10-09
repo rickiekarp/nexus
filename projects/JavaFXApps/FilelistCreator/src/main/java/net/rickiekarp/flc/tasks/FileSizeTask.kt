@@ -1,56 +1,53 @@
-package net.rickiekarp.flc.tasks;
+package net.rickiekarp.flc.tasks
 
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.view.MessageDialog;
-import net.rickiekarp.flc.model.Filelist;
-import net.rickiekarp.flc.settings.AppConfiguration;
-import net.rickiekarp.flc.view.layout.MainLayout;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.view.MessageDialog
+import net.rickiekarp.flc.model.Filelist
+import net.rickiekarp.flc.settings.AppConfiguration
+import javafx.application.Platform
+import javafx.concurrent.Task
+import net.rickiekarp.flc.view.layout.MainLayout
 
-import java.io.File;
+import java.io.File
 
-public class FileSizeTask extends Task<Void> {
+class FileSizeTask : Task<Void>() {
 
-    @Override
-    protected Void call() throws Exception {
+    @Throws(Exception::class)
+    override fun call(): Void? {
 
         //calculate new file amount
-        for (int i = 0; i < AppConfiguration.INSTANCE.getFileData().size(); i++) {
-            final Filelist flist = AppConfiguration.INSTANCE.getFileData().get(i);
-            final File file = new File(flist.getFilepath() + File.separator + AppConfiguration.INSTANCE.getFileData().get(i).getFilename());
-            final long fileSize = Filelist.Companion.calcFileSize(file);
+        for (i in 0 until AppConfiguration.fileData.size) {
+            val flist = AppConfiguration.fileData[i]
+            val file = File(flist.getFilepath() + File.separator + AppConfiguration.fileData[i].getFilename())
+            val fileSize = Filelist.calcFileSize(file)
 
-            final int finalI = i;
-            Platform.runLater(() -> AppConfiguration.INSTANCE.getFileData().set(finalI, flist).setSize(fileSize));
+            Platform.runLater { AppConfiguration.fileData.set(i, flist).setSize(fileSize) }
         }
-        return null;
+        return null
     }
 
-    public FileSizeTask() {
+    init {
 
-        this.setOnRunning(event1 -> {
-            MainLayout.mainLayout.setStatus("neutral", LanguageController.getString("status_fileSizeUnitChange"));
-        });
+        this.setOnRunning { event1 -> MainLayout.mainLayout.setStatus("neutral", LanguageController.getString("status_fileSizeUnitChange")) }
 
-        this.setOnSucceeded(event1 -> {
-            DebugHelper.profile("stop", "FileSizeTask");
-            new FilelistPreviewTask();
-        });
+        this.setOnSucceeded { event1 ->
+            DebugHelper.profile("stop", "FileSizeTask")
+            FilelistPreviewTask()
+        }
 
-        this.setOnFailed(event -> {
-            DebugHelper.profile("stop", "FileSizeTask");
-            new MessageDialog(0, LanguageController.getString("unknownError"), 450, 220);
-            LogFileHandler.logger.info("fileSizeTask.failed");
-        });
+        this.setOnFailed { event ->
+            DebugHelper.profile("stop", "FileSizeTask")
+            MessageDialog(0, LanguageController.getString("unknownError"), 450, 220)
+            LogFileHandler.logger.info("fileSizeTask.failed")
+        }
 
-        DebugHelper.profile("start", "FileSizeTask");
+        DebugHelper.profile("start", "FileSizeTask")
 
         //start the task in a new thread
-        Thread sizeThread = new Thread(this);
-        sizeThread.setDaemon(true);
-        sizeThread.start();
+        val sizeThread = Thread(this)
+        sizeThread.isDaemon = true
+        sizeThread.start()
     }
 }

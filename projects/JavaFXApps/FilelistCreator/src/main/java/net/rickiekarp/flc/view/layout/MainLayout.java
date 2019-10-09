@@ -111,7 +111,7 @@ public class MainLayout implements AppLayout {
         fileColumn[3] = new TableColumn<>(LanguageController.getString("fsize"));
         fileColumn[3].setCellValueFactory(p -> {
             if (p.getValue() != null) {
-                return new SimpleStringProperty(p.getValue().getSize() + " " + AppConfiguration.INSTANCE.getUnitList().get(FilelistController.UNIT_IDX));
+                return new SimpleStringProperty(p.getValue().getSize() + " " + AppConfiguration.INSTANCE.getUnitList().get(FilelistController.getUNIT_IDX()));
             } else {
                 return new SimpleStringProperty("null");
             }
@@ -355,7 +355,7 @@ public class MainLayout implements AppLayout {
             File file = fileChooser.showSaveDialog(MainScene.Companion.getMainScene().getWindowScene().getWindow());
 
             if (file != null) {
-                FilelistController.flController.saveToFile(file, fileformatIDx);
+                FilelistController.getFlController().saveToFile(file, fileformatIDx);
                 AnimationHandler.statusFade(status, "success", LanguageController.getString("save_filelist_success"));
                 LogFileHandler.logger.info("save.filelist:Success");
             } else {
