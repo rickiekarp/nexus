@@ -4,5 +4,4 @@ stages:
   - report
 
 include:
-  - local: 'projects/homebackend/.gitlab-ci.yml'
   - local: 'projects/JavaFXApps/.gitlab-ci.yml'
