@@ -13,7 +13,7 @@ public class BotNetworkApi extends NetworkApi {
     private static String PLUGIN_NAME_ACTION = "name";
 
     public static NetworkAction requestValidation(PluginData plugin) {
-        NetworkParameterProvider provider = NetworkParameterProvider.create();
+        NetworkParameterProvider provider = NetworkParameterProvider.Companion.create();
         provider.put("plugin", plugin.getPluginName());
         return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(AUTH_DOMAIN).setAction(VALIDATE_ACTION).setParameters(provider).setMethod("POST").build();
     }

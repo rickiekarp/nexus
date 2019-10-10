@@ -1,49 +1,39 @@
-package net.rickiekarp.core.ui.windowmanager;
+package net.rickiekarp.core.ui.windowmanager
 
-import net.rickiekarp.core.debug.LogFileHandler;
+import net.rickiekarp.core.debug.LogFileHandler
 
-import java.util.Stack;
+import java.util.Stack
 
-public class WindowStageStack extends Stack<WindowStage> {
-    private WindowStack sceneViewStack;
+class WindowStageStack : Stack<WindowStage>() {
+    val sceneViewStack: WindowStack = WindowStack()
 
-    public WindowStageStack() {
-        sceneViewStack = new WindowStack();
+    override fun push(item: WindowStage): WindowStage {
+        addElement(item)
+        LogFileHandler.logger.info("Push $item - new size: $size")
+        return item
     }
 
-    @Override
-    public WindowStage push(WindowStage item) {
-        addElement(item);
-        LogFileHandler.logger.info("Push " + item + " - new size: " + size());
-        return item;
+    override fun pop(): WindowStage {
+        LogFileHandler.logger.info("pop -> " + this.peek())
+        return super.pop()
     }
 
-    @Override
-    public WindowStage pop() {
-        LogFileHandler.logger.info("pop -> " + this.peek());
-        return super.pop();
-    }
-
-    WindowStage pop(String stageIdentifier) {
-        for (int i = 0; i < size(); i++) {
-            if (get(i).getIdentifier().equals(stageIdentifier)) {
-                return pop();
+    fun pop(stageIdentifier: String): WindowStage? {
+        for (i in 0 until size) {
+            if (get(i).identifier == stageIdentifier) {
+                return pop()
             }
         }
-        LogFileHandler.logger.info("Element with identifier " + stageIdentifier + " could not be found!");
-        return null;
+        LogFileHandler.logger.info("Element with identifier $stageIdentifier could not be found!")
+        return null
     }
 
-    public WindowStage getStageByIdentifier(String stageIdentifier) {
-        for (WindowStage windowStage : this) {
-            if (windowStage.getIdentifier().equals(stageIdentifier)) {
-                return windowStage;
+    fun getStageByIdentifier(stageIdentifier: String): WindowStage? {
+        for (windowStage in this) {
+            if (windowStage.identifier == stageIdentifier) {
+                return windowStage
             }
         }
-        return null;
-    }
-
-    public WindowStack getSceneViewStack() {
-        return sceneViewStack;
+        return null
     }
 }

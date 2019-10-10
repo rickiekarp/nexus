@@ -120,7 +120,7 @@ public class AppCommands {
     }
 
     public static void exceptionTest() {
-        ExceptionHandler.throwTestException();
+        ExceptionHandler.Companion.throwTestException();
     }
 
     public static void errorTest() {

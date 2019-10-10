@@ -1,59 +1,64 @@
-package net.rickiekarp.botlib.plugin;
+package net.rickiekarp.botlib.plugin
 
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.botlib.model.PluginData;
-import net.rickiekarp.botlib.runner.BotRunner;
-import javafx.application.Platform;
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.botlib.model.PluginData
+import net.rickiekarp.botlib.runner.BotRunner
+import javafx.application.Platform
 
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.security.Policy;
+import java.io.File
+import java.net.URLClassLoader
+import java.security.Policy
 
-public class PluginExecutor {
+object PluginExecutor {
 
-    public static void executeLayoutSetter(BotRunner runner, PluginData plugin) throws Exception {
-        Policy.setPolicy(new PluginPolicy());
-        System.setSecurityManager(new SecurityManager());
+    @Throws(Exception::class)
+    fun executeLayoutSetter(runner: BotRunner<*, *>, plugin: PluginData) {
+        Policy.setPolicy(PluginPolicy())
+        System.setSecurityManager(SecurityManager())
 
-        File authorizedJarFile = new File(Configuration.config.getPluginDirFile() + File.separator + plugin.getPluginName() + ".jar");
-        ClassLoader authorizedLoader;
-        authorizedLoader = URLClassLoader.newInstance(new URL[] { authorizedJarFile.toURI().toURL() });
-        BotPlugin authorizedBotPlugin;
-        authorizedBotPlugin = (BotPlugin) authorizedLoader.loadClass(plugin.getPluginClazz()).newInstance();
-        authorizedBotPlugin.setLayout(runner);
+        val authorizedJarFile = File(Configuration.config.pluginDirFile.toString() + File.separator + plugin.pluginName + ".jar")
+        val authorizedLoader: ClassLoader
+        authorizedLoader = URLClassLoader.newInstance(arrayOf(authorizedJarFile.toURI().toURL()))
+        val authorizedBotPlugin: BotPlugin
+        authorizedBotPlugin = authorizedLoader.loadClass(plugin.pluginClazz).newInstance() as BotPlugin
+        authorizedBotPlugin.setLayout(runner)
     }
 
-    public static void executePlugin(BotRunner runner, PluginData plugin) throws Exception {
-        Policy.setPolicy(new PluginPolicy());
-        System.setSecurityManager(new SecurityManager());
+    @Throws(Exception::class)
+    fun executePlugin(runner: BotRunner<*, *>, plugin: PluginData) {
+        Policy.setPolicy(PluginPolicy())
+        System.setSecurityManager(SecurityManager())
 
-        File authorizedJarFile = new File(Configuration.config.getPluginDirFile() + File.separator + plugin.getPluginName() + ".jar");
-        ClassLoader authorizedLoader;
-        authorizedLoader = URLClassLoader.newInstance(new URL[] { authorizedJarFile.toURI().toURL() });
-        BotPlugin authorizedBotPlugin;
-        LogFileHandler.logger.info("Starting " + plugin.getPluginType() + " bot - " + plugin.getPluginName() + " (" + plugin.getPluginOldVersion() + ")");
-        authorizedBotPlugin = (BotPlugin) authorizedLoader.loadClass(plugin.getPluginClazz()).newInstance();
-        authorizedBotPlugin.run(runner);
+        val authorizedJarFile = File(Configuration.config.pluginDirFile.toString() + File.separator + plugin.pluginName + ".jar")
+        val authorizedLoader: ClassLoader
+        authorizedLoader = URLClassLoader.newInstance(arrayOf(authorizedJarFile.toURI().toURL()))
+        val authorizedBotPlugin: BotPlugin
+        LogFileHandler.logger.info("Starting " + plugin.pluginType + " bot - " + plugin.pluginName + " (" + plugin.pluginOldVersion + ")")
+        authorizedBotPlugin = authorizedLoader.loadClass(plugin.pluginClazz).newInstance() as BotPlugin
+        authorizedBotPlugin.run(runner)
     }
 
-    public static void executePlugin(PluginData plugin) {
-        Policy.setPolicy(new PluginPolicy());
-        System.setSecurityManager(new SecurityManager());
+    fun executePlugin(plugin: PluginData) {
+        Policy.setPolicy(PluginPolicy())
+        System.setSecurityManager(SecurityManager())
 
         try {
-            File authorizedJarFile = new File(Configuration.config.getPluginDirFile() + File.separator + plugin.getPluginName() + ".jar");
-            ClassLoader authorizedLoader;
-            authorizedLoader = URLClassLoader.newInstance(new URL[] { authorizedJarFile.toURI().toURL() });
-            Plugin authorizedPlugin;
-            authorizedPlugin = (Plugin) authorizedLoader.loadClass(plugin.getPluginClazz()).newInstance();
-            Platform.runLater(authorizedPlugin::run);
-        } catch (Exception e) {
-            if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e); }
+            val authorizedJarFile = File(Configuration.config.pluginDirFile.toString() + File.separator + plugin.pluginName + ".jar")
+            val authorizedLoader: ClassLoader
+            authorizedLoader = URLClassLoader.newInstance(arrayOf(authorizedJarFile.toURI().toURL()))
+            val authorizedPlugin: Plugin
+            authorizedPlugin = authorizedLoader.loadClass(plugin.pluginClazz).newInstance() as Plugin
+            Platform.runLater { authorizedPlugin.run() }
+        } catch (e: Exception) {
+            if (DebugHelper.DEBUGVERSION) {
+                e.printStackTrace()
+            } else {
+                ExceptionHandler(Thread.currentThread(), e)
+            }
         }
-    }
 
+    }
 }

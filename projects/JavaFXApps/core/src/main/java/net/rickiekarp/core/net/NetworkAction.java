@@ -100,11 +100,11 @@ public class NetworkAction {
             } catch (SocketTimeoutException e) {
                 LogFileHandler.logger.warning("Connection timed out!");
                 if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); }
-                else { LogFileHandler.logger.warning(ExceptionHandler.getExceptionString(e)); }
+                else { LogFileHandler.logger.warning(ExceptionHandler.Companion.getExceptionString(e)); }
             } catch (IOException e1) {
                 LogFileHandler.logger.warning("Can not connect to: " + programURL);
                 if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); }
-                else { LogFileHandler.logger.warning(ExceptionHandler.getExceptionString(e1)); }
+                else { LogFileHandler.logger.warning(ExceptionHandler.Companion.getExceptionString(e1)); }
                 return "file_not_found";
             }
         return "no_connection";
@@ -154,11 +154,11 @@ public class NetworkAction {
             } catch (SocketTimeoutException e) {
                 LogFileHandler.logger.warning("Connection timed out!");
                 if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); }
-                else { LogFileHandler.logger.warning(ExceptionHandler.getExceptionString(e)); }
+                else { LogFileHandler.logger.warning(ExceptionHandler.Companion.getExceptionString(e)); }
             } catch (IOException e1) {
                 LogFileHandler.logger.warning("Can not connect to: " + programURL);
                 if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); }
-                else { LogFileHandler.logger.warning(ExceptionHandler.getExceptionString(e1)); }
+                else { LogFileHandler.logger.warning(ExceptionHandler.Companion.getExceptionString(e1)); }
                 if (i++ == hostList.size()) { return "file_not_found"; }
             }
         }

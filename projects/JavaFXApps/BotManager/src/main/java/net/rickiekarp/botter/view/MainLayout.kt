@@ -100,7 +100,7 @@ class MainLayout : AppLayout {
             )
             listView!!.items = PluginConfig.settingsList
 
-            listView!!.setCellFactory { lv -> FoldableListCell(listView) }
+            listView!!.setCellFactory { lv -> FoldableListCell(listView!!) }
 
             if (DebugHelper.DEBUGVERSION) {
                 listView!!.style = "-fx-background-color: gray"

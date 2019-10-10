@@ -31,13 +31,13 @@ class MainScene {
         val mainStage = WindowStage("main", stage)
         mainScene = this
         layoutRegion = BorderPane()
-        windowScene = WindowScene(mainStage, layoutRegion, winType.toInt())
+        windowScene = WindowScene(mainStage, layoutRegion!!, winType.toInt())
         stage.scene = windowScene
         stage.show()
 
         when (winType) {
             0.toByte() -> {
-                windowScene!!.win.calcSidebarButtonSize(stage.height)
+                windowScene!!.win!!.calcSidebarButtonSize(stage.height)
 
                 //add available commands to a list
                 try {

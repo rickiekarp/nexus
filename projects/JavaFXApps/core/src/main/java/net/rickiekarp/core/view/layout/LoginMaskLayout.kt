@@ -174,7 +174,7 @@ class LoginMaskLayout {
         menuItem2.setOnAction { event ->
             doLogout(loginHandler)
             loginHandler.setOnLogout()
-            MainScene.mainScene.windowScene!!.win.contentController.removeSidebarItemByIdentifier("pluginmanager")
+            MainScene.mainScene.windowScene!!.win.contentController!!.removeSidebarItemByIdentifier("pluginmanager")
         }
 
         val menuButton = MenuButton(AppContext.getContext().accountManager.account!!.user, null, menuItem1, menuItem2)

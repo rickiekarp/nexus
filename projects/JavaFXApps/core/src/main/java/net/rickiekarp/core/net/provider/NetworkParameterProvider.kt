@@ -1,58 +1,56 @@
-package net.rickiekarp.core.net.provider;
+package net.rickiekarp.core.net.provider
 
-import net.rickiekarp.core.net.NetworkAction;
+import net.rickiekarp.core.net.NetworkAction
 
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.LinkedHashMap
+import java.util.Locale
 
-public final class NetworkParameterProvider implements NetworkAction.IParameterProvider {
-	private final LinkedHashMap<String, String> mParameterMap = new LinkedHashMap<>();
+class NetworkParameterProvider private constructor() : NetworkAction.IParameterProvider {
+    private val mParameterMap = LinkedHashMap<String, String>()
 
-	private NetworkParameterProvider() {}
+    fun put(key: String, parameter: String?): NetworkParameterProvider {
+        if (parameter != null) {
+            mParameterMap[key] = parameter.toString()
+        }
+        return this
+    }
 
-	public static NetworkParameterProvider create() {
-		return new NetworkParameterProvider();
-	}
+    fun put(key: String, parameter: Boolean): NetworkParameterProvider {
+        mParameterMap[key] = parameter.toString()
+        return this
+    }
 
-	public NetworkParameterProvider put(final String key, final String parameter) {
-		if (parameter != null) {
-			mParameterMap.put(key, String.valueOf(parameter));
-		}
-		return this;
-	}
+    fun put(key: String, parameter: Int): NetworkParameterProvider {
+        mParameterMap[key] = parameter.toString()
+        return this
+    }
 
-	public NetworkParameterProvider put(final String key, final boolean parameter) {
-		mParameterMap.put(key, String.valueOf(parameter));
-		return this;
-	}
+    fun put(key: String, parameter: Locale): NetworkParameterProvider {
+        mParameterMap[key] = parameter.language + "_" + parameter.country
+        return this
+    }
 
-	public NetworkParameterProvider put(final String key, final int parameter) {
-		mParameterMap.put(key, String.valueOf(parameter));
-		return this;
-	}
+    fun putAll(map: Map<String, String>?): NetworkParameterProvider {
+        if (map != null) {
+            mParameterMap.putAll(map)
+        }
+        return this
+    }
 
-	public NetworkParameterProvider put(final String key, final Locale parameter) {
-		mParameterMap.put(key, parameter.getLanguage() + "_" + parameter.getCountry());
-		return this;
-	}
+    fun remove(key: String?): NetworkParameterProvider {
+        if (key != null) {
+            mParameterMap.remove(key)
+        }
+        return this
+    }
 
-	public NetworkParameterProvider putAll(final Map<String, String> map) {
-		if (map != null) {
-			mParameterMap.putAll(map);
-		}
-		return this;
-	}
+    override fun getParameters(): Map<String, String> {
+        return mParameterMap
+    }
 
-	public NetworkParameterProvider remove(final String key) {
-		if (key != null) {
-			mParameterMap.remove(key);
-		}
-		return this;
-	}
-
-	@Override
-	public Map<String, String> getParameters() {
-		return mParameterMap;
-	}
+    companion object {
+        fun create(): NetworkParameterProvider {
+            return NetworkParameterProvider()
+        }
+    }
 }

@@ -1,19 +1,19 @@
-package net.rickiekarp.botlib.plugin;
+package net.rickiekarp.botlib.plugin
 
-import net.rickiekarp.botlib.runner.BotRunner;
+import net.rickiekarp.botlib.runner.BotRunner
 
 /**
  * Interface for the plugin classes.
  */
-public interface BotPlugin {
+interface BotPlugin {
 
-	/**
-	 * Performs the plugin layout node action.
-	 */
-	void setLayout(BotRunner runner);
+    /**
+     * Performs the plugin layout node action.
+     */
+    fun setLayout(runner: BotRunner<*, *>)
 
-	/**
-	 * Performs the plugin action.
-	 */
-	void run(BotRunner runner);
+    /**
+     * Performs the plugin action.
+     */
+    fun run(runner: BotRunner<*, *>)
 }

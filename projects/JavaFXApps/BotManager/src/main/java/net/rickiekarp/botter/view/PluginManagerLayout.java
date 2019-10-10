@@ -230,7 +230,7 @@ public class PluginManagerLayout {
                 fileDownloader = new FileDownloader(new URL(Configuration.host + "files/apps/" + AppContext.getContext().getContextIdentifier() + "/download/plugins/" + PluginData.pluginData.get(getTableRow().getIndex()).getPluginName() + ".jar") );
             } catch (MalformedURLException e) {
                 if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); }
-                else { LogFileHandler.logger.warning(ExceptionHandler.getExceptionString(e)); }
+                else { LogFileHandler.logger.warning(ExceptionHandler.Companion.getExceptionString(e)); }
                 return;
             }
 
@@ -288,7 +288,7 @@ public class PluginManagerLayout {
                 updatedData.setPluginOldVersion(manifestValues.get(1));
             } catch (IOException e) {
                 if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); }
-                else { LogFileHandler.logger.warning(ExceptionHandler.getExceptionString(e)); }
+                else { LogFileHandler.logger.warning(ExceptionHandler.Companion.getExceptionString(e)); }
             }
             PluginData.pluginData.set(getTableRow().getIndex(), updatedData);
         }

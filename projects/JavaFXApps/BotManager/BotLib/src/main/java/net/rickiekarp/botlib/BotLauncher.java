@@ -48,9 +48,9 @@ public class BotLauncher {
     public void launch(PluginData plugin) throws Exception {
         if (PluginConfig.isBrowserBotPlugin) {
             runner.setCredentials(plugin.getPluginCredentials());
-            PluginExecutor.executePlugin(runner, plugin);
+            PluginExecutor.INSTANCE.executePlugin(runner, plugin);
         } else {
-            PluginExecutor.executePlugin(plugin);
+            PluginExecutor.INSTANCE.executePlugin(plugin);
         }
     }
 

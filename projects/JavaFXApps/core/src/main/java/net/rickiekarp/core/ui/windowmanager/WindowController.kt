@@ -1,94 +1,89 @@
-package net.rickiekarp.core.ui.windowmanager;
+package net.rickiekarp.core.ui.windowmanager
 
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.view.MainScene;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.view.MainScene
+import javafx.application.Platform
+import javafx.collections.ObservableList
+import javafx.geometry.BoundingBox
+import javafx.geometry.Bounds
+import javafx.geometry.Rectangle2D
+import javafx.scene.Cursor
+import javafx.scene.Node
+import javafx.scene.input.MouseEvent
+import javafx.stage.Screen
+import javafx.stage.Stage
+import javafx.stage.WindowEvent
 
-public class WindowController {
+class WindowController internal constructor(private val window: Window) {
+    private val DOCK_NONE = 0x0
+    private val DOCK_LEFT = 0x1
+    private val DOCK_RIGHT = 0x2
+    private val DOCK_TOP = 0x4
+    private var lastDocked = DOCK_NONE
+    private var initX = -1.0
+    private var initY = -1.0
+    private var newX: Double = 0.toDouble()
+    private var newY: Double = 0.toDouble()
+    private var RESIZE_PADDING: Int = 0
+    private var SHADOW_WIDTH: Int = 0
+    private var savedBounds: BoundingBox? = null
+    private var maximized = false
 
-    private final int DOCK_NONE = 0x0;
-    private final int DOCK_LEFT = 0x1;
-    private final int DOCK_RIGHT = 0x2;
-    private final int DOCK_TOP = 0x4;
-    private int lastDocked = DOCK_NONE;
-    private double initX = -1;
-    private double initY = -1;
-    private double newX;
-    private double newY;
-    private int RESIZE_PADDING;
-    private int SHADOW_WIDTH;
-    private Window window;
-    private BoundingBox savedBounds;
-    private boolean maximized = false;
-
-    WindowController(Window ud) {
-        window = ud;
-    }
-
-    void maximizeOrRestore() {
-        Stage stage = window.getWindowStage().getStage();
+    fun maximizeOrRestore() {
+        val stage = window.windowStage.stage
 
         if (maximized) {
-            restoreSavedBounds(stage);
-            window.setShadow(true);
-            savedBounds = null;
-            maximized = false;
+            restoreSavedBounds(stage)
+            window.setShadow(true)
+            savedBounds = null
+            maximized = false
         } else {
-            ObservableList<Screen> screensForRectangle = Screen.getScreensForRectangle(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
-            Screen screen = screensForRectangle.get(0);
-            Rectangle2D visualBounds = screen.getVisualBounds();
+            val screensForRectangle = Screen.getScreensForRectangle(stage.x, stage.y, stage.width, stage.height)
+            val screen = screensForRectangle[0]
+            val visualBounds = screen.visualBounds
 
-            savedBounds = new BoundingBox(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
+            savedBounds = BoundingBox(stage.x, stage.y, stage.width, stage.height)
 
-            window.setShadow(false);
+            window.setShadow(false)
 
-            stage.setX(visualBounds.getMinX());
-            stage.setY(visualBounds.getMinY());
-            stage.setWidth(visualBounds.getWidth());
-            stage.setHeight(visualBounds.getHeight());
+            stage.x = visualBounds.minX
+            stage.y = visualBounds.minY
+            stage.width = visualBounds.width
+            stage.height = visualBounds.height
 
-            window.sideBarHeightProperty.set(visualBounds.getHeight());
-            maximized = true;
+            window.sideBarHeightProperty!!.set(visualBounds.height)
+            maximized = true
         }
     }
 
-    private void restoreSavedBounds(Stage stage) {
-        stage.setX(savedBounds.getMinX());
-        stage.setY(savedBounds.getMinY());
-        stage.setWidth(savedBounds.getWidth());
-        stage.setHeight(savedBounds.getHeight());
-        savedBounds = null;
+    private fun restoreSavedBounds(stage: Stage) {
+        stage.x = savedBounds!!.minX
+        stage.y = savedBounds!!.minY
+        stage.width = savedBounds!!.width
+        stage.height = savedBounds!!.height
+        savedBounds = null
     }
 
-    public void close() {
-        final WindowStage stage = window.getWindowStage();
-        LogFileHandler.logger.info("close." + stage.getIdentifier());
-        Platform.runLater(() -> stage.getStage().fireEvent(new WindowEvent(stage.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST)));
-        MainScene.Companion.getStageStack().pop(stage.getIdentifier());
+    fun close() {
+        val stage = window.windowStage
+        LogFileHandler.logger.info("close." + stage.identifier)
+        Platform.runLater { stage.stage.fireEvent(WindowEvent(stage.stage, WindowEvent.WINDOW_CLOSE_REQUEST)) }
+        MainScene.stageStack.pop(stage.identifier)
     }
 
-    public void minimize() {
-        if (!Platform.isFxApplicationThread()) // Ensure on correct thread else hangs X under Unbuntu
+    fun minimize() {
+        if (!Platform.isFxApplicationThread())
+        // Ensure on correct thread else hangs X under Unbuntu
         {
-            Platform.runLater(this::_minimize);
+            Platform.runLater { this._minimize() }
         } else {
-            _minimize();
+            _minimize()
         }
     }
 
-    private void _minimize() {
-        final WindowStage stage = window.getWindowStage();
-        stage.getStage().setIconified(true);
+    private fun _minimize() {
+        val stage = window.windowStage
+        stage.stage.isIconified = true
     }
 
     /**
@@ -98,121 +93,121 @@ public class WindowController {
      * @param PADDING Resize padding
      * @param SHADOW Shadow width
      */
-    void setStageResizableWith(final Stage stage, final Node node, int PADDING, int SHADOW) {
-        RESIZE_PADDING = PADDING;
-        SHADOW_WIDTH = SHADOW;
+    fun setStageResizableWith(stage: Stage, node: Node, PADDING: Int, SHADOW: Int) {
+        RESIZE_PADDING = PADDING
+        SHADOW_WIDTH = SHADOW
 
-        node.setOnMousePressed(mouseEvent -> {
-            if (mouseEvent.isPrimaryButtonDown()) {
-                initX = mouseEvent.getScreenX();
-                initY = mouseEvent.getScreenY();
-                mouseEvent.consume();
+        node.setOnMousePressed { mouseEvent ->
+            if (mouseEvent.isPrimaryButtonDown) {
+                initX = mouseEvent.screenX
+                initY = mouseEvent.screenY
+                mouseEvent.consume()
             }
-        });
-        node.setOnMouseDragged(mouseEvent -> {
-            if (!mouseEvent.isPrimaryButtonDown() || (initX == -1 && initY == -1)) {
-                return;
+        }
+        node.setOnMouseDragged { mouseEvent ->
+            if (!mouseEvent.isPrimaryButtonDown || initX == -1.0 && initY == -1.0) {
+                return@setOnMouseDragged
             }
 
             //Long press generates drag event!
-            if (mouseEvent.isStillSincePress()) {
-                return;
+            if (mouseEvent.isStillSincePress) {
+                return@setOnMouseDragged
             }
             if (maximized) {
                 // Remove maximized state
-                window.maximizeProperty.set(false);
-                return;
+                window.maximizeProperty.set(false)
+                return@setOnMouseDragged
             } // Docked then moved, so restore state
             else if (savedBounds != null) {
-                window.setShadow(true);
+                window.setShadow(true)
             }
 
 
-            newX = mouseEvent.getScreenX();
-            newY = mouseEvent.getScreenY();
-            double deltax = newX - initX;
-            double deltay = newY - initY;
+            newX = mouseEvent.screenX
+            newY = mouseEvent.screenY
+            val deltax = newX - initX
+            val deltay = newY - initY
 
-            Cursor cursor = node.getCursor();
-            if (Cursor.E_RESIZE.equals(cursor)) {
-                setStageWidth(stage, stage.getWidth() + deltax);
-                mouseEvent.consume();
-            } else if (Cursor.NE_RESIZE.equals(cursor)) {
-                if (setStageHeight(stage, stage.getHeight() - deltay)) {
-                    setStageY(stage, stage.getY() + deltay);
+            val cursor = node.cursor
+            if (Cursor.E_RESIZE == cursor) {
+                setStageWidth(stage, stage.width + deltax)
+                mouseEvent.consume()
+            } else if (Cursor.NE_RESIZE == cursor) {
+                if (setStageHeight(stage, stage.height - deltay)) {
+                    setStageY(stage, stage.y + deltay)
                 }
-                setStageWidth(stage, stage.getWidth() + deltax);
-                mouseEvent.consume();
-            } else if (Cursor.SE_RESIZE.equals(cursor)) {
-                setStageWidth(stage, stage.getWidth() + deltax);
-                setStageHeight(stage, stage.getHeight() + deltay);
-                mouseEvent.consume();
-            } else if (Cursor.S_RESIZE.equals(cursor)) {
-                setStageHeight(stage, stage.getHeight() + deltay);
-                mouseEvent.consume();
-            } else if (Cursor.W_RESIZE.equals(cursor)) {
-                if (setStageWidth(stage, stage.getWidth() - deltax)) {
-                    stage.setX(stage.getX() + deltax);
+                setStageWidth(stage, stage.width + deltax)
+                mouseEvent.consume()
+            } else if (Cursor.SE_RESIZE == cursor) {
+                setStageWidth(stage, stage.width + deltax)
+                setStageHeight(stage, stage.height + deltay)
+                mouseEvent.consume()
+            } else if (Cursor.S_RESIZE == cursor) {
+                setStageHeight(stage, stage.height + deltay)
+                mouseEvent.consume()
+            } else if (Cursor.W_RESIZE == cursor) {
+                if (setStageWidth(stage, stage.width - deltax)) {
+                    stage.x = stage.x + deltax
                 }
-                mouseEvent.consume();
-            } else if (Cursor.SW_RESIZE.equals(cursor)) {
-                if (setStageWidth(stage, stage.getWidth() - deltax)) {
-                    stage.setX(stage.getX() + deltax);
+                mouseEvent.consume()
+            } else if (Cursor.SW_RESIZE == cursor) {
+                if (setStageWidth(stage, stage.width - deltax)) {
+                    stage.x = stage.x + deltax
                 }
-                setStageHeight(stage, stage.getHeight() + deltay);
-                mouseEvent.consume();
-            } else if (Cursor.NW_RESIZE.equals(cursor)) {
-                if (setStageWidth(stage, stage.getWidth() - deltax)) {
-                    stage.setX(stage.getX() + deltax);
+                setStageHeight(stage, stage.height + deltay)
+                mouseEvent.consume()
+            } else if (Cursor.NW_RESIZE == cursor) {
+                if (setStageWidth(stage, stage.width - deltax)) {
+                    stage.x = stage.x + deltax
                 }
-                if (setStageHeight(stage, stage.getHeight() - deltay)) {
-                    setStageY(stage, stage.getY() + deltay);
+                if (setStageHeight(stage, stage.height - deltay)) {
+                    setStageY(stage, stage.y + deltay)
                 }
-                mouseEvent.consume();
-            } else if (Cursor.N_RESIZE.equals(cursor)) {
-                if (setStageHeight(stage, stage.getHeight() - deltay)) {
-                    setStageY(stage, stage.getY() + deltay);
+                mouseEvent.consume()
+            } else if (Cursor.N_RESIZE == cursor) {
+                if (setStageHeight(stage, stage.height - deltay)) {
+                    setStageY(stage, stage.y + deltay)
                 }
-                mouseEvent.consume();
+                mouseEvent.consume()
             }
-        });
+        }
 
-        node.setOnMouseMoved(mouseEvent -> {
+        node.setOnMouseMoved { mouseEvent ->
             if (maximized) {
-                setCursor(node, Cursor.DEFAULT);
-                return; // maximized mode does not support resize
+                setCursor(node, Cursor.DEFAULT)
+                return@setOnMouseMoved  // maximized mode does not support resize
             }
-            if (!stage.isResizable()) {
-                return;
+            if (!stage.isResizable) {
+                return@setOnMouseMoved
             }
-            double x = mouseEvent.getX();
-            double y = mouseEvent.getY();
-            Bounds boundsInParent = node.getBoundsInParent();
+            val x = mouseEvent.x
+            val y = mouseEvent.y
+            val boundsInParent = node.boundsInParent
             if (isRightEdge(x, y, boundsInParent)) {
                 if (y < RESIZE_PADDING + SHADOW_WIDTH) {
-                    setCursor(node, Cursor.NE_RESIZE);
-                } else if (y > boundsInParent.getHeight() - (double) (RESIZE_PADDING + SHADOW_WIDTH)) {
-                    setCursor(node, Cursor.SE_RESIZE);
+                    setCursor(node, Cursor.NE_RESIZE)
+                } else if (y > boundsInParent.height - (RESIZE_PADDING + SHADOW_WIDTH).toDouble()) {
+                    setCursor(node, Cursor.SE_RESIZE)
                 } else {
-                    setCursor(node, Cursor.E_RESIZE);
+                    setCursor(node, Cursor.E_RESIZE)
                 }
 
             } else if (isLeftEdge(x, y, boundsInParent)) {
                 if (y < RESIZE_PADDING + SHADOW_WIDTH) {
-                    setCursor(node, Cursor.NW_RESIZE);
-                } else if (y > boundsInParent.getHeight() - (double) (RESIZE_PADDING + SHADOW_WIDTH)) {
-                    setCursor(node, Cursor.SW_RESIZE);
+                    setCursor(node, Cursor.NW_RESIZE)
+                } else if (y > boundsInParent.height - (RESIZE_PADDING + SHADOW_WIDTH).toDouble()) {
+                    setCursor(node, Cursor.SW_RESIZE)
                 } else {
-                    setCursor(node, Cursor.W_RESIZE);
+                    setCursor(node, Cursor.W_RESIZE)
                 }
             } else if (isTopEdge(x, y, boundsInParent)) {
-                setCursor(node, Cursor.N_RESIZE);
+                setCursor(node, Cursor.N_RESIZE)
             } else if (isBottomEdge(x, y, boundsInParent)) {
-                setCursor(node, Cursor.S_RESIZE);
+                setCursor(node, Cursor.S_RESIZE)
             } else {
-                setCursor(node, Cursor.DEFAULT);
+                setCursor(node, Cursor.DEFAULT)
             }
-        });
+        }
     }
 
     /**
@@ -222,168 +217,169 @@ public class WindowController {
      *
      * @param y The Y-Location
      */
-    private void setStageY(Stage stage, double y) {
+    private fun setStageY(stage: Stage, y: Double) {
         try {
-            ObservableList<Screen> screensForRectangle = Screen.getScreensForRectangle(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
-            if (screensForRectangle.size() > 0) {
-                Screen screen = screensForRectangle.get(0);
-                Rectangle2D visualBounds = screen.getVisualBounds();
-                if (y < visualBounds.getHeight() - 30 && y + SHADOW_WIDTH >= visualBounds.getMinY()) {
-                    stage.setY(y);
+            val screensForRectangle = Screen.getScreensForRectangle(stage.x, stage.y, stage.width, stage.height)
+            if (screensForRectangle.size > 0) {
+                val screen = screensForRectangle[0]
+                val visualBounds = screen.visualBounds
+                if (y < visualBounds.height - 30 && y + SHADOW_WIDTH >= visualBounds.minY) {
+                    stage.y = y
                 }
             }
-        } catch (Exception e) {
+        } catch (e: Exception) {
             //ignore
         }
+
     }
 
-    private boolean setStageWidth(Stage stage, double width) {
-        if (width >= stage.getMinWidth()) {
-            stage.setWidth(width);
-            initX = newX;
-            return true;
+    private fun setStageWidth(stage: Stage, width: Double): Boolean {
+        if (width >= stage.minWidth) {
+            stage.width = width
+            initX = newX
+            return true
         }
-        return false;
+        return false
     }
 
-    private boolean setStageHeight(Stage stage, double height) {
-        if (height >= stage.getMinHeight()) {
-            stage.setHeight(height);
-            if (window.getWindowType() == 0) {
-                window.sideBarHeightProperty.set(height);
-                window.calcSidebarButtonSize(stage.getHeight());
+    private fun setStageHeight(stage: Stage, height: Double): Boolean {
+        if (height >= stage.minHeight) {
+            stage.height = height
+            if (window.windowType == 0) {
+                window.sideBarHeightProperty!!.set(height)
+                window.calcSidebarButtonSize(stage.height)
             }
-            initY = newY;
-            return true;
+            initY = newY
+            return true
         }
-        return false;
+        return false
     }
 
     /**
      * Allow this node to drag the Stage
      */
-    void setAsStageDraggable(final Stage stage, final Node node) {
-        node.setOnMousePressed(mouseEvent -> {
-            if (mouseEvent.isPrimaryButtonDown()) {
-                initX = mouseEvent.getScreenX();
-                initY = mouseEvent.getScreenY();
-                mouseEvent.consume();
+    fun setAsStageDraggable(stage: Stage, node: Node) {
+        node.setOnMousePressed { mouseEvent ->
+            if (mouseEvent.isPrimaryButtonDown) {
+                initX = mouseEvent.screenX
+                initY = mouseEvent.screenY
+                mouseEvent.consume()
             } else {
-                initX = -1;
-                initY = -1;
+                initX = -1.0
+                initY = -1.0
             }
-        });
-        node.setOnMouseDragged(mouseEvent -> {
-            if (!mouseEvent.isPrimaryButtonDown() || initX == -1) {
-                return;
+        }
+        node.setOnMouseDragged { mouseEvent ->
+            if (!mouseEvent.isPrimaryButtonDown || initX == -1.0) {
+                return@setOnMouseDragged
             }
 
             /*
              * Long press generates drag event!
              */
-            if (mouseEvent.isStillSincePress()) {
-                return;
+            if (mouseEvent.isStillSincePress) {
+                return@setOnMouseDragged
             }
             if (maximized) {
                 // Remove Maximized state
-                window.maximizeProperty.set(false);
+                window.maximizeProperty.set(false)
                 // Center
-                stage.setX(mouseEvent.getScreenX() - stage.getWidth() / 2);
-                stage.setY(mouseEvent.getScreenY() - SHADOW_WIDTH);
+                stage.x = mouseEvent.screenX - stage.width / 2
+                stage.y = mouseEvent.screenY - SHADOW_WIDTH
             } // Docked then moved, so restore state
             else if (savedBounds != null) {
-                restoreSavedBounds(stage);
-                window.setShadow(true);
+                restoreSavedBounds(stage)
+                window.setShadow(true)
                 // Center
-                stage.setX(mouseEvent.getScreenX() - stage.getWidth() / 2);
-                stage.setY(mouseEvent.getScreenY() - SHADOW_WIDTH);
+                stage.x = mouseEvent.screenX - stage.width / 2
+                stage.y = mouseEvent.screenY - SHADOW_WIDTH
             }
-            double newX1 = mouseEvent.getScreenX();
-            double newY1 = mouseEvent.getScreenY();
-            double deltax = newX1 - initX;
-            double deltay = newY1 - initY;
-            initX = newX1;
-            initY = newY1;
-            setCursor(node, Cursor.HAND);
-            stage.setX(stage.getX() + deltax);
-            setStageY(stage, stage.getY() + deltay);
+            val newX1 = mouseEvent.screenX
+            val newY1 = mouseEvent.screenY
+            val deltax = newX1 - initX
+            val deltay = newY1 - initY
+            initX = newX1
+            initY = newY1
+            setCursor(node, Cursor.HAND)
+            stage.x = stage.x + deltax
+            setStageY(stage, stage.y + deltay)
 
-            testDock(stage, mouseEvent);
-            mouseEvent.consume();
-        });
+            testDock(stage, mouseEvent)
+            mouseEvent.consume()
+        }
 
-        node.setOnMouseReleased(t -> {
-            if (stage.isResizable()) {
-                window.setDockFeedbackInvisible();
-                setCursor(node, Cursor.DEFAULT);
-                initX = -1;
-                initY = -1;
-                dockActions(stage, t);
+        node.setOnMouseReleased { t ->
+            if (stage.isResizable) {
+                window.setDockFeedbackInvisible()
+                setCursor(node, Cursor.DEFAULT)
+                initX = -1.0
+                initY = -1.0
+                dockActions(stage, t)
             }
-        });
+        }
 
-        node.setOnMouseExited(mouseEvent -> setCursor(node, Cursor.DEFAULT));
+        node.setOnMouseExited { mouseEvent -> setCursor(node, Cursor.DEFAULT) }
     }
 
     /**
      * (Humble) Simulation of Windows behavior on screen's edges Feedbacks
      */
-    private void testDock(Stage stage, MouseEvent mouseEvent) {
-        if (!stage.isResizable()) {
-            return;
+    private fun testDock(stage: Stage, mouseEvent: MouseEvent) {
+        if (!stage.isResizable) {
+            return
         }
 
-        int dockSide = getDockSide(mouseEvent);
+        val dockSide = getDockSide(mouseEvent)
         // Dock Left
         if (dockSide == DOCK_LEFT) {
             if (lastDocked == DOCK_LEFT) {
-                return;
+                return
             }
-            ObservableList<Screen> screensForRectangle = Screen.getScreensForRectangle(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
-            Screen screen = screensForRectangle.get(0);
-            Rectangle2D visualBounds = screen.getVisualBounds();
+            val screensForRectangle = Screen.getScreensForRectangle(stage.x, stage.y, stage.width, stage.height)
+            val screen = screensForRectangle[0]
+            val visualBounds = screen.visualBounds
             // Dock Left
-            double x = visualBounds.getMinX();
-            double y = visualBounds.getMinY();
-            double width = visualBounds.getWidth() / 2;
-            double height = visualBounds.getHeight();
+            val x = visualBounds.minX
+            val y = visualBounds.minY
+            val width = visualBounds.width / 2
+            val height = visualBounds.height
 
-            window.setDockFeedbackVisible(x, y, width, height);
-            lastDocked = DOCK_LEFT;
+            window.setDockFeedbackVisible(x, y, width, height)
+            lastDocked = DOCK_LEFT
         } // Dock Right
         else if (dockSide == DOCK_RIGHT) {
             if (lastDocked == DOCK_RIGHT) {
-                return;
+                return
             }
-            ObservableList<Screen> screensForRectangle = Screen.getScreensForRectangle(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
-            Screen screen = screensForRectangle.get(0);
-            Rectangle2D visualBounds = screen.getVisualBounds();
+            val screensForRectangle = Screen.getScreensForRectangle(stage.x, stage.y, stage.width, stage.height)
+            val screen = screensForRectangle[0]
+            val visualBounds = screen.visualBounds
             // Dock Right (visualBounds = (javafx.geometry.Rectangle2D) Rectangle2D [minX = 1440.0, minY=300.0, maxX=3360.0, maxY=1500.0, width=1920.0, height=1200.0])
-            double x = visualBounds.getMinX() + visualBounds.getWidth() / 2;
-            double y = visualBounds.getMinY();
-            double width = visualBounds.getWidth() / 2;
-            double height = visualBounds.getHeight();
+            val x = visualBounds.minX + visualBounds.width / 2
+            val y = visualBounds.minY
+            val width = visualBounds.width / 2
+            val height = visualBounds.height
 
-            window.setDockFeedbackVisible(x, y, width, height);
-            lastDocked = DOCK_RIGHT;
+            window.setDockFeedbackVisible(x, y, width, height)
+            lastDocked = DOCK_RIGHT
         } // Dock top
         else if (dockSide == DOCK_TOP) {
             if (lastDocked == DOCK_TOP) {
-                return;
+                return
             }
-            ObservableList<Screen> screensForRectangle = Screen.getScreensForRectangle(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
-            Screen screen = screensForRectangle.get(0);
-            Rectangle2D visualBounds = screen.getVisualBounds();
+            val screensForRectangle = Screen.getScreensForRectangle(stage.x, stage.y, stage.width, stage.height)
+            val screen = screensForRectangle[0]
+            val visualBounds = screen.visualBounds
             // Dock Left
-            double x = visualBounds.getMinX();
-            double y = visualBounds.getMinY();
-            double width = visualBounds.getWidth();
-            double height = visualBounds.getHeight();
-            window.setDockFeedbackVisible(x, y, width, height);
-            lastDocked = DOCK_TOP;
+            val x = visualBounds.minX
+            val y = visualBounds.minY
+            val width = visualBounds.width
+            val height = visualBounds.height
+            window.setDockFeedbackVisible(x, y, width, height)
+            lastDocked = DOCK_TOP
         } else {
-            window.setDockFeedbackInvisible();
-            lastDocked = DOCK_NONE;
+            window.setDockFeedbackInvisible()
+            lastDocked = DOCK_NONE
         }
     }
 
@@ -392,101 +388,103 @@ public class WindowController {
      * @param mouseEvent The mouse event
      * @return DOCK_LEFT,DOCK_RIGHT,DOCK_TOP
      */
-    private int getDockSide(MouseEvent mouseEvent) {
-        double minX = Double.POSITIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        double maxX = 0;
-        double maxY = 0;
+    private fun getDockSide(mouseEvent: MouseEvent): Int {
+        var minX = java.lang.Double.POSITIVE_INFINITY
+        var minY = java.lang.Double.POSITIVE_INFINITY
+        var maxX = 0.0
+        var maxY = 0.0
 
         // Get "big" screen bounds
-        ObservableList<Screen> screens = Screen.getScreens();
-        for (Screen screen : screens) {
-            Rectangle2D visualBounds = screen.getVisualBounds();
-            minX = Math.min(minX, visualBounds.getMinX());
-            minY = Math.min(minY, visualBounds.getMinY());
-            maxX = Math.max(maxX, visualBounds.getMaxX());
-            maxY = Math.max(maxY, visualBounds.getMaxY());
+        val screens = Screen.getScreens()
+        for (screen in screens) {
+            val visualBounds = screen.visualBounds
+            minX = Math.min(minX, visualBounds.minX)
+            minY = Math.min(minY, visualBounds.minY)
+            maxX = Math.max(maxX, visualBounds.maxX)
+            maxY = Math.max(maxY, visualBounds.maxY)
         }
         // Dock Left
-        if (mouseEvent.getScreenX() == minX) {
-            return DOCK_LEFT;
-        } else if (mouseEvent.getScreenX() >= maxX - 1) { // MaxX returns the width? Not width -1 ?!
-            return DOCK_RIGHT;
-        } else if (mouseEvent.getScreenY() <= minY) {   // Mac menu bar
-            return DOCK_TOP;
+        if (mouseEvent.screenX == minX) {
+            return DOCK_LEFT
+        } else if (mouseEvent.screenX >= maxX - 1) { // MaxX returns the width? Not width -1 ?!
+            return DOCK_RIGHT
+        } else if (mouseEvent.screenY <= minY) {   // Mac menu bar
+            return DOCK_TOP
         }
-        return 0;
+        return 0
     }
 
     /**
      * (Humble) Simulation of Windows behavior on screen's edges Actions
      */
-    private void dockActions(Stage stage, MouseEvent mouseEvent) {
-        ObservableList<Screen> screensForRectangle = Screen.getScreensForRectangle(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
-        Screen screen = screensForRectangle.get(0);
-        Rectangle2D visualBounds = screen.getVisualBounds();
+    private fun dockActions(stage: Stage, mouseEvent: MouseEvent) {
+        val screensForRectangle = Screen.getScreensForRectangle(stage.x, stage.y, stage.width, stage.height)
+        val screen = screensForRectangle[0]
+        val visualBounds = screen.visualBounds
         // Dock Left
-        if (mouseEvent.getScreenX() == visualBounds.getMinX()) {
-            savedBounds = new BoundingBox(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
+        if (mouseEvent.screenX == visualBounds.minX) {
+            savedBounds = BoundingBox(stage.x, stage.y, stage.width, stage.height)
 
-            stage.setX(visualBounds.getMinX());
-            stage.setY(visualBounds.getMinY());
+            stage.x = visualBounds.minX
+            stage.y = visualBounds.minY
             // Respect Stage Max size
-            double width = visualBounds.getWidth() / 2;
-            if (stage.getMaxWidth() < width) {
-                width = stage.getMaxWidth();
+            var width = visualBounds.width / 2
+            if (stage.maxWidth < width) {
+                width = stage.maxWidth
             }
 
-            stage.setWidth(width);
+            stage.width = width
 
-            double height = visualBounds.getHeight();
-            if (stage.getMaxHeight() < height) {
-                height = stage.getMaxHeight();
+            var height = visualBounds.height
+            if (stage.maxHeight < height) {
+                height = stage.maxHeight
             }
 
-            stage.setHeight(height);
-            window.setShadow(false);
+            stage.height = height
+            window.setShadow(false)
         } // Dock Right (visualBounds = [minX = 1440.0, minY=300.0, maxX=3360.0, maxY=1500.0, width=1920.0, height=1200.0])
-        else if (mouseEvent.getScreenX() >= visualBounds.getMaxX() - 1) { // MaxX returns the width? Not width -1 ?!
-            savedBounds = new BoundingBox(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
+        else if (mouseEvent.screenX >= visualBounds.maxX - 1) { // MaxX returns the width? Not width -1 ?!
+            savedBounds = BoundingBox(stage.x, stage.y, stage.width, stage.height)
 
-            stage.setX(visualBounds.getWidth() / 2 + visualBounds.getMinX());
-            stage.setY(visualBounds.getMinY());
+            stage.x = visualBounds.width / 2 + visualBounds.minX
+            stage.y = visualBounds.minY
             // Respect Stage Max size
-            double width = visualBounds.getWidth() / 2;
-            if (stage.getMaxWidth() < width) {
-                width = stage.getMaxWidth();
+            var width = visualBounds.width / 2
+            if (stage.maxWidth < width) {
+                width = stage.maxWidth
             }
 
-            stage.setWidth(width);
+            stage.width = width
 
-            double height = visualBounds.getHeight();
-            if (stage.getMaxHeight() < height) {
-                height = stage.getMaxHeight();
+            var height = visualBounds.height
+            if (stage.maxHeight < height) {
+                height = stage.maxHeight
             }
 
-            stage.setHeight(height);
-            window.setShadow(false);
-        } else if (mouseEvent.getScreenY() <= visualBounds.getMinY()) { // Mac menu bar
-            window.maximizeProperty.set(true);
+            stage.height = height
+            window.setShadow(false)
+        } else if (mouseEvent.screenY <= visualBounds.minY) { // Mac menu bar
+            window.maximizeProperty.set(true)
         }
     }
 
-    private boolean isRightEdge(double x, double y, Bounds boundsInParent) {
-        return x < boundsInParent.getWidth() && x > boundsInParent.getWidth() - RESIZE_PADDING - SHADOW_WIDTH;
+    private fun isRightEdge(x: Double, y: Double, boundsInParent: Bounds): Boolean {
+        return x < boundsInParent.width && x > boundsInParent.width - RESIZE_PADDING.toDouble() - SHADOW_WIDTH.toDouble()
     }
 
-    private boolean isTopEdge(double x, double y, Bounds boundsInParent) {
-        return y >= 0 && y < RESIZE_PADDING + SHADOW_WIDTH;
+    private fun isTopEdge(x: Double, y: Double, boundsInParent: Bounds): Boolean {
+        return y >= 0 && y < RESIZE_PADDING + SHADOW_WIDTH
     }
 
-    private boolean isBottomEdge(double x, double y, Bounds boundsInParent) {
-        return y < boundsInParent.getHeight() && y > boundsInParent.getHeight() - RESIZE_PADDING - SHADOW_WIDTH;
+    private fun isBottomEdge(x: Double, y: Double, boundsInParent: Bounds): Boolean {
+        return y < boundsInParent.height && y > boundsInParent.height - RESIZE_PADDING.toDouble() - SHADOW_WIDTH.toDouble()
     }
 
-    private boolean isLeftEdge(double x, double y, Bounds boundsInParent) {
-        return x >= 0 && x < RESIZE_PADDING + SHADOW_WIDTH;
+    private fun isLeftEdge(x: Double, y: Double, boundsInParent: Bounds): Boolean {
+        return x >= 0 && x < RESIZE_PADDING + SHADOW_WIDTH
     }
 
-    private void setCursor(Node n, Cursor c) { n.setCursor(c); }
+    private fun setCursor(n: Node, c: Cursor) {
+        n.cursor = c
+    }
 }

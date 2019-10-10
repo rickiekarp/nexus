@@ -1,22 +1,23 @@
-package net.rickiekarp.core.util.parser;
+package net.rickiekarp.core.util.parser
 
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import org.w3c.dom.Document
+import org.xml.sax.InputSource
+import org.xml.sax.SAXException
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.StringReader;
+import javax.xml.parsers.DocumentBuilder
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.parsers.ParserConfigurationException
+import java.io.IOException
+import java.io.StringReader
 
-public class XmlParser {
+object XmlParser {
     /**
      * Converts a given XML String to a DOM Object and returns the document
      */
-    public static Document stringToDom(String xmlString) throws SAXException, ParserConfigurationException, IOException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse(new InputSource(new StringReader(xmlString)));
+    @Throws(SAXException::class, ParserConfigurationException::class, IOException::class)
+    fun stringToDom(xmlString: String): Document {
+        val factory = DocumentBuilderFactory.newInstance()
+        val builder = factory.newDocumentBuilder()
+        return builder.parse(InputSource(StringReader(xmlString)))
     }
 }

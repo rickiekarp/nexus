@@ -57,7 +57,7 @@ public class BotTask extends Task<Void> {
                 }
             } catch (Exception e) {
                 System.out.println("Something went wrong! Check the logs for more details!");
-                LogFileHandler.logger.warning(ExceptionHandler.getExceptionString(e));
+                LogFileHandler.logger.warning(ExceptionHandler.Companion.getExceptionString(e));
                 this.cancel();
             }
         } else {

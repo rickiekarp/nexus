@@ -146,17 +146,17 @@ public class Configuration {
 
         //post config set ups
         switch (colorScheme) {
-            case 0:  Window.colorTheme = "darkgray"; break;
-            case 1:  Window.colorTheme = "gray"; break;
-            case 2:  Window.colorTheme = "black"; break;
-            case 3:  Window.colorTheme = "red"; break;
-            case 4:  Window.colorTheme = "orange"; break;
-            case 5:  Window.colorTheme = "yellow"; break;
-            case 6:  Window.colorTheme = "blue"; break;
-            case 7:  Window.colorTheme = "magenta"; break;
-            case 8:  Window.colorTheme = "purple"; break;
-            case 9:  Window.colorTheme = "green"; break;
-            default:  Window.colorTheme = "darkgray"; break;
+            case 0:  Window.Companion.setColorTheme("darkgray"); break;
+            case 1:  Window.Companion.setColorTheme("gray"); break;
+            case 2:  Window.Companion.setColorTheme("black"); break;
+            case 3:  Window.Companion.setColorTheme("red"); break;
+            case 4:  Window.Companion.setColorTheme("orange"); break;
+            case 5:  Window.Companion.setColorTheme("yellow"); break;
+            case 6:  Window.Companion.setColorTheme("blue"); break;
+            case 7:  Window.Companion.setColorTheme("magenta"); break;
+            case 8:  Window.Companion.setColorTheme("purple"); break;
+            case 9:  Window.Companion.setColorTheme("green"); break;
+            default:  Window.Companion.setColorTheme("darkgray"); break;
         }
         return true;
     }

@@ -28,7 +28,7 @@ public class NetworkApi {
     }
 
     public static NetworkAction requestAccessToken(Account account) {
-        NetworkParameterProvider provider = NetworkParameterProvider.create();
+        NetworkParameterProvider provider = NetworkParameterProvider.Companion.create();
         provider.put("username", account.getUser());
         provider.put("password", account.getPassword());
         return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(TOKEN_ACTION).setParameters(provider).setMethod("POST").build();
@@ -40,21 +40,21 @@ public class NetworkApi {
     }
 
     public static NetworkAction requestCreateAccount(Account account) {
-        NetworkParameterProvider provider = NetworkParameterProvider.create();
+        NetworkParameterProvider provider = NetworkParameterProvider.Companion.create();
         provider.put("username", account.getUser());
         provider.put("password", account.getPassword());
         return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(REGISTER_ACTION).setParameters(provider).setMethod("POST").build();
     }
 
     public static NetworkAction requestVersionInfo(int updateChannel) {
-        NetworkParameterProvider provider = NetworkParameterProvider.create();
+        NetworkParameterProvider provider = NetworkParameterProvider.Companion.create();
         provider.put("identifier", AppContext.getContext().getContextIdentifier());
         provider.put("channel", updateChannel);
         return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(INFO_DOMAIN).setAction(UPDATE_ACTION).setParameters(provider).setMethod("GET").build();
     }
 
     public static NetworkAction requestChangelog() {
-        NetworkParameterProvider provider = NetworkParameterProvider.create();
+        NetworkParameterProvider provider = NetworkParameterProvider.Companion.create();
         provider.put("identifier", AppContext.getContext().getContextIdentifier());
         return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(INFO_DOMAIN).setAction(CHANGELOG_ACTION).setParameters(provider).setMethod("GET").build();
     }
