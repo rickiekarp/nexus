@@ -1,604 +1,610 @@
-package net.rickiekarp.botter.view;
+package net.rickiekarp.botter.view
 
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.util.parser.JsonParser;
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.view.ChangelogScene;
-import net.rickiekarp.core.view.MainScene;
-import net.rickiekarp.core.view.MessageDialog;
-import net.rickiekarp.core.view.SettingsScene;
-import net.rickiekarp.botlib.BotConfig;
-import net.rickiekarp.botlib.BotLauncher;
-import net.rickiekarp.botlib.PluginConfig;
-import net.rickiekarp.botlib.enums.BotPlatforms;
-import net.rickiekarp.botlib.enums.BotType;
-import net.rickiekarp.botlib.model.Credentials;
-import net.rickiekarp.botlib.model.PluginData;
-import net.rickiekarp.botlib.plugin.BotSetting;
-import net.rickiekarp.botlib.plugin.PluginExecutor;
-import net.rickiekarp.botter.botservice.BotTask;
-import net.rickiekarp.botter.listcell.FoldableListCell;
-import net.rickiekarp.botter.settings.AppConfiguration;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
-import net.rickiekarp.core.view.layout.AppLayout;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.util.parser.JsonParser
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.view.ChangelogScene
+import net.rickiekarp.core.view.MainScene
+import net.rickiekarp.core.view.MessageDialog
+import net.rickiekarp.core.view.SettingsScene
+import net.rickiekarp.botlib.BotConfig
+import net.rickiekarp.botlib.BotLauncher
+import net.rickiekarp.botlib.PluginConfig
+import net.rickiekarp.botlib.enums.BotPlatforms
+import net.rickiekarp.botlib.enums.BotType
+import net.rickiekarp.botlib.model.Credentials
+import net.rickiekarp.botlib.model.PluginData
+import net.rickiekarp.botlib.plugin.BotSetting
+import net.rickiekarp.botlib.plugin.PluginExecutor
+import net.rickiekarp.botter.botservice.BotTask
+import net.rickiekarp.botter.listcell.FoldableListCell
+import net.rickiekarp.botter.settings.AppConfiguration
+import javafx.collections.FXCollections
+import javafx.collections.ListChangeListener
+import javafx.geometry.Insets
+import javafx.geometry.Pos
+import javafx.scene.Node
+import javafx.scene.control.*
+import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.HBox
+import javafx.scene.layout.VBox
+import javafx.util.StringConverter
+import net.rickiekarp.core.view.layout.AppLayout
+import org.json.JSONArray
+import org.json.JSONObject
 
-import java.io.File;
-import java.util.Base64;
+import java.io.File
+import java.util.Base64
 
-public class MainLayout implements AppLayout {
-    public static MainLayout mainLayout;
-    private HBox optionBox;
-    private ComboBox<PluginData> modCBox;
-    private Button runBtn, stopBtn;
-    private Label status, timeRemainL;
-    private VBox timeBox;
-    private ProgressIndicator loadBar;
-    private ListView<BotSetting> listView;
+class MainLayout : AppLayout {
+    private val optionBox: HBox
+    private val modCBox: ComboBox<PluginData>
+    private val runBtn: Button
+    private val stopBtn: Button
+    private var status: Label? = null
+    private val timeRemainL: Label
+    private val timeBox: VBox
+    private var loadBar: ProgressIndicator? = null
+    private var listView: ListView<BotSetting>? = null
 
-    private BotTask botTask;
-    private BotLauncher botLauncher;
+    private var botTask: BotTask? = null
+    private var botLauncher: BotLauncher? = null
 
-    public static MainLayout getInstance() {
-        if (mainLayout == null) {
-            mainLayout = new MainLayout();
+    val launchNode: Node
+        get() = optionBox
+
+    private val controlsNode: Node
+        get() {
+            val node = AnchorPane()
+            node.minHeight = 50.0
+
+            val controls = HBox(5.0)
+
+            val statusBox = HBox(10.0)
+            statusBox.alignment = Pos.BOTTOM_RIGHT
+
+            status = Label()
+
+            loadBar = ProgressIndicator()
+            loadBar!!.maxHeight = 20.0
+            loadBar!!.maxWidth = 20.0
+            loadBar!!.progress = ProgressIndicator.INDETERMINATE_PROGRESS
+            loadBar!!.isVisible = false
+
+            statusBox.children.addAll(loadBar, status)
+
+            AnchorPane.setLeftAnchor(controls, 10.0)
+            AnchorPane.setBottomAnchor(controls, 5.0)
+            AnchorPane.setRightAnchor(statusBox, 15.0)
+            AnchorPane.setBottomAnchor(statusBox, 10.0)
+
+            if (DebugHelper.DEBUGVERSION) {
+                statusBox.style = "-fx-background-color: blue"
+                controls.style = "-fx-background-color: black"
+            }
+
+            node.children.addAll(controls, statusBox)
+            return node
         }
-        return mainLayout;
-    }
 
-    public void clearModules() {
-        modCBox.getItems().clear();
-    }
+    private//SETTINGS LIST
+    val settingsNode: ListView<BotSetting>
+        get() {
+            listView = ListView()
+            PluginConfig.settingsList = FXCollections.observableArrayList()
+            PluginConfig.settingsList.add(
+                    BotSetting.Builder.create().setName(LanguageController.getString("option_timer")).setDescription(LanguageController.getString("option_timer_desc")).setVisible(true).setNode(timerSection).build()
+            )
+            listView!!.items = PluginConfig.settingsList
 
-    public MainLayout() {
-        mainLayout = this;
+            listView!!.setCellFactory { lv -> FoldableListCell(listView) }
 
-        optionBox = new HBox(10);
-        optionBox.setAlignment(Pos.BOTTOM_LEFT);
-        optionBox.setPadding(new Insets(5, 0, 5, 5));
+            if (DebugHelper.DEBUGVERSION) {
+                listView!!.style = "-fx-background-color: gray"
+            }
+            return listView!!
+        }
 
-        VBox moduleBox = new VBox();
-        VBox asgmBox = new VBox();
 
-        modCBox = new ComboBox<>();
-        modCBox.setPromptText("none");
-        modCBox.setMinWidth(175);
-//        for (int i = 0; i < PluginData.pluginData.size(); i++) {
-//            modCBox.getItems().add(PluginData.pluginData.get(i));
-//        }
+    val generalSection: VBox
+        get() {
 
-        //selected value showed in combo box
-        modCBox.setConverter(new StringConverter<PluginData>() {
-            @Override
-            public String toString(PluginData plugin) {
-                if (plugin == null){
-                    return null;
-                } else {
-                    return plugin.getPluginName();
+            val content = VBox()
+            content.spacing = 5.0
+
+            val btn_settings = Button()
+            btn_settings.tooltip = Tooltip(LanguageController.getString("settings"))
+            btn_settings.styleClass.add("decoration-button-settings")
+
+            val btn_about = Button()
+            btn_about.tooltip = Tooltip(LanguageController.getString("changelog"))
+            btn_about.styleClass.add("decoration-button-about")
+
+            btn_settings.setOnAction { event -> SettingsScene() }
+            btn_about.setOnAction { event -> ChangelogScene() }
+
+            val hbox = HBox()
+            hbox.padding = Insets(0.0, 0.0, 0.0, listView!!.width / 4)
+            hbox.spacing = 5.0
+            hbox.children.addAll(btn_settings, btn_about)
+
+            content.children.addAll(hbox)
+            return content
+        }
+
+    private val timerSection: VBox
+        get() {
+            val content = VBox()
+            content.spacing = 5.0
+
+            val periodCheck = CheckBox(LanguageController.getString("setPeriodicalRun"))
+            periodCheck.style = "-fx-font-size: 10pt;"
+
+            val periods = ComboBox<String>()
+            periods.items.addAll("30 minutes", "45 minutes", "60 minutes")
+            periods.value = AppConfiguration.runInterval.toString() + " minutes"
+            periods.valueProperty().addListener { ov, t, t1 ->
+                when (periods.selectionModel.selectedIndex) {
+                    0 -> AppConfiguration.runInterval = 30
+                    1 -> AppConfiguration.runInterval = 45
+                    2 -> AppConfiguration.runInterval = 60
                 }
             }
 
-            @Override
-            public PluginData fromString(String plugin) {
-                return new PluginData(null, plugin, null, null, null);
+            periodCheck.setOnAction { event ->
+                if (periodCheck.isSelected) {
+                    content.children.add(periods)
+                    AppConfiguration.canBotRunPeriodical = true
+                } else {
+                    content.children.remove(periods)
+                    AppConfiguration.canBotRunPeriodical = false
+                }
             }
-        });
 
-        PluginData.pluginData.addListener((ListChangeListener<PluginData>) change -> {
-            change.next();
-            if (change.wasAdded()) {
-                if (PluginData.pluginData.get(change.getFrom()).getPluginOldVersion() != null) {
-                    //add plugin to module combobox if it doesn't exist already
-                    if (!modCBox.getItems().contains(PluginData.pluginData.get(change.getFrom()))) {
-                        modCBox.getItems().add(PluginData.pluginData.get(change.getFrom()));
+            content.children.addAll(periodCheck)
+            return content
+        }
+
+    private//ActionListener
+            /*RandomStringUtils.randomAlphanumeric(16) +*///if the plugin json can not be found earlier, add a new entry
+    val credentialsSection: VBox
+        get() {
+            LogFileHandler.logger.info("Loading credentials section")
+            val content = VBox()
+            content.spacing = 5.0
+
+            val loginLabel = Label(LanguageController.getString("login"))
+            val passwordLabel = Label(LanguageController.getString("password"))
+            val loginTF = TextField()
+            val passTF = PasswordField()
+            val saveButton = Button(LanguageController.getString("saveCfg"))
+            val deleteButton = Button(LanguageController.getString("remove"))
+
+            content.children.addAll(loginLabel, loginTF, passwordLabel, passTF)
+
+            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(Configuration.config.configDirFile.toString() + File.separator + "plugins" + File.separator + "credentials.json")))
+            if (deviceJson[0] != null) {
+                val jsonArray = deviceJson[0].getJSONArray("credentials")
+                var cJson: JSONObject
+                for (i in 0 until jsonArray.length()) {
+                    cJson = jsonArray.getJSONObject(i)
+                    if (cJson.getString("primaryKey") == modCBox.selectionModel.selectedItem.pluginName) {
+                        loginTF.text = cJson.getString("login")
+
+                        val encodedPass = cJson.getString("password")
+                        val trimmedPass = encodedPass.substring(16)
+                        val bytes: ByteArray
+                        try {
+                            bytes = trimmedPass.toByteArray(charset("UTF-8"))
+                            val decoded = Base64.getDecoder().decode(bytes)
+                            val decodedString = String(decoded)
+                            passTF.text = decodedString
+                            modCBox.selectionModel.selectedItem.pluginCredentials = Credentials(loginTF.text, decodedString)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
+                        content.children.add(deleteButton)
+                        break
                     }
                 }
             }
-        });
+
+            deleteButton.setOnAction { event ->
+                val jsonArray = deviceJson[0].getJSONArray("credentials")
+                for (i in 0 until jsonArray.length()) {
+                    if (jsonArray.getJSONObject(i).getString("primaryKey") == modCBox.selectionModel.selectedItem.pluginName) {
+                        jsonArray.remove(i)
+                        JsonParser.writeJsonObjectToFile(deviceJson[0], File(Configuration.config.configDirFile.toString() + File.separator + "plugins"), "credentials.json")
+                        break
+                    }
+                }
+                modCBox.selectionModel.selectedItem.pluginCredentials = null
+                loginTF.clear()
+                passTF.clear()
+                content.children.remove(deleteButton)
+                content.children.remove(saveButton)
+            }
+            loginTF.setOnKeyReleased { event ->
+                if (!content.children.contains(saveButton)) {
+                    content.children.add(saveButton)
+                }
+            }
+            passTF.setOnKeyReleased { event ->
+                if (!content.children.contains(saveButton)) {
+                    content.children.add(saveButton)
+                }
+            }
+
+            saveButton.setOnAction { event ->
+                if (loginTF.text.isEmpty() || passTF.text.isEmpty()) {
+                    MessageDialog(1, "Please enter your full login details!", 450, 200)
+                } else {
+                    val jsonArray: JSONArray
+                    val login = loginTF.text
+                    val pass = Base64.getEncoder().encodeToString(passTF.text.toByteArray())
+                    if (deviceJson[0] == null) {
+                        val newDeviceJson = JSONObject()
+                        jsonArray = JSONArray()
+                        newDeviceJson.put("credentials", jsonArray)
+
+                        val credentialsJson = JSONObject()
+                        credentialsJson.put("primaryKey", modCBox.selectionModel.selectedItem.pluginName)
+                        credentialsJson.put("login", login)
+                        credentialsJson.put("password", pass)
+                        jsonArray.put(credentialsJson)
+
+                        JsonParser.writeJsonObjectToFile(newDeviceJson, File(Configuration.config.configDirFile.toString() + File.separator + "plugins"), "credentials.json")
+                        deviceJson[0] = newDeviceJson
+                        content.children.remove(saveButton)
+                    } else {
+                        var addEntry = true
+                        jsonArray = deviceJson[0].getJSONArray("credentials")
+                        var currentCredentials: JSONObject
+                        for (i in 0 until jsonArray.length()) {
+                            currentCredentials = jsonArray.getJSONObject(i)
+                            if (jsonArray.getJSONObject(i).getString("primaryKey") == modCBox.selectionModel.selectedItem.pluginName) {
+                                currentCredentials.put("login", login)
+                                currentCredentials.put("password", pass)
+                                addEntry = false
+                                break
+                            }
+                        }
+
+                        if (addEntry) {
+                            val credentialsJson = JSONObject()
+                            credentialsJson.put("primaryKey", modCBox.selectionModel.selectedItem.pluginName)
+                            credentialsJson.put("login", login)
+                            credentialsJson.put("password", pass)
+                            jsonArray.put(credentialsJson)
+                        }
+
+                        JsonParser.writeJsonObjectToFile(deviceJson[0], File(Configuration.config.configDirFile.toString() + File.separator + "plugins"), "credentials.json")
+                    }
+
+                    modCBox.selectionModel.selectedItem.pluginCredentials = Credentials(loginTF.text, passTF.text)
+                    setStatus("neutral", LanguageController.getString("browser_info_updated"))
+                    content.children.remove(saveButton)
+                    if (!content.children.contains(deleteButton)) {
+                        content.children.add(deleteButton)
+                    }
+                }
+            }
+
+            return content
+        }
+
+    private//ActionListener
+    val browserSelectionSection: HBox
+        get() {
+            val content = HBox()
+            content.spacing = 10.0
+
+            val browserSelector = ComboBox<BotType.Bot>()
+            browserSelector.prefWidth = 120.0
+            browserSelector.promptText = "NONE"
+            browserSelector.style = "-fx-font-size: 10pt;"
+
+            for (bot in BotType.Bot.values()) {
+                if (bot.botPlatform == BotPlatforms.WEB) {
+                    browserSelector.items.add(bot)
+                }
+            }
+
+            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.getModulesDirFile().toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType.displayableType.toLowerCase() + ".json")))
+            if (deviceJson[0] != null) {
+                for (bot in BotType.Bot.values()) {
+                    if (BotType.Bot.valueOf(deviceJson[0].getString("browser")) == bot && bot.botPlatform == BotPlatforms.WEB) {
+                        browserSelector.selectionModel.select(bot)
+                        PluginConfig.botType = bot
+                        break
+                    }
+                }
+            }
+
+            val saveButton = Button(LanguageController.getString("saveCfg"))
+            saveButton.style = "-fx-font-size: 10pt;"
+            saveButton.isVisible = false
+            browserSelector.valueProperty().addListener { ov, t, t1 ->
+                PluginConfig.botType = t1
+                saveButton.isVisible = true
+
+            }
+
+            saveButton.setOnAction { event ->
+                if (deviceJson[0] == null) {
+                    deviceJson[0] = JSONObject()
+                    deviceJson[0].put("browser", browserSelector.selectionModel.selectedItem)
+                } else {
+                    deviceJson[0].put("browser", browserSelector.selectionModel.selectedItem)
+                }
+
+                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.getModulesDirFile().toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType.displayableType.toLowerCase() + ".json")
+                setStatus("neutral", LanguageController.getString("device_info_updated"))
+                saveButton.isVisible = false
+            }
+
+            content.children.addAll(browserSelector, saveButton)
+            return content
+        }
+
+    private//also update the current device info variables
+    //ActionListener
+    val androidDeviceSelection: VBox
+        get() {
+            LogFileHandler.logger.info("Loading android device selection")
+            val content = VBox()
+            content.spacing = 5.0
+
+            val nameLabel = Label(LanguageController.getString("devicename"))
+            val verLabel = Label(LanguageController.getString("deviceversion"))
+            val serialLabel = Label(LanguageController.getString("deviceserial"))
+            val nameTF = TextField()
+            val verTF = TextField()
+            val deviceSerialTF = TextField()
+
+            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.getModulesDirFile().toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType.displayableType.toLowerCase() + ".json")))
+            if (deviceJson[0] != null) {
+                nameTF.text = deviceJson[0].getJSONObject("1").getString("name")
+                verTF.text = deviceJson[0].getJSONObject("1").getString("version")
+                deviceSerialTF.text = deviceJson[0].getJSONObject("1").getString("serial")
+                updateAndroidDeviceInfo(nameTF.text, verTF.text, deviceSerialTF.text)
+            }
+
+            val saveButton = Button(LanguageController.getString("saveCfg"))
+            saveButton.isVisible = false
+            nameTF.setOnKeyReleased { event -> saveButton.isVisible = true }
+            verTF.setOnKeyReleased { event -> saveButton.isVisible = true }
+            deviceSerialTF.setOnKeyReleased { event -> saveButton.isVisible = true }
 
 
-        runBtn = new Button("Run");
-        runBtn.setDisable(true);
+            saveButton.setOnAction { event ->
+                if (deviceJson[0] == null) {
+                    deviceJson[0] = JSONObject()
+                    val deviceObj = JSONObject()
+                    deviceObj.put("name", nameTF.text)
+                    deviceObj.put("version", verTF.text)
+                    deviceObj.put("serial", deviceSerialTF.text)
+                    deviceJson[0].put("1", deviceObj)
+                } else {
+                    deviceJson[0].getJSONObject("1").put("name", nameTF.text)
+                    deviceJson[0].getJSONObject("1").put("version", verTF.text)
+                    deviceJson[0].getJSONObject("1").put("serial", deviceSerialTF.text)
+                }
 
-        stopBtn = new Button("Stop");
-        stopBtn.setDisable(true);
+                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.getModulesDirFile().toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType.displayableType.toLowerCase() + ".json")
+                updateAndroidDeviceInfo(nameTF.text, verTF.text, deviceSerialTF.text)
+                setStatus("neutral", LanguageController.getString("browser_info_updated"))
+                saveButton.isVisible = false
+            }
+
+            updateAndroidDeviceInfo(nameTF.text, verTF.text, deviceSerialTF.text)
+
+            content.children.addAll(nameLabel, nameTF, verLabel, verTF, serialLabel, deviceSerialTF, saveButton)
+            return content
+        }
+
+    override val layout: Node
+        get() = controlsNode
+
+    fun clearModules() {
+        modCBox.items.clear()
+    }
+
+    init {
+        mainLayout = this
+
+        optionBox = HBox(10.0)
+        optionBox.alignment = Pos.BOTTOM_LEFT
+        optionBox.padding = Insets(5.0, 0.0, 5.0, 5.0)
+
+        val moduleBox = VBox()
+        val asgmBox = VBox()
+
+        modCBox = ComboBox()
+        modCBox.promptText = "none"
+        modCBox.minWidth = 175.0
+        //        for (int i = 0; i < PluginData.pluginData.size(); i++) {
+        //            modCBox.getItems().add(PluginData.pluginData.get(i));
+        //        }
+
+        //selected value showed in combo box
+        modCBox.setConverter(object : StringConverter<PluginData>() {
+            override fun toString(plugin: PluginData?): String? {
+                return plugin?.pluginName
+            }
+
+            override fun fromString(plugin: String): PluginData {
+                return PluginData(null, plugin, null, null, null)
+            }
+        })
+
+//        PluginData.pluginData.addListener({ change ->
+//            change.next()
+//            if (change.wasAdded()) {
+//                if (PluginData.pluginData[change.getFrom()].pluginOldVersion != null) {
+//                    //add plugin to module combobox if it doesn't exist already
+//                    if (!modCBox.items.contains(PluginData.pluginData[change.getFrom()])) {
+//                        modCBox.items.add(PluginData.pluginData[change.getFrom()])
+//                    }
+//                }
+//            }
+//        } as ListChangeListener<PluginData>)
 
 
-        timeBox = new VBox();
-        timeBox.setVisible(false);
-        timeBox.setAlignment(Pos.BOTTOM_CENTER);
-        timeBox.setPadding(new Insets(0, 0, 0, 15));
+        runBtn = Button("Run")
+        runBtn.isDisable = true
 
-        Label timeL = new Label("Time until next run:");
-        timeL.setStyle("-fx-font-size: 9pt;");
-        timeRemainL = new Label("00:00:00");
-        timeRemainL.setStyle("-fx-font-size: 9pt;");
+        stopBtn = Button("Stop")
+        stopBtn.isDisable = true
 
-        timeBox.getChildren().addAll(timeL, timeRemainL);
 
-        moduleBox.getChildren().add(modCBox);
-        optionBox.getChildren().addAll(moduleBox, asgmBox, runBtn, stopBtn, timeBox);
+        timeBox = VBox()
+        timeBox.isVisible = false
+        timeBox.alignment = Pos.BOTTOM_CENTER
+        timeBox.padding = Insets(0.0, 0.0, 0.0, 15.0)
+
+        val timeL = Label("Time until next run:")
+        timeL.style = "-fx-font-size: 9pt;"
+        timeRemainL = Label("00:00:00")
+        timeRemainL.style = "-fx-font-size: 9pt;"
+
+        timeBox.children.addAll(timeL, timeRemainL)
+
+        moduleBox.children.add(modCBox)
+        optionBox.children.addAll(moduleBox, asgmBox, runBtn, stopBtn, timeBox)
 
         //ActionListener
-        modCBox.valueProperty().addListener((ov, t, t1) -> {
+        modCBox.valueProperty().addListener { ov, t, t1 ->
             if (t == null) {
-                runBtn.setDisable(false);
-                MainScene.Companion.getMainScene().getBorderPane().setRight(getSettingsNode());
-                MainScene.Companion.getMainScene().getBorderPane().setBottom(getControlsNode());
+                runBtn.isDisable = false
+                MainScene.mainScene.borderPane.right = settingsNode
+                MainScene.mainScene.borderPane.bottom = controlsNode
             }
 
-            PluginConfig.settingsList.clear();
+            PluginConfig.settingsList.clear()
             PluginConfig.settingsList.add(
-                    BotSetting.Builder.create().setName(LanguageController.getString("option_timer")).setDescription(LanguageController.getString("option_timer_desc")).setVisible(true).setNode(getTimerSection()).build()
-            );
+                    BotSetting.Builder.create().setName(LanguageController.getString("option_timer")).setDescription(LanguageController.getString("option_timer_desc")).setVisible(true).setNode(timerSection).build()
+            )
 
-            switch(modCBox.getSelectionModel().getSelectedItem().getPluginType()) {
-                case ANDROID:
-                    PluginConfig.botType = BotType.Bot.ANDROID;
+            when (modCBox.selectionModel.selectedItem.pluginType) {
+                BotPlatforms.ANDROID -> {
+                    PluginConfig.botType = BotType.Bot.ANDROID
                     PluginConfig.settingsList.add(
-                            BotSetting.Builder.create().setName(LanguageController.getString("androidSelect")).setDescription(LanguageController.getString("androidSelect_desc")).setVisible(true).setNode(getAndroidDeviceSelection()).build()
-                    );
-                    break;
-                case WEB:
+                            BotSetting.Builder.create().setName(LanguageController.getString("androidSelect")).setDescription(LanguageController.getString("androidSelect_desc")).setVisible(true).setNode(androidDeviceSelection).build()
+                    )
+                }
+                BotPlatforms.WEB -> {
                     PluginConfig.settingsList.add(
-                            BotSetting.Builder.create().setName(LanguageController.getString("credentialsSelect")).setDescription(LanguageController.getString("credentialsSelect_desc")).setVisible(true).setNode(getCredentialsSection()).build()
-                    );
+                            BotSetting.Builder.create().setName(LanguageController.getString("credentialsSelect")).setDescription(LanguageController.getString("credentialsSelect_desc")).setVisible(true).setNode(credentialsSection).build()
+                    )
                     PluginConfig.settingsList.add(
-                            BotSetting.Builder.create().setName(LanguageController.getString("browserSelect")).setDescription(LanguageController.getString("browserSelect_desc")).setVisible(true).setNode(getBrowserSelectionSection()).build()
-                    );
-                    break;
+                            BotSetting.Builder.create().setName(LanguageController.getString("browserSelect")).setDescription(LanguageController.getString("browserSelect_desc")).setVisible(true).setNode(browserSelectionSection).build()
+                    )
+                }
             }
 
-            PluginConfig.botPlatform = modCBox.getSelectionModel().getSelectedItem().getPluginType();
-            botLauncher = new BotLauncher();
-            botLauncher.createBotRunner(modCBox.getSelectionModel().getSelectedItem());
+            PluginConfig.botPlatform = modCBox.selectionModel.selectedItem.pluginType
+            botLauncher = BotLauncher()
+            botLauncher!!.createBotRunner(modCBox.selectionModel.selectedItem)
 
             try {
-                PluginExecutor.executeLayoutSetter(BotLauncher.getRunnerInstance(), modCBox.getSelectionModel().getSelectedItem());
-            } catch (Exception e) {
-                if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e); }
+                PluginExecutor.executeLayoutSetter(BotLauncher.getRunnerInstance(), modCBox.selectionModel.selectedItem)
+            } catch (e: Exception) {
+                if (DebugHelper.DEBUGVERSION) {
+                    e.printStackTrace()
+                } else {
+                    ExceptionHandler(Thread.currentThread(), e)
+                }
             }
-        });
+        }
 
-        runBtn.setOnAction(event -> {
-            setStatus("neutral", "Loading bot...");
-            setLoadBarVisible(true);
-            switchMode();
-            MainScene.Companion.getMainScene().getBorderPane().setCenter(null);
+        runBtn.setOnAction { event ->
+            setStatus("neutral", "Loading bot...")
+            setLoadBarVisible(true)
+            switchMode()
+            MainScene.mainScene.borderPane.center = null
 
             //remove all buttons from control node
-            AnchorPane pane = (AnchorPane) MainScene.Companion.getMainScene().getBorderPane().getBottom();
-            HBox controls = (HBox) pane.getChildren().get(0);
-            for (int size = controls.getChildren().size() - 1; size >= 0; size--) {
-                controls.getChildren().remove(size);
+            val pane = MainScene.mainScene.borderPane.bottom as AnchorPane
+            val controls = pane.children[0] as HBox
+            for (size in controls.children.size - 1 downTo 0) {
+                controls.children.removeAt(size)
             }
 
             if (botTask != null) {
-                botTask.resetTimer();
+                botTask!!.resetTimer()
             }
-            botTask = new BotTask(botLauncher, modCBox.getSelectionModel().getSelectedItem());
-        });
+            botTask = BotTask(botLauncher, modCBox.selectionModel.selectedItem)
+        }
 
-        stopBtn.setOnAction(event -> {
-            setStatus("neutral", "Stopping...");
-            botTask.cancel();
-        });
+        stopBtn.setOnAction { event ->
+            setStatus("neutral", "Stopping...")
+            botTask!!.cancel()
+        }
 
         if (DebugHelper.DEBUGVERSION) {
-            optionBox.setStyle("-fx-background-color: darkgray");
-            moduleBox.setStyle("-fx-background-color: yellow");
-            moduleBox.setStyle("-fx-background-color: green");
-            timeBox.setStyle("-fx-background-color: darkblue");
+            optionBox.style = "-fx-background-color: darkgray"
+            moduleBox.style = "-fx-background-color: yellow"
+            moduleBox.style = "-fx-background-color: green"
+            timeBox.style = "-fx-background-color: darkblue"
         }
     }
 
-    public Node getLaunchNode() {
-        return optionBox;
+    fun switchMode() {
+        modCBox.isDisable = !modCBox.isDisabled
+        runBtn.isDisable = !runBtn.isDisabled
+        stopBtn.isDisable = !stopBtn.isDisabled
     }
 
-    private Node getControlsNode() {
-        AnchorPane node = new AnchorPane();
-        node.setMinHeight(50);
+    fun switchTimeBox() {
+        timeBox.isVisible = !timeBox.isVisible
+    }
 
-        HBox controls = new HBox(5);
+    fun loadBot() {
+        runBtn.fire()
+    }
 
-        HBox statusBox = new HBox(10);
-        statusBox.setAlignment(Pos.BOTTOM_RIGHT);
-
-        status = new Label();
-
-        loadBar = new ProgressIndicator();
-        loadBar.setMaxHeight(20);
-        loadBar.setMaxWidth(20);
-        loadBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-        loadBar.setVisible(false);
-
-        statusBox.getChildren().addAll(loadBar, status);
-
-        AnchorPane.setLeftAnchor(controls, 10.0);
-        AnchorPane.setBottomAnchor(controls, 5.0);
-        AnchorPane.setRightAnchor(statusBox, 15.0);
-        AnchorPane.setBottomAnchor(statusBox, 10.0);
-
-        if (DebugHelper.DEBUGVERSION) {
-            statusBox.setStyle("-fx-background-color: blue");
-            controls.setStyle("-fx-background-color: black");
+    fun setStatus(type: String, text: String) {
+        when (type) {
+            "success" -> status!!.style = "-fx-text-fill: #55c4fe;"
+            "fail" -> status!!.style = "-fx-text-fill: red;"
+            "neutral" -> status!!.style = "-fx-text-fill: white;"
         }
-
-        node.getChildren().addAll(controls, statusBox);
-        return node;
+        status!!.text = text
     }
 
-    private ListView<BotSetting> getSettingsNode() {
-        //SETTINGS LIST
-        listView = new ListView<>();
-        PluginConfig.settingsList = FXCollections.observableArrayList();
-        PluginConfig.settingsList.add(
-                BotSetting.Builder.create().setName(LanguageController.getString("option_timer")).setDescription(LanguageController.getString("option_timer_desc")).setVisible(true).setNode(getTimerSection()).build()
-        );
-        listView.setItems(PluginConfig.settingsList);
-
-        listView.setCellFactory(lv -> new FoldableListCell(listView));
-
-        if (DebugHelper.DEBUGVERSION) {
-            listView.setStyle("-fx-background-color: gray");
-        }
-        return listView;
+    fun updateCountdown(text: String) {
+        timeRemainL.text = text
     }
 
-    public void switchMode() {
-        modCBox.setDisable(!modCBox.isDisabled());
-        runBtn.setDisable(!runBtn.isDisabled());
-        stopBtn.setDisable(!stopBtn.isDisabled());
+    fun setLoadBarVisible(bool: Boolean) {
+        loadBar!!.isVisible = bool
     }
 
-    public void switchTimeBox() {
-        timeBox.setVisible(!timeBox.isVisible());
+    private fun updateAndroidDeviceInfo(name: String, version: String, udid: String) {
+        BotConfig.DEVICE_NAME = name
+        BotConfig.VERSION = version
+        BotConfig.UDID = udid
     }
 
-    public void loadBot() {
-        runBtn.fire();
+    override fun postInit() {
+
     }
 
-    public void setStatus(String type, String text) {
-        switch (type) {
-            case "success":
-                status.setStyle("-fx-text-fill: #55c4fe;");
-                break;
-            case "fail":
-                status.setStyle("-fx-text-fill: red;" );
-                break;
-            case "neutral":
-                status.setStyle("-fx-text-fill: white;");
-                break;
-        }
-        status.setText(text);
-    }
+    companion object {
+        var mainLayout: MainLayout? = null
 
-    public void updateCountdown(String text) {
-        timeRemainL.setText(text);
-    }
-
-    public void setLoadBarVisible(boolean bool) {
-        loadBar.setVisible(bool);
-    }
-
-
-    public VBox getGeneralSection() {
-
-        VBox content = new VBox();
-        content.setSpacing(5);
-
-        Button btn_settings = new Button();
-        btn_settings.setTooltip(new Tooltip(LanguageController.getString("settings")));
-        btn_settings.getStyleClass().add("decoration-button-settings");
-
-        Button btn_about = new Button();
-        btn_about.setTooltip(new Tooltip(LanguageController.getString("changelog")));
-        btn_about.getStyleClass().add("decoration-button-about");
-
-        btn_settings.setOnAction(event -> new SettingsScene());
-        btn_about.setOnAction(event -> new ChangelogScene());
-
-        HBox hbox = new HBox();
-        hbox.setPadding(new Insets(0, 0, 0, listView.getWidth() / 4));
-        hbox.setSpacing(5);
-        hbox.getChildren().addAll(btn_settings, btn_about);
-
-        content.getChildren().addAll(hbox);
-        return content;
-    }
-
-    private VBox getTimerSection() {
-        VBox content = new VBox();
-        content.setSpacing(5);
-
-        CheckBox periodCheck = new CheckBox(LanguageController.getString("setPeriodicalRun"));
-        periodCheck.setStyle("-fx-font-size: 10pt;");
-
-        ComboBox<String> periods = new ComboBox<>();
-        periods.getItems().addAll("30 minutes", "45 minutes", "60 minutes");
-        periods.setValue(AppConfiguration.runInterval +  " minutes");
-        periods.valueProperty().addListener((ov, t, t1) -> {
-            switch (periods.getSelectionModel().getSelectedIndex()) {
-                case 0: AppConfiguration.runInterval = 30; break;
-                case 1: AppConfiguration.runInterval = 45; break;
-                case 2: AppConfiguration.runInterval = 60; break;
-            }
-        });
-
-        periodCheck.setOnAction(event -> {
-            if (periodCheck.isSelected()) { content.getChildren().add(periods); AppConfiguration.canBotRunPeriodical = true; }
-            else { content.getChildren().remove(periods); AppConfiguration.canBotRunPeriodical = false; }
-        });
-
-        content.getChildren().addAll(periodCheck);
-        return content;
-    }
-
-    private VBox getCredentialsSection() {
-        LogFileHandler.logger.info("Loading credentials section");
-        VBox content = new VBox();
-        content.setSpacing(5);
-
-        Label loginLabel = new Label(LanguageController.getString("login"));
-        Label passwordLabel = new Label(LanguageController.getString("password"));
-        TextField loginTF = new TextField();
-        PasswordField passTF = new PasswordField();
-        Button saveButton = new Button(LanguageController.getString("saveCfg"));
-        Button deleteButton = new Button(LanguageController.getString("remove"));
-
-        content.getChildren().addAll(loginLabel, loginTF, passwordLabel, passTF);
-
-        final JSONObject[] deviceJson = {JsonParser.readJsonFromFile(new File(Configuration.config.getConfigDirFile() + File.separator + "plugins" + File.separator + "credentials.json"))};
-        if (deviceJson[0] != null) {
-            JSONArray jsonArray = deviceJson[0].getJSONArray("credentials");
-            JSONObject cJson;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                cJson = jsonArray.getJSONObject(i);
-                if (cJson.getString("primaryKey").equals(modCBox.getSelectionModel().getSelectedItem().getPluginName())) {
-                    loginTF.setText(cJson.getString("login"));
-
-                    String encodedPass = cJson.getString("password");
-                    String trimmedPass = encodedPass.substring(16);
-                    byte[] bytes;
-                    try {
-                        bytes = trimmedPass.getBytes("UTF-8");
-                        byte[] decoded = Base64.getDecoder().decode(bytes);
-                        String decodedString = new String(decoded);
-                        passTF.setText(decodedString);
-                        modCBox.getSelectionModel().getSelectedItem().setPluginCredentials(new Credentials(loginTF.getText(), decodedString));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    content.getChildren().add(deleteButton);
-                    break;
+        val instance: MainLayout
+            get() {
+                if (mainLayout == null) {
+                    mainLayout = MainLayout()
                 }
+                return mainLayout!!
             }
-        }
-
-        deleteButton.setOnAction(event -> {
-            JSONArray jsonArray = deviceJson[0].getJSONArray("credentials");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                if (jsonArray.getJSONObject(i).getString("primaryKey").equals(modCBox.getSelectionModel().getSelectedItem().getPluginName())) {
-                    jsonArray.remove(i);
-                    JsonParser.writeJsonObjectToFile(deviceJson[0], new File(Configuration.config.getConfigDirFile() + File.separator + "plugins"), "credentials.json");
-                    break;
-                }
-            }
-            modCBox.getSelectionModel().getSelectedItem().setPluginCredentials(null);
-            loginTF.clear();
-            passTF.clear();
-            content.getChildren().remove(deleteButton);
-            content.getChildren().remove(saveButton);
-        });
-
-        //ActionListener
-        loginTF.setOnKeyReleased(event -> {
-            if (!content.getChildren().contains(saveButton)) {
-                content.getChildren().add(saveButton);
-            }
-        });
-        passTF.setOnKeyReleased(event -> {
-            if (!content.getChildren().contains(saveButton)) {
-                content.getChildren().add(saveButton);
-            }
-        });
-
-        saveButton.setOnAction(event -> {
-            if (loginTF.getText().isEmpty() || passTF.getText().isEmpty()) {
-                new MessageDialog(1, "Please enter your full login details!", 450, 200);
-            } else {
-                JSONArray jsonArray;
-                final String login = loginTF.getText();
-                final String pass = /*RandomStringUtils.randomAlphanumeric(16) +*/ Base64.getEncoder().encodeToString(passTF.getText().getBytes());
-                if (deviceJson[0] == null) {
-                    JSONObject newDeviceJson = new JSONObject();
-                    jsonArray = new JSONArray();
-                    newDeviceJson.put("credentials", jsonArray);
-
-                    JSONObject credentialsJson = new JSONObject();
-                    credentialsJson.put("primaryKey", modCBox.getSelectionModel().getSelectedItem().getPluginName());
-                    credentialsJson.put("login", login);
-                    credentialsJson.put("password", pass);
-                    jsonArray.put(credentialsJson);
-
-                    JsonParser.writeJsonObjectToFile(newDeviceJson, new File(Configuration.config.getConfigDirFile() + File.separator + "plugins"), "credentials.json");
-                    deviceJson[0] = newDeviceJson;
-                    content.getChildren().remove(saveButton);
-                } else {
-                    boolean addEntry = true;
-                    jsonArray = deviceJson[0].getJSONArray("credentials");
-                    JSONObject currentCredentials;
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        currentCredentials = jsonArray.getJSONObject(i);
-                        if (jsonArray.getJSONObject(i).getString("primaryKey").equals(modCBox.getSelectionModel().getSelectedItem().getPluginName())) {
-                            currentCredentials.put("login", login);
-                            currentCredentials.put("password", pass);
-                            addEntry = false;
-                            break;
-                        }
-                    }
-
-                    if (addEntry) {
-                        //if the plugin json can not be found earlier, add a new entry
-                        JSONObject credentialsJson = new JSONObject();
-                        credentialsJson.put("primaryKey", modCBox.getSelectionModel().getSelectedItem().getPluginName());
-                        credentialsJson.put("login", login);
-                        credentialsJson.put("password", pass);
-                        jsonArray.put(credentialsJson);
-                    }
-
-                    JsonParser.writeJsonObjectToFile(deviceJson[0], new File(Configuration.config.getConfigDirFile() + File.separator + "plugins"), "credentials.json");
-                }
-
-                modCBox.getSelectionModel().getSelectedItem().setPluginCredentials(new Credentials(loginTF.getText(), passTF.getText()));
-                setStatus("neutral", LanguageController.getString("browser_info_updated"));
-                content.getChildren().remove(saveButton);
-                if (!content.getChildren().contains(deleteButton)) { content.getChildren().add(deleteButton); }
-            }
-        });
-
-        return content;
-    }
-
-    private HBox getBrowserSelectionSection() {
-        HBox content = new HBox();
-        content.setSpacing(10);
-
-        ComboBox<BotType.Bot> browserSelector = new ComboBox<>();
-        browserSelector.setPrefWidth(120);
-        browserSelector.setPromptText("NONE");
-        browserSelector.setStyle("-fx-font-size: 10pt;");
-
-        for (BotType.Bot bot : BotType.Bot.values()) {
-            if (bot.getBotPlatform() == BotPlatforms.WEB) {
-                browserSelector.getItems().add(bot);
-            }
-        }
-
-        final JSONObject[] deviceJson = {JsonParser.readJsonFromFile(new File(BotConfig.getModulesDirFile() + File.separator + "devices" + File.separator + modCBox.getSelectionModel().getSelectedItem().getPluginType().getDisplayableType().toLowerCase() + ".json"))};
-        if (deviceJson[0] != null) {
-            for (BotType.Bot bot : BotType.Bot.values()) {
-                if (BotType.Bot.valueOf(deviceJson[0].getString("browser")) == bot && bot.getBotPlatform() == BotPlatforms.WEB) {
-                    browserSelector.getSelectionModel().select(bot);
-                    PluginConfig.botType = bot;
-                    break;
-                }
-            }
-        }
-
-        Button saveButton = new Button(LanguageController.getString("saveCfg"));
-        saveButton.setStyle("-fx-font-size: 10pt;");
-        saveButton.setVisible(false);
-
-        //ActionListener
-        browserSelector.valueProperty().addListener((ov, t, t1) -> {
-            PluginConfig.botType = t1;
-            saveButton.setVisible(true);
-
-        });
-
-        saveButton.setOnAction(event -> {
-            if (deviceJson[0] == null) {
-                deviceJson[0] = new JSONObject();
-                deviceJson[0].put("browser", browserSelector.getSelectionModel().getSelectedItem());
-            } else {
-                deviceJson[0].put("browser", browserSelector.getSelectionModel().getSelectedItem());
-            }
-
-            JsonParser.writeJsonObjectToFile(deviceJson[0], new File(BotConfig.getModulesDirFile() + File.separator + "devices"), modCBox.getSelectionModel().getSelectedItem().getPluginType().getDisplayableType().toLowerCase() + ".json");
-            setStatus("neutral", LanguageController.getString("device_info_updated"));
-            saveButton.setVisible(false);
-        });
-
-        content.getChildren().addAll(browserSelector, saveButton);
-        return content;
-    }
-
-    private VBox getAndroidDeviceSelection() {
-        LogFileHandler.logger.info("Loading android device selection");
-        VBox content = new VBox();
-        content.setSpacing(5);
-
-        Label nameLabel = new Label(LanguageController.getString("devicename"));
-        Label verLabel = new Label(LanguageController.getString("deviceversion"));
-        Label serialLabel = new Label(LanguageController.getString("deviceserial"));
-        TextField nameTF = new TextField();
-        TextField verTF = new TextField();
-        TextField deviceSerialTF = new TextField();
-
-        final JSONObject[] deviceJson = {JsonParser.readJsonFromFile(new File(BotConfig.getModulesDirFile() + File.separator + "devices" + File.separator + modCBox.getSelectionModel().getSelectedItem().getPluginType().getDisplayableType().toLowerCase() + ".json"))};
-        if (deviceJson[0] != null) {
-            nameTF.setText(deviceJson[0].getJSONObject("1").getString("name"));
-            verTF.setText(deviceJson[0].getJSONObject("1").getString("version"));
-            deviceSerialTF.setText(deviceJson[0].getJSONObject("1").getString("serial"));
-            //also update the current device info variables
-            updateAndroidDeviceInfo(nameTF.getText(), verTF.getText(), deviceSerialTF.getText());
-        }
-
-        Button saveButton = new Button(LanguageController.getString("saveCfg"));
-        saveButton.setVisible(false);
-
-        //ActionListener
-        nameTF.setOnKeyReleased(event -> saveButton.setVisible(true));
-        verTF.setOnKeyReleased(event -> saveButton.setVisible(true));
-        deviceSerialTF.setOnKeyReleased(event -> saveButton.setVisible(true));
-
-
-        saveButton.setOnAction(event -> {
-            if (deviceJson[0] == null) {
-                deviceJson[0] = new JSONObject();
-                JSONObject deviceObj = new JSONObject();
-                deviceObj.put("name", nameTF.getText());
-                deviceObj.put("version", verTF.getText());
-                deviceObj.put("serial", deviceSerialTF.getText());
-                deviceJson[0].put("1", deviceObj);
-            } else {
-                deviceJson[0].getJSONObject("1").put("name", nameTF.getText());
-                deviceJson[0].getJSONObject("1").put("version", verTF.getText());
-                deviceJson[0].getJSONObject("1").put("serial", deviceSerialTF.getText());
-            }
-
-            JsonParser.writeJsonObjectToFile(deviceJson[0], new File(BotConfig.getModulesDirFile() + File.separator + "devices"), modCBox.getSelectionModel().getSelectedItem().getPluginType().getDisplayableType().toLowerCase() + ".json");
-            updateAndroidDeviceInfo(nameTF.getText(), verTF.getText(), deviceSerialTF.getText());
-            setStatus("neutral", LanguageController.getString("browser_info_updated"));
-            saveButton.setVisible(false);
-        });
-
-        updateAndroidDeviceInfo(nameTF.getText(), verTF.getText(), deviceSerialTF.getText());
-
-        content.getChildren().addAll(nameLabel, nameTF, verLabel, verTF, serialLabel, deviceSerialTF, saveButton);
-        return content;
-    }
-
-    private void updateAndroidDeviceInfo(String name, String version, String udid) {
-        BotConfig.DEVICE_NAME = name;
-        BotConfig.VERSION = version;
-        BotConfig.UDID = udid;
-    }
-
-    @Override
-    public Node getLayout() {
-        return null;
-    }
-
-    @Override
-    public void postInit() {
-
     }
 }
 

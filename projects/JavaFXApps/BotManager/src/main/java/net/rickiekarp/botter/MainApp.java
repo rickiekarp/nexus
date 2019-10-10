@@ -153,7 +153,7 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
 
                 //set up the Client Area to display
                 if (isValidConfig()) {
-                    MainScene.Companion.getMainScene().getBorderPane().setTop(MainLayout.getInstance().getLaunchNode());
+                    MainScene.Companion.getMainScene().getBorderPane().setTop(MainLayout.Companion.getInstance().getLaunchNode());
                     MainScene.Companion.getMainScene().getBorderPane().setCenter(null);
                 } else {
                     MainScene.Companion.getMainScene().getBorderPane().setCenter(new BotSetupLayout().getLayout());
@@ -179,7 +179,7 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
 
     @Override
     public void setOnLogout() {
-        MainLayout.getInstance().clearModules();
+        MainLayout.Companion.getInstance().clearModules();
     }
 
     private void loadAndroidAttributes(File file, PluginData data) throws IOException {

@@ -3,7 +3,6 @@ package net.rickiekarp.core.account
 import net.rickiekarp.core.AppContext
 import net.rickiekarp.core.debug.LogFileHandler
 import net.rickiekarp.core.net.NetResponse
-import net.rickiekarp.core.net.NetworkAction
 import net.rickiekarp.core.net.NetworkApi
 import net.rickiekarp.core.settings.Configuration
 import net.rickiekarp.core.util.FileUtil
@@ -14,7 +13,6 @@ import org.json.JSONObject
 
 import java.io.File
 import java.io.IOException
-import java.io.InputStream
 import java.util.logging.Level
 
 class AccountManager {
@@ -28,7 +26,7 @@ class AccountManager {
 
     init {
         this.account = loadAccountFromFile()
-        LogFileHandler.logger.config("ACCOUNT=" + account!!)
+        LogFileHandler.logger.config("ACCOUNT=" + account)
     }
 
     private fun loadAccountFromFile(): Account? {

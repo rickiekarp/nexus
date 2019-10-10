@@ -91,16 +91,16 @@ public class BotTask extends Task<Void> {
         this.setOnSucceeded(event1 -> {
             System.out.println("Bot finished!");
             LogFileHandler.logger.info("Bot finished!");
-            MainLayout.mainLayout.setStatus("success", "Finished");
-            MainLayout.mainLayout.setLoadBarVisible(false);
-            MainLayout.mainLayout.switchMode();
+            MainLayout.Companion.getMainLayout().setStatus("success", "Finished");
+            MainLayout.Companion.getMainLayout().setLoadBarVisible(false);
+            MainLayout.Companion.getMainLayout().switchMode();
             launcher.stopAppiumService();
             DebugHelper.profile("stop", "BotAction");
             launcher = null;
 
             if (AppConfiguration.canBotRunPeriodical) {
                 LogFileHandler.logger.info("Starting bot timer! Countdown: " + countdownInMillis + "ms");
-                MainLayout.mainLayout.switchTimeBox();
+                MainLayout.Companion.getMainLayout().switchTimeBox();
                 timer = new Timer();
                 timer.schedule(
                         timerTask = new TimerTask() {
@@ -110,7 +110,7 @@ public class BotTask extends Task<Void> {
                                 if (!AppConfiguration.canBotRunPeriodical) {
                                     this.cancel();
                                     timer.cancel();
-                                    MainLayout.mainLayout.switchTimeBox();
+                                    MainLayout.Companion.getMainLayout().switchTimeBox();
                                     isTimerTaskRunning = false;
                                 }
 
@@ -125,7 +125,7 @@ public class BotTask extends Task<Void> {
 
                                 Platform.runLater(() -> {
                                     //System.out.println("Timer: " + hms);
-                                    MainLayout.mainLayout.updateCountdown("" + hms);
+                                    MainLayout.Companion.getMainLayout().updateCountdown("" + hms);
                                 });
 
                                 if (Configuration.showTrayIcon && countdownInMillis == 15000) {
@@ -137,8 +137,8 @@ public class BotTask extends Task<Void> {
                                     timer.cancel();
                                     isTimerTaskRunning = false;
                                     Platform.runLater(() -> {
-                                        MainLayout.mainLayout.switchTimeBox();
-                                        MainLayout.mainLayout.loadBot();
+                                        MainLayout.Companion.getMainLayout().switchTimeBox();
+                                        MainLayout.Companion.getMainLayout().loadBot();
                                     });
                                 }
                                 countdownInMillis -= 1000;
@@ -149,13 +149,13 @@ public class BotTask extends Task<Void> {
 
         this.setOnCancelled(event1 -> {
             LogFileHandler.logger.info("Bot stopped!");
-            MainLayout.mainLayout.setStatus("neutral", "Cancelled");
-            MainLayout.mainLayout.setLoadBarVisible(false);
-            MainLayout.mainLayout.switchMode();
+            MainLayout.Companion.getMainLayout().setStatus("neutral", "Cancelled");
+            MainLayout.Companion.getMainLayout().setLoadBarVisible(false);
+            MainLayout.Companion.getMainLayout().switchMode();
 
             if (timer != null) {
                 timer.cancel();
-                MainLayout.mainLayout.switchTimeBox();
+                MainLayout.Companion.getMainLayout().switchTimeBox();
             }
             launcher.stopAppiumService();
             DebugHelper.profile("stop", "BotAction");
@@ -164,15 +164,15 @@ public class BotTask extends Task<Void> {
 
         this.setOnFailed(event -> {
             LogFileHandler.logger.warning("Bot failed!");
-            MainLayout.mainLayout.setStatus("fail", "Failed");
-            MainLayout.mainLayout.setLoadBarVisible(false);
-            MainLayout.mainLayout.switchMode();
+            MainLayout.Companion.getMainLayout().setStatus("fail", "Failed");
+            MainLayout.Companion.getMainLayout().setLoadBarVisible(false);
+            MainLayout.Companion.getMainLayout().switchMode();
             launcher.stopAppiumService();
             DebugHelper.profile("stop", "BotAction");
             launcher = null;
         });
 
-        MainLayout.mainLayout.setStatus("neutral", "Running");
+        MainLayout.Companion.getMainLayout().setStatus("neutral", "Running");
         DebugHelper.profile("start", "BotAction");
 
         //start the task in a new thread
@@ -183,7 +183,7 @@ public class BotTask extends Task<Void> {
         if (isTimerTaskRunning) {
             timerTask.cancel();
             timer.cancel();
-            MainLayout.mainLayout.switchTimeBox();
+            MainLayout.Companion.getMainLayout().switchTimeBox();
         }
     }
 

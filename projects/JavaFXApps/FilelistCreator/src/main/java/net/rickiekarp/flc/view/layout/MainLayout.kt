@@ -1,434 +1,436 @@
-package net.rickiekarp.flc.view.layout;
+package net.rickiekarp.flc.view.layout
 
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.ui.anim.AnimationHandler;
-import net.rickiekarp.core.view.MainScene;
-import net.rickiekarp.core.view.layout.AppLayout;
-import net.rickiekarp.flc.listcell.FoldableListCell;
-import net.rickiekarp.flc.controller.FilelistController;
-import net.rickiekarp.flc.model.Directorylist;
-import net.rickiekarp.flc.model.Filelist;
-import net.rickiekarp.flc.model.FilelistFormats;
-import net.rickiekarp.flc.model.FilelistSettings;
-import net.rickiekarp.flc.settings.AppConfiguration;
-import net.rickiekarp.flc.tasks.FilelistPreviewTask;
-import net.rickiekarp.flc.tasks.ListTask;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.ui.anim.AnimationHandler
+import net.rickiekarp.core.view.MainScene
+import net.rickiekarp.core.view.layout.AppLayout
+import net.rickiekarp.flc.listcell.FoldableListCell
+import net.rickiekarp.flc.controller.FilelistController
+import net.rickiekarp.flc.model.Directorylist
+import net.rickiekarp.flc.model.Filelist
+import net.rickiekarp.flc.model.FilelistFormats
+import net.rickiekarp.flc.model.FilelistSettings
+import net.rickiekarp.flc.settings.AppConfiguration
+import net.rickiekarp.flc.tasks.FilelistPreviewTask
+import net.rickiekarp.flc.tasks.ListTask
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleStringProperty
+import javafx.collections.FXCollections
+import javafx.geometry.HPos
+import javafx.geometry.Insets
+import javafx.geometry.Pos
+import javafx.scene.Node
+import javafx.scene.control.*
+import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.input.KeyCode
+import javafx.scene.layout.*
+import javafx.stage.DirectoryChooser
+import javafx.stage.FileChooser
 
-import javax.swing.*;
-import java.io.File;
-import java.text.DecimalFormatSymbols;
-import java.util.Collections;
+import java.text.DecimalFormatSymbols
+import java.util.Collections
 
-public class MainLayout implements AppLayout {
-    public static MainLayout mainLayout;
-    public static TableView<Filelist> fileTable;
-    public static TableView<Directorylist> dirTable;
-    public static Button btn_removeAll, btn_saveFileList;
-    public static TextField pathTF;
-    public static TextArea previewTA;
-    private Label status;
-    public static ComboBox<String> cbox_saveFormat;
-    public static HBox fileControls, saveControls;
-    public static TableColumn<Filelist, String> fileColumn[] = new TableColumn[8];
-    private ObservableList<FilelistFormats> fileListFormats = FXCollections.observableArrayList();
+class MainLayout : AppLayout {
+    override val layout: Node
+        get() = createLayout()
 
-    public MainLayout() {
-        mainLayout = this;
+    private var status: Label? = null
+    private val fileListFormats = FXCollections.observableArrayList<FilelistFormats>()
+
+    init {
+        mainLayout = this
     }
 
-    private Node getMainLayout() {
+    private fun createLayout(): Node {
+        val mainContent = BorderPane()
 
-        BorderPane mainContent = new BorderPane();
+        val fileGrid = GridPane()
+        val columnConstraints = ColumnConstraints()
+        columnConstraints.isFillWidth = true
+        columnConstraints.hgrow = Priority.ALWAYS
+        fileGrid.columnConstraints.add(columnConstraints)
 
-        GridPane fileGrid = new GridPane();
-        ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setFillWidth(true);
-        columnConstraints.setHgrow(Priority.ALWAYS);
-        fileGrid.getColumnConstraints().add(columnConstraints);
+        val settingsGrid = GridPane()
+        settingsGrid.prefWidth = 200.0
+        settingsGrid.vgap = 10.0
+        settingsGrid.padding = Insets(5.0, 0.0, 0.0, 0.0)  //padding top, left, bottom, right
+        settingsGrid.alignment = Pos.BASELINE_CENTER
 
-        GridPane settingsGrid = new GridPane();
-        settingsGrid.setPrefWidth(200);
-        settingsGrid.setVgap(10);
-        settingsGrid.setPadding(new Insets(5, 0, 0, 0));  //padding top, left, bottom, right
-        settingsGrid.setAlignment(Pos.BASELINE_CENTER);
+        val controls = AnchorPane()
+        controls.minHeight = 50.0
 
-        AnchorPane controls = new AnchorPane();
-        controls.setMinHeight(50);
+        fileControls = HBox(5.0)
 
-        fileControls = new HBox(5);
+        saveControls = HBox(8.0)
+        saveControls.alignment = Pos.CENTER
 
-        saveControls = new HBox(8);
-        saveControls.setAlignment(Pos.CENTER);
-
-        fileGrid.setHgap(15);
-        fileGrid.setVgap(5);
-        fileGrid.setPadding(new Insets(5, 10, 5, 10));  //padding top, left, bottom, right
+        fileGrid.hgap = 15.0
+        fileGrid.vgap = 5.0
+        fileGrid.padding = Insets(5.0, 10.0, 5.0, 10.0)  //padding top, left, bottom, right
 
         //add components
-        pathTF = new TextField(); pathTF.setEditable(false);
-        fileGrid.getChildren().add(pathTF);
+        pathTF = TextField()
+        pathTF.isEditable = false
+        fileGrid.children.add(pathTF)
 
-        Button btn_browse = new Button(LanguageController.getString("browse"));
-        fileGrid.getChildren().add(btn_browse);
+        val btn_browse = Button(LanguageController.getString("browse"))
+        fileGrid.children.add(btn_browse)
 
-        CheckBox subFolderBox = new CheckBox(LanguageController.getString("inclSubdir")); //cb_subFolders.setSelected(subDirs);
-        subFolderBox.setSelected(AppConfiguration.INSTANCE.getSubFolderCheck());
-        fileGrid.getChildren().add(subFolderBox);
+        val subFolderBox = CheckBox(LanguageController.getString("inclSubdir")) //cb_subFolders.setSelected(subDirs);
+        subFolderBox.isSelected = AppConfiguration.subFolderCheck
+        fileGrid.children.add(subFolderBox)
 
         //FILE TABLE
-        fileTable = new TableView<>();
+        fileTable = TableView()
         //fileTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        fileTable.setPlaceholder(new Label(LanguageController.getString("no_file_found")));
-        fileTable.setItems(null); //fixes NullPointerException when using arrow keys in empty table
-        fileGrid.getChildren().add(fileTable);
+        fileTable.placeholder = Label(LanguageController.getString("no_file_found"))
+        fileTable.setItems(null) //fixes NullPointerException when using arrow keys in empty table
+        fileGrid.children.add(fileTable)
 
-        fileColumn[0] = new TableColumn<>(LanguageController.getString("name"));
-        fileColumn[0].setCellValueFactory(new PropertyValueFactory<>("filename"));
-        fileColumn[0].setPrefWidth(175);
-        fileColumn[1] = new TableColumn<>(LanguageController.getString("ftype"));
-        fileColumn[1].setCellValueFactory(new PropertyValueFactory<>("filetype"));
-        fileColumn[1].setPrefWidth(100);
-        fileColumn[2] = new TableColumn<>(LanguageController.getString("fpath"));
-        fileColumn[2].setCellValueFactory(new PropertyValueFactory<>("filepath"));
-        fileColumn[2].setPrefWidth(180);
-        fileColumn[3] = new TableColumn<>(LanguageController.getString("fsize"));
-        fileColumn[3].setCellValueFactory(p -> {
-            if (p.getValue() != null) {
-                return new SimpleStringProperty(p.getValue().getSize() + " " + AppConfiguration.INSTANCE.getUnitList().get(FilelistController.getUNIT_IDX()));
+
+        val nameColumn = TableColumn<Filelist, String>(LanguageController.getString("name"))
+        nameColumn.setCellValueFactory(PropertyValueFactory("filename"))
+        nameColumn.prefWidth = 175.0
+        fileColumn.add(nameColumn)
+
+        val fTypeColumn = TableColumn<Filelist, String>(LanguageController.getString("ftype"))
+        fTypeColumn.setCellValueFactory(PropertyValueFactory("filetype"))
+        fTypeColumn.prefWidth = 100.0
+        fileColumn.add(fTypeColumn)
+
+        val fPathColumn = TableColumn<Filelist, String>(LanguageController.getString("fpath"))
+        fPathColumn.setCellValueFactory(PropertyValueFactory("filepath"))
+        fPathColumn.prefWidth = 180.0
+        fileColumn.add(fPathColumn)
+
+        val fSizeColumn = TableColumn<Filelist, String>(LanguageController.getString("fsize"))
+        fSizeColumn.setCellValueFactory { p ->
+            if (p.value != null) {
+                SimpleStringProperty(p.value.getSize().toString() + " " + AppConfiguration.unitList[FilelistController.UNIT_IDX])
             } else {
-                return new SimpleStringProperty("null");
+                SimpleStringProperty("null")
             }
-        });
-        fileColumn[3].setPrefWidth(75);
-        fileColumn[4] = new TableColumn<>(LanguageController.getString("fcreation"));
-        fileColumn[4].setCellValueFactory(new PropertyValueFactory<>("creationDate"));
-        fileColumn[4].setPrefWidth(175);
-        fileColumn[5] = new TableColumn<>(LanguageController.getString("fmodif"));
-        fileColumn[5].setCellValueFactory(new PropertyValueFactory<>("lastModif"));
-        fileColumn[5].setPrefWidth(175);
-        fileColumn[6] = new TableColumn<>(LanguageController.getString("faccessed"));
-        fileColumn[6].setCellValueFactory(new PropertyValueFactory<>("lastAccessDate"));
-        fileColumn[6].setPrefWidth(175);
-        fileColumn[7] = new TableColumn<>(LanguageController.getString("fhidden")); //column8.setVisible(false);
-        fileColumn[7].setCellValueFactory(new PropertyValueFactory<>("isHidden"));
+        }
+        fSizeColumn.prefWidth = 75.0
+        fileColumn.add(fSizeColumn)
 
-        fileTable.tableMenuButtonVisibleProperty().set(true);
-        fileTable.getColumns().setAll(fileColumn.clone());
+        val fCreationColumn = TableColumn<Filelist, String>(LanguageController.getString("fcreation"))
+        fCreationColumn.setCellValueFactory(PropertyValueFactory("creationDate"))
+        fCreationColumn.prefWidth = 175.0
+        fileColumn.add(fCreationColumn)
+
+        val fmodifColumn = TableColumn<Filelist, String>(LanguageController.getString("fmodif"))
+        fmodifColumn.setCellValueFactory(PropertyValueFactory("lastModif"))
+        fmodifColumn.prefWidth = 175.0
+        fileColumn.add(fmodifColumn)
+
+        val faccessed = TableColumn<Filelist, String>(LanguageController.getString("faccessed"))
+        faccessed.setCellValueFactory(PropertyValueFactory("lastAccessDate"))
+        faccessed.prefWidth = 175.0
+        fileColumn.add(faccessed)
+
+        val fhidden = TableColumn<Filelist, String>(LanguageController.getString("fhidden")) //column8.setVisible(false);
+        fhidden.setCellValueFactory(PropertyValueFactory("isHidden"))
+        fileColumn.add(fhidden)
+
+        fileTable.tableMenuButtonVisibleProperty().set(true)
+        fileTable.columns.setAll(fileColumn)
 
         //DIRECTORY TABLE
-        dirTable = new TableView<>();
-        dirTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        dirTable.setPlaceholder(new Label(LanguageController.getString("no_dir_found")));
-        dirTable.setItems(null); //fixes NullPointerException when using arrow keys in empty table
-        fileGrid.getChildren().add(dirTable);
+        dirTable = TableView()
+        dirTable.columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+        dirTable.placeholder = Label(LanguageController.getString("no_dir_found"))
+        dirTable.setItems(null) //fixes NullPointerException when using arrow keys in empty table
+        fileGrid.children.add(dirTable)
 
 
-        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
-        otherSymbols.setDecimalSeparator(',');
-        otherSymbols.setGroupingSeparator('.');
+        val otherSymbols = DecimalFormatSymbols()
+        otherSymbols.decimalSeparator = ','
+        otherSymbols.groupingSeparator = '.'
 
-        TableColumn<Directorylist, String> tcolumn1 = new TableColumn<>(LanguageController.getString("name"));
-        tcolumn1.setCellValueFactory(new PropertyValueFactory<>("dir"));
-        TableColumn<Directorylist, Integer> tcolumn2 = new TableColumn<>(LanguageController.getString("filesTotal"));
-        tcolumn2.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getFilesTotal()).asObject());
-        TableColumn<Directorylist, Integer> tcolumn3 = new TableColumn<>(LanguageController.getString("filesindir"));
-        tcolumn3.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getFilesInDir()).asObject());
-        TableColumn<Directorylist, Integer> tcolumn4 = new TableColumn<>(LanguageController.getString("foldersInAmount"));
-        tcolumn4.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getFoldersInDir()).asObject());
-        TableColumn<Directorylist, String> tcolumn5 = new TableColumn<>(LanguageController.getString("fsize"));
-        tcolumn5.setCellValueFactory(p -> {
-            if (p.getValue() != null) {
-                return new SimpleStringProperty(p.getValue().getFileSizeInDir() + " B");
+        val tcolumn1 = TableColumn<Directorylist, String>(LanguageController.getString("name"))
+        tcolumn1.setCellValueFactory(PropertyValueFactory("dir"))
+        val tcolumn2 = TableColumn<Directorylist, Int>(LanguageController.getString("filesTotal"))
+        tcolumn2.setCellValueFactory { cellData -> SimpleIntegerProperty(cellData.value.getFilesTotal()).asObject() }
+        val tcolumn3 = TableColumn<Directorylist, Int>(LanguageController.getString("filesindir"))
+        tcolumn3.setCellValueFactory { cellData -> SimpleIntegerProperty(cellData.value.filesInDir).asObject() }
+        val tcolumn4 = TableColumn<Directorylist, Int>(LanguageController.getString("foldersInAmount"))
+        tcolumn4.setCellValueFactory { cellData -> SimpleIntegerProperty(cellData.value.foldersInDir).asObject() }
+        val tcolumn5 = TableColumn<Directorylist, String>(LanguageController.getString("fsize"))
+        tcolumn5.setCellValueFactory { p ->
+            if (p.value != null) {
+                SimpleStringProperty(p.value.fileSizeInDir.toString() + " B")
             } else {
-                return new SimpleStringProperty("null");
+                SimpleStringProperty("null")
             }
-        });
+        }
 
-        dirTable.tableMenuButtonVisibleProperty().set(true);
-        dirTable.getColumns().setAll(tcolumn1, tcolumn2, tcolumn3, tcolumn4, tcolumn5);
+        dirTable.tableMenuButtonVisibleProperty().set(true)
+        dirTable.columns.setAll(tcolumn1, tcolumn2, tcolumn3, tcolumn4, tcolumn5)
 
-        previewTA = new TextArea();
-        previewTA.setMinHeight(200);
-        fileGrid.getChildren().add(previewTA);
+        previewTA = TextArea()
+        previewTA.minHeight = 200.0
+        fileGrid.children.add(previewTA)
 
-        Button btn_remove = new Button(LanguageController.getString("removeFile"));
+        val btn_remove = Button(LanguageController.getString("removeFile"))
 
-        btn_removeAll = new Button(LanguageController.getString("removeAllFiles"));
+        btn_removeAll = Button(LanguageController.getString("removeAllFiles"))
 
-        Label fileunit = new Label(LanguageController.getString("unit"));
-        GridPane.setConstraints(fileunit, 0, 2);
-        GridPane.setHalignment(fileunit, HPos.RIGHT);
+        val fileunit = Label(LanguageController.getString("unit"))
+        GridPane.setConstraints(fileunit, 0, 2)
+        GridPane.setHalignment(fileunit, HPos.RIGHT)
 
         //SETTINGS LIST
-        ListView<FilelistSettings> list = new ListView<>();
-        GridPane.setConstraints(list, 0, 0);
-        GridPane.setVgrow(list, Priority.ALWAYS);
-        settingsGrid.getChildren().add(list);
+        val list = ListView<FilelistSettings>()
+        GridPane.setConstraints(list, 0, 0)
+        GridPane.setVgrow(list, Priority.ALWAYS)
+        settingsGrid.children.add(list)
 
-        ObservableList<FilelistSettings> items = FXCollections.observableArrayList();
+        val items = FXCollections.observableArrayList<FilelistSettings>()
         if (Configuration.useSystemBorders) {
-            items.add(new FilelistSettings("flSetting_0", "flSetting_0_desc", false));
+            items.add(FilelistSettings("flSetting_0", "flSetting_0_desc", false))
         }
-        items.add(new FilelistSettings("flSetting_1", "flSetting_1_desc", false));
-        items.add(new FilelistSettings("flSetting_2", "flSetting_2_desc", false));
-        list.setItems(items);
+        items.add(FilelistSettings("flSetting_1", "flSetting_1_desc", false))
+        items.add(FilelistSettings("flSetting_2", "flSetting_2_desc", false))
+        list.setItems(items)
 
-        list.setCellFactory(lv -> new FoldableListCell(list));
-
-
-        status = new Label();
-        saveControls.getChildren().add(status);
-
-        cbox_saveFormat = new ComboBox<>();
-        btn_saveFileList = new Button(LanguageController.getString("saveList"));
-
-        AnchorPane.setLeftAnchor(fileControls, 5.0);
-        AnchorPane.setBottomAnchor(fileControls, 6.0);
-        AnchorPane.setRightAnchor(saveControls, 5.0);
-        AnchorPane.setBottomAnchor(saveControls, 6.0);
-
-        controls.setStyle("-fx-background-color: #1d1d1d;");
+        list.setCellFactory { lv -> FoldableListCell(list) }
 
 
-        controls.getChildren().add(fileControls);
-        controls.getChildren().add(saveControls);
+        status = Label()
+        saveControls.children.add(status)
 
-        GridPane.setConstraints(fileGrid, 0, 0);
-        GridPane.setConstraints(settingsGrid, 1, 0);
+        cbox_saveFormat = ComboBox()
+        btn_saveFileList = Button(LanguageController.getString("saveList"))
 
-        GridPane.setConstraints(pathTF, 0, 0);
-        GridPane.setConstraints(btn_browse, 1, 0);
-        GridPane.setConstraints(subFolderBox, 2, 0);
-        GridPane.setConstraints(fileTable, 0, 1);
-        GridPane.setColumnSpan(fileTable, 3);
-        GridPane.setConstraints(dirTable, 0, 2);
-        GridPane.setColumnSpan(dirTable, 3);
-        GridPane.setConstraints(previewTA, 0, 3);
-        GridPane.setColumnSpan(previewTA, 3);
+        AnchorPane.setLeftAnchor(fileControls, 5.0)
+        AnchorPane.setBottomAnchor(fileControls, 6.0)
+        AnchorPane.setRightAnchor(saveControls, 5.0)
+        AnchorPane.setBottomAnchor(saveControls, 6.0)
+
+        controls.style = "-fx-background-color: #1d1d1d;"
+
+
+        controls.children.add(fileControls)
+        controls.children.add(saveControls)
+
+        GridPane.setConstraints(fileGrid, 0, 0)
+        GridPane.setConstraints(settingsGrid, 1, 0)
+
+        GridPane.setConstraints(pathTF, 0, 0)
+        GridPane.setConstraints(btn_browse, 1, 0)
+        GridPane.setConstraints(subFolderBox, 2, 0)
+        GridPane.setConstraints(fileTable, 0, 1)
+        GridPane.setColumnSpan(fileTable, 3)
+        GridPane.setConstraints(dirTable, 0, 2)
+        GridPane.setColumnSpan(dirTable, 3)
+        GridPane.setConstraints(previewTA, 0, 3)
+        GridPane.setColumnSpan(previewTA, 3)
 
 
         //add components to borderpane
-        mainContent.setCenter(fileGrid);
-        mainContent.setRight(settingsGrid);
-        mainContent.setBottom(controls);
+        mainContent.center = fileGrid
+        mainContent.right = settingsGrid
+        mainContent.bottom = controls
 
-        btn_browse.setOnAction(event -> {
-            status.setText(LanguageController.getString("files_loading"));
+        btn_browse.setOnAction { event ->
+            status!!.text = LanguageController.getString("files_loading")
 
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            File selectedDirectory = directoryChooser.showDialog(MainScene.Companion.getMainScene().getWindowScene().getWindow());
+            val directoryChooser = DirectoryChooser()
+            val selectedDirectory = directoryChooser.showDialog(MainScene.mainScene.windowScene!!.window)
 
             if (selectedDirectory == null) {
-                status.setText(LanguageController.getString("no_dir_selected"));
+                status!!.text = LanguageController.getString("no_dir_selected")
             } else {
 
                 //clear all data
-                if (AppConfiguration.INSTANCE.getFileData().size() > 0 || AppConfiguration.INSTANCE.getDirData().size() > 0) {
-                    removeAllFiles();
+                if (AppConfiguration.fileData.size > 0 || AppConfiguration.dirData.size > 0) {
+                    removeAllFiles()
                 }
 
-                pathTF.setText(selectedDirectory.getPath());
+                pathTF.text = selectedDirectory.path
 
                 //add start directory entry
-                AppConfiguration.INSTANCE.getDirData().add(new Directorylist(selectedDirectory.getPath(), 0, 0, 0, 0));
+                AppConfiguration.dirData.add(Directorylist(selectedDirectory.path, 0, 0, 0, 0))
 
-                new ListTask(selectedDirectory);
+                ListTask(selectedDirectory)
             }
-        });
+        }
 
         //Add change listener
-        fileTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+        fileTable.selectionModel.selectedItemProperty().addListener { observableValue, oldValue, newValue ->
             //Check whether item is selected
-            if (fileTable.getSelectionModel().getSelectedItem() != null) {
+            if (fileTable.selectionModel.selectedItem != null) {
 
                 //check if dirTable is selected
-                if (dirTable.getSelectionModel().isSelected(dirTable.getSelectionModel().getSelectedIndex())) {
-                    dirTable.getSelectionModel().select(null);
+                if (dirTable.selectionModel.isSelected(dirTable.selectionModel.selectedIndex)) {
+                    dirTable.selectionModel.select(null)
                 }
 
                 if (oldValue == null) {
-                    fileControls.getChildren().add(btn_remove);
+                    fileControls.children.add(btn_remove)
                 }
             } else {
-                fileControls.getChildren().remove(btn_remove);
-                if (AppConfiguration.INSTANCE.getFileData().size() == 0) {
-                    fileTable.setItems(null);
-                    AppConfiguration.INSTANCE.getDirData().clear();
-                    dirTable.setItems(null);
-                    ListTask.listTask.resetTask();
-                    previewTA.clear();
-                    pathTF.clear();
-                    fileControls.getChildren().removeAll(btn_removeAll);
-                    saveControls.getChildren().removeAll(cbox_saveFormat, btn_saveFileList);
+                fileControls.children.remove(btn_remove)
+                if (AppConfiguration.fileData.size == 0) {
+                    fileTable.setItems(null)
+                    AppConfiguration.dirData.clear()
+                    dirTable.setItems(null)
+                    ListTask.listTask.resetTask()
+                    previewTA.clear()
+                    pathTF.clear()
+                    fileControls.children.removeAll(btn_removeAll)
+                    saveControls.children.removeAll(cbox_saveFormat, btn_saveFileList)
                 }
             }
-        });
+        }
 
-        fileTable.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.DELETE)) {
-                if (!btn_remove.isDisabled()) {
-                    if (fileTable.getSelectionModel().isSelected(fileTable.getSelectionModel().getSelectedIndex())) {
-                        disable(btn_remove, 1000);
-                        removeFile();
+        fileTable.setOnKeyPressed { event ->
+            if (event.code == KeyCode.DELETE) {
+                if (!btn_remove.isDisabled) {
+                    if (fileTable.selectionModel.isSelected(fileTable.selectionModel.selectedIndex)) {
+                        removeFile()
                     }
                 }
             }
-        });
+        }
 
-        dirTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+        dirTable.selectionModel.selectedItemProperty().addListener { observableValue, oldValue, newValue ->
             //Check whether item is selected
-            if (dirTable.getSelectionModel().getSelectedItem() != null) {
+            if (dirTable.selectionModel.selectedItem != null) {
 
                 //check if fileTable is selected
-                if (fileTable.getSelectionModel().isSelected(fileTable.getSelectionModel().getSelectedIndex())) {
-                    fileTable.getSelectionModel().select(null);
+                if (fileTable.selectionModel.isSelected(fileTable.selectionModel.selectedIndex)) {
+                    fileTable.selectionModel.select(null)
                 }
 
                 if (oldValue == null) {
-                    fileControls.getChildren().add(btn_remove);
+                    fileControls.children.add(btn_remove)
                 }
             } else {
-                fileControls.getChildren().remove(btn_remove);
-                if (AppConfiguration.INSTANCE.getDirData().size() == 0) {
-                    dirTable.setItems(null);
-                    ListTask.listTask.resetTask();
-                    previewTA.clear();
-                    pathTF.clear();
-                    fileControls.getChildren().removeAll(btn_removeAll);
-                    saveControls.getChildren().removeAll(cbox_saveFormat, btn_saveFileList);
+                fileControls.children.remove(btn_remove)
+                if (AppConfiguration.dirData.size == 0) {
+                    dirTable.setItems(null)
+                    ListTask.listTask.resetTask()
+                    previewTA.clear()
+                    pathTF.clear()
+                    fileControls.children.removeAll(btn_removeAll)
+                    saveControls.children.removeAll(cbox_saveFormat, btn_saveFileList)
                 }
             }
-        });
+        }
 
-        dirTable.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.DELETE)) {
-                if (!btn_remove.isDisabled()) {
-                    if (dirTable.getSelectionModel().isSelected(dirTable.getSelectionModel().getSelectedIndex())) {
-                        disable(btn_remove, 3000);
-                        removeFile();
+        dirTable.setOnKeyPressed { event ->
+            if (event.code == KeyCode.DELETE) {
+                if (!btn_remove.isDisabled) {
+                    if (dirTable.selectionModel.isSelected(dirTable.selectionModel.selectedIndex)) {
+                        removeFile()
                     }
                 }
             }
-        });
+        }
 
-        btn_remove.setOnAction(event -> {
-            disable(btn_remove, 3000);
-            removeFile();
-        });
+        btn_remove.setOnAction { event ->
+            removeFile()
+        }
 
-        btn_removeAll.setOnAction(event -> {
-            removeAllFiles();
-        });
+        btn_removeAll.setOnAction { event -> removeAllFiles() }
 
-        subFolderBox.setOnAction(event -> {
-                    AppConfiguration.INSTANCE.setSubFolderCheck(subFolderBox.isSelected());
-                    if (subFolderBox.isSelected()) { status.setText(LanguageController.getString("incl_sub_on")); }
-                    else { status.setText(LanguageController.getString("incl_sub_off")); }
-                }
-        );
+        subFolderBox.setOnAction { event ->
+            AppConfiguration.subFolderCheck = subFolderBox.isSelected
+            if (subFolderBox.isSelected) {
+                status!!.text = LanguageController.getString("incl_sub_on")
+            } else {
+                status!!.text = LanguageController.getString("incl_sub_off")
+            }
+        }
 
-        btn_saveFileList.setOnAction(event -> {
-            int fileformatIDx = cbox_saveFormat.getSelectionModel().getSelectedIndex();
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter(
-                            fileListFormats.get(fileformatIDx).getFileTypeName(),
-                            fileListFormats.get(fileformatIDx).getFileTypeEnding())
-            );
-            File file = fileChooser.showSaveDialog(MainScene.Companion.getMainScene().getWindowScene().getWindow());
+        btn_saveFileList.setOnAction { event ->
+            val fileformatIDx = cbox_saveFormat.selectionModel.selectedIndex
+            val fileChooser = FileChooser()
+            fileChooser.extensionFilters.addAll(
+                    FileChooser.ExtensionFilter(
+                            fileListFormats[fileformatIDx].fileTypeName,
+                            fileListFormats[fileformatIDx].fileTypeEnding)
+            )
+            val file = fileChooser.showSaveDialog(MainScene.mainScene.windowScene!!.window)
 
             if (file != null) {
-                FilelistController.getFlController().saveToFile(file, fileformatIDx);
-                AnimationHandler.statusFade(status, "success", LanguageController.getString("save_filelist_success"));
-                LogFileHandler.logger.info("save.filelist:Success");
+                FilelistController.flController!!.saveToFile(file, fileformatIDx)
+                AnimationHandler.statusFade(status, "success", LanguageController.getString("save_filelist_success"))
+                LogFileHandler.logger.info("save.filelist:Success")
             } else {
-                AnimationHandler.statusFade(status, "neutral", LanguageController.getString("save_filelist_fail"));
-                LogFileHandler.logger.info("save.filelist:Fail");
+                AnimationHandler.statusFade(status, "neutral", LanguageController.getString("save_filelist_fail"))
+                LogFileHandler.logger.info("save.filelist:Fail")
             }
-        });
+        }
 
         //add all file formats to a list
-        fillFileFormatList();
+        fillFileFormatList()
 
         //debug colors
         if (DebugHelper.isDebugVersion()) {
-            controls.setStyle("-fx-background-color: #336699;");
-            fileGrid.setStyle("-fx-background-color: #555555");
-            settingsGrid.setStyle("-fx-background-color: #444444");
-            settingsGrid.setGridLinesVisible(true);
-            fileGrid.setGridLinesVisible(true);
-        }
-        else
-        {
-            controls.setStyle("-fx-background-color: #1d1d1d;");
-            fileGrid.setStyle(null);
-            settingsGrid.setStyle(null);
-            settingsGrid.setGridLinesVisible(false);
-            fileGrid.setGridLinesVisible(false);
+            controls.style = "-fx-background-color: #336699;"
+            fileGrid.style = "-fx-background-color: #555555"
+            settingsGrid.style = "-fx-background-color: #444444"
+            settingsGrid.isGridLinesVisible = true
+            fileGrid.isGridLinesVisible = true
+        } else {
+            controls.style = "-fx-background-color: #1d1d1d;"
+            fileGrid.style = null
+            settingsGrid.style = null
+            settingsGrid.isGridLinesVisible = false
+            fileGrid.isGridLinesVisible = false
         }
 
-        return mainContent;
+        return mainContent
     }
 
     /**
      * Removes the selected index in the fileTable and calculates new file amount
      */
-    private void removeFile() {
+    private fun removeFile() {
 
-        if (fileTable.getSelectionModel().isSelected(fileTable.getSelectionModel().getSelectedIndex())) {
+        if (fileTable.selectionModel.isSelected(fileTable.selectionModel.selectedIndex)) {
 
             //calculate new file amount
-            Directorylist dir;
-            for (int i = 0; i < AppConfiguration.INSTANCE.getDirData().size(); i++) {
-                if (AppConfiguration.INSTANCE.getFileData().get(fileTable.getSelectionModel().getSelectedIndex()).getFilepath().equals(AppConfiguration.INSTANCE.getDirData().get(i).getDir())) {
-                    dir = AppConfiguration.INSTANCE.getDirData().get(i);
-                    AppConfiguration.INSTANCE.getDirData().set(i, dir).setFilesFromDir(1);
-                    AppConfiguration.INSTANCE.getDirData().set(i, dir).setFilesFromTotal(1);
-                    AppConfiguration.INSTANCE.getDirData().set(i, dir).setFileSizeFromDir(AppConfiguration.INSTANCE.getFileData().get(fileTable.getSelectionModel().getSelectedIndex()).getSize());
+            var dir: Directorylist
+            for (i in 0 until AppConfiguration.dirData.size) {
+                if (AppConfiguration.fileData[fileTable.selectionModel.selectedIndex].getFilepath() == AppConfiguration.dirData[i].getDir()) {
+                    dir = AppConfiguration.dirData[i]
+                    AppConfiguration.dirData.set(i, dir).setFilesFromDir(1)
+                    AppConfiguration.dirData.set(i, dir).setFilesFromTotal(1)
+                    AppConfiguration.dirData.set(i, dir).setFileSizeFromDir(AppConfiguration.fileData[fileTable.selectionModel.selectedIndex].getSize())
                 }
             }
 
             //remove selected index
-            AppConfiguration.INSTANCE.getFileData().remove(fileTable.getSelectionModel().getSelectedIndex());
+            AppConfiguration.fileData.removeAt(fileTable.selectionModel.selectedIndex)
 
             //if no files are in the filelist, remove the directory from the table
-//        if (AppConfiguration.dirData.get(selIdx).getFilesTotal() == 0) {
-//            for (int i = 0; i < AppConfiguration.dirData.size(); i++) {
-//                if (AppConfiguration.fileData.get(fileTable.getSelectionModel().getSelectedIndex()).getFilepath().equals(AppConfiguration.dirData.get(i).getDir())) {
-//                    AppConfiguration.dirData.remove(i);
-//                }
-//            }
-//        }
+            //        if (AppConfiguration.dirData.get(selIdx).getFilesTotal() == 0) {
+            //            for (int i = 0; i < AppConfiguration.dirData.size(); i++) {
+            //                if (AppConfiguration.fileData.get(fileTable.getSelectionModel().getSelectedIndex()).getFilepath().equals(AppConfiguration.dirData.get(i).getDir())) {
+            //                    AppConfiguration.dirData.remove(i);
+            //                }
+            //            }
+            //        }
 
-            if (AppConfiguration.INSTANCE.getFileData().size() > 0) {
-                new FilelistPreviewTask();
-                status.setText(LanguageController.getString("remove_file_success"));
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+                status!!.text = LanguageController.getString("remove_file_success")
             } else {
-                status.setText(LanguageController.getString("clear_filelist_success"));
+                status!!.text = LanguageController.getString("clear_filelist_success")
             }
-        } else if (dirTable.getSelectionModel().isSelected(dirTable.getSelectionModel().getSelectedIndex())) {
-            removeFolder();
-            if (AppConfiguration.INSTANCE.getDirData().size() > 0) {
-                status.setText(LanguageController.getString("remove_folder_success"));
+        } else if (dirTable.selectionModel.isSelected(dirTable.selectionModel.selectedIndex)) {
+            removeFolder()
+            if (AppConfiguration.dirData.size > 0) {
+                status!!.text = LanguageController.getString("remove_folder_success")
             } else {
-                status.setText(LanguageController.getString("clear_filelist_success"));
+                status!!.text = LanguageController.getString("clear_filelist_success")
             }
         }
     }
@@ -436,91 +438,86 @@ public class MainLayout implements AppLayout {
     /**
      * Removes the selected folder in the TableView
      */
-    public void removeFolder() {
+    fun removeFolder() {
 
-        ObservableList<Integer> toDelList = FXCollections.observableArrayList();
+        val toDelList = FXCollections.observableArrayList<Int>()
 
         //iterate through filedata and add 'to delete items' to a list
-        for (int i = 0; i < AppConfiguration.INSTANCE.getFileData().size(); i++) {
-            if (AppConfiguration.INSTANCE.getFileData().get(i).getFilepath().equals(AppConfiguration.INSTANCE.getDirData().get(dirTable.getSelectionModel().getSelectedIndex()).getDir())) {
-                toDelList.add(i);
+        for (i in 0 until AppConfiguration.fileData.size) {
+            if (AppConfiguration.fileData[i].getFilepath() == AppConfiguration.dirData[dirTable.selectionModel.selectedIndex].getDir()) {
+                toDelList.add(i)
             }
         }
 
         //reverse sorting order of list
-        Collections.reverse(toDelList);
+        Collections.reverse(toDelList)
 
         //delete items from list
-        for (Integer aList : toDelList) {
-            Filelist test = fileTable.getItems().get(aList);
-            AppConfiguration.INSTANCE.getFileData().remove(test);
+        for (aList in toDelList) {
+            val test = fileTable.items[aList!!]
+            AppConfiguration.fileData.remove(test)
         }
 
         //remove directory entry from dirTable
-        AppConfiguration.INSTANCE.getDirData().remove(dirTable.getSelectionModel().getSelectedIndex());
+        AppConfiguration.dirData.removeAt(dirTable.selectionModel.selectedIndex)
 
-        if (AppConfiguration.INSTANCE.getFileData().size() > 0) { new FilelistPreviewTask(); }
-        else if (AppConfiguration.INSTANCE.getFileData().size() == 0) { AppConfiguration.INSTANCE.getDirData().clear(); }
+        if (AppConfiguration.fileData.size > 0) {
+            FilelistPreviewTask()
+        } else if (AppConfiguration.fileData.size == 0) {
+            AppConfiguration.dirData.clear()
+        }
     }
 
     /**
      * Removes all data in the TableView
      */
-    public void removeAllFiles() {
-        LogFileHandler.logger.info("Removing file data...");
-        previewTA.clear();
-        ListTask.listTask.deleteData();
-        ListTask.listTask.resetTask();
-        fileControls.getChildren().remove(btn_removeAll);
-        saveControls.getChildren().removeAll(cbox_saveFormat, btn_saveFileList);
-        setStatus("neutral", LanguageController.getString("clear_filelist_success"));
+    fun removeAllFiles() {
+        LogFileHandler.logger.info("Removing file data...")
+        previewTA.clear()
+        ListTask.listTask.deleteData()
+        ListTask.listTask.resetTask()
+        fileControls.children.remove(btn_removeAll)
+        saveControls.children.removeAll(cbox_saveFormat, btn_saveFileList)
+        setStatus("neutral", LanguageController.getString("clear_filelist_success"))
     }
 
     /**
      * Sets a status text in the MainScene
      */
-    public void setStatus(String type, String msg) {
-        AnimationHandler.statusFade(status, type, msg);
+    fun setStatus(type: String, msg: String) {
+        AnimationHandler.statusFade(status, type, msg)
     }
 
     /**
      * Adds all FileList formats to a list
      */
-    private void fillFileFormatList(){
-        fileListFormats.addAll(new FilelistFormats("Text (.txt)", "*.txt"));
-        fileListFormats.addAll(new FilelistFormats("HTML (.html)", "*.html"));
+    private fun fillFileFormatList() {
+        fileListFormats.addAll(FilelistFormats("Text (.txt)", "*.txt"))
+        fileListFormats.addAll(FilelistFormats("HTML (.html)", "*.html"))
 
-        for (int i = 0; fileListFormats.size() > i; i++) {
-            cbox_saveFormat.getItems().addAll(fileListFormats.get(i).getFileTypeName());
+        var i = 0
+        while (fileListFormats.size > i) {
+            cbox_saveFormat.items.addAll(fileListFormats[i].fileTypeName)
+            i++
         }
-        cbox_saveFormat.setValue(fileListFormats.get(0).getFileTypeName());
+        cbox_saveFormat.value = fileListFormats[0].fileTypeName
     }
 
-    /**
-     * Disables the given button for a period amount of time
-     * @param b The given button
-     * @param ms The sleep duration
-     */
-    static void disable(final Button b, final long ms) {
-        b.setDisable(true);
-        new SwingWorker() {
-            @Override protected Object doInBackground() throws Exception {
-                Thread.sleep(ms);
-                return null;
-            }
-            @Override protected void done() {
-                b.setDisable(false);
-            }
-        }.execute();
+    override fun postInit() {
+
     }
 
-    @Override
-    public Node getLayout() {
-        return getMainLayout();
-    }
-
-    @Override
-    public void postInit() {
-
+    companion object {
+        lateinit var mainLayout: MainLayout
+        lateinit var fileTable: TableView<Filelist>
+        lateinit var dirTable: TableView<Directorylist>
+        lateinit var btn_removeAll: Button
+        lateinit var btn_saveFileList: Button
+        lateinit var pathTF: TextField
+        lateinit var previewTA: TextArea
+        lateinit var cbox_saveFormat: ComboBox<String>
+        lateinit var fileControls: HBox
+        lateinit var saveControls: HBox
+        var fileColumn: ArrayList<TableColumn<Filelist, String>?> = arrayListOf()
     }
 }

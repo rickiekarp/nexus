@@ -15,7 +15,6 @@ class FilelistController {
     private val lenght = IntArray(MainLayout.fileColumn.size)
     private var dirlenght: Int = 0
 
-
     val list: String
         get() {
             val spacing = 4
@@ -35,11 +34,11 @@ class FilelistController {
             //calculate column space
             for (i in MainLayout.fileColumn.indices) {
                 if (option[i]) {
-                    sb.append(MainLayout.fileColumn[i].text)
+                    sb.append(MainLayout.fileColumn[i]!!.text)
                     when (sortingIdx) {
                         //sorting is: none
                         0 -> {
-                            diffColumn[i] = lenght[i] - MainLayout.fileColumn[i].text.length + spacing
+                            diffColumn[i] = lenght[i] - MainLayout.fileColumn[i]!!.text.length + spacing
                             // check if column space difference is smaller than 3
                             // if this is the case, set a minimum space of 2
                             if (diffColumn[i] < 3) {
@@ -51,12 +50,12 @@ class FilelistController {
                             //check if filename is longer than directory name
                             if (i == 0) {
                                 if (lenght[i] > dirlenght) {
-                                    diffColumn[i] = lenght[i] - MainLayout.fileColumn[i].text.length + spacing
+                                    diffColumn[i] = lenght[i] - MainLayout.fileColumn[i]!!.text.length + spacing
                                 } else {
-                                    diffColumn[i] = dirlenght - MainLayout.fileColumn[i].text.length + spacing
+                                    diffColumn[i] = dirlenght - MainLayout.fileColumn[i]!!.text.length + spacing
                                 }
                             } else {
-                                diffColumn[i] = lenght[i] - MainLayout.fileColumn[i].text.length + spacing
+                                diffColumn[i] = lenght[i] - MainLayout.fileColumn[i]!!.text.length + spacing
                             }
                             if (diffColumn[i] < 3) {
                                 diffColumn[i] = 2
@@ -80,49 +79,49 @@ class FilelistController {
                     for (pos in 0 until AppConfiguration.fileData.size) {
                         if (option[0]) {
                             sb.append(AppConfiguration.fileData[pos].getFilename())
-                            val diff = lenght[0] - AppConfiguration.fileData[pos].getFilename().length + MainLayout.fileColumn[0].text.length - lenght[0] + diffColumn[0]
+                            val diff = lenght[0] - AppConfiguration.fileData[pos].getFilename().length + MainLayout.fileColumn[0]!!.text.length - lenght[0] + diffColumn[0]
                             sb.append(" ".repeat(Math.max(0, diff)))
                         }
 
                         if (option[1]) {
                             sb.append(AppConfiguration.fileData[pos].getFiletype())
-                            val diff1 = lenght[1] - AppConfiguration.fileData[pos].getFiletype().length + MainLayout.fileColumn[1].text.length - lenght[1] + diffColumn[1]
+                            val diff1 = lenght[1] - AppConfiguration.fileData[pos].getFiletype().length + MainLayout.fileColumn[1]!!.text.length - lenght[1] + diffColumn[1]
                             sb.append(" ".repeat(Math.max(0, diff1)))
                         }
 
                         if (option[2]) {
                             sb.append(AppConfiguration.fileData[pos].getFilepath())
-                            val diff2 = lenght[2] - AppConfiguration.fileData[pos].getFilepath().length + MainLayout.fileColumn[2].text.length - lenght[2] + diffColumn[2]
+                            val diff2 = lenght[2] - AppConfiguration.fileData[pos].getFilepath().length + MainLayout.fileColumn[2]!!.text.length - lenght[2] + diffColumn[2]
                             sb.append(" ".repeat(Math.max(0, diff2)))
                         }
 
                         if (option[3]) {
                             sb.append(MainLayout.fileTable.columns[3].getCellData(pos))
-                            val diff3 = lenght[3] - MainLayout.fileTable.columns[3].getCellData(pos).toString().length + MainLayout.fileColumn[3].text.length - lenght[3] + diffColumn[3]
+                            val diff3 = lenght[3] - MainLayout.fileTable.columns[3].getCellData(pos).toString().length + MainLayout.fileColumn[3]!!.text.length - lenght[3] + diffColumn[3]
                             sb.append(" ".repeat(Math.max(0, diff3)))
                         }
 
                         if (option[4]) {
                             sb.append(AppConfiguration.fileData[pos].getCreationDate())
-                            val diff4 = lenght[4] - AppConfiguration.fileData[pos].getCreationDate().length + MainLayout.fileColumn[4].text.length - lenght[4] + diffColumn[4]
+                            val diff4 = lenght[4] - AppConfiguration.fileData[pos].getCreationDate().length + MainLayout.fileColumn[4]!!.text.length - lenght[4] + diffColumn[4]
                             sb.append(" ".repeat(Math.max(0, diff4)))
                         }
 
                         if (option[5]) {
                             sb.append(AppConfiguration.fileData[pos].lastModif)
-                            val diff5 = lenght[5] - AppConfiguration.fileData[pos].lastModif.length + MainLayout.fileColumn[5].text.length - lenght[5] + diffColumn[5]
+                            val diff5 = lenght[5] - AppConfiguration.fileData[pos].lastModif.length + MainLayout.fileColumn[5]!!.text.length - lenght[5] + diffColumn[5]
                             sb.append(" ".repeat(Math.max(0, diff5)))
                         }
 
                         if (option[6]) {
                             sb.append(AppConfiguration.fileData[pos].getLastAccessDate())
-                            val diff6 = lenght[6] - AppConfiguration.fileData[pos].getLastAccessDate().length + MainLayout.fileColumn[6].text.length - lenght[6] + diffColumn[6]
+                            val diff6 = lenght[6] - AppConfiguration.fileData[pos].getLastAccessDate().length + MainLayout.fileColumn[6]!!.text.length - lenght[6] + diffColumn[6]
                             sb.append(" ".repeat(Math.max(0, diff6)))
                         }
 
                         if (option[7]) {
                             sb.append(AppConfiguration.fileData[pos].getIsHidden())
-                            val diff7 = lenght[7] - AppConfiguration.fileData[pos].getIsHidden().length + MainLayout.fileColumn[7].text.length - lenght[7] + diffColumn[7]
+                            val diff7 = lenght[7] - AppConfiguration.fileData[pos].getIsHidden().length + MainLayout.fileColumn[7]!!.text.length - lenght[7] + diffColumn[7]
                             sb.append(" ".repeat(Math.max(0, diff7)))
                         }
 
@@ -163,49 +162,49 @@ class FilelistController {
                                 if (AppConfiguration.fileData[pos].getFilepath() == AppConfiguration.dirData[pos1].getDir()) {
                                     if (option[0]) {
                                         sb.append(AppConfiguration.fileData[pos].getFilename())
-                                        val diff = lenght[0] - AppConfiguration.fileData[pos].getFilename().length + MainLayout.fileColumn[0].text.length - lenght[0] + diffColumn[0]
+                                        val diff = lenght[0] - AppConfiguration.fileData[pos].getFilename().length + MainLayout.fileColumn[0]!!.text.length - lenght[0] + diffColumn[0]
                                         sb.append(" ".repeat(Math.max(0, diff)))
                                     }
 
                                     if (option[1]) {
                                         sb.append(AppConfiguration.fileData[pos].getFiletype())
-                                        val diff1 = lenght[1] - AppConfiguration.fileData[pos].getFiletype().length + MainLayout.fileColumn[1].text.length - lenght[1] + diffColumn[1]
+                                        val diff1 = lenght[1] - AppConfiguration.fileData[pos].getFiletype().length + MainLayout.fileColumn[1]!!.text.length - lenght[1] + diffColumn[1]
                                         sb.append(" ".repeat(Math.max(0, diff1)))
                                     }
 
                                     if (option[2]) {
                                         sb.append(AppConfiguration.fileData[pos].getFilepath())
-                                        val diff2 = lenght[2] - AppConfiguration.fileData[pos].getFilepath().length + MainLayout.fileColumn[2].text.length - lenght[2] + diffColumn[2]
+                                        val diff2 = lenght[2] - AppConfiguration.fileData[pos].getFilepath().length + MainLayout.fileColumn[2]!!.text.length - lenght[2] + diffColumn[2]
                                         sb.append(" ".repeat(Math.max(0, diff2)))
                                     }
 
                                     if (option[3]) {
                                         sb.append(MainLayout.fileTable.columns[3].getCellData(pos))
-                                        val diff3 = lenght[3] - MainLayout.fileTable.columns[3].getCellData(pos).toString().length + MainLayout.fileColumn[3].text.length - lenght[3] + diffColumn[3]
+                                        val diff3 = lenght[3] - MainLayout.fileTable.columns[3].getCellData(pos).toString().length + MainLayout.fileColumn[3]!!.text.length - lenght[3] + diffColumn[3]
                                         sb.append(" ".repeat(Math.max(0, diff3)))
                                     }
 
                                     if (option[4]) {
                                         sb.append(AppConfiguration.fileData[pos].getCreationDate())
-                                        val diff4 = lenght[4] - AppConfiguration.fileData[pos].getCreationDate().length + MainLayout.fileColumn[4].text.length - lenght[4] + diffColumn[4]
+                                        val diff4 = lenght[4] - AppConfiguration.fileData[pos].getCreationDate().length + MainLayout.fileColumn[4]!!.text.length - lenght[4] + diffColumn[4]
                                         sb.append(" ".repeat(Math.max(0, diff4)))
                                     }
 
                                     if (option[5]) {
                                         sb.append(AppConfiguration.fileData[pos].lastModif)
-                                        val diff5 = lenght[5] - AppConfiguration.fileData[pos].lastModif.length + MainLayout.fileColumn[5].text.length - lenght[5] + diffColumn[5]
+                                        val diff5 = lenght[5] - AppConfiguration.fileData[pos].lastModif.length + MainLayout.fileColumn[5]!!.text.length - lenght[5] + diffColumn[5]
                                         sb.append(" ".repeat(Math.max(0, diff5)))
                                     }
 
                                     if (option[6]) {
                                         sb.append(AppConfiguration.fileData[pos].getLastAccessDate())
-                                        val diff6 = lenght[6] - AppConfiguration.fileData[pos].getLastAccessDate().length + MainLayout.fileColumn[6].text.length - lenght[6] + diffColumn[6]
+                                        val diff6 = lenght[6] - AppConfiguration.fileData[pos].getLastAccessDate().length + MainLayout.fileColumn[6]!!.text.length - lenght[6] + diffColumn[6]
                                         sb.append(" ".repeat(Math.max(0, diff6)))
                                     }
 
                                     if (option[7]) {
                                         sb.append(AppConfiguration.fileData[pos].getIsHidden())
-                                        val diff7 = lenght[7] - AppConfiguration.fileData[pos].getIsHidden().length + MainLayout.fileColumn[7].text.length - lenght[7] + diffColumn[7]
+                                        val diff7 = lenght[7] - AppConfiguration.fileData[pos].getIsHidden().length + MainLayout.fileColumn[7]!!.text.length - lenght[7] + diffColumn[7]
                                         sb.append(" ".repeat(Math.max(0, diff7)))
                                     }
 
@@ -265,7 +264,7 @@ class FilelistController {
         val sb = StringBuilder()
         for (i in MainLayout.fileColumn.indices) {
             if (option[i]) {
-                val sepLine = MainLayout.fileColumn[i].text.length + diffColumn[i]
+                val sepLine = MainLayout.fileColumn[i]!!.text.length + diffColumn[i]
                 sb.append("-".repeat(Math.max(0, sepLine)))
             }
         }

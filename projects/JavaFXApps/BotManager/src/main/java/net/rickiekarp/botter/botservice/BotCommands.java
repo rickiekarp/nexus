@@ -19,7 +19,7 @@ public class BotCommands {
 
     public static void setInterval(String test) {
         AppConfiguration.runInterval = Integer.parseInt(test);
-        MainLayout.mainLayout.setStatus("neutral", "Timer intervall: " + AppConfiguration.runInterval + " min");
+        MainLayout.Companion.getMainLayout().setStatus("neutral", "Timer intervall: " + AppConfiguration.runInterval + " min");
     }
 
 }
