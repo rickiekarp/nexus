@@ -1,6 +1,6 @@
-package net.rickiekarp.botlib.enums;
+package net.rickiekarp.botlib.enums
 
-public interface BotTypeInterface {
+interface BotTypeInterface {
 
-    String getDisplayableType();
+    fun getDisplayableType(): String
 }
