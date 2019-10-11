@@ -1,17 +1,11 @@
-package net.rickiekarp.botlib.enums;
+package net.rickiekarp.botlib.enums
 
-public enum BotPlatforms implements BotTypeInterface {
+enum class BotPlatforms private constructor(private val type: String) : BotTypeInterface {
     NONE("none"),
     ANDROID("ANDROID"),
     WEB("WEB");
 
-    private final String type;
-
-    BotPlatforms(final String type) {
-        this.type = type;
-    }
-
-    public String getDisplayableType() {
-        return type;
+    override fun getDisplayableType(): String {
+        return type
     }
 }

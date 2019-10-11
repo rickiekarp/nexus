@@ -1,5 +1,8 @@
 package net.rickiekarp.botter.view;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import net.rickiekarp.core.controller.LanguageController;
 import net.rickiekarp.core.debug.DebugHelper;
 import net.rickiekarp.core.debug.LogFileHandler;

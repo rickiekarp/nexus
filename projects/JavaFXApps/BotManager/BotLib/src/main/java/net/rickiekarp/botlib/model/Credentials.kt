@@ -1,19 +1,3 @@
-package net.rickiekarp.botlib.model;
+package net.rickiekarp.botlib.model
 
-public class Credentials {
-    private final String login;
-    private final String password;
-
-    public Credentials(String user, String pass) {
-        login = user;
-        password = pass;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-}
+class Credentials(val login: String, val password: String)
