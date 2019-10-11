@@ -314,7 +314,7 @@ class MainLayout : AppLayout {
                 }
             }
 
-            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.getModulesDirFile().toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType.displayableType.toLowerCase() + ".json")))
+            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.getModulesDirFile().toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType.getDisplayableType().toLowerCase() + ".json")))
             if (deviceJson[0] != null) {
                 for (bot in BotType.Bot.values()) {
                     if (BotType.Bot.valueOf(deviceJson[0].getString("browser")) == bot && bot.botPlatform == BotPlatforms.WEB) {
@@ -342,7 +342,7 @@ class MainLayout : AppLayout {
                     deviceJson[0].put("browser", browserSelector.selectionModel.selectedItem)
                 }
 
-                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.getModulesDirFile().toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType.displayableType.toLowerCase() + ".json")
+                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.getModulesDirFile().toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType.getDisplayableType().toLowerCase() + ".json")
                 setStatus("neutral", LanguageController.getString("device_info_updated"))
                 saveButton.isVisible = false
             }
@@ -366,7 +366,7 @@ class MainLayout : AppLayout {
             val verTF = TextField()
             val deviceSerialTF = TextField()
 
-            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.getModulesDirFile().toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType.displayableType.toLowerCase() + ".json")))
+            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.getModulesDirFile().toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType.getDisplayableType().toLowerCase() + ".json")))
             if (deviceJson[0] != null) {
                 nameTF.text = deviceJson[0].getJSONObject("1").getString("name")
                 verTF.text = deviceJson[0].getJSONObject("1").getString("version")
@@ -395,7 +395,7 @@ class MainLayout : AppLayout {
                     deviceJson[0].getJSONObject("1").put("serial", deviceSerialTF.text)
                 }
 
-                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.getModulesDirFile().toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType.displayableType.toLowerCase() + ".json")
+                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.getModulesDirFile().toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType.getDisplayableType().toLowerCase() + ".json")
                 updateAndroidDeviceInfo(nameTF.text, verTF.text, deviceSerialTF.text)
                 setStatus("neutral", LanguageController.getString("browser_info_updated"))
                 saveButton.isVisible = false
