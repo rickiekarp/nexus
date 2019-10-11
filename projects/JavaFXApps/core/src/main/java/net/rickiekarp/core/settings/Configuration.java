@@ -289,6 +289,6 @@ public class Configuration {
         }
 
         //update Settings GUI
-        if (SettingsScene.settingsScene != null) { SettingsScene.settingsScene.updateGUI(list); }
+        if (SettingsScene.Companion.getSettingsScene() != null) { SettingsScene.Companion.getSettingsScene().updateGUI(list); }
     }
 }

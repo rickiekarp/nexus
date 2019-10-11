@@ -1,647 +1,605 @@
-package net.rickiekarp.core.view;
+package net.rickiekarp.core.view
 
-import net.rickiekarp.core.AppContext;
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.model.SettingsList;
-import net.rickiekarp.core.net.update.FileDownloader;
-import net.rickiekarp.core.net.update.UpdateChecker;
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.settings.LoadSave;
-import net.rickiekarp.core.ui.anim.AnimationHandler;
-import net.rickiekarp.core.ui.windowmanager.ThemeSelector;
-import net.rickiekarp.core.ui.tray.ToolTrayIcon;
-import net.rickiekarp.core.ui.windowmanager.WindowScene;
-import net.rickiekarp.core.ui.windowmanager.WindowStage;
-import net.rickiekarp.core.ui.windowmanager.ImageLoader;
-import javafx.animation.FadeTransition;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.Side;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import net.rickiekarp.core.AppContext
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.model.SettingsList
+import net.rickiekarp.core.net.update.FileDownloader
+import net.rickiekarp.core.net.update.UpdateChecker
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.settings.LoadSave
+import net.rickiekarp.core.ui.anim.AnimationHandler
+import net.rickiekarp.core.ui.windowmanager.ThemeSelector
+import net.rickiekarp.core.ui.tray.ToolTrayIcon
+import net.rickiekarp.core.ui.windowmanager.WindowScene
+import net.rickiekarp.core.ui.windowmanager.WindowStage
+import net.rickiekarp.core.ui.windowmanager.ImageLoader
+import javafx.application.Platform
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
+import javafx.geometry.Insets
+import javafx.geometry.Pos
+import javafx.geometry.Side
+import javafx.scene.control.*
+import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.control.cell.TextFieldTableCell
+import javafx.scene.layout.*
+import javafx.scene.paint.Color
+import javafx.stage.Stage
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
+import java.io.File
+import java.lang.reflect.Field
+import java.net.MalformedURLException
+import java.net.URL
+import java.util.ArrayList
+import java.util.logging.Level
 
 /**
  * The Settings Stage GUI.
  */
-public class SettingsScene {
+class SettingsScene {
+    private var settingsWindow: WindowScene? = null
+    private var controls: AnchorPane? = null
+    private var tabPane: TabPane? = null
+    private val tabName = arrayOf("general", "appearance", "advanced")
+    private val tabVBox = arrayOfNulls<VBox>(tabName.size)
+    private var tab1ContentGrid: ArrayList<GridPane> = ArrayList(3)
+    private var tab2ContentGrid: ArrayList<GridPane> = ArrayList(2)
+    private var tab3ContentGrid: ArrayList<GridPane> = ArrayList(1)
+    private val localeData = FXCollections.observableArrayList("English", "Deutsch")
+    private var otherTable: TableView<SettingsList>? = null
+    private var listData: ObservableList<SettingsList>? = null
+    private var logCBox: CheckBox? = null
+    private var animateCBox: CheckBox? = null
+    private var sysBorderCBox: CheckBox? = null
+    private var langCB: ComboBox<String>? = null
+    private var themeCB: ComboBox<String>? = null
+    private var colBox: ComboBox<String>? = null
+    private val updateChannel = FXCollections.observableArrayList("stable", "dev")
 
-    public static SettingsScene settingsScene;
-    private WindowScene settingsWindow;
-    private AnchorPane controls;
-    private TabPane tabPane;
-    private String tabName[] = {"general", "appearance", "advanced"};
-    private VBox tabVBox[] = new VBox[tabName.length];
-    private GridPane tab1ContentGrid[];
-    private GridPane tab2ContentGrid[];
-    private GridPane tab3ContentGrid[];
-    private ObservableList<String> localeData = FXCollections.observableArrayList("English", "Deutsch");
-    private TableView<SettingsList> otherTable;
-    private ObservableList<SettingsList> listData;
-    private CheckBox logCBox, animateCBox, sysBorderCBox;
-    private ComboBox<String> langCB, themeCB, colBox;
-    private ObservableList<String> updateChannel = FXCollections.observableArrayList("stable", "dev");
+    private val cfgLayout: BorderPane
+        get() {
 
-    public SettingsScene() {
-        SettingsScene about = SettingsScene.settingsScene;
-        if (about == null) {
-            settingsScene = this;
-            create();
-        } else {
-            if (about.getSettingsWindow().getWin().getWindowStage().getStage().isShowing()) {
-                about.getSettingsWindow().getWin().getWindowStage().getStage().requestFocus();
+            val cfgContent = BorderPane()
+
+            controls = AnchorPane()
+
+            tabPane = TabPane()
+            tabPane!!.side = Configuration.tabPosition
+
+            val tabs = arrayOfNulls<Tab>(tabName.size)
+            for (i in tabName.indices) {
+                tabs[i] = Tab()
+                tabs[i]!!.setText(LanguageController.getString(tabName[i]))
+                tabs[i]!!.setClosable(false)
+
+                tabVBox[i] = VBox()
+                tabVBox[i]!!.setPadding(Insets(0.0, 0.0, 0.0, 0.0))
+                tabs[i]!!.setContent(tabVBox[i])
+            }
+            tabPane!!.tabs.add(tabs[0])
+            tabPane!!.tabs.add(tabs[1])
+            for (i in 0 until 3) {
+                val gridPane = GridPane()
+                gridPane.padding = Insets(15.0, 5.0, 5.0, 15.0)
+                gridPane.vgap = 5.0
+                gridPane.hgap = 10.0
+                tab1ContentGrid.add(gridPane)
+            }
+            GridPane.setConstraints(tab1ContentGrid[0], 0, 0)
+            GridPane.setConstraints(tab1ContentGrid[1], 0, 1)
+            GridPane.setConstraints(tab1ContentGrid[2], 0, 2)
+
+            val appLanguage = Label()
+            appLanguage.text = LanguageController.getString("languageSelection")
+            appLanguage.style = "-fx-font-size: 12pt;"
+            GridPane.setConstraints(appLanguage, 0, 0)
+            tab1ContentGrid[0].children.add(appLanguage)
+
+            langCB = ComboBox(localeData)
+            langCB!!.setValue(localeData[LanguageController.currentLocale])
+            GridPane.setConstraints(langCB, 0, 1)
+            tab1ContentGrid[0].children.add(langCB)
+
+            val setChange = Label(LanguageController.getString("restartOnCfgChange"))
+            setChange.isVisible = false
+            setChange.style = "-fx-text-fill: red;"
+            GridPane.setConstraints(setChange, 0, 2)
+            tab1ContentGrid[0].children.add(setChange)
+
+            val pgUpdate = Label()
+            pgUpdate.text = LanguageController.getString("progUpdate")
+            pgUpdate.style = "-fx-font-size: 12pt;"
+            GridPane.setConstraints(pgUpdate, 0, 0)
+            tab1ContentGrid[1].children.add(pgUpdate)
+
+            val updateChannelBox = ComboBox<String>()
+            updateChannelBox.style = "-fx-font-size: 12pt;"
+            GridPane.setConstraints(updateChannelBox, 1, 0)
+            tab1ContentGrid[1].children.add(updateChannelBox)
+
+            updateChannelBox.items.addAll("Stable", "Dev")
+            updateChannelBox.selectionModel.select(Configuration.updateChannel)
+            updateChannelBox.valueProperty().addListener { ov, t, t1 -> Configuration.updateChannel = updateChannelBox.selectionModel.selectedIndex }
+
+            val chkAppUpdate = Label()
+            chkAppUpdate.text = LanguageController.getString("chkAppUpdate")
+            GridPane.setConstraints(chkAppUpdate, 0, 1)
+            tab1ContentGrid[1].children.add(chkAppUpdate)
+
+            val appbox = HBox()
+            appbox.minHeight = 40.0
+            appbox.spacing = 20.0
+            appbox.alignment = Pos.CENTER_LEFT
+            GridPane.setConstraints(appbox, 1, 1)
+            tab1ContentGrid[1].children.add(appbox)
+
+            val btn_chkAppUpdate = Button()
+            btn_chkAppUpdate.text = LanguageController.getString("chkUpdate")
+
+            val updateBarApp = ProgressBar(0.0)
+            updateBarApp.progress = ProgressIndicator.INDETERMINATE_PROGRESS
+
+            val updStatusApp = Label()
+
+            val btn_downloadAppUpdate = Button(LanguageController.getString("download"))
+
+            val btn_installAppUpdate = Button(LanguageController.getString("install"))
+
+            if (UpdateChecker.isUpdAvailable) {
+                updStatusApp.text = LanguageController.getString("update_available")
+                appbox.children.addAll(updStatusApp, btn_downloadAppUpdate)
+                updateChannelBox.isDisable = true
             } else {
-                settingsScene = this;
-                create();
+                appbox.children.add(btn_chkAppUpdate)
+            }
+
+            btn_chkAppUpdate.setOnAction { event ->
+
+                updateChannelBox.isDisable = true
+                appbox.children.remove(btn_chkAppUpdate)
+                appbox.children.add(updateBarApp)
+
+                Thread {
+
+                    val updatestatus = UpdateChecker().checkProgramUpdate()
+
+                    Platform.runLater {
+                        appbox.children.remove(updateBarApp)
+                        appbox.children.add(updStatusApp)
+                        when (updatestatus) {
+                            0 -> updStatusApp.text = LanguageController.getString("no_update")
+                            1 -> {
+                                updStatusApp.text = LanguageController.getString("update_available")
+                                appbox.children.add(btn_downloadAppUpdate)
+                                MainScene.mainScene.windowScene!!.win.windowStage.stage.title = AppContext.getContext().applicationName + " - " + LanguageController.getString("update_available")
+                            }
+                            2 -> updStatusApp.text = LanguageController.getString("no_connection")
+                            3 -> updStatusApp.text = LanguageController.getString("error")
+                        }
+                    }
+                }.start()
+            }
+
+            btn_downloadAppUpdate.setOnAction { event ->
+                appbox.children.remove(btn_downloadAppUpdate)
+                appbox.children.remove(updStatusApp)
+                appbox.children.add(updateBarApp)
+
+                updStatusApp.text = ""
+                appbox.children.add(updStatusApp)
+
+                val fileDownloader: FileDownloader
+                try {
+                    fileDownloader = FileDownloader(URL(Configuration.host + "files/apps/" + AppContext.getContext().contextIdentifier + "/download/" + updateChannel[Configuration.updateChannel] + File.separator), UpdateChecker.filesToDownload)
+                } catch (e: MalformedURLException) {
+                    e.printStackTrace()
+                    return@setOnAction
+                }
+
+                Thread {
+                    while (fileDownloader.status == FileDownloader.DOWNLOADING) {
+                        val progress = fileDownloader.progress.toDouble()
+                        Platform.runLater {
+                            updateBarApp.progress = progress
+                            updStatusApp.text = LanguageController.getString("dlRemaining") + " " + fileDownloader.downloadList.size
+                        }
+
+                        try {
+                            Thread.sleep(100)
+                        } catch (e: InterruptedException) {
+                            Thread.currentThread().interrupt()
+                            break
+                        }
+
+                    }
+
+                    Platform.runLater {
+                        appbox.children.remove(updateBarApp)
+                        updStatusApp.text = LanguageController.getString("dlComplete")
+                        appbox.children.add(btn_installAppUpdate)
+                    }
+                }.start()
+            }
+
+            btn_installAppUpdate.setOnAction { event1 ->
+                val stage = MessageDialog.installUpdateDialog("update", 500, 220)
+                stage.showAndWait()
+            }
+
+            val debug = Label(LanguageController.getString("logging"))
+            debug.style = "-fx-font-size: 12pt;"
+            GridPane.setConstraints(debug, 0, 0)
+            tab1ContentGrid[2].children.add(debug)
+
+            logCBox = CheckBox(LanguageController.getString("enableLog"))
+            logCBox!!.isSelected = Configuration.logState
+            GridPane.setConstraints(logCBox, 0, 1)
+            tab1ContentGrid[2].children.add(logCBox)
+            for (i in 0 until 2) {
+                val gridPane = GridPane()
+                gridPane.padding = Insets(15.0, 5.0, 5.0, 15.0)
+                gridPane.vgap = 5.0
+                gridPane.hgap = 15.0
+                tab2ContentGrid.add(gridPane)
+            }
+            GridPane.setConstraints(tab2ContentGrid[0], 0, 0)
+            GridPane.setConstraints(tab2ContentGrid[1], 0, 1)
+
+            val uiText = Label(LanguageController.getString("uiOptions"))
+            appLanguage.style = "-fx-font-size: 12pt;"
+            GridPane.setConstraints(uiText, 0, 0)
+            tab2ContentGrid[0].children.add(uiText)
+
+            val themeText = Label("Theme")
+            appLanguage.style = "-fx-font-size: 12pt;"
+            GridPane.setConstraints(themeText, 0, 1)
+            tab2ContentGrid[0].children.add(themeText)
+
+            themeCB = ComboBox()
+            themeCB!!.items.add("Dark")
+            themeCB!!.items.add("Light")
+            themeCB!!.selectionModel.select(Configuration.themeState)
+            themeCB!!.minWidth = 115.0
+            GridPane.setConstraints(themeCB, 1, 1)
+            tab2ContentGrid[0].children.add(themeCB)
+
+            sysBorderCBox = CheckBox(LanguageController.getString("sysDecorationEnable"))
+            sysBorderCBox!!.isSelected = Configuration.useSystemBorders
+            GridPane.setConstraints(sysBorderCBox, 2, 1)
+            GridPane.setMargin(sysBorderCBox, Insets(0.0, 0.0, 0.0, 35.0))
+            tab2ContentGrid[0].children.add(sysBorderCBox)
+
+            val trayIconCBox = CheckBox(LanguageController.getString("showTrayIcon"))
+            trayIconCBox.isSelected = Configuration.showTrayIcon
+            GridPane.setConstraints(trayIconCBox, 2, 2)
+            GridPane.setMargin(trayIconCBox, Insets(0.0, 0.0, 0.0, 35.0))
+            tab2ContentGrid[0].children.add(trayIconCBox)
+
+            val colorSchemeLabel = Label()
+            colorSchemeLabel.text = LanguageController.getString("colorScheme")
+            colorSchemeLabel.style = "-fx-font-size: 12pt;"
+            GridPane.setConstraints(colorSchemeLabel, 0, 2)
+            tab2ContentGrid[0].children.add(colorSchemeLabel)
+
+            colBox = ComboBox()
+            colBox!!.minWidth = 115.0
+            GridPane.setConstraints(colBox, 1, 2)
+            tab2ContentGrid[0].children.add(colBox)
+
+            val colorList = ArrayList<String>()
+            colorList.add(LanguageController.getString("black"))
+            colorList.add(LanguageController.getString("gray"))
+            colorList.add(LanguageController.getString("white"))
+            colorList.add(LanguageController.getString("red"))
+            colorList.add(LanguageController.getString("orange"))
+            colorList.add(LanguageController.getString("yellow"))
+            colorList.add(LanguageController.getString("blue"))
+            colorList.add(LanguageController.getString("magenta"))
+            colorList.add(LanguageController.getString("purple"))
+            colorList.add(LanguageController.getString("green"))
+
+            colBox!!.items.addAll(colorList)
+            colBox!!.selectionModel.select(Configuration.colorScheme)
+
+            val animateText = Label(LanguageController.getString("effects"))
+            animateText.style = "-fx-font-size: 12pt;"
+            GridPane.setConstraints(animateText, 0, 0)
+            tab2ContentGrid[1].children.add(animateText)
+
+            animateCBox = CheckBox(LanguageController.getString("animationEnable"))
+            animateCBox!!.isSelected = Configuration.animations
+            GridPane.setConstraints(animateCBox, 0, 1)
+            tab2ContentGrid[1].children.add(animateCBox)
+            for (i in 0 until 1) {
+                val gridPane = GridPane()
+                gridPane.padding = Insets(15.0, 10.0, 10.0, 15.0)
+                gridPane.vgap = 5.0
+                tab3ContentGrid.add(gridPane)
+            }
+            GridPane.setConstraints(tab3ContentGrid[0], 0, 0)
+
+
+            val advSet = Label(LanguageController.getString("advanced_desc"))
+            advSet.style = "-fx-font-size: 12pt;"
+
+            val reset = Button(LanguageController.getString("reset"))
+            reset.style = "-fx-font-size: 12pt;"
+
+            val advTopAnchor = AnchorPane()
+            advTopAnchor.children.addAll(advSet, reset)
+            AnchorPane.setTopAnchor(advSet, 5.0)
+            AnchorPane.setRightAnchor(reset, 0.0)
+            GridPane.setConstraints(advTopAnchor, 0, 0)
+            tab3ContentGrid[0].children.add(advTopAnchor)
+
+            otherTable = TableView()
+            otherTable!!.columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+            otherTable!!.isEditable = true
+            GridPane.setConstraints(otherTable, 0, 1)
+            GridPane.setHgrow(otherTable, Priority.ALWAYS)
+            tab3ContentGrid[0].children.add(otherTable)
+
+            listData = getListData()
+//            listData!!.addListener({ c -> println(c + " changed") } as ListChangeListener<SettingsList>)
+
+            val settingName = TableColumn<SettingsList, String>(LanguageController.getString("name"))
+            val setting = TableColumn<SettingsList, String>(LanguageController.getString("value"))
+            val desc = TableColumn<SettingsList, String>(LanguageController.getString("setting_desc"))
+
+            settingName.setCellValueFactory(PropertyValueFactory("settingName"))
+            setting.setCellValueFactory(PropertyValueFactory("setting"))
+            desc.setCellValueFactory(PropertyValueFactory("desc"))
+
+            setting.setCellFactory(TextFieldTableCell.forTableColumn())
+            setting.setOnEditCommit { event ->
+                checkSetting(event)
+                LogFileHandler.logger.log(Level.CONFIG, event.rowValue.getSettingName() + ": " + event.oldValue + "->" + event.newValue)
+            }
+            otherTable!!.columns.addAll(settingName, setting, desc)
+            otherTable!!.setItems(listData)
+            val saveHBox = HBox(10.0)
+            saveHBox.alignment = Pos.CENTER
+            controls!!.children.add(saveHBox)
+
+            val status = Label()
+            saveHBox.children.add(status)
+
+            val saveCfg = Button(LanguageController.getString("saveCfg"))
+            saveHBox.children.add(saveCfg)
+
+            val advCBox = CheckBox(LanguageController.getString("advanced"))
+            controls!!.children.add(advCBox)
+
+            controls!!.padding = Insets(12.0, 12.0, 12.0, 12.0)
+            AnchorPane.setBottomAnchor(saveHBox, 0.0)
+            AnchorPane.setRightAnchor(saveHBox, 0.0)
+            AnchorPane.setBottomAnchor(advCBox, 5.0)
+            AnchorPane.setLeftAnchor(advCBox, 5.0)
+
+            controls!!.style = "-fx-background-color: #1d1d1d;"
+            for (aTab1ContentGrid in tab1ContentGrid) {
+                tabVBox[0]!!.getChildren().add(aTab1ContentGrid)
+            }
+            for (aTab2ContentGrid in tab2ContentGrid) {
+                tabVBox[1]!!.getChildren().add(aTab2ContentGrid)
+            }
+            for (aTab3ContentGrid in tab3ContentGrid) {
+                tabVBox[2]!!.getChildren().add(aTab3ContentGrid)
+            }
+            cfgContent.center = tabPane
+            cfgContent.bottom = controls
+
+            saveCfg.setOnAction { event ->
+                var shouldRestart = false
+                if (updateChannelBox.selectionModel.selectedIndex != Configuration.updateChannel) {
+                    LogFileHandler.logger.config("change_update_channel: " + Configuration.updateChannel + " -> " + updateChannelBox.selectionModel.selectedIndex)
+                    ThemeSelector.changeColorScheme(updateChannelBox.selectionModel.selectedIndex)
+                    Configuration.updateChannel = updateChannelBox.selectionModel.selectedIndex
+                }
+                if (themeCB!!.selectionModel.selectedIndex != Configuration.themeState) {
+                    LogFileHandler.logger.config("change_theme: " + Configuration.themeState + " -> " + themeCB!!.selectionModel.selectedIndex)
+                    Configuration.themeState = themeCB!!.selectionModel.selectedIndex
+                    ThemeSelector.onThemeChange()
+                }
+                if (colBox!!.selectionModel.selectedIndex != Configuration.colorScheme) {
+                    LogFileHandler.logger.config("change_color_scheme: " + Configuration.colorScheme + " -> " + colBox!!.selectionModel.selectedIndex)
+                    ThemeSelector.changeColorScheme(colBox!!.selectionModel.selectedIndex)
+                    Configuration.colorScheme = colBox!!.selectionModel.selectedIndex
+                }
+                if (animateCBox!!.isSelected != Configuration.animations) {
+                    LogFileHandler.logger.config("change_window_animation: " + Configuration.animations + " -> " + animateCBox!!.isSelected)
+                    Configuration.animations = animateCBox!!.isSelected
+                }
+                if (sysBorderCBox!!.isSelected != Configuration.useSystemBorders) {
+                    LogFileHandler.logger.config("change_window_decoration: " + Configuration.useSystemBorders + " -> " + sysBorderCBox!!.isSelected)
+                    Configuration.useSystemBorders = sysBorderCBox!!.isSelected
+                    shouldRestart = true
+                }
+                if (trayIconCBox.isSelected != Configuration.showTrayIcon) {
+                    LogFileHandler.logger.config("change_systray: " + Configuration.showTrayIcon + " -> " + trayIconCBox.isSelected)
+                    if (trayIconCBox.isSelected) {
+                        if (ToolTrayIcon.icon == null) {
+                            ToolTrayIcon.icon = ToolTrayIcon()
+                        } else {
+                            ToolTrayIcon.icon.addAppToTray()
+                        }
+                    } else {
+                        ToolTrayIcon.icon.removeTrayIcon()
+                    }
+                    Configuration.showTrayIcon = trayIconCBox.isSelected
+                }
+                if (logCBox!!.isSelected != Configuration.logState) {
+                    LogFileHandler.logger.config("change_log_state: " + Configuration.logState + " -> " + logCBox!!.isSelected)
+                    LogFileHandler.onLogStateChange()
+                    Configuration.logState = logCBox!!.isSelected
+                }
+                if (langCB!!.selectionModel.selectedIndex != Configuration.language) {
+                    LogFileHandler.logger.config("change_program_language: " + Configuration.language + " -> " + langCB!!.selectionModel.selectedIndex)
+                    Configuration.language = langCB!!.selectionModel.selectedIndex
+                    shouldRestart = true
+                    setChange.isVisible = true
+                }
+                if (shouldRestart) {
+                    MessageDialog.restartDialog("restartApp_desc", 535, 230)
+                }
+                try {
+                    Configuration.config.save()
+                } catch (e1: Exception) {
+                    if (DebugHelper.DEBUGVERSION) {
+                        e1.printStackTrace()
+                    } else {
+                        ExceptionHandler(Thread.currentThread(), e1)
+                    }
+                }
+
+                AnimationHandler.statusFade(status, "success", LanguageController.getString("cfgSaved"))
+            }
+
+            tabPane!!.selectionModel.selectedItemProperty().addListener { arg0, arg1, arg2 ->
+
+                if (Configuration.animations) {
+                    if (arg2 === tabs[0]) {
+                        for (aTab1ContentGrid in tab1ContentGrid) {
+                            AnimationHandler.translate(aTab1ContentGrid, 150, -100.0, 0.0)
+                            val fade = AnimationHandler.fade(aTab1ContentGrid, 150, 0.1, 1.0)
+                            fade.play()
+                        }
+                    }
+
+                    if (arg2 === tabs[1]) {
+                        for (aTab2ContentGrid in tab2ContentGrid) {
+                            AnimationHandler.translate(aTab2ContentGrid, 150, -100.0, 0.0)
+                            val fade = AnimationHandler.fade(aTab2ContentGrid, 150, 0.1, 1.0)
+                            fade.play()
+                        }
+                    }
+
+                    if (arg2 === tabs[2]) {
+                        for (aTab3ContentGrid in tab3ContentGrid) {
+                            AnimationHandler.translate(aTab3ContentGrid, 150, -100.0, 0.0)
+                            val fade = AnimationHandler.fade(aTab3ContentGrid, 150, 0.1, 1.0)
+                            fade.play()
+                        }
+                    }
+                }
+            }
+
+            advCBox.setOnAction { event ->
+                if (advCBox.isSelected) {
+                    tabPane!!.tabs.add(tabs[2])
+                } else {
+                    tabPane!!.tabs.removeAt(2)
+                }
+            }
+
+            reset.setOnAction { event ->
+                if (MessageDialog.confirmDialog("reset_desc", 535, 230)) {
+                    Configuration.config.setDefaults()
+                }
+            }
+
+            return cfgContent
+        }
+
+    init {
+        val about = SettingsScene.settingsScene
+        if (about == null) {
+            settingsScene = this
+            create()
+        } else {
+            if (about.settingsWindow!!.win.windowStage.stage.isShowing) {
+                about.settingsWindow!!.win.windowStage.stage.requestFocus()
+            } else {
+                settingsScene = this
+                create()
             }
         }
     }
 
-    private WindowScene getSettingsWindow() {
-        return settingsWindow;
-    }
+    private fun create() {
+        val cfgStage = Stage()
+        cfgStage.title = LanguageController.getString("settings")
+        cfgStage.icons.add(ImageLoader.getAppIconSmall())
+        cfgStage.isResizable = true
+        cfgStage.minWidth = 640.0
+        cfgStage.minHeight = 480.0
+        cfgStage.width = 720.0
+        cfgStage.height = 570.0
 
-    private void create() {
-        Stage cfgStage = new Stage();
-        cfgStage.setTitle(LanguageController.getString("settings"));
-        cfgStage.getIcons().add(ImageLoader.getAppIconSmall());
-        cfgStage.setResizable(true);
-        cfgStage.setMinWidth(640); cfgStage.setMinHeight(480);
-        cfgStage.setWidth(720); cfgStage.setHeight(570);
+        val contentVbox = BorderPane()
 
-        BorderPane contentVbox = new BorderPane();
-
-        Node cfgNode = getCfgLayout();
+        val cfgNode = cfgLayout
 
         // The UI (Client Area) to display
-        contentVbox.setCenter(cfgNode);
-        VBox.setVgrow(cfgNode, Priority.ALWAYS);
+        contentVbox.center = cfgNode
+        VBox.setVgrow(cfgNode, Priority.ALWAYS)
 
         // The Window as a Scene
-        settingsWindow = new WindowScene(new WindowStage("settings", cfgStage), contentVbox, 1);
+        settingsWindow = WindowScene(WindowStage("settings", cfgStage), contentVbox, 1)
 
-        cfgStage.setScene(settingsWindow);
-        cfgStage.show();
+        cfgStage.scene = settingsWindow
+        cfgStage.show()
 
-        debugCfg();
+        debugCfg()
 
-        LogFileHandler.logger.info("open.settings");
+        LogFileHandler.logger.info("open.settings")
     }
 
-
-    private BorderPane getCfgLayout() {
-
-        BorderPane cfgContent = new BorderPane();
-
-        controls = new AnchorPane();
-
-        tabPane = new TabPane();
-        tabPane.setSide(Configuration.tabPosition);
-
-        Tab tabs[] = new Tab[tabName.length];
-
-        //create tabs and set the content
-        for (int i = 0; i < tabName.length; i++) {
-            tabs[i] = new Tab();
-            tabs[i].setText(LanguageController.getString(tabName[i]));
-            tabs[i].setClosable(false);
-
-            tabVBox[i] = new VBox();
-            tabVBox[i].setPadding(new Insets(0, 0, 0, 0));  //padding top, left, bottom, right
-            tabs[i].setContent(tabVBox[i]);
-        }
-        tabPane.getTabs().add(tabs[0]);
-        tabPane.getTabs().add(tabs[1]);
-
-        //add components
-        //Tab 1
-        tab1ContentGrid = new GridPane[3];
-        for (int i = 0; i < tab1ContentGrid.length; i++) {
-            tab1ContentGrid[i] = new GridPane();
-            tab1ContentGrid[i].setPadding(new Insets(15, 5, 5, 15));
-            tab1ContentGrid[i].setVgap(5);
-            tab1ContentGrid[i].setHgap(10);
-        }
-        GridPane.setConstraints(tab1ContentGrid[0], 0, 0);
-        GridPane.setConstraints(tab1ContentGrid[1], 0, 1);
-        GridPane.setConstraints(tab1ContentGrid[2], 0, 2);
-
-
-        Label appLanguage = new Label();
-        appLanguage.setText(LanguageController.getString("languageSelection"));
-        appLanguage.setStyle("-fx-font-size: 12pt;");
-        GridPane.setConstraints(appLanguage, 0, 0);
-        tab1ContentGrid[0].getChildren().add(appLanguage);
-
-        langCB = new ComboBox<>(localeData);
-        langCB.setValue(localeData.get(LanguageController.INSTANCE.getCurrentLocale()));
-        GridPane.setConstraints(langCB, 0, 1);
-        tab1ContentGrid[0].getChildren().add(langCB);
-
-        Label setChange = new Label(LanguageController.getString("restartOnCfgChange"));
-        setChange.setVisible(false);
-        setChange.setStyle("-fx-text-fill: red;");
-        GridPane.setConstraints(setChange, 0, 2);
-        tab1ContentGrid[0].getChildren().add(setChange);
-
-        Label pgUpdate = new Label();
-        pgUpdate.setText(LanguageController.getString("progUpdate"));
-        pgUpdate.setStyle("-fx-font-size: 12pt;");
-        GridPane.setConstraints(pgUpdate, 0, 0);
-        tab1ContentGrid[1].getChildren().add(pgUpdate);
-
-        ComboBox<String> updateChannelBox = new ComboBox<>();
-        updateChannelBox.setStyle("-fx-font-size: 12pt;");
-        GridPane.setConstraints(updateChannelBox, 1, 0);
-        tab1ContentGrid[1].getChildren().add(updateChannelBox);
-
-        updateChannelBox.getItems().addAll("Stable", "Dev");
-        updateChannelBox.getSelectionModel().select(Configuration.updateChannel);
-        updateChannelBox.valueProperty().addListener((ov, t, t1) -> Configuration.updateChannel = updateChannelBox.getSelectionModel().getSelectedIndex());
-
-        Label chkAppUpdate = new Label();
-        chkAppUpdate.setText(LanguageController.getString("chkAppUpdate"));
-        GridPane.setConstraints(chkAppUpdate, 0, 1);
-        tab1ContentGrid[1].getChildren().add(chkAppUpdate);
-
-        HBox appbox = new HBox();
-        appbox.setMinHeight(40);
-        appbox.setSpacing(20);
-        appbox.setAlignment(Pos.CENTER_LEFT);
-        GridPane.setConstraints(appbox, 1, 1);
-        tab1ContentGrid[1].getChildren().add(appbox);
-
-        Button btn_chkAppUpdate = new Button();
-        btn_chkAppUpdate.setText(LanguageController.getString("chkUpdate"));
-
-        ProgressBar updateBarApp = new ProgressBar(0);
-        updateBarApp.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-
-        Label updStatusApp = new Label();
-
-        Button btn_downloadAppUpdate = new Button(LanguageController.getString("download"));
-
-        Button btn_installAppUpdate = new Button(LanguageController.getString("install"));
-
-        if (UpdateChecker.isUpdAvailable) {
-            updStatusApp.setText(LanguageController.getString("update_available"));
-            appbox.getChildren().addAll(updStatusApp, btn_downloadAppUpdate);
-            updateChannelBox.setDisable(true);
-        } else {
-            appbox.getChildren().add(btn_chkAppUpdate);
-        }
-
-        btn_chkAppUpdate.setOnAction(event -> {
-
-            updateChannelBox.setDisable(true);
-            appbox.getChildren().remove(btn_chkAppUpdate);
-            appbox.getChildren().add(updateBarApp);
-
-            new Thread(() -> {
-
-                int updatestatus = new UpdateChecker().checkProgramUpdate();
-
-                Platform.runLater(() -> {
-                    appbox.getChildren().remove(updateBarApp);
-                    appbox.getChildren().add(updStatusApp);
-                    switch (updatestatus) {
-                        case 0:
-                            updStatusApp.setText(LanguageController.getString("no_update"));
-                            break;
-                        case 1:
-                            updStatusApp.setText(LanguageController.getString("update_available"));
-                            appbox.getChildren().add(btn_downloadAppUpdate);
-                            MainScene.Companion.getMainScene().getWindowScene().getWin().getWindowStage().getStage().setTitle(AppContext.getContext().getApplicationName() + " - " + LanguageController.getString("update_available"));
-                            break;
-                        case 2:
-                            updStatusApp.setText(LanguageController.getString("no_connection"));
-                            break;
-                        case 3:
-                            updStatusApp.setText(LanguageController.getString("error"));
-                            break;
-                    }
-                });
-            }).start();
-        });
-
-        btn_downloadAppUpdate.setOnAction(event -> {
-            appbox.getChildren().remove(btn_downloadAppUpdate);
-            appbox.getChildren().remove(updStatusApp);
-            appbox.getChildren().add(updateBarApp);
-
-            updStatusApp.setText("");
-            appbox.getChildren().add(updStatusApp);
-
-            final FileDownloader fileDownloader;
-            try {
-                fileDownloader = new FileDownloader(new URL(Configuration.host + "files/apps/" + AppContext.getContext().getContextIdentifier() + "/download/" + updateChannel.get(Configuration.updateChannel) + File.separator), UpdateChecker.filesToDownload);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return;
-            }
-
-            // separate non-FX thread
-            // runnable for that thread
-            new Thread(() -> {
-                while (fileDownloader.getStatus() == FileDownloader.DOWNLOADING) {
-                    //System.out.println((updDL.getProgress() * 100) + " %");
-                    double progress = fileDownloader.getProgress();
-                    Platform.runLater(() -> {
-                        updateBarApp.setProgress(progress);
-                        updStatusApp.setText(LanguageController.getString("dlRemaining") + " " + fileDownloader.getDownloadList().size());
-                    });
-
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
-
-                Platform.runLater(() -> {
-                    appbox.getChildren().remove(updateBarApp);
-                    updStatusApp.setText(LanguageController.getString("dlComplete"));
-                    appbox.getChildren().add(btn_installAppUpdate);
-                });
-            }).start();
-        });
-
-        btn_installAppUpdate.setOnAction(event1 -> {
-            Stage stage = MessageDialog.Companion.installUpdateDialog("update", 500, 220);
-            stage.showAndWait();
-        });
-
-        Label debug = new Label(LanguageController.getString("logging"));
-        debug.setStyle("-fx-font-size: 12pt;");
-        GridPane.setConstraints(debug, 0, 0);
-        tab1ContentGrid[2].getChildren().add(debug);
-
-        logCBox = new CheckBox(LanguageController.getString("enableLog"));
-        logCBox.setSelected(Configuration.logState);
-        GridPane.setConstraints(logCBox, 0, 1);
-        tab1ContentGrid[2].getChildren().add(logCBox);
-
-        //Tab 2
-        tab2ContentGrid = new GridPane[2];
-        for (int i = 0; i < tab2ContentGrid.length; i++) {
-            tab2ContentGrid[i] = new GridPane();
-            tab2ContentGrid[i].setPadding(new Insets(15, 5, 5, 15));
-            tab2ContentGrid[i].setHgap(15);
-            tab2ContentGrid[i].setVgap(5);
-        }
-        GridPane.setConstraints(tab2ContentGrid[0], 0, 0);
-        GridPane.setConstraints(tab2ContentGrid[1], 0, 1);
-
-        Label uiText = new Label(LanguageController.getString("uiOptions"));
-        appLanguage.setStyle("-fx-font-size: 12pt;");
-        GridPane.setConstraints(uiText, 0, 0);
-        tab2ContentGrid[0].getChildren().add(uiText);
-
-        Label themeText = new Label("Theme");
-        appLanguage.setStyle("-fx-font-size: 12pt;");
-        GridPane.setConstraints(themeText, 0, 1);
-        tab2ContentGrid[0].getChildren().add(themeText);
-
-        themeCB = new ComboBox<>();
-        themeCB.getItems().add("Dark");
-        themeCB.getItems().add("Light");
-        themeCB.getSelectionModel().select(Configuration.themeState);
-        themeCB.setMinWidth(115);
-        GridPane.setConstraints(themeCB, 1, 1);
-        tab2ContentGrid[0].getChildren().add(themeCB);
-
-        sysBorderCBox = new CheckBox(LanguageController.getString("sysDecorationEnable"));
-        sysBorderCBox.setSelected(Configuration.useSystemBorders);
-        GridPane.setConstraints(sysBorderCBox, 2, 1);
-        GridPane.setMargin(sysBorderCBox, new Insets(0,0,0,35));
-        tab2ContentGrid[0].getChildren().add(sysBorderCBox);
-
-        CheckBox trayIconCBox = new CheckBox(LanguageController.getString("showTrayIcon"));
-        trayIconCBox.setSelected(Configuration.showTrayIcon);
-        GridPane.setConstraints(trayIconCBox, 2, 2);
-        GridPane.setMargin(trayIconCBox, new Insets(0,0,0,35));
-        tab2ContentGrid[0].getChildren().add(trayIconCBox);
-
-        Label colorSchemeLabel = new Label();
-        colorSchemeLabel.setText(LanguageController.getString("colorScheme"));
-        colorSchemeLabel.setStyle("-fx-font-size: 12pt;");
-        GridPane.setConstraints(colorSchemeLabel, 0, 2);
-        tab2ContentGrid[0].getChildren().add(colorSchemeLabel);
-
-        colBox = new ComboBox<>();
-        colBox.setMinWidth(115);
-        GridPane.setConstraints(colBox, 1, 2);
-        tab2ContentGrid[0].getChildren().add(colBox);
-
-        List<String> colorList = new ArrayList<>();
-        colorList.add(LanguageController.getString("black"));
-        colorList.add(LanguageController.getString("gray"));
-        colorList.add(LanguageController.getString("white"));
-        colorList.add(LanguageController.getString("red"));
-        colorList.add(LanguageController.getString("orange"));
-        colorList.add(LanguageController.getString("yellow"));
-        colorList.add(LanguageController.getString("blue"));
-        colorList.add(LanguageController.getString("magenta"));
-        colorList.add(LanguageController.getString("purple"));
-        colorList.add(LanguageController.getString("green"));
-
-        colBox.getItems().addAll(colorList);
-        colBox.getSelectionModel().select(Configuration.colorScheme);
-
-        Label animateText = new Label(LanguageController.getString("effects"));
-        animateText.setStyle("-fx-font-size: 12pt;");
-        GridPane.setConstraints(animateText, 0, 0);
-        tab2ContentGrid[1].getChildren().add(animateText);
-
-        animateCBox = new CheckBox(LanguageController.getString("animationEnable"));
-        animateCBox.setSelected(Configuration.animations);
-        GridPane.setConstraints(animateCBox, 0, 1);
-        tab2ContentGrid[1].getChildren().add(animateCBox);
-
-        //Tab 3
-        tab3ContentGrid = new GridPane[1];
-        for (int i = 0; i < tab3ContentGrid.length; i++) {
-            tab3ContentGrid[i] = new GridPane();
-            tab3ContentGrid[i].setPadding(new Insets(15, 10, 10, 15));
-            tab3ContentGrid[i].setVgap(5);
-        }
-        GridPane.setConstraints(tab3ContentGrid[0], 0, 0);
-
-
-        Label advSet = new Label(LanguageController.getString("advanced_desc"));
-        advSet.setStyle("-fx-font-size: 12pt;");
-
-        Button reset = new Button(LanguageController.getString("reset"));
-        reset.setStyle("-fx-font-size: 12pt;");
-
-        AnchorPane advTopAnchor = new AnchorPane();
-        advTopAnchor.getChildren().addAll(advSet, reset);
-        AnchorPane.setTopAnchor(advSet, 5.0);
-        AnchorPane.setRightAnchor(reset, 0.0);
-        GridPane.setConstraints(advTopAnchor, 0, 0);
-        tab3ContentGrid[0].getChildren().add(advTopAnchor);
-
-        otherTable = new TableView<>();
-        otherTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        otherTable.setEditable(true);
-        GridPane.setConstraints(otherTable, 0, 1);
-        GridPane.setHgrow(otherTable, Priority.ALWAYS);
-        tab3ContentGrid[0].getChildren().add(otherTable);
-
-        listData = getListData();
-        listData.addListener((ListChangeListener<SettingsList>) c -> System.out.println(c + " changed"));
-
-        TableColumn<SettingsList, String> settingName = new TableColumn<>(LanguageController.getString("name"));
-        TableColumn<SettingsList, String> setting = new TableColumn<>(LanguageController.getString("value"));
-        TableColumn<SettingsList, String> desc = new TableColumn<>(LanguageController.getString("setting_desc"));
-
-        settingName.setCellValueFactory(new PropertyValueFactory<>("settingName"));
-        setting.setCellValueFactory(new PropertyValueFactory<>("setting"));
-        desc.setCellValueFactory(new PropertyValueFactory<>("desc"));
-
-        setting.setCellFactory(TextFieldTableCell.forTableColumn());
-        setting.setOnEditCommit(event -> {
-                    checkSetting(event);
-                    LogFileHandler.logger.log(Level.CONFIG, event.getRowValue().getSettingName() + ": " + event.getOldValue() + "->" + event.getNewValue());
-                }
-        );
-        otherTable.getColumns().addAll(settingName, setting, desc);
-        otherTable.setItems(listData);
-
-        //controls
-        HBox saveHBox = new HBox(10);
-        saveHBox.setAlignment(Pos.CENTER);
-        controls.getChildren().add(saveHBox);
-
-        Label status = new Label();
-        saveHBox.getChildren().add(status);
-
-        Button saveCfg = new Button(LanguageController.getString("saveCfg"));
-        saveHBox.getChildren().add(saveCfg);
-
-        CheckBox advCBox = new CheckBox(LanguageController.getString("advanced"));
-        controls.getChildren().add(advCBox);
-
-        controls.setPadding(new Insets(12, 12, 12, 12));  //padding top, left, bottom, right
-        AnchorPane.setBottomAnchor(saveHBox, 0.0);
-        AnchorPane.setRightAnchor(saveHBox, 0.0);
-        AnchorPane.setBottomAnchor(advCBox, 5.0);
-        AnchorPane.setLeftAnchor(advCBox, 5.0);
-
-        controls.setStyle("-fx-background-color: #1d1d1d;");
-
-        //add tab content to main grid
-        for (GridPane aTab1ContentGrid : tab1ContentGrid) { tabVBox[0].getChildren().add(aTab1ContentGrid); }
-        for (GridPane aTab2ContentGrid : tab2ContentGrid) { tabVBox[1].getChildren().add(aTab2ContentGrid); }
-        for (GridPane aTab3ContentGrid : tab3ContentGrid) { tabVBox[2].getChildren().add(aTab3ContentGrid); }
-
-        //set BorderPane layout
-        cfgContent.setCenter(tabPane);
-        cfgContent.setBottom(controls);
-
-        saveCfg.setOnAction(event -> {
-            boolean shouldRestart = false;
-
-            //color scheme change
-            if (updateChannelBox.getSelectionModel().getSelectedIndex() != Configuration.updateChannel) {
-                LogFileHandler.logger.config("change_update_channel: " + Configuration.updateChannel + " -> " + updateChannelBox.getSelectionModel().getSelectedIndex());
-                ThemeSelector.changeColorScheme(updateChannelBox.getSelectionModel().getSelectedIndex());
-                Configuration.updateChannel = updateChannelBox.getSelectionModel().getSelectedIndex();
-            }
-
-            //theme change
-            if (themeCB.getSelectionModel().getSelectedIndex() != Configuration.themeState) {
-                LogFileHandler.logger.config("change_theme: " + Configuration.themeState + " -> " + themeCB.getSelectionModel().getSelectedIndex());
-                Configuration.themeState = themeCB.getSelectionModel().getSelectedIndex();
-                ThemeSelector.onThemeChange();
-            }
-
-            //color scheme change
-            if (colBox.getSelectionModel().getSelectedIndex() != Configuration.colorScheme) {
-                LogFileHandler.logger.config("change_color_scheme: " + Configuration.colorScheme + " -> " + colBox.getSelectionModel().getSelectedIndex());
-                ThemeSelector.changeColorScheme(colBox.getSelectionModel().getSelectedIndex());
-                Configuration.colorScheme = colBox.getSelectionModel().getSelectedIndex();
-            }
-
-            //animation change
-            if (animateCBox.isSelected() != Configuration.animations) {
-                LogFileHandler.logger.config("change_window_animation: " + Configuration.animations + " -> " + animateCBox.isSelected());
-                Configuration.animations = animateCBox.isSelected();
-            }
-
-            //system border change
-            if (sysBorderCBox.isSelected() != Configuration.useSystemBorders) {
-                LogFileHandler.logger.config("change_window_decoration: " + Configuration.useSystemBorders + " -> " + sysBorderCBox.isSelected());
-                Configuration.useSystemBorders = sysBorderCBox.isSelected();
-                shouldRestart = true;
-            }
-
-            //tray icon change
-            if (trayIconCBox.isSelected() != Configuration.showTrayIcon) {
-                LogFileHandler.logger.config("change_systray: " + Configuration.showTrayIcon + " -> " + trayIconCBox.isSelected());
-                if (trayIconCBox.isSelected()) {
-                    if (ToolTrayIcon.Companion.getIcon() == null) {
-                        ToolTrayIcon.Companion.setIcon(new ToolTrayIcon());
-                    } else {
-                        ToolTrayIcon.Companion.getIcon().addAppToTray();
-                    }
-                } else {
-                    ToolTrayIcon.Companion.getIcon().removeTrayIcon();
-                }
-                Configuration.showTrayIcon = trayIconCBox.isSelected();
-            }
-
-            //logging change
-            if (logCBox.isSelected() != Configuration.logState) {
-                LogFileHandler.logger.config("change_log_state: " + Configuration.logState + " -> " + logCBox.isSelected());
-                LogFileHandler.onLogStateChange();
-                Configuration.logState = logCBox.isSelected();
-            }
-
-            //program language change
-            if (langCB.getSelectionModel().getSelectedIndex() != Configuration.language) {
-                LogFileHandler.logger.config("change_program_language: " + Configuration.language + " -> " + langCB.getSelectionModel().getSelectedIndex());
-                Configuration.language = langCB.getSelectionModel().getSelectedIndex();
-                shouldRestart = true;
-                setChange.setVisible(true);
-            }
-
-            //show restart dialog if a setting that requires it has changed
-            if (shouldRestart) {
-                MessageDialog.Companion.restartDialog("restartApp_desc", 535, 230);
-            }
-
-
-
-            //save settings
-            try { Configuration.config.save(); }
-            catch (Exception e1) {
-                if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
-            }
-
-            AnimationHandler.statusFade(status, "success", LanguageController.getString("cfgSaved"));
-        });
-
-        tabPane.getSelectionModel().selectedItemProperty().addListener((arg0, arg1, arg2) -> {
-
-            if (Configuration.animations) {
-                if (arg2 == tabs[0]) {
-                    for (GridPane aTab1ContentGrid : tab1ContentGrid) {
-                        AnimationHandler.translate(aTab1ContentGrid, 150, -100, 0);
-                        FadeTransition fade = AnimationHandler.fade(aTab1ContentGrid, 150, 0.1f, 1.0f);
-                        fade.play();
-                    }
-                }
-
-                if (arg2 == tabs[1]) {
-                    for (GridPane aTab2ContentGrid : tab2ContentGrid) {
-                        AnimationHandler.translate(aTab2ContentGrid, 150, -100, 0);
-                        FadeTransition fade = AnimationHandler.fade(aTab2ContentGrid, 150, 0.1f, 1.0f);
-                        fade.play();
-                    }
-                }
-
-                if (arg2 == tabs[2]) {
-                    for (GridPane aTab3ContentGrid : tab3ContentGrid) {
-                        AnimationHandler.translate(aTab3ContentGrid, 150, -100, 0);
-                        FadeTransition fade = AnimationHandler.fade(aTab3ContentGrid, 150, 0.1f, 1.0f);
-                        fade.play();
-                    }
-                }
-            }
-        });
-
-        advCBox.setOnAction(event -> {
-            if (advCBox.isSelected()) {
-                tabPane.getTabs().add(tabs[2]);
-            } else {
-                tabPane.getTabs().remove(2);
-            }
-        });
-
-        reset.setOnAction(event -> {
-            if (MessageDialog.Companion.confirmDialog("reset_desc", 535, 230)) {
-                Configuration.config.setDefaults();
-            }
-        });
-
-        return cfgContent;
-    }
-
-    private void debugCfg() {
+    private fun debugCfg() {
         if (DebugHelper.isDebugVersion()) {
-            controls.setStyle("-fx-background-color: #444444;");
-            for (int i = 0; i < tabName.length; i++) {
-                tabVBox[i].setStyle("-fx-background-color: blue;");
+            controls!!.style = "-fx-background-color: #444444;"
+            for (i in tabName.indices) {
+                tabVBox[i]!!.setStyle("-fx-background-color: blue;")
             }
 
             //tab 1
-            for (GridPane aTab1ContentGrid : tab1ContentGrid) {
-                aTab1ContentGrid.setStyle("-fx-background-color: gray;");
-                aTab1ContentGrid.setGridLinesVisible(true);
+            for (aTab1ContentGrid in tab1ContentGrid) {
+                aTab1ContentGrid.style = "-fx-background-color: gray;"
+                aTab1ContentGrid.isGridLinesVisible = true
             }
 
             //tab 2
-            for (GridPane aTab2ContentGrid : tab2ContentGrid) {
-                aTab2ContentGrid.setStyle("-fx-background-color: gray;");
-                aTab2ContentGrid.setGridLinesVisible(true);
+            for (aTab2ContentGrid in tab2ContentGrid) {
+                aTab2ContentGrid.style = "-fx-background-color: gray;"
+                aTab2ContentGrid.isGridLinesVisible = true
             }
 
             //tab 3
-            for (GridPane aTab3ContentGrid : tab3ContentGrid) {
-                aTab3ContentGrid.setStyle("-fx-background-color: gray;");
-                aTab3ContentGrid.setGridLinesVisible(true);
+            for (aTab3ContentGrid in tab3ContentGrid) {
+                aTab3ContentGrid.style = "-fx-background-color: gray;"
+                aTab3ContentGrid.isGridLinesVisible = true
             }
 
             //tab 4
-            for (GridPane aTab4ContentGrid : tab3ContentGrid) {
-                aTab4ContentGrid.setStyle("-fx-background-color: gray;");
-                aTab4ContentGrid.setGridLinesVisible(true);
+            for (aTab4ContentGrid in tab3ContentGrid) {
+                aTab4ContentGrid.style = "-fx-background-color: gray;"
+                aTab4ContentGrid.isGridLinesVisible = true
             }
-        }
-        else
-        {
-            controls.setStyle("-fx-background-color: #1d1d1d;");
-            for (int i = 0; i < tabName.length; i++) {
-                tabVBox[i].setStyle(null);
+        } else {
+            controls!!.style = "-fx-background-color: #1d1d1d;"
+            for (i in tabName.indices) {
+                tabVBox[i]!!.setStyle(null)
             }
 
             //tab 1
-            for (GridPane aTab1ContentGrid : tab1ContentGrid) {
-                aTab1ContentGrid.setStyle(null);
-                aTab1ContentGrid.setGridLinesVisible(false);
+            for (aTab1ContentGrid in tab1ContentGrid) {
+                aTab1ContentGrid.style = null
+                aTab1ContentGrid.isGridLinesVisible = false
             }
 
             //tab 2
-            for (GridPane aTab2ContentGrid : tab2ContentGrid) {
-                aTab2ContentGrid.setStyle(null);
-                aTab2ContentGrid.setGridLinesVisible(false);
+            for (aTab2ContentGrid in tab2ContentGrid) {
+                aTab2ContentGrid.style = null
+                aTab2ContentGrid.isGridLinesVisible = false
             }
 
             //tab 3
-            for (GridPane aTab3ContentGrid : tab3ContentGrid) {
-                aTab3ContentGrid.setStyle(null);
-                aTab3ContentGrid.setGridLinesVisible(false);
+            for (aTab3ContentGrid in tab3ContentGrid) {
+                aTab3ContentGrid.style = null
+                aTab3ContentGrid.isGridLinesVisible = false
             }
         }
     }
@@ -650,184 +608,188 @@ public class SettingsScene {
      * SettingsList Data Collection
      * @return All settings in an observable list
      */
-    private ObservableList<SettingsList> getListData() {
+    private fun getListData(): ObservableList<SettingsList> {
         return FXCollections.observableArrayList(
-                new SettingsList("language", String.valueOf(Configuration.language), "set program language"),
-                new SettingsList("theme", String.valueOf(Configuration.themeState), "set program theme"),
-                new SettingsList("logging", String.valueOf(Configuration.logState), "set program logging"),
-                new SettingsList("decorationColor", ThemeSelector.getColorHexString(Configuration.decorationColor), "set window decoration color"),
-                new SettingsList("shadowColorFocused", ThemeSelector.getColorHexString(Configuration.shadowColorFocused), "set shadow color when window focused"),
-                new SettingsList("shadowColorNotFocused",ThemeSelector.getColorHexString(Configuration.shadowColorNotFocused), "set shadow color when window not focused"),
-                new SettingsList("tabPosition", Configuration.tabPosition.name(), "set tab position in Settings window")
-        );
+                SettingsList("language", Configuration.language.toString(), "set program language"),
+                SettingsList("theme", Configuration.themeState.toString(), "set program theme"),
+                SettingsList("logging", Configuration.logState.toString(), "set program logging"),
+                SettingsList("decorationColor", ThemeSelector.getColorHexString(Configuration.decorationColor), "set window decoration color"),
+                SettingsList("shadowColorFocused", ThemeSelector.getColorHexString(Configuration.shadowColorFocused), "set shadow color when window focused"),
+                SettingsList("shadowColorNotFocused", ThemeSelector.getColorHexString(Configuration.shadowColorNotFocused), "set shadow color when window not focused"),
+                SettingsList("tabPosition", Configuration.tabPosition.name, "set tab position in Settings window")
+        )
     }
 
     /**
      * Checks which setting has changed and applies the new setting respectively.
      * @param event the CellEditEvent of the changed setting
      */
-    private void checkSetting(TableColumn.CellEditEvent<SettingsList, String> event) {
-        switch (event.getRowValue().getSettingName()) {
-            case "language":
-                try {
-                    Configuration.language = Integer.parseInt(event.getNewValue());
-                    updateGui(Configuration.class.getDeclaredField("language"));
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (NumberFormatException e) {
-                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                    event.getTableView().refresh();
-                }
-                break;
-            case "theme":
-                try {
-                    Configuration.themeState = Integer.parseInt(event.getNewValue());
-                    updateGui(Configuration.class.getDeclaredField("themeState"));
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (NumberFormatException e) {
-                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                    event.getTableView().refresh();
-                }
-                break;
-            case "logging":
-                try {
-                    Configuration.logState = Boolean.parseBoolean(event.getNewValue());
-                    updateGui(Configuration.class.getDeclaredField("logState"));
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (NumberFormatException e) {
-                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                    event.getTableView().refresh();
-                }
-                break;
-            case "decorationColor":
-                if (!Configuration.useSystemBorders) {
-                    try { ThemeSelector.changeDecorationColor(event.getNewValue()); }
-                    catch (IllegalArgumentException e1) {
-                        new MessageDialog(0, LanguageController.getString("colorInvalid_errorDesc"), 400,230);
-                        event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                        event.getTableView().refresh();
-                    }
-                } else {
-                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                    event.getTableView().refresh();
-                }
-                break;
-            case "shadowColorFocused":
-                if (!Configuration.useSystemBorders) {
-                    try {
-                        ThemeSelector.changeWindowShadowColor(true, event.getNewValue());
-                    } catch (IllegalArgumentException e1) {
-                        new MessageDialog(0, LanguageController.getString("colorInvalid_errorDesc"), 400, 230);
-                        event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                        event.getTableView().refresh();
-                    }
-                } else {
-                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                    event.getTableView().refresh();
-                }
-                break;
-            case "shadowColorNotFocused":
-                if (!Configuration.useSystemBorders) {
-                    try {
-                        ThemeSelector.changeWindowShadowColor(false, event.getNewValue());
-                    } catch (IllegalArgumentException e1) {
-                        new MessageDialog(0, LanguageController.getString("colorInvalid_errorDesc"), 400, 230);
-                        event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                        event.getTableView().refresh();
-                    }
-                } else {
-                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                    event.getTableView().refresh();
-                }
-                break;
-            case "tabPosition":
-                try { Configuration.tabPosition = Side.valueOf(event.getNewValue()); tabPane.setSide(Configuration.tabPosition); }
-                catch (IllegalArgumentException e1) {
-                    new MessageDialog(0, LanguageController.getString("tabPosition_errorDesc"), 400,230);
-                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setSetting(event.getOldValue());
-                    event.getTableView().refresh();
-                }
-                break;
-        }
-    }
-
-    private void updateGui(Field f) throws IllegalAccessException {
-        switch (f.getName()) {
-            case "language":
-                if (!MessageDialog.Companion.restartDialog("restartApp_desc", 535, 230)) {
-                    Configuration.config.save();
-                }
-                break;
-            case "themeState":
-                ThemeSelector.onThemeChange();
-                themeCB.getSelectionModel().select(Configuration.themeState);
-                break;
-            case "logState":
-                LogFileHandler.onLogStateChange(); logCBox.setSelected(Configuration.logState);
-                break;
-            case "colorScheme":
-                colBox.getSelectionModel().select(Configuration.colorScheme);
-                ThemeSelector.changeColorScheme(Configuration.colorScheme);
-                break;
-            case "animations":
-                animateCBox.setSelected(Configuration.animations);
-                break;
-            case "useSystemBorders":
-                if (!MessageDialog.Companion.restartDialog("restartApp_desc", 535, 230)) {
-                    sysBorderCBox.setSelected(Configuration.useSystemBorders);
-                    Configuration.config.save();
-                }
-                break;
-            case "decorationColor":
-                for (SettingsList aListData3 : listData) {
-                    if (aListData3.getSettingName().equals(f.getName())) {
-                        aListData3.setSetting(ThemeSelector.getColorHexString((Color) f.get(LoadSave.class)));
-                        break;
-                    }
-                }
-                ThemeSelector.changeDecorationColor(String.valueOf(Configuration.decorationColor));
-                break;
-            case "shadowColorFocused":
-                for (SettingsList aListData2 : listData) {
-                    if (aListData2.getSettingName().equals(f.getName())) {
-                        aListData2.setSetting(ThemeSelector.getColorHexString((Color) f.get(LoadSave.class)));
-                        break;
-                    }
-                }
-                ThemeSelector.changeWindowShadowColor(true, String.valueOf(Configuration.shadowColorFocused));
-                break;
-            case "shadowColorNotFocused":
-                for (SettingsList aListData1 : listData) {
-                    if (aListData1.getSettingName().equals(f.getName())) {
-                        aListData1.setSetting(ThemeSelector.getColorHexString((Color) f.get(LoadSave.class)));
-                        break;
-                    }
-                }
-                ThemeSelector.changeWindowShadowColor(false, String.valueOf(Configuration.shadowColorNotFocused));
-                break;
-            case "tabPosition":
-                for (SettingsList aListData : listData) {
-                    if (aListData.getSettingName().equals(f.getName())) {
-                        aListData.setSetting(String.valueOf(f.get(LoadSave.class)));
-                        break;
-                    }
-                }
-                tabPane.setSide(Configuration.tabPosition);
-                break;
-            default: System.out.println("nothing changed");
-        }
-    }
-
-    public void updateGUI(List<Field> objectlist) {
-        for (Field f : objectlist) {
-            try {
-                updateGui(f);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+    private fun checkSetting(event: TableColumn.CellEditEvent<SettingsList, String>) {
+        when (event.rowValue.getSettingName()) {
+            "language" -> try {
+                Configuration.language = Integer.parseInt(event.newValue)
+                updateGui(Configuration::class.java.getDeclaredField("language"))
+            } catch (e: NoSuchFieldException) {
+                e.printStackTrace()
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            } catch (e: NumberFormatException) {
+                event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                event.tableView.refresh()
             }
+
+            "theme" -> try {
+                Configuration.themeState = Integer.parseInt(event.newValue)
+                updateGui(Configuration::class.java.getDeclaredField("themeState"))
+            } catch (e: NoSuchFieldException) {
+                e.printStackTrace()
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            } catch (e: NumberFormatException) {
+                event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                event.tableView.refresh()
+            }
+
+            "logging" -> try {
+                Configuration.logState = java.lang.Boolean.parseBoolean(event.newValue)
+                updateGui(Configuration::class.java.getDeclaredField("logState"))
+            } catch (e: NoSuchFieldException) {
+                e.printStackTrace()
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            } catch (e: NumberFormatException) {
+                event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                event.tableView.refresh()
+            }
+
+            "decorationColor" -> if (!Configuration.useSystemBorders) {
+                try {
+                    ThemeSelector.changeDecorationColor(event.newValue)
+                } catch (e1: IllegalArgumentException) {
+                    MessageDialog(0, LanguageController.getString("colorInvalid_errorDesc"), 400, 230)
+                    event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                    event.tableView.refresh()
+                }
+
+            } else {
+                event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                event.tableView.refresh()
+            }
+            "shadowColorFocused" -> if (!Configuration.useSystemBorders) {
+                try {
+                    ThemeSelector.changeWindowShadowColor(true, event.newValue)
+                } catch (e1: IllegalArgumentException) {
+                    MessageDialog(0, LanguageController.getString("colorInvalid_errorDesc"), 400, 230)
+                    event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                    event.tableView.refresh()
+                }
+
+            } else {
+                event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                event.tableView.refresh()
+            }
+            "shadowColorNotFocused" -> if (!Configuration.useSystemBorders) {
+                try {
+                    ThemeSelector.changeWindowShadowColor(false, event.newValue)
+                } catch (e1: IllegalArgumentException) {
+                    MessageDialog(0, LanguageController.getString("colorInvalid_errorDesc"), 400, 230)
+                    event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                    event.tableView.refresh()
+                }
+
+            } else {
+                event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                event.tableView.refresh()
+            }
+            "tabPosition" -> try {
+                Configuration.tabPosition = Side.valueOf(event.newValue)
+                tabPane!!.side = Configuration.tabPosition
+            } catch (e1: IllegalArgumentException) {
+                MessageDialog(0, LanguageController.getString("tabPosition_errorDesc"), 400, 230)
+                event.tableView.items[event.tablePosition.row].setSetting(event.oldValue)
+                event.tableView.refresh()
+            }
+
         }
-        otherTable.refresh();
+    }
+
+    @Throws(IllegalAccessException::class)
+    private fun updateGui(f: Field) {
+        when (f.name) {
+            "language" -> if (!MessageDialog.restartDialog("restartApp_desc", 535, 230)) {
+                Configuration.config.save()
+            }
+            "themeState" -> {
+                ThemeSelector.onThemeChange()
+                themeCB!!.selectionModel.select(Configuration.themeState)
+            }
+            "logState" -> {
+                LogFileHandler.onLogStateChange()
+                logCBox!!.isSelected = Configuration.logState
+            }
+            "colorScheme" -> {
+                colBox!!.selectionModel.select(Configuration.colorScheme)
+                ThemeSelector.changeColorScheme(Configuration.colorScheme)
+            }
+            "animations" -> animateCBox!!.isSelected = Configuration.animations
+            "useSystemBorders" -> if (!MessageDialog.restartDialog("restartApp_desc", 535, 230)) {
+                sysBorderCBox!!.isSelected = Configuration.useSystemBorders
+                Configuration.config.save()
+            }
+            "decorationColor" -> {
+                for (aListData3 in listData!!) {
+                    if (aListData3.getSettingName() == f.name) {
+                        aListData3.setSetting(ThemeSelector.getColorHexString(f.get(LoadSave::class.java) as Color))
+                        break
+                    }
+                }
+                ThemeSelector.changeDecorationColor(Configuration.decorationColor.toString())
+            }
+            "shadowColorFocused" -> {
+                for (aListData2 in listData!!) {
+                    if (aListData2.getSettingName() == f.name) {
+                        aListData2.setSetting(ThemeSelector.getColorHexString(f.get(LoadSave::class.java) as Color))
+                        break
+                    }
+                }
+                ThemeSelector.changeWindowShadowColor(true, Configuration.shadowColorFocused.toString())
+            }
+            "shadowColorNotFocused" -> {
+                for (aListData1 in listData!!) {
+                    if (aListData1.getSettingName() == f.name) {
+                        aListData1.setSetting(ThemeSelector.getColorHexString(f.get(LoadSave::class.java) as Color))
+                        break
+                    }
+                }
+                ThemeSelector.changeWindowShadowColor(false, Configuration.shadowColorNotFocused.toString())
+            }
+            "tabPosition" -> {
+                for (aListData in listData!!) {
+                    if (aListData.getSettingName() == f.name) {
+                        aListData.setSetting(f.get(LoadSave::class.java).toString())
+                        break
+                    }
+                }
+                tabPane!!.side = Configuration.tabPosition
+            }
+            else -> println("nothing changed")
+        }
+    }
+
+    fun updateGUI(objectlist: List<Field>) {
+        for (f in objectlist) {
+            try {
+                updateGui(f)
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            }
+
+        }
+        otherTable!!.refresh()
+    }
+
+    companion object {
+
+        var settingsScene: SettingsScene? = null
     }
 }
