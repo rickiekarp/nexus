@@ -58,14 +58,14 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
 
     @Override
     public void postLaunch() {
-        AppContext.getContext().initAccountManager();
+        AppContext.Companion.getContext().initAccountManager();
 
         LoginMaskLayout loginMaskLayout = new LoginMaskLayout();
         setAppContextLoginBehaviour(loginMaskLayout);
         MainScene.Companion.getMainScene().getSceneViewStack().push(loginMaskLayout.getMaskNode());
 
         //auto login
-        if (AppContext.getContext().getAccountManager().isAutoLogin()) {
+        if (AppContext.Companion.getContext().getAccountManager().isAutoLogin()) {
             MainScene.Companion.getMainScene().getBorderPane().setCenter(loginMaskLayout.getMaskNode());
             new Thread(loginMaskLayout.getLoginTask()).start();
         }
@@ -77,44 +77,21 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
         }
 
         //disable settings and bot setup views if no config file is present
-        if (!isConfigLoaded) {
+        if (!isConfigLoaded()) {
             new MessageDialog(0, LanguageController.getString("config_not_found"), 500, 250);
             MainScene.Companion.getMainScene().getWindowScene().getWin().getSidebarButtonBox().getChildren().get(0).setDisable(true);
             MainScene.Companion.getMainScene().getWindowScene().getWin().getSidebarButtonBox().getChildren().get(1).setDisable(true);
         }
     }
 
-//    @Override
-//    public void start(Stage stage) {
-//        AppContext.create("botmanager", new BotNetworkApi());
-//
-//        //load config file
-//        Configuration.config = new Configuration("config.xml", MainApp.class);
-//        boolean isConfigLoaded = Configuration.config.load();
-//        if (isConfigLoaded) {
-//            //load additional application related configuration
-//            Configuration.config.loadProperties(PluginConfig.class);
-//            Configuration.config.loadProperties(BotConfig.class);
-//
-//            //log properties of current program state0
-//            DebugHelper.logProperties();
-//        } else {
-//            //if the config file can not be created, set settings anyway
-//            Configuration.language = LoadSave.language;
-//            LanguageController.setCurrentLocale();
-//        }
-//
-//
-//    }
-
     private void loadLocalPlugins() throws IOException {
         if (Configuration.Companion.getConfig().getPluginDirFile().exists()) {
-            File[] pluginFileList = FileUtil.getListOfFiles(Configuration.Companion.getConfig().getPluginDirFile());
+            File[] pluginFileList = FileUtil.INSTANCE.getListOfFiles(Configuration.Companion.getConfig().getPluginDirFile());
             List<String> valueList; //TODO: Use HashMap instead
             for (File file : pluginFileList) {
                 if (file.getName().endsWith(".jar")) {
                     try {
-                        valueList = FileUtil.readManifestPropertiesFromJar(file.getPath(), "Main-Class", "Version", "Type");
+                        valueList = FileUtil.INSTANCE.readManifestPropertiesFromJar(file.getPath(), "Main-Class", "Version", "Type");
                         PluginData data = new PluginData(
                                 valueList.get(0),
                                 file.getName().substring(0, file.getName().length() - 4),
@@ -183,7 +160,7 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
     }
 
     private void loadAndroidAttributes(File file, PluginData data) throws IOException {
-        List<String> valueList = FileUtil.readManifestPropertiesFromJar(file.getPath(), "Package", "Activity");
+        List<String> valueList = FileUtil.INSTANCE.readManifestPropertiesFromJar(file.getPath(), "Package", "Activity");
         data.setPluginPackage(valueList.get(0));
         data.setPluginActvity(valueList.get(1));
     }

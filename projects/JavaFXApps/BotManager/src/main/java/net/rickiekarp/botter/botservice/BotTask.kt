@@ -184,6 +184,6 @@ class BotTask(botLauncher: BotLauncher, private val plugin: PluginData) : Task<V
      * @return true, if the plugin is allowed by the server
      */
     private fun canExecutePlugin(plugin: PluginData): Boolean {
-        return NetResponse.getResponseResultAsBoolean(AppContext.getContext().networkApi.runNetworkAction(BotNetworkApi.requestValidation(plugin)), "result")
+        return NetResponse.getResponseResultAsBoolean(AppContext.context.networkApi.runNetworkAction(BotNetworkApi.requestValidation(plugin)), "result")
     }
 }

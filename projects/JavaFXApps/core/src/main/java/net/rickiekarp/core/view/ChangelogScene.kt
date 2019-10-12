@@ -45,7 +45,7 @@ class ChangelogScene {
     private val changelogList: ArrayList<ChangelogEntry>
         get() {
             val changelogList = ArrayList<ChangelogEntry>()
-            val remoteVersionsXml = NetResponse.getResponseString(AppContext.getContext().networkApi.runNetworkAction(NetworkApi.requestChangelog()))
+            val remoteVersionsXml = NetResponse.getResponseString(AppContext.context.networkApi.runNetworkAction(NetworkApi.requestChangelog()))
 
             try {
                 val doc = XmlParser.stringToDom(remoteVersionsXml)

@@ -1,111 +1,122 @@
-package net.rickiekarp.core;
+package net.rickiekarp.core
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.stage.Stage;
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.settings.LoadSave;
-import net.rickiekarp.core.ui.tray.ToolTrayIcon;
-import net.rickiekarp.core.ui.windowmanager.ImageLoader;
-import net.rickiekarp.core.view.MainScene;
-import net.rickiekarp.core.view.MessageDialog;
-import net.rickiekarp.core.view.layout.AppLayout;
+import javafx.application.Application
+import javafx.application.Platform
+import javafx.stage.Stage
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.settings.LoadSave
+import net.rickiekarp.core.ui.tray.ToolTrayIcon
+import net.rickiekarp.core.ui.windowmanager.ImageLoader
+import net.rickiekarp.core.view.MainScene
+import net.rickiekarp.core.view.MessageDialog
+import net.rickiekarp.core.view.layout.AppLayout
 
-public class AppStarter extends Application {
-    private Class mainClazz;
-    private Class configClazz;
-    protected boolean isConfigLoaded;
-    private byte winType;
-    private int minWidth;
-    private int minHeight;
-    private int width;
-    private int height;
-    private boolean resizable;
+open class AppStarter : Application() {
+    private var mainClazz: Class<*>? = null
+    private var configClazz: Class<*>? = null
+    protected var isConfigLoaded: Boolean = false
+    private var winType: Byte = 0
+    private var minWidth: Int = 0
+    private var minHeight: Int = 0
+    private var width: Int = 0
+    private var height: Int = 0
+    private var resizable: Boolean = false
 
-    private static AppLayout node;
-
-    @Override
-    public void start(Stage stage) {
-        AppContext.create(mainClazz.getPackage().getName());
+    override fun start(stage: Stage) {
+        AppContext.create(mainClazz!!.getPackage().name)
 
         //load config file
-        Configuration.Companion.setConfig(new Configuration("config.xml", mainClazz));
-        isConfigLoaded = Configuration.Companion.getConfig().load();
+        Configuration.config = Configuration("config.xml", mainClazz!!)
+        isConfigLoaded = Configuration.config.load()
         if (isConfigLoaded) {
             //load additional application related configuration
-            Configuration.Companion.getConfig().loadProperties(configClazz);
+            Configuration.config.loadProperties(configClazz!!)
 
             //log properties of current program state0
-            DebugHelper.INSTANCE.logProperties();
+            DebugHelper.logProperties()
         } else {
             //if the config file can not be created, set settings anyway
-            Configuration.Companion.setLanguage(LoadSave.language);
-            LanguageController.setCurrentLocale();
+            Configuration.language = LoadSave.language
+            LanguageController.setCurrentLocale()
         }
 
         //load language properties file
-        LanguageController.loadLangFile(mainClazz.getClassLoader().getResourceAsStream("language_packs/language_" + Configuration.Companion.getCURRENT_LOCALE() + ".properties"));
+        LanguageController.loadLangFile(mainClazz!!.classLoader.getResourceAsStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties")!!)
 
         //set the default exception handler
-        if (!DebugHelper.INSTANCE.getDEBUGVERSION()) {
-            Thread.setDefaultUncaughtExceptionHandler((t, e) -> Platform.runLater(() -> new ExceptionHandler(t, e)));
-            Thread.currentThread().setUncaughtExceptionHandler(ExceptionHandler::new);
+        if (!DebugHelper.DEBUGVERSION) {
+            Thread.setDefaultUncaughtExceptionHandler { t, e -> Platform.runLater { ExceptionHandler(t, e) } }
+            Thread.currentThread().uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { thread, throwable -> ExceptionHandler(thread, throwable) }
         }
 
         //application related configuration
-        stage.setTitle(AppContext.getContext().getApplicationName());
-        stage.getIcons().add(ImageLoader.INSTANCE.getAppIconSmall());
-        stage.setResizable(resizable);
-        stage.setMinWidth(minWidth); stage.setMinHeight(minHeight);
-        stage.setWidth(width); stage.setHeight(height);
+        stage.title = AppContext.context.applicationName
+        stage.icons.add(ImageLoader.getAppIconSmall())
+        stage.isResizable = resizable
+        stage.minWidth = minWidth.toDouble()
+        stage.minHeight = minHeight.toDouble()
+        stage.width = width.toDouble()
+        stage.height = height.toDouble()
 
-        new MainScene(stage, winType);
+        MainScene(stage, winType)
 
         //set up the Client Area to display
-        MainScene.Companion.getMainScene().getBorderPane().setCenter(node.getLayout());
-        node.postInit();
+        MainScene.mainScene.borderPane.center = node!!.layout
+        node!!.postInit()
 
         //post launch settings
-        if (Configuration.Companion.getShowTrayIcon()) {
-            new ToolTrayIcon();
+        if (Configuration.showTrayIcon) {
+            ToolTrayIcon()
         }
 
         //disable settings view if no config file is present
         if (!isConfigLoaded) {
-            new MessageDialog(0, LanguageController.getString("config_not_found"), 500, 250);
-            MainScene.Companion.getMainScene().getWindowScene().getWin().getSidebarButtonBox().getChildren().get(0).setDisable(true);
+            MessageDialog(0, LanguageController.getString("config_not_found"), 500, 250)
+            MainScene.mainScene.windowScene!!.win.sidebarButtonBox!!.children[0].isDisable = true
         }
     }
 
-    protected void setMainClazz(Class clazz) {
-        mainClazz = clazz;
+    protected fun setMainClazz(clazz: Class<*>) {
+        mainClazz = clazz
     }
-    protected void setConfigClazz(Class clazz) {
-        configClazz = clazz;
+
+    protected fun setConfigClazz(clazz: Class<*>) {
+        configClazz = clazz
     }
-    protected void setLayout(AppLayout node) {
-        AppStarter.node = node;
+
+    protected fun setLayout(node: AppLayout) {
+        AppStarter.node = node
     }
-    protected void setWinType(byte type) {
-        winType = type;
+
+    protected fun setWinType(type: Byte) {
+        winType = type
     }
-    protected void setMinWidth(final int width) {
-        minWidth = width;
+
+    protected fun setMinWidth(width: Int) {
+        minWidth = width
     }
-    protected void setMinHeight(final int height) {
-        minHeight = height;
+
+    protected fun setMinHeight(height: Int) {
+        minHeight = height
     }
-    protected void setWidth(final int defWidth) {
-        width = defWidth;
+
+    protected fun setWidth(defWidth: Int) {
+        width = defWidth
     }
-    protected void setHeight(final int defHeight) {
-        height = defHeight;
+
+    protected fun setHeight(defHeight: Int) {
+        height = defHeight
     }
-    protected void setResizable(final boolean isResizable) {
-        resizable = isResizable;
+
+    protected fun setResizable(isResizable: Boolean) {
+        resizable = isResizable
+    }
+
+    companion object {
+        private var node: AppLayout? = null
     }
 
 }

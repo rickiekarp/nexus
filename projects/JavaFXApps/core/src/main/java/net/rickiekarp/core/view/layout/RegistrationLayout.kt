@@ -54,7 +54,7 @@ internal class RegistrationLayout {
         registerButton.setOnAction { arg0 ->
             if (!username.text.isEmpty() && !password.text.isEmpty()) {
                 val account = Account(username.text, password.text)
-                val inputStream = AppContext.getContext().networkApi.runNetworkAction(NetworkApi.requestCreateAccount(account))
+                val inputStream = AppContext.context.networkApi.runNetworkAction(NetworkApi.requestCreateAccount(account))
                 val responseJson = NetResponse.getResponseJson(inputStream)
             } else {
                 MessageDialog(0, "Enter account details!", 400, 200)
@@ -66,14 +66,14 @@ internal class RegistrationLayout {
     }
 
     private fun requestLogin(account: Account): Boolean {
-        val tokenAction = AppContext.getContext().networkApi.requestResponse(
+        val tokenAction = AppContext.context.networkApi.requestResponse(
                 NetworkApi.requestAccessToken(account)
         )
 
         LogFileHandler.logger.log(Level.INFO, tokenAction!!.code.toString())
         return when (tokenAction.code) {
             200 -> {
-                AppContext.getContext().accountManager.account = account
+                AppContext.context.accountManager.account = account
                 true
             }
             else -> false

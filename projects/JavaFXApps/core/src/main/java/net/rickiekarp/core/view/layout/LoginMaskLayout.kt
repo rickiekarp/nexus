@@ -78,11 +78,11 @@ class LoginMaskLayout {
         main.children.add(loginButton)
         main.children.add(registerButton)
 
-        if (AppContext.getContext().accountManager.account != null) {
-            username.text = AppContext.getContext().accountManager.account!!.user
-            password.text = AppContext.getContext().accountManager.account!!.password
-            rememberPass.isSelected = AppContext.getContext().accountManager.isRememberPass
-            autoLogin.isSelected = AppContext.getContext().accountManager.isAutoLogin
+        if (AppContext.context.accountManager.account != null) {
+            username.text = AppContext.context.accountManager.account!!.user
+            password.text = AppContext.context.accountManager.account!!.password
+            rememberPass.isSelected = AppContext.context.accountManager.isRememberPass
+            autoLogin.isSelected = AppContext.context.accountManager.isAutoLogin
         }
 
         loginTask = doLogin()
@@ -104,13 +104,13 @@ class LoginMaskLayout {
                         grid.isDisable = true
                     }
 
-                    var account: Account? = AppContext.getContext().accountManager.account
+                    var account: Account? = AppContext.context.accountManager.account
                     if (account == null || account.user!!.isEmpty() || account.password!!.isEmpty()) {
                         account = Account(getUsername(), getPassword())
                     }
 
                     if (requestLogin(account)) {
-                        AppContext.getContext().accountManager.account = account
+                        AppContext.context.accountManager.account = account
                         result = java.lang.Boolean.TRUE
                     } else {
                         Platform.runLater { setStatus("Login not possible!") }
@@ -141,19 +141,19 @@ class LoginMaskLayout {
     }
 
     private fun requestLogin(account: Account?): Boolean {
-        AppContext.getContext().accountManager.account = account
-        if (AppContext.getContext().accountManager.updateAccessToken()) {
-            AppContext.getContext().accountManager.createActiveProfile(rememberPass.isSelected, autoLogin.isSelected)
+        AppContext.context.accountManager.account = account
+        if (AppContext.context.accountManager.updateAccessToken()) {
+            AppContext.context.accountManager.createActiveProfile(rememberPass.isSelected, autoLogin.isSelected)
             //AppContext.getContext().getAccountManager().updateSession();
             return true
         } else {
-            AppContext.getContext().accountManager.account = null
+            AppContext.context.accountManager.account = null
             return false
         }
     }
 
     private fun doLogout(ILoginHandler: ILoginHandler) {
-        AppContext.getContext().accountManager.account = null
+        AppContext.context.accountManager.account = null
 
         this.loginTask = this.doLogin()
         ILoginHandler.setAppContextLoginBehaviour(this)
@@ -177,7 +177,7 @@ class LoginMaskLayout {
             MainScene.mainScene.windowScene!!.win.contentController!!.removeSidebarItemByIdentifier("pluginmanager")
         }
 
-        val menuButton = MenuButton(AppContext.getContext().accountManager.account!!.user, null, menuItem1, menuItem2)
+        val menuButton = MenuButton(AppContext.context.accountManager.account!!.user, null, menuItem1, menuItem2)
         MainScene.mainScene.windowScene!!.win.titlebarButtonBox.children.addAll(menuButton)
     }
 

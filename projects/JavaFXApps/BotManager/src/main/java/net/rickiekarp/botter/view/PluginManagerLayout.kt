@@ -111,7 +111,7 @@ class PluginManagerLayout {
 
             if (toFetchVersion.size > 0 || PluginData.pluginData.size == 0) {
                 pluginTable!!.refresh()
-                val response = NetResponse.getResponseString(AppContext.getContext().networkApi.runNetworkAction(BotNetworkApi.requestPlugins()))
+                val response = NetResponse.getResponseString(AppContext.context.networkApi.runNetworkAction(BotNetworkApi.requestPlugins()))
 
                 when (response) {
                     "no_connection", "file_not_found" -> {
@@ -227,7 +227,7 @@ class PluginManagerLayout {
 
             val fileDownloader: FileDownloader
             try {
-                fileDownloader = FileDownloader(URL(Configuration.host + "files/apps/" + AppContext.getContext().contextIdentifier + "/download/plugins/" + PluginData.pluginData[tableRow.index].pluginName + ".jar"))
+                fileDownloader = FileDownloader(URL(Configuration.host + "files/apps/" + AppContext.context.contextIdentifier + "/download/plugins/" + PluginData.pluginData[tableRow.index].pluginName + ".jar"))
             } catch (e: MalformedURLException) {
                 if (DebugHelper.DEBUGVERSION) {
                     e.printStackTrace()

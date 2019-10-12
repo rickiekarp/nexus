@@ -1,48 +1,51 @@
-package net.rickiekarp.core.ui.windowmanager;
+package net.rickiekarp.core.ui.windowmanager
 
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.view.CommandsScene;
-import net.rickiekarp.core.view.MainScene;
-import net.rickiekarp.core.view.SettingsScene;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.view.CommandsScene
+import net.rickiekarp.core.view.MainScene
+import net.rickiekarp.core.view.SettingsScene
+import javafx.scene.Scene
+import javafx.scene.paint.Color
 
-import java.net.URL;
+import java.net.URL
 
-public class ThemeSelector {
+object ThemeSelector {
 
-    public final static String DARK_THEME_CSS = "themes/DarkTheme.css";
-    private final static String LIGHT_THEME_CSS = "themes/LightTheme.css";
+    val DARK_THEME_CSS = "themes/DarkTheme.css"
+    private val LIGHT_THEME_CSS = "themes/LightTheme.css"
 
     /**
      * Sets the theme according to the current themeState.
      * @param scene The scene
      */
-    public static void setTheme(Scene scene, ClassLoader loader) {
-        switch (Configuration.Companion.getThemeState()) {
-            case 0:
-                URL darkStyle = loader.getResource(DARK_THEME_CSS);
-                if(!scene.getStylesheets().contains(DARK_THEME_CSS)) { scene.getStylesheets().clear(); }
-                scene.getStylesheets().add(darkStyle.toString());
-                break;
-            case 1:
-                URL lightStyle = loader.getResource(LIGHT_THEME_CSS);
-                if(!scene.getStylesheets().contains(LIGHT_THEME_CSS)) { scene.getStylesheets().clear(); }
-                scene.getStylesheets().add(lightStyle.toString());
-                break;
+    fun setTheme(scene: Scene, loader: ClassLoader) {
+        when (Configuration.themeState) {
+            0 -> {
+                val darkStyle = loader.getResource(DARK_THEME_CSS)
+                if (!scene.stylesheets.contains(DARK_THEME_CSS)) {
+                    scene.stylesheets.clear()
+                }
+                scene.stylesheets.add(darkStyle!!.toString())
+            }
+            1 -> {
+                val lightStyle = loader.getResource(LIGHT_THEME_CSS)
+                if (!scene.stylesheets.contains(LIGHT_THEME_CSS)) {
+                    scene.stylesheets.clear()
+                }
+                scene.stylesheets.add(lightStyle!!.toString())
+            }
         }
     }
 
     /**
      * If the theme is changed, all active stages are updated.
      */
-    public static void onThemeChange()
-    {
-        System.out.println("fixme: onThemeChange()");
-//        if (MainScene.mainScene.getWindowScene() != null) { setTheme(MainScene.mainScene.getWindowScene().getWin().getWindowStage().getStage().getScene()); }
-//        if (SettingsScene.settingsScene != null) { setTheme(SettingsScene.settingsScene.getSettingsWindow().getWin().getWindowStage().getStage().getScene()); }
-////        if (AboutScene.aboutScene != null) { setTheme(AboutScene.aboutScene.getAboutWindow().getWin().getWindowStage().getScene()); }
-//        if (CommandsScene.commandsScene != null) { setTheme(CommandsScene.commandsScene.getCommandsWindow().getWin().getScene()); }
+    fun onThemeChange() {
+        println("fixme: onThemeChange()")
+        //        if (MainScene.mainScene.getWindowScene() != null) { setTheme(MainScene.mainScene.getWindowScene().getWin().getWindowStage().getStage().getScene()); }
+        //        if (SettingsScene.settingsScene != null) { setTheme(SettingsScene.settingsScene.getSettingsWindow().getWin().getWindowStage().getStage().getScene()); }
+        ////        if (AboutScene.aboutScene != null) { setTheme(AboutScene.aboutScene.getAboutWindow().getWin().getWindowStage().getScene()); }
+        //        if (CommandsScene.commandsScene != null) { setTheme(CommandsScene.commandsScene.getCommandsWindow().getWin().getScene()); }
     }
 
 
@@ -50,106 +53,111 @@ public class ThemeSelector {
      * Changes the color scheme of the application
      * @param schemeIdx The scheme index
      */
-    public static void changeColorScheme(int schemeIdx) {
-        switch (schemeIdx) {
-            case 0:
-                Window.Companion.setColorTheme("darkgray");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            case 1:
-                Window.Companion.setColorTheme("gray");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            case 2:
-                Window.Companion.setColorTheme("black");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            case 3:
-                Window.Companion.setColorTheme("red");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            case 4:
-                Window.Companion.setColorTheme("orange");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            case 5:
-                Window.Companion.setColorTheme("yellow");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            case 6:
-                Window.Companion.setColorTheme("blue");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            case 7:
-                Window.Companion.setColorTheme("magenta");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            case 8:
-                Window.Companion.setColorTheme("purple");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            case 9:
-                Window.Companion.setColorTheme("green");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().getClientArea().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
-            default:
-                Window.Companion.setColorTheme("darkgray");
-                MainScene.Companion.getMainScene().getWindowScene().getWin().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
-                break;
+    fun changeColorScheme(schemeIdx: Int) {
+        when (schemeIdx) {
+            0 -> {
+                Window.colorTheme = "darkgray"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            1 -> {
+                Window.colorTheme = "gray"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            2 -> {
+                Window.colorTheme = "black"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            3 -> {
+                Window.colorTheme = "red"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            4 -> {
+                Window.colorTheme = "orange"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            5 -> {
+                Window.colorTheme = "yellow"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            6 -> {
+                Window.colorTheme = "blue"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            7 -> {
+                Window.colorTheme = "magenta"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            8 -> {
+                Window.colorTheme = "purple"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            9 -> {
+                Window.colorTheme = "green"
+                MainScene.mainScene.windowScene!!.win.clientArea.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
+            else -> {
+                Window.colorTheme = "darkgray"
+                MainScene.mainScene.windowScene!!.win.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
+            }
         }
 
-        for (int i = 0; i < MainScene.Companion.getMainScene().getSceneViewStack().size(); i++) {
-            MainScene.Companion.getMainScene().getSceneViewStack().get(i).setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
+        for (i in 0 until MainScene.mainScene.sceneViewStack.size) {
+            MainScene.mainScene.sceneViewStack[i].style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
         }
 
-        MainScene.Companion.getMainScene().getWindowScene().getWin().setStyle("-fx-accent: " + Window.Companion.getColorTheme() + ";" + "-fx-focus-color: " + Window.Companion.getColorTheme() + ";");
+        MainScene.mainScene.windowScene!!.win.style = "-fx-accent: " + Window.colorTheme + ";" + "-fx-focus-color: " + Window.colorTheme + ";"
     }
 
     /**
      * If the theme is changed, all active stages are updated.
      */
-    public static void changeWindowShadowColor(boolean focus, String value)
-    {
+    fun changeWindowShadowColor(focus: Boolean, value: String) {
         if (focus) {
-            Configuration.Companion.setShadowColorFocused(Color.valueOf(value));
-            Window.Companion.getDsFocused().setColor(Configuration.Companion.getShadowColorFocused());
+            Configuration.shadowColorFocused = Color.valueOf(value)
+            Window.dsFocused.color = Configuration.shadowColorFocused
         } else {
-            Configuration.Companion.setShadowColorNotFocused(Color.valueOf(value));
-            Window.Companion.getDsNotFocused().setColor(Configuration.Companion.getShadowColorNotFocused());
+            Configuration.shadowColorNotFocused = Color.valueOf(value)
+            Window.dsNotFocused.color = Configuration.shadowColorNotFocused
         }
     }
 
     /**
      * If the theme is changed, all active stages are updated.
      */
-    public static void changeDecorationColor(String newValue)
-    {
-        System.out.println("fixme: onThemeChange()");
-        Configuration.Companion.setDecorationColor(Color.valueOf(newValue));
-        if (MainScene.Companion.getMainScene().getWindowScene() != null) { MainScene.Companion.getMainScene().getWindowScene().getWin().setDecorationColor(); }
-//        if (SettingsScene.Companion.getSettingsScene() != null) { SettingsScene.Companion.getSettingsScene().getSettingsWindow().getWin().setDecorationColor(); }
-//        if (AboutScene.aboutScene != null) { AboutScene.aboutScene.getAboutWindow().getWin().setDecorationColor(); }
-//        if (CommandsScene.Companion.getCommandsScene() != null) { CommandsScene.Companion.getCommandsScene().getCommandsWindow().getWin().setDecorationColor(); }
+    fun changeDecorationColor(newValue: String) {
+        println("fixme: onThemeChange()")
+        Configuration.decorationColor = Color.valueOf(newValue)
+        if (MainScene.mainScene.windowScene != null) {
+            MainScene.mainScene.windowScene!!.win.setDecorationColor()
+        }
+        //        if (SettingsScene.Companion.getSettingsScene() != null) { SettingsScene.Companion.getSettingsScene().getSettingsWindow().getWin().setDecorationColor(); }
+        //        if (AboutScene.aboutScene != null) { AboutScene.aboutScene.getAboutWindow().getWin().setDecorationColor(); }
+        //        if (CommandsScene.Companion.getCommandsScene() != null) { CommandsScene.Companion.getCommandsScene().getCommandsWindow().getWin().setDecorationColor(); }
     }
 
     /**
      * Converts a color code to hex format.
      * Example: 0x1d1d1dff -> #1d1d1d
      */
-    public static String getColorHexString(Color color)
-    {
-        int green = (int) (color.getGreen()*255);
-        String greenString = Integer.toHexString(green);
-        if (greenString.length() == 1) { greenString += "0"; } //append a '0' if string length is 1
+    fun getColorHexString(color: Color): String {
+        val green = (color.green * 255).toInt()
+        var greenString = Integer.toHexString(green)
+        if (greenString.length == 1) {
+            greenString += "0"
+        } //append a '0' if string length is 1
 
-        int red = (int) (color.getRed()*255);
-        String redString = Integer.toHexString(red);
-        if (redString.length() == 1) { redString += "0"; } //append a '0' if string length is 1
+        val red = (color.red * 255).toInt()
+        var redString = Integer.toHexString(red)
+        if (redString.length == 1) {
+            redString += "0"
+        } //append a '0' if string length is 1
 
-        int blue = (int) (color.getBlue()*255);
-        String blueString = Integer.toHexString(blue);
-        if (blueString.length() == 1) { blueString += "0"; } //append a '0' if string length is 1
+        val blue = (color.blue * 255).toInt()
+        var blueString = Integer.toHexString(blue)
+        if (blueString.length == 1) {
+            blueString += "0"
+        } //append a '0' if string length is 1
 
-        return "#" + redString + greenString + blueString;
+        return "#$redString$greenString$blueString"
     }
 }

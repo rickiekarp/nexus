@@ -189,7 +189,7 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
      */
     fun setDecorationColor() {
         resizeRect!!.stroke = Configuration.decorationColor
-        stageDecoration!!.style = "-fx-background-color: " + ThemeSelector.getColorHexString(Configuration.decorationColor)
+        stageDecoration!!.style = "-fx-background-color: " + ThemeSelector.getColorHexString(Configuration.decorationColor!!)
     }
 
     /**
@@ -229,7 +229,7 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         val menuAnchor = AnchorPane()
         val titlebarStyle = this.javaClass.classLoader.getResource("components/titlebar/TitleBarStyle.css")
         menuAnchor.stylesheets.add(titlebarStyle!!.toString())
-        menuAnchor.style = "-fx-background-color: " + ThemeSelector.getColorHexString(Configuration.decorationColor)
+        menuAnchor.style = "-fx-background-color: " + ThemeSelector.getColorHexString(Configuration.decorationColor!!)
         menuAnchor.maxHeight = TITLEBAR_HEIGHT.toDouble()
 
         //create left/right boxes for titlebar components

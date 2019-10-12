@@ -58,9 +58,9 @@ class Configuration
         //set internal version number
         try {
             val manifest = JarFile(jarFile!!.path).manifest
-            AppContext.getContext().internalVersion = FileUtil.readManifestProperty(manifest, "Build-Time")
+            AppContext.context.internalVersion = FileUtil.readManifestProperty(manifest, "Build-Time")
         } catch (e: IOException) {
-            AppContext.getContext().internalVersion = CommonUtil.getDate("yyMMddHHmm")
+            AppContext.context.internalVersion = CommonUtil.getDate("yyMMddHHmm")
         }
 
     }

@@ -76,7 +76,7 @@ class AccountManager {
 
     fun updateAccessToken(): Boolean {
         val validationAction = NetworkApi.requestAccessToken(account!!)
-        val inputStream = AppContext.getContext().networkApi.runNetworkAction(validationAction)
+        val inputStream = AppContext.context!!.networkApi.runNetworkAction(validationAction)
         if (inputStream != null) {
             val token = NetResponse.getResponseJson(inputStream)
             if (token != null) {

@@ -52,14 +52,14 @@ open class NetworkApi {
 
         fun requestVersionInfo(updateChannel: Int): NetworkAction {
             val provider = NetworkParameterProvider.create()
-            provider.put("identifier", AppContext.getContext().contextIdentifier)
+            provider.put("identifier", AppContext.context.contextIdentifier)
             provider.put("channel", updateChannel)
             return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(INFO_DOMAIN).setAction(UPDATE_ACTION).setParameters(provider).setMethod("GET").build()
         }
 
         fun requestChangelog(): NetworkAction {
             val provider = NetworkParameterProvider.create()
-            provider.put("identifier", AppContext.getContext().contextIdentifier)
+            provider.put("identifier", AppContext.context.contextIdentifier)
             return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(INFO_DOMAIN).setAction(CHANGELOG_ACTION).setParameters(provider).setMethod("GET").build()
         }
     }

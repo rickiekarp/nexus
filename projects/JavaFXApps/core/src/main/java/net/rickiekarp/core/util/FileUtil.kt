@@ -1,79 +1,86 @@
-package net.rickiekarp.core.util;
+package net.rickiekarp.core.util
 
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
+import java.io.*
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
+import java.util.ArrayList
+import java.util.jar.Attributes
+import java.util.jar.JarFile
+import java.util.jar.Manifest
 
-public class FileUtil {
+object FileUtil {
 
-    public static String readManifestProperty(Manifest manifest, String key) {
-        Attributes attributes = manifest.getMainAttributes();
-        return attributes.getValue(key);
+    fun readManifestProperty(manifest: Manifest, key: String): String {
+        val attributes = manifest.mainAttributes
+        return attributes.getValue(key)
     }
 
-    public static String readManifestPropertyFromJar(String jarPath, String key) throws IOException {
-        JarFile jar = new JarFile(jarPath);
-        Manifest manifest = jar.getManifest();
-        Attributes attributes = manifest.getMainAttributes();
-        jar.close();
-        return attributes.getValue(key);
+    @Throws(IOException::class)
+    fun readManifestPropertyFromJar(jarPath: String, key: String): String {
+        val jar = JarFile(jarPath)
+        val manifest = jar.manifest
+        val attributes = manifest.mainAttributes
+        jar.close()
+        return attributes.getValue(key)
     }
 
 
-    public static List<String> readManifestPropertiesFromJar(String jarPath, String... keys) throws IOException {
-        List<String> values = new ArrayList<>();
-        for (String key : keys) {
-            values.add(getManifestAttributes(jarPath).getValue(key));
+    @Throws(IOException::class)
+    fun readManifestPropertiesFromJar(jarPath: String, vararg keys: String): List<String> {
+        val values = ArrayList<String>()
+        for (key in keys) {
+            values.add(getManifestAttributes(jarPath).getValue(key))
         }
-        return values;
+        return values
     }
 
-    private static Attributes getManifestAttributes(String jarPath) throws IOException {
-        JarFile jar = new JarFile(jarPath);
-        Manifest manifest = jar.getManifest();
-        Attributes attributes = manifest.getMainAttributes();
-        jar.close();
-        return attributes;
+    @Throws(IOException::class)
+    private fun getManifestAttributes(jarPath: String): Attributes {
+        val jar = JarFile(jarPath)
+        val manifest = jar.manifest
+        val attributes = manifest.mainAttributes
+        jar.close()
+        return attributes
     }
 
-    public static File[] getListOfFiles(File selectedDirectory) {
+    fun getListOfFiles(selectedDirectory: File): Array<File>? {
         //list all files in start directory
-        return selectedDirectory.listFiles();
+        return selectedDirectory.listFiles()
     }
 
-    public static void moveFile(Path moveFrom, Path moveTo) {
-        if (!moveTo.toFile().exists()) { moveTo.toFile().mkdirs(); }
+    fun moveFile(moveFrom: Path, moveTo: Path) {
+        if (!moveTo.toFile().exists()) {
+            moveTo.toFile().mkdirs()
+        }
         try {
-            Files.move(moveFrom, moveTo.resolve(moveFrom.getFileName()), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            if (DebugHelper.INSTANCE.getDEBUGVERSION()) { e.printStackTrace(); }
-            else { new ExceptionHandler(Thread.currentThread(), e); }
+            Files.move(moveFrom, moveTo.resolve(moveFrom.fileName), StandardCopyOption.REPLACE_EXISTING)
+        } catch (e: IOException) {
+            if (DebugHelper.DEBUGVERSION) {
+                e.printStackTrace()
+            } else {
+                ExceptionHandler(Thread.currentThread(), e)
+            }
         }
     }
 
-    public static String readFirstLineFromFile(File filepath) throws IOException {
-        BufferedReader brTest = new BufferedReader(new FileReader(filepath));
-        return brTest.readLine();
+    @Throws(IOException::class)
+    fun readFirstLineFromFile(filepath: File): String {
+        val brTest = BufferedReader(FileReader(filepath))
+        return brTest.readLine()
     }
 
-    public static void writeFile(byte[] data, String filepath) {
-        FileOutputStream out;
+    fun writeFile(data: ByteArray, filepath: String) {
+        val out: FileOutputStream
         try {
-            out = new FileOutputStream(filepath);
-            out.write(data);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            out = FileOutputStream(filepath)
+            out.write(data)
+            out.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
-
 }

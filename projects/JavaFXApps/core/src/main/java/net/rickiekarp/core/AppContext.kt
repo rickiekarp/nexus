@@ -1,74 +1,49 @@
-package net.rickiekarp.core;
+package net.rickiekarp.core
 
-import net.rickiekarp.core.account.AccountManager;
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.net.NetworkApi;
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.util.FileUtil;
+import net.rickiekarp.core.account.AccountManager
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.net.NetworkApi
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.util.FileUtil
 
-import java.io.IOException;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
+import java.io.IOException
+import java.util.jar.JarFile
+import java.util.jar.Manifest
 
-public class AppContext {
-    private static AppContext appContext;
-    private NetworkApi appNetworkApi;
-    private AccountManager accountManager;
-    private String contextIdentifier;
-    private String internalVersion;
+class AppContext protected constructor(val contextIdentifier: String, val networkApi: NetworkApi) {
+    lateinit var accountManager: AccountManager
+        private set
+    var internalVersion: String? = null
 
-    protected AppContext(String identifier, NetworkApi appNetwork) {
-        contextIdentifier = identifier;
-        appNetworkApi = appNetwork;
-    }
+    val applicationName: String
+        get() = LanguageController.getString(contextIdentifier)
 
-    public static void create(String identifier) {
-        appContext = new AppContext(identifier, new NetworkApi());
-    }
+    val versionNumber: String?
+        get() {
+            val manifest: Manifest
+            try {
+                manifest = JarFile(Configuration.config.jarFile.path).manifest
+                return FileUtil.readManifestProperty(manifest, "Version")
+            } catch (e: IOException) {
+                return internalVersion
+            }
 
-    public static void create(String identifier, NetworkApi network) {
-        appContext = new AppContext(identifier, network);
-    }
-
-    public static AppContext getContext() {
-        return appContext;
-    }
-
-    public void initAccountManager() {
-        accountManager = new AccountManager();
-    }
-
-    public String getApplicationName() {
-        return LanguageController.getString(contextIdentifier);
-    }
-
-    public String getInternalVersion() {
-        return internalVersion;
-    }
-
-    public String getContextIdentifier() {
-        return contextIdentifier;
-    }
-
-    public AccountManager getAccountManager() {
-        return accountManager;
-    }
-
-    public NetworkApi getNetworkApi() {
-        return appNetworkApi;
-    }
-
-    public String getVersionNumber() {
-        Manifest manifest;
-        try {
-            manifest = new JarFile(Configuration.Companion.getConfig().getJarFile().getPath()).getManifest();
-            return FileUtil.readManifestProperty(manifest, "Version");
-        } catch (IOException e) {
-            return internalVersion;
         }
+
+    fun initAccountManager() {
+        accountManager = AccountManager()
     }
 
-    public void setInternalVersion(String version) {
-        internalVersion = version;
+    companion object {
+        lateinit var context: AppContext
+            private set
+
+        fun create(identifier: String) {
+            context = AppContext(identifier, NetworkApi())
+        }
+
+        fun create(identifier: String, network: NetworkApi) {
+            context = AppContext(identifier, network)
+        }
     }
 }

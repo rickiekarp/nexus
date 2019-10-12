@@ -46,7 +46,7 @@ class ToolTrayIcon {
 
             // if the user selects the default menu item (which includes the app name),
             // show the main app stage.
-            val openItem = java.awt.MenuItem(AppContext.getContext().applicationName)
+            val openItem = java.awt.MenuItem(AppContext.context.applicationName)
             openItem.addActionListener { event -> Platform.runLater { this.showStage() } }
 
             // the convention for tray icons seems to be to set the default icon for opening

@@ -44,13 +44,13 @@ class NetworkAction internal constructor(builder: Builder) {
     fun requestStringFromResponse(): String {
         var programURL: URL? = null
         try {
-            programURL = URL(Configuration.host + "files/apps/" + AppContext.getContext().contextIdentifier + "/" + file)
+            programURL = URL(Configuration.host + "files/apps/" + AppContext.context.contextIdentifier + "/" + file)
 
             val con = programURL.openConnection() as HttpURLConnection
             con.doOutput = false
             con.connectTimeout = 5000
             con.readTimeout = 20000
-            con.setRequestProperty("User-Agent", AppContext.getContext().contextIdentifier + "-" + AppContext.getContext().internalVersion)
+            con.setRequestProperty("User-Agent", AppContext.context.contextIdentifier + "-" + AppContext.context.internalVersion)
             con.requestMethod = method!!
 
             val `in` = BufferedInputStream(con.inputStream)
@@ -174,7 +174,7 @@ class NetworkAction internal constructor(builder: Builder) {
                     con.doOutput = false
                     con.connectTimeout = 5000
                     con.readTimeout = 20000
-                    con.setRequestProperty("User-Agent", AppContext.getContext().contextIdentifier + "-" + AppContext.getContext().internalVersion)
+                    con.setRequestProperty("User-Agent", AppContext.context.contextIdentifier + "-" + AppContext.context.internalVersion)
                     con.requestMethod = "GET"
 
                     val `in` = BufferedInputStream(con.inputStream)

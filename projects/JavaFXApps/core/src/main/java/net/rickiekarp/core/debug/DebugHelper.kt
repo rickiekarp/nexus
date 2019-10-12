@@ -29,7 +29,7 @@ object DebugHelper {
 
     fun logProperties() {
         LogFileHandler.logger.info("JAVA_VERSION=" + System.getProperty("java.version"))
-        LogFileHandler.logger.config("PROGRAM_VERSION=" + AppContext.getContext().internalVersion)
+        LogFileHandler.logger.config("PROGRAM_VERSION=" + AppContext.context!!.internalVersion)
         LogFileHandler.logger.config("DEBUGVERSION=" + DebugHelper.isDebugVersion)
         LogFileHandler.logger.config("UPDATE_CHANNEL=" + Configuration.updateChannel)
         LogFileHandler.logger.config("LOGS=" + Configuration.logState)

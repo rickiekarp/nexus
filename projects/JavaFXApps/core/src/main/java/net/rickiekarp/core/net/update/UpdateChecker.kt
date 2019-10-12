@@ -68,7 +68,7 @@ class UpdateChecker {
      * Status ID's are: 0 (No update), 1 (Update), 2 (No connection), 3 (Error)
      */
     fun checkProgramUpdate(): Int {
-        val inputStream = AppContext.getContext().networkApi.runNetworkAction(NetworkApi.requestVersionInfo(Configuration.updateChannel))
+        val inputStream = AppContext.context.networkApi.runNetworkAction(NetworkApi.requestVersionInfo(Configuration.updateChannel))
                 ?: return 2
 
         val applicationList: List<ApplicationDTO>

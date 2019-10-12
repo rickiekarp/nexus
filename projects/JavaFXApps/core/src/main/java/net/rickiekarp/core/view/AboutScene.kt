@@ -77,7 +77,7 @@ class AboutScene {
             hbox.children.add(0, grid)
             hbox.children.add(1, separator2)
             hbox.children.add(2, grid2)
-            val title = Label(AppContext.getContext().applicationName)
+            val title = Label(AppContext.context.applicationName)
             title.style = "-fx-font-size: 16pt;"
             GridPane.setHalignment(title, HPos.CENTER)
             GridPane.setConstraints(title, 0, 0)
@@ -90,7 +90,7 @@ class AboutScene {
             GridPane.setConstraints(logo, 0, 1)
             grid!!.children.add(logo)
 
-            val version = Label(AppContext.getContext().versionNumber)
+            val version = Label(AppContext.context.versionNumber)
             version.style = "-fx-font-size: 11pt;"
             GridPane.setHalignment(version, HPos.CENTER)
             GridPane.setConstraints(version, 0, 2)
@@ -147,7 +147,7 @@ class AboutScene {
 
     private fun create() {
         val infoStage = Stage()
-        infoStage.title = LanguageController.getString("about") + " " + AppContext.getContext().applicationName
+        infoStage.title = LanguageController.getString("about") + " " + AppContext.context.applicationName
         infoStage.icons.add(ImageLoader.getAppIconSmall())
         infoStage.isResizable = false
         //infoStage.setMinWidth(500); infoStage.setMinHeight(320);

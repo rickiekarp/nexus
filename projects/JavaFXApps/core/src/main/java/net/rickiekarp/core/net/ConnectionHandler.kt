@@ -87,11 +87,11 @@ internal class ConnectionHandler {
     }
 
     private fun addHeaders(parameterMap: Map<String, String>, builder: Request.Builder) {
-        builder.addHeader(HEADER_USER_AGENT, AppContext.getContext().contextIdentifier + "/" + AppContext.getContext().internalVersion)
+        builder.addHeader(HEADER_USER_AGENT, AppContext.context.contextIdentifier + "/" + AppContext.context.internalVersion)
 
-        if (AppContext.getContext().accountManager.account != null) {
-            if (AppContext.getContext().accountManager.account!!.accessToken != null) {
-                builder.addHeader(HEADER_AUTHORIZATION, "Basic " + AppContext.getContext().accountManager.account!!.accessToken!!)
+        if (AppContext.context.accountManager.account != null) {
+            if (AppContext.context.accountManager.account!!.accessToken != null) {
+                builder.addHeader(HEADER_AUTHORIZATION, "Basic " + AppContext.context.accountManager.account!!.accessToken!!)
             }
         }
     }

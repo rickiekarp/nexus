@@ -69,7 +69,7 @@ class MainLayout : AppLayout {
             controls.padding = Insets(3.0, 3.0, 3.0, 7.0)
             controls.spacing = 2.0
 
-            val status = Label(AppContext.getContext().applicationName)
+            val status = Label(AppContext.context.applicationName)
             status.style = "-fx-font-size: 9pt;"
             controls.children.add(status)
             val column1 = ColumnConstraints()
@@ -132,7 +132,7 @@ class MainLayout : AppLayout {
 
             val helpBtn = Button(LanguageController.getString("help_label"))
             helpBtn.style = "-fx-font-size: 9pt;"
-            helpBtn.tooltip = Tooltip(LanguageController.getString("help_tip") + " " + AppContext.getContext().applicationName)
+            helpBtn.tooltip = Tooltip(LanguageController.getString("help_tip") + " " + AppContext.context.applicationName)
             GridPane.setConstraints(helpBtn, 6, 0)
             GridPane.setHalignment(helpBtn, HPos.CENTER)
             mainGrid.children.add(helpBtn)

@@ -73,7 +73,7 @@ class BotLauncher {
             return
         }
 
-        val os = OSValidator.getOS()
+        val os = OSValidator.os
         var fileName: String? = null
         val driverFile: File
 

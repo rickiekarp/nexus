@@ -174,7 +174,7 @@ class SettingsScene {
                             1 -> {
                                 updStatusApp.text = LanguageController.getString("update_available")
                                 appbox.children.add(btn_downloadAppUpdate)
-                                MainScene.mainScene.windowScene!!.win.windowStage.stage.title = AppContext.getContext().applicationName + " - " + LanguageController.getString("update_available")
+                                MainScene.mainScene.windowScene!!.win.windowStage.stage.title = AppContext.context.applicationName + " - " + LanguageController.getString("update_available")
                             }
                             2 -> updStatusApp.text = LanguageController.getString("no_connection")
                             3 -> updStatusApp.text = LanguageController.getString("error")
@@ -193,7 +193,7 @@ class SettingsScene {
 
                 val fileDownloader: FileDownloader
                 try {
-                    fileDownloader = FileDownloader(URL(Configuration.host + "files/apps/" + AppContext.getContext().contextIdentifier + "/download/" + updateChannel[Configuration.updateChannel] + File.separator), UpdateChecker.filesToDownload)
+                    fileDownloader = FileDownloader(URL(Configuration.host + "files/apps/" + AppContext.context.contextIdentifier + "/download/" + updateChannel[Configuration.updateChannel] + File.separator), UpdateChecker.filesToDownload)
                 } catch (e: MalformedURLException) {
                     e.printStackTrace()
                     return@setOnAction
@@ -613,9 +613,9 @@ class SettingsScene {
                 SettingsList("language", Configuration.language.toString(), "set program language"),
                 SettingsList("theme", Configuration.themeState.toString(), "set program theme"),
                 SettingsList("logging", Configuration.logState.toString(), "set program logging"),
-                SettingsList("decorationColor", ThemeSelector.getColorHexString(Configuration.decorationColor), "set window decoration color"),
-                SettingsList("shadowColorFocused", ThemeSelector.getColorHexString(Configuration.shadowColorFocused), "set shadow color when window focused"),
-                SettingsList("shadowColorNotFocused", ThemeSelector.getColorHexString(Configuration.shadowColorNotFocused), "set shadow color when window not focused"),
+                SettingsList("decorationColor", ThemeSelector.getColorHexString(Configuration.decorationColor!!), "set window decoration color"),
+                SettingsList("shadowColorFocused", ThemeSelector.getColorHexString(Configuration.shadowColorFocused!!), "set shadow color when window focused"),
+                SettingsList("shadowColorNotFocused", ThemeSelector.getColorHexString(Configuration.shadowColorNotFocused!!), "set shadow color when window not focused"),
                 SettingsList("tabPosition", Configuration.tabPosition!!.name, "set tab position in Settings window")
         )
     }
