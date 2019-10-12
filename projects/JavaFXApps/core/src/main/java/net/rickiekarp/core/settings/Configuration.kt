@@ -120,6 +120,7 @@ class Configuration
         try {
             for (f in clazz.declaredFields) {
                 if (f.isAnnotationPresent(LoadSave::class.java)) {
+                    f.isAccessible = true //work around issue where fields are private (AppConfiguration)
                     val n = f.name
                     if (f.type == java.lang.Boolean.TYPE) {
                         val s = settingsXmlFactory!!.getElementValue(n, clazz)

@@ -87,10 +87,11 @@ class SettingsXmlFactory {
 
     private fun getFieldValueString(f: Field): Any? {
         return try {
-            if (f.type == Color::class.java) {
-                ThemeSelector.getColorHexString(Color.valueOf(f.get(LoadSave::class.java).toString()))
+            if (f.type == Color::class) {
+                ThemeSelector.getColorHexString(Color.valueOf(f.get(LoadSave::class).toString()))
             } else {
-                f.get(LoadSave::class.java)
+                f.isAccessible = true //work around issue where fields are private (AppConfiguration)
+                f.get(LoadSave::class)
             }
         } catch (e: IllegalAccessException) {
             if (DebugHelper.DEBUGVERSION) {
@@ -197,7 +198,6 @@ class SettingsXmlFactory {
             } catch (e: NoSuchFieldException) {
                 createElement(doc, f.name, getFieldValueString(f))
             }
-
         }
     }
 
