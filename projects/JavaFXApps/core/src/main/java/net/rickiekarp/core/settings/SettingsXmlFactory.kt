@@ -5,15 +5,12 @@ import net.rickiekarp.core.debug.ExceptionHandler
 import net.rickiekarp.core.ui.windowmanager.ThemeSelector
 import javafx.scene.paint.Color
 import org.w3c.dom.Document
-import org.w3c.dom.Element
 import org.w3c.dom.NodeList
 import org.xml.sax.SAXException
 
-import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 import javax.xml.transform.OutputKeys
-import javax.xml.transform.Transformer
 import javax.xml.transform.TransformerException
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
@@ -31,7 +28,6 @@ class SettingsXmlFactory {
      * Saves the current state of the program to the config.xml file.
      */
     fun createConfigXML() {
-
         try {
             val docFactory = DocumentBuilderFactory.newInstance()
             val dBuilder = docFactory.newDocumentBuilder()
@@ -63,7 +59,6 @@ class SettingsXmlFactory {
      */
     private fun createElement(doc: Document, name: String, value: Any?) {
         val root = doc.documentElement
-
         val element = doc.createElement("entry")
         element.setAttribute("key", name)
         if (value != null) {
@@ -91,8 +86,8 @@ class SettingsXmlFactory {
     }
 
     private fun getFieldValueString(f: Field): Any? {
-        try {
-            return if (f.type == Color::class.java) {
+        return try {
+            if (f.type == Color::class.java) {
                 ThemeSelector.getColorHexString(Color.valueOf(f.get(LoadSave::class.java).toString()))
             } else {
                 f.get(LoadSave::class.java)
@@ -103,7 +98,7 @@ class SettingsXmlFactory {
             } else {
                 ExceptionHandler(Thread.currentThread(), e)
             }
-            return null
+            null
         }
 
     }

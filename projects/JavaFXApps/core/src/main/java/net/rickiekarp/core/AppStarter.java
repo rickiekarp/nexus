@@ -42,7 +42,7 @@ public class AppStarter extends Application {
             DebugHelper.INSTANCE.logProperties();
         } else {
             //if the config file can not be created, set settings anyway
-            Configuration.Companion.setLanguage(LoadSave.Companion.getLanguage());
+            Configuration.Companion.setLanguage(LoadSave.language);
             LanguageController.setCurrentLocale();
         }
 

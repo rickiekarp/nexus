@@ -9,23 +9,22 @@ import javafx.scene.paint.Color
 @Target(AnnotationTarget.FIELD)
 annotation class LoadSave {
     companion object {
-
         /** settings defaults  */
-        val host = "https://app.rickiekarp.net/"
-        val updateChannel = 0
-        val language = LanguageController.locale
-        val themeState = 0
-        val colorScheme = 0
-        val animations = true
-        val useSystemBorders = false
-        val logState = false
-        val showTrayIcon = false
+        @JvmField val host = "https://app.rickiekarp.net/"
+        @JvmField val updateChannel = 0
+        @JvmField val language = LanguageController.locale
+        @JvmField val themeState = 0
+        @JvmField val colorScheme = 0
+        @JvmField val animations = true
+        @JvmField val useSystemBorders = false
+        @JvmField val logState = false
+        @JvmField val showTrayIcon = false
 
         /** advanced settings defaults  */
-        val debugState = false
-        val decorationColor = Color.valueOf("#1d1d1d")
-        val shadowColorFocused = Color.valueOf("#000000")
-        val shadowColorNotFocused = Color.valueOf("#a9a9a9")
-        val tabPosition = Side.LEFT
+        @JvmField val debugState = false
+        @JvmField val decorationColor = Color.valueOf("#1d1d1d")
+        @JvmField val shadowColorFocused = Color.valueOf("#000000")
+        @JvmField val shadowColorNotFocused = Color.valueOf("#a9a9a9")
+        @JvmField val tabPosition = Side.LEFT
     }
 }

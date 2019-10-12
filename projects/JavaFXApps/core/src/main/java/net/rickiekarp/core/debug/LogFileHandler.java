@@ -167,7 +167,7 @@ public class LogFileHandler {
      * Returns log file name
      */
     private static String getLogFileName() {
-        final String logTime = CommonUtil.getTime("HH-mm-ss"); //time String
+        final String logTime = CommonUtil.INSTANCE.getTime("HH-mm-ss"); //time String
         return "log_" + logTime + ".log";
     }
 }
