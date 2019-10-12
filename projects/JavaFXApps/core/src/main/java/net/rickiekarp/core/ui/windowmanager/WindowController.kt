@@ -33,7 +33,7 @@ class WindowController internal constructor(private val window: Window) {
         val stage = window.windowStage.stage
 
         if (maximized) {
-            restoreSavedBounds(stage)
+            restoreSavedBounds(stage!!)
             window.setShadow(true)
             savedBounds = null
             maximized = false
@@ -68,7 +68,7 @@ class WindowController internal constructor(private val window: Window) {
         val stage = window.windowStage
         LogFileHandler.logger.info("close." + stage.identifier)
         Platform.runLater { stage.stage.fireEvent(WindowEvent(stage.stage, WindowEvent.WINDOW_CLOSE_REQUEST)) }
-        MainScene.stageStack.pop(stage.identifier)
+        MainScene.stageStack.pop(stage.identifier!!)
     }
 
     fun minimize() {

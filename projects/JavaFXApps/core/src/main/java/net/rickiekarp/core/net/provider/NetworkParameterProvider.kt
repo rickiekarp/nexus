@@ -8,6 +8,9 @@ import java.util.Locale
 class NetworkParameterProvider private constructor() : NetworkAction.IParameterProvider {
     private val mParameterMap = LinkedHashMap<String, String>()
 
+    override val parameters: Map<String, String>
+        get() = mParameterMap
+
     fun put(key: String, parameter: String?): NetworkParameterProvider {
         if (parameter != null) {
             mParameterMap[key] = parameter.toString()
@@ -42,10 +45,6 @@ class NetworkParameterProvider private constructor() : NetworkAction.IParameterP
             mParameterMap.remove(key)
         }
         return this
-    }
-
-    override fun getParameters(): Map<String, String> {
-        return mParameterMap
     }
 
     companion object {

@@ -109,8 +109,8 @@ class ToolTrayIcon {
      */
     private fun showStage() {
         if (MainScene.mainScene.windowScene!!.win!!.windowStage != null) {
-            MainScene.mainScene.windowScene!!.win!!.windowStage.stage.show()
-            MainScene.mainScene.windowScene!!.win!!.windowStage.stage.toFront()
+            MainScene.mainScene.windowScene!!.win!!.windowStage.stage!!.show()
+            MainScene.mainScene.windowScene!!.win!!.windowStage.stage!!.toFront()
         }
     }
 

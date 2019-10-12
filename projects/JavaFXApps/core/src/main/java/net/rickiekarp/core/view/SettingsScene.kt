@@ -549,7 +549,7 @@ class SettingsScene {
     }
 
     private fun debugCfg() {
-        if (DebugHelper.isDebugVersion()) {
+        if (DebugHelper.isDebugVersion) {
             controls!!.style = "-fx-background-color: #444444;"
             for (i in tabName.indices) {
                 tabVBox[i]!!.setStyle("-fx-background-color: blue;")

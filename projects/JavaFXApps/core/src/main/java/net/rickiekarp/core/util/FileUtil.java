@@ -55,7 +55,7 @@ public class FileUtil {
         try {
             Files.move(moveFrom, moveTo.resolve(moveFrom.getFileName()), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); }
+            if (DebugHelper.INSTANCE.getDEBUGVERSION()) { e.printStackTrace(); }
             else { new ExceptionHandler(Thread.currentThread(), e); }
         }
     }

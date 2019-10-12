@@ -39,7 +39,7 @@ public class AppStarter extends Application {
             Configuration.config.loadProperties(configClazz);
 
             //log properties of current program state0
-            DebugHelper.logProperties();
+            DebugHelper.INSTANCE.logProperties();
         } else {
             //if the config file can not be created, set settings anyway
             Configuration.language = LoadSave.language;
@@ -50,14 +50,14 @@ public class AppStarter extends Application {
         LanguageController.loadLangFile(mainClazz.getClassLoader().getResourceAsStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties"));
 
         //set the default exception handler
-        if (!DebugHelper.DEBUGVERSION) {
+        if (!DebugHelper.INSTANCE.getDEBUGVERSION()) {
             Thread.setDefaultUncaughtExceptionHandler((t, e) -> Platform.runLater(() -> new ExceptionHandler(t, e)));
             Thread.currentThread().setUncaughtExceptionHandler(ExceptionHandler::new);
         }
 
         //application related configuration
         stage.setTitle(AppContext.getContext().getApplicationName());
-        stage.getIcons().add(ImageLoader.getAppIconSmall());
+        stage.getIcons().add(ImageLoader.INSTANCE.getAppIconSmall());
         stage.setResizable(resizable);
         stage.setMinWidth(minWidth); stage.setMinHeight(minHeight);
         stage.setWidth(width); stage.setHeight(height);

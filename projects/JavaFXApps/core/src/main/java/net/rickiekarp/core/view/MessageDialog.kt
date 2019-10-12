@@ -114,7 +114,7 @@ class MessageDialog(type: Int, msg: String, width: Int, height: Int) {
                 modalDialog.close()
             }
 
-            if (DebugHelper.isDebugVersion()) {
+            if (DebugHelper.isDebugVersion) {
                 contentVbox.style = "-fx-background-color: gray"
                 optionHBox.style = "-fx-background-color: #444444;"
             }
@@ -203,7 +203,7 @@ class MessageDialog(type: Int, msg: String, width: Int, height: Int) {
                 modalDialog.close()
             }
 
-            if (DebugHelper.isDebugVersion()) {
+            if (DebugHelper.isDebugVersion) {
                 contentVbox.style = "-fx-background-color: gray"
                 optionHBox.style = "-fx-background-color: #444444;"
             }

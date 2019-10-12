@@ -62,7 +62,7 @@ class AboutScene {
             separator2.orientation = Orientation.VERTICAL
             separator2.maxHeight = 160.0
             separator2.padding = Insets(0.0, 0.0, 0.0, 0.0)
-            if (DebugHelper.isDebugVersion()) {
+            if (DebugHelper.isDebugVersion) {
                 separator2.style = "-fx-background-color: red;"
             }
 
@@ -171,7 +171,7 @@ class AboutScene {
     }
 
     private fun debugAbout() {
-        if (DebugHelper.isDebugVersion()) {
+        if (DebugHelper.isDebugVersion) {
             grid!!.isGridLinesVisible = true
             grid!!.style = "-fx-background-color: #333333;"
             grid2!!.isGridLinesVisible = true

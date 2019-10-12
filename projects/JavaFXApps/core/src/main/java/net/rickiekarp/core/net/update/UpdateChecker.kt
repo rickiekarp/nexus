@@ -1,210 +1,211 @@
-package net.rickiekarp.core.net.update;
+package net.rickiekarp.core.net.update
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.rickiekarp.core.AppContext;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.ExceptionHandler;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.model.dto.ApplicationDTO;
-import net.rickiekarp.core.net.NetworkApi;
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.util.FileUtil;
-import javafx.application.Platform;
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
+import net.rickiekarp.core.AppContext
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.ExceptionHandler
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.model.dto.ApplicationDTO
+import net.rickiekarp.core.net.NetworkApi
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.util.FileUtil
+import javafx.application.Platform
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.net.URISyntaxException
+import java.net.URL
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
+import java.util.ArrayList
+import java.util.Scanner
 
-public class UpdateChecker {
-    public static ArrayList<String> filesToDownload = new ArrayList<>();
-    public static boolean isUpdAvailable = false;
+class UpdateChecker {
+
+    /**
+     * Checks the listed server for a new java version
+     * @return Returns remote version string
+     */
+    private// there was some connection problem, or the file did not exist on the server,
+    // or your URL was not in the right format.
+    val remoteJavaVersion: String
+        @Deprecated("Feature was removed because the JreCurrentVersion2.txt was removed")
+        get() {
+
+            val version: String
+            var javaurl: URL? = null
+
+            LogFileHandler.logger.info("Checking for new java version...")
+
+            try {
+                javaurl = URL("http://java.com/applet/JreCurrentVersion2.txt")
+
+                LogFileHandler.logger.info("Connecting to: $javaurl")
+                val scanner = Scanner(javaurl.openStream())
+                version = scanner.next()
+                scanner.close()
+                LogFileHandler.logger.info("Success! Current remote java version: $version")
+
+                return version
+            } catch (e: IOException) {
+                LogFileHandler.logger.warning("Can not connect to: " + javaurl!!)
+                if (DebugHelper.DEBUGVERSION) {
+                    e.printStackTrace()
+                } else {
+                    Platform.runLater { ExceptionHandler(Thread.currentThread(), e) }
+                }
+                return "no_connection"
+            }
+
+        }
 
     /**
      * Compares local and remote program versions and returns the update status ID
      * @return  Returns update status ID as an integer
-     *          Status ID's are: 0 (No update), 1 (Update), 2 (No connection), 3 (Error)
+     * Status ID's are: 0 (No update), 1 (Update), 2 (No connection), 3 (Error)
      */
-    public int checkProgramUpdate() {
-        InputStream inputStream = AppContext.getContext().getNetworkApi().runNetworkAction(NetworkApi.requestVersionInfo(Configuration.updateChannel));
-        if (inputStream == null) {
-            return 2;
-        }
+    fun checkProgramUpdate(): Int {
+        val inputStream = AppContext.getContext().networkApi.runNetworkAction(NetworkApi.requestVersionInfo(Configuration.updateChannel))
+                ?: return 2
 
-        List<ApplicationDTO> applicationList;
+        val applicationList: List<ApplicationDTO>
         try {
-            applicationList = new ObjectMapper().readValue(inputStream, new TypeReference<List<ApplicationDTO>>(){});
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 3;
+            applicationList = ObjectMapper().readValue(inputStream, object : TypeReference<List<ApplicationDTO>>() {
+
+            })
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return 3
         }
 
 
-        boolean isUpdateEnabled; // Is the update channel open?
-        for (ApplicationDTO applicationEntry : applicationList) {
-            isUpdateEnabled = applicationEntry.isUpdateEnable();
+        var isUpdateEnabled: Boolean // Is the update channel open?
+        for (applicationEntry in applicationList) {
+            isUpdateEnabled = applicationEntry.isUpdateEnable
             if (isUpdateEnabled) {
-                LogFileHandler.logger.info("Checking module [" + applicationEntry.getIdentifier() + "] version: " + applicationEntry.getVersion());
+                LogFileHandler.logger.info("Checking module [" + applicationEntry.identifier + "] version: " + applicationEntry.version)
 
                 //convert local/remote versions to int
-                int remoteVer = applicationEntry.getVersion();
-                int localVer = -1;
+                val remoteVer = applicationEntry.version
+                var localVer = -1
                 try {
-                    localVer = Integer.parseInt(FileUtil.readManifestPropertyFromJar(Configuration.config.getJarFile().getParent() + File.separator + applicationEntry.getIdentifier(), "Build-Time"));
-                } catch (IOException e) {
-                    LogFileHandler.logger.warning("Error while reading version: " + e.getMessage());
+                    localVer = Integer.parseInt(FileUtil.readManifestPropertyFromJar(Configuration.config.jarFile.parent + File.separator + applicationEntry.identifier, "Build-Time"))
+                } catch (e: IOException) {
+                    LogFileHandler.logger.warning("Error while reading version: " + e.message)
                 }
 
                 //compare versions
                 if (remoteVer > localVer) {
-                    filesToDownload.add(applicationEntry.getIdentifier());
+                    filesToDownload.add(applicationEntry.identifier!!)
                 }
             }
         }
 
         //return update status for files to update
-        if (filesToDownload.size() > 0) {
-            isUpdAvailable = true;
-            LogFileHandler.logger.info("New updates found: " + filesToDownload.subList(0, filesToDownload.size()));
-            return 1;
+        if (filesToDownload.size > 0) {
+            isUpdAvailable = true
+            LogFileHandler.logger.info("New updates found: " + filesToDownload.subList(0, filesToDownload.size))
+            return 1
         }
-        return 0;
-    }
-
-    /**
-     * Checks the listed server for a new java version
-     * @return Returns remote version string
-     * @deprecated Feature was removed because the JreCurrentVersion2.txt was removed
-     */
-    @Deprecated
-    private String getRemoteJavaVersion() {
-
-        String version;
-        URL javaurl = null;
-
-        LogFileHandler.logger.info("Checking for new java version...");
-
-        try {
-            javaurl = new URL("http://java.com/applet/JreCurrentVersion2.txt");
-
-            LogFileHandler.logger.info("Connecting to: " + javaurl);
-            Scanner scanner = new Scanner(javaurl.openStream());
-            version = scanner.next();
-            scanner.close();
-            LogFileHandler.logger.info("Success! Current remote java version: " + version);
-
-            return version;
-        }
-        catch(IOException e) {
-            // there was some connection problem, or the file did not exist on the server,
-            // or your URL was not in the right format.
-            LogFileHandler.logger.warning("Can not connect to: " + javaurl);
-            if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); } else {
-                Platform.runLater(() -> new ExceptionHandler(Thread.currentThread(), e));
-            }
-            return "no_connection";
-        }
+        return 0
     }
 
     /**
      * Compares local and remote java versions
      * @return Returns update status ID as an integer
-     * @deprecated Feature was removed because the JreCurrentVersion2.txt was removed
      */
-    @Deprecated
-    public int checkJavaUpdate() {
-        String remoteJavaVersion = getRemoteJavaVersion();
-        String localJavaVersion = System.getProperty("java.version");
+    @Deprecated("Feature was removed because the JreCurrentVersion2.txt was removed")
+    fun checkJavaUpdate(): Int {
+        var remoteJavaVersion = remoteJavaVersion
+        var localJavaVersion = System.getProperty("java.version")
 
-        if (localJavaVersion.equals(remoteJavaVersion)) {
-            return 0;
+        if (localJavaVersion == remoteJavaVersion) {
+            return 0
         } else {
 
-            if (remoteJavaVersion.equals("no_connection")) {
-                return 2;
+            if (remoteJavaVersion == "no_connection") {
+                return 2
             } else {
-                remoteJavaVersion = remoteJavaVersion.replace(".", "");
-                localJavaVersion = localJavaVersion.replace(".", "");
+                remoteJavaVersion = remoteJavaVersion.replace(".", "")
+                localJavaVersion = localJavaVersion.replace(".", "")
 
                 //splits the version string
-                String localVersion[] = localJavaVersion.split("_");
-                int localversion = Integer.parseInt(localVersion[0]);
-                int localrevision = Integer.parseInt(localVersion[1]);
+                val localVersion = localJavaVersion.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val localversion = Integer.parseInt(localVersion[0])
+                val localrevision = Integer.parseInt(localVersion[1])
 
-                String remoteVersion[] = remoteJavaVersion.split("_");
-                int remoteversion = Integer.parseInt(remoteVersion[0]);
-                int remoterevision = Integer.parseInt(remoteVersion[1]);
+                val remoteVersion = remoteJavaVersion.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val remoteversion = Integer.parseInt(remoteVersion[0])
+                val remoterevision = Integer.parseInt(remoteVersion[1])
 
                 //if remote version is higher than local
                 if (remoteversion > localversion) {
-                    return 1;
-                }
-
-                //if remote revision equals local
-                else if (remoteversion == localversion) {
+                    return 1
+                } else if (remoteversion == localversion) {
                     if (remoterevision > localrevision) {
-                        return 1;
+                        return 1
                     }
                     if (remoterevision <= localrevision) {
-                        return 0;
+                        return 0
                     }
-                }
-
-                //if remote version is lower than local
-                else if (remoteversion < localversion) {
-                    return 0;
-                }
+                } else if (remoteversion < localversion) {
+                    return 0
+                }//if remote version is lower than local
+                //if remote revision equals local
 
                 //return an error if no check returned a status
-                return 3;
+                return 3
             }
         }
     }
 
-    /**
-     * Starts the updater and installs updates.
-     * @throws URISyntaxException Exception
-     * @throws IOException Exception
-     */
-    public static void installUpdate() throws URISyntaxException, IOException {
-        /* is it a jar file? */
-        if(!Configuration.config.getJarFile().getName().endsWith(".jar")) { return; }
+    companion object {
+        var filesToDownload = ArrayList<String>()
+        var isUpdAvailable = false
 
-        final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+        /**
+         * Starts the updater and installs updates.
+         * @throws URISyntaxException Exception
+         * @throws IOException Exception
+         */
+        @Throws(URISyntaxException::class, IOException::class)
+        fun installUpdate() {
+            /* is it a jar file? */
+            if (!Configuration.config.jarFile.name.endsWith(".jar")) {
+                return
+            }
 
-        File updater = new File(Configuration.config.getJarFile().getParentFile() + "/data/update/updater.jar");
+            val javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"
 
-        //install new updater.jar if it has been downloaded earlier
-        if (updater.exists()) {
-            final Path moveFrom = updater.toPath();
-            final Path moveTo = Configuration.config.getJarFile().getParentFile().toPath();
+            val updater = File(Configuration.config.jarFile.parentFile.toString() + "/data/update/updater.jar")
 
-            //move file
-            Files.move(moveFrom, moveTo.resolve(moveFrom.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+            //install new updater.jar if it has been downloaded earlier
+            if (updater.exists()) {
+                val moveFrom = updater.toPath()
+                val moveTo = Configuration.config.jarFile.parentFile.toPath()
+
+                //move file
+                Files.move(moveFrom, moveTo.resolve(moveFrom.fileName), StandardCopyOption.REPLACE_EXISTING)
+            }
+
+            /* Build command: java -jar application.jar */
+            val command = ArrayList<String>()
+            command.add(javaBin)
+            command.add("-jar")
+            command.add(Configuration.config.jarFile.parent + File.separator + "updater.jar")
+            command.add("update")
+            command.add(Configuration.config.jarFile.name)
+
+            if (!File(Configuration.config.jarFile.parentFile.toString() + "/updater.jar").exists()) {
+                return
+            }
+
+            val builder = ProcessBuilder(command)
+            builder.start()
+            System.exit(0)
         }
-
-        /* Build command: java -jar application.jar */
-        final ArrayList<String> command = new ArrayList<>();
-        command.add(javaBin);
-        command.add("-jar");
-        command.add(Configuration.config.getJarFile().getParent() + File.separator + "updater.jar");
-        command.add("update");
-        command.add(Configuration.config.getJarFile().getName());
-
-        if (!new File(Configuration.config.getJarFile().getParentFile() + "/updater.jar").exists()) {
-            return;
-        }
-
-        final ProcessBuilder builder = new ProcessBuilder(command);
-        builder.start();
-        System.exit(0);
     }
 }

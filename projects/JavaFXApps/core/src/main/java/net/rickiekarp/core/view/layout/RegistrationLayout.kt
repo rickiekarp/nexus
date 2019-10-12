@@ -70,13 +70,13 @@ internal class RegistrationLayout {
                 NetworkApi.requestAccessToken(account)
         )
 
-        LogFileHandler.logger.log(Level.INFO, tokenAction.code.toString())
-        when (tokenAction.code) {
+        LogFileHandler.logger.log(Level.INFO, tokenAction!!.code.toString())
+        return when (tokenAction.code) {
             200 -> {
                 AppContext.getContext().accountManager.account = account
-                return true
+                true
             }
-            else -> return false
+            else -> false
         }
     }
 }

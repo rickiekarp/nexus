@@ -1,342 +1,343 @@
-package net.rickiekarp.botter.view;
+package net.rickiekarp.botter.view
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.DebugHelper;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.util.parser.JsonParser;
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.view.MainScene;
-import net.rickiekarp.botlib.BotConfig;
-import net.rickiekarp.botlib.PluginConfig;
-import net.rickiekarp.botlib.enums.BotType;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
-import javafx.stage.DirectoryChooser;
-import org.json.JSONObject;
+import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.control.TextField
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.DebugHelper
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.util.parser.JsonParser
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.view.MainScene
+import net.rickiekarp.botlib.BotConfig
+import net.rickiekarp.botlib.PluginConfig
+import net.rickiekarp.botlib.enums.BotType
+import javafx.beans.property.DoubleProperty
+import javafx.beans.property.SimpleDoubleProperty
+import javafx.geometry.Insets
+import javafx.geometry.Pos
+import javafx.scene.Node
+import javafx.scene.control.*
+import javafx.scene.input.KeyCode
+import javafx.scene.layout.*
+import javafx.stage.DirectoryChooser
+import org.json.JSONObject
 
-import java.io.File;
-import java.util.logging.Level;
+import java.io.File
+import java.util.logging.Level
 
-public class BotSetupLayout {
-    private String[] supportedBrowsers      = {"chrome", "firefox"};
-    private int browserSetupStep            = 1;
-    private Label messageLabel;
-    private GridPane setupGrid;
-    private Button prevButton, nextButton;
+class BotSetupLayout {
+    private val supportedBrowsers = arrayOf("chrome", "firefox")
+    private var browserSetupStep = 1
+    private var messageLabel: Label? = null
+    private var setupGrid: GridPane? = null
+    private var prevButton: Button? = null
+    private var nextButton: Button? = null
 
-    private final double MIN_TILE_SIZE      = 50;
-    private double nColumns                 = supportedBrowsers.length;
-    private double nRows                    = 1;
-    private DoubleProperty prefTileSize     = new SimpleDoubleProperty(MIN_TILE_SIZE);
+    private val MIN_TILE_SIZE = 50.0
+    private val nColumns = supportedBrowsers.size.toDouble()
+    private val nRows = 1.0
+    private val prefTileSize = SimpleDoubleProperty(MIN_TILE_SIZE)
 
-    public Node getLayout() {
-        BorderPane borderpane = new BorderPane();
+    // create a color swatch.
+    //controls
+    //padding top, left, bottom, right
+    //set layouts
+    val layout: Node
+        get() {
+            val borderpane = BorderPane()
 
-        VBox vbox = new VBox();
-        vbox.setAlignment(Pos.BOTTOM_CENTER);
+            val vbox = VBox()
+            vbox.alignment = Pos.BOTTOM_CENTER
 
-        messageLabel = new Label();
-        messageLabel.setPadding(new Insets(30, 0, 0, 0));
+            messageLabel = Label()
+            messageLabel!!.padding = Insets(30.0, 0.0, 0.0, 0.0)
+            setupGrid = GridPane()
+            setupGrid!!.alignment = Pos.CENTER
+            setupGrid!!.stylesheets.add("ui/icons/browser/LogoStyle.css")
 
-        // create a color swatch.
-        setupGrid = new GridPane();
-        setupGrid.setAlignment(Pos.CENTER);
-        setupGrid.getStylesheets().add("ui/icons/browser/LogoStyle.css");
+            VBox.setVgrow(setupGrid, Priority.ALWAYS)
+            vbox.children.addAll(messageLabel, setupGrid)
+            val controls = HBox()
+            controls.padding = Insets(10.0, 12.0, 10.0, 12.0)
+            controls.spacing = 10.0
+            controls.alignment = Pos.CENTER_RIGHT
 
-        VBox.setVgrow(setupGrid, Priority.ALWAYS);
-        vbox.getChildren().addAll(messageLabel, setupGrid);
-
-        //controls
-        HBox controls = new HBox();
-        controls.setPadding(new Insets(10, 12, 10, 12));  //padding top, left, bottom, right
-        controls.setSpacing(10);
-        controls.setAlignment(Pos.CENTER_RIGHT);
-
-        prevButton = new Button(LanguageController.getString("back"));
-        prevButton.setVisible(false);
-        prevButton.setOnAction(event -> {
-            setupGrid.getChildren().clear();
-            browserSetupStep--;
-            showSetupStep(browserSetupStep);
-        });
-        controls.getChildren().add(prevButton);
-
-        nextButton = new Button(LanguageController.getString("next"));
-        nextButton.setOnAction(event -> {
-            setupGrid.getChildren().clear();
-            browserSetupStep++;
-            if (browserSetupStep == 4 && PluginConfig.INSTANCE.getBotType() == BotType.Bot.FIREFOX) {
-                browserSetupStep++;
+            prevButton = Button(LanguageController.getString("back"))
+            prevButton!!.isVisible = false
+            prevButton!!.setOnAction { event ->
+                setupGrid!!.children.clear()
+                browserSetupStep--
+                showSetupStep(browserSetupStep)
             }
-            showSetupStep(browserSetupStep);
-        });
-        controls.getChildren().add(nextButton);
+            controls.children.add(prevButton)
 
-        showSetupStep(browserSetupStep);
+            nextButton = Button(LanguageController.getString("next"))
+            nextButton!!.setOnAction { event ->
+                setupGrid!!.children.clear()
+                browserSetupStep++
+                if (browserSetupStep == 4 && PluginConfig.botType === BotType.Bot.FIREFOX) {
+                    browserSetupStep++
+                }
+                showSetupStep(browserSetupStep)
+            }
+            controls.children.add(nextButton)
 
-        //set layouts
-        borderpane.setCenter(vbox);
-        borderpane.setBottom(controls);
+            showSetupStep(browserSetupStep)
+            borderpane.center = vbox
+            borderpane.bottom = controls
 
-        setupGrid.layoutBoundsProperty().addListener((observableValue, oldBounds, newBounds) -> {
-            prefTileSize.set(Math.max(MIN_TILE_SIZE, Math.min(newBounds.getWidth() / nColumns, newBounds.getHeight() / nRows)));
-            calculateSizes();
-        });
+            setupGrid!!.layoutBoundsProperty().addListener { observableValue, oldBounds, newBounds ->
+                prefTileSize.set(Math.max(MIN_TILE_SIZE, Math.min(newBounds.width / nColumns, newBounds.height / nRows)))
+                calculateSizes()
+            }
 
-        if (DebugHelper.isDebugVersion()) {
-            setupGrid.setStyle("-fx-background-color: gray;");
+            if (DebugHelper.isDebugVersion) {
+                setupGrid!!.style = "-fx-background-color: gray;"
+            }
+
+            LogFileHandler.logger.log(Level.INFO, "open.BotSetupDialog")
+            return borderpane
         }
 
-        LogFileHandler.logger.log(Level.INFO, "open.BotSetupDialog");
-        return borderpane;
-    }
-
-    private void showSetupStep(int step) {
-        switch (step) {
+    private fun showSetupStep(step: Int) {
+        when (step) {
 
             //set nodejs path
-            case 1:
-                messageLabel.setText(LanguageController.getString("desc_setup_1_0"));
-                nextButton.setDisable(true);
+            1 -> {
+                messageLabel!!.text = LanguageController.getString("desc_setup_1_0")
+                nextButton!!.isDisable = true
 
-                Label desc_setup_4_1 = new Label(LanguageController.getString("desc_setup_1_1"));
-                desc_setup_4_1.setAlignment(Pos.CENTER);
-                desc_setup_4_1.setMaxHeight(100);
-                desc_setup_4_1.setWrapText(true);
-                GridPane.setConstraints(desc_setup_4_1, 0, 0);
+                val desc_setup_4_1 = Label(LanguageController.getString("desc_setup_1_1"))
+                desc_setup_4_1.alignment = Pos.CENTER
+                desc_setup_4_1.maxHeight = 100.0
+                desc_setup_4_1.isWrapText = true
+                GridPane.setConstraints(desc_setup_4_1, 0, 0)
 
-                Button searchNode = new Button(LanguageController.getString("search"));
-                searchNode.setMaxHeight(100);
-                searchNode.setAlignment(Pos.CENTER);
-                searchNode.setOnAction(event -> {
-                    DirectoryChooser directoryChooser = new DirectoryChooser();
-                    directoryChooser.setInitialDirectory(Configuration.config.getJarFile().getParentFile());
-                    File selectedDirectory = directoryChooser.showDialog(MainScene.Companion.getMainScene().getWindowScene().getWindow());
+                val searchNode = Button(LanguageController.getString("search"))
+                searchNode.maxHeight = 100.0
+                searchNode.alignment = Pos.CENTER
+                searchNode.setOnAction { event ->
+                    val directoryChooser = DirectoryChooser()
+                    directoryChooser.initialDirectory = Configuration.config.jarFile.parentFile
+                    val selectedDirectory = directoryChooser.showDialog(MainScene.mainScene.windowScene!!.window)
 
                     if (selectedDirectory != null) {
-                        setupGrid.getChildren().clear();
-                        Label text = new Label(selectedDirectory.getPath());
-                        GridPane.setConstraints(text, 0, 0);
-                        setupGrid.getChildren().add(text);
-                        BotConfig.INSTANCE.setNodeBinary(selectedDirectory.getPath());
-                        nextButton.setDisable(false);
+                        setupGrid!!.children.clear()
+                        val text = Label(selectedDirectory.path)
+                        GridPane.setConstraints(text, 0, 0)
+                        setupGrid!!.children.add(text)
+                        BotConfig.nodeBinary = selectedDirectory.path
+                        nextButton!!.isDisable = false
                     }
-                });
-                GridPane.setConstraints(searchNode, 0, 1);
+                }
+                GridPane.setConstraints(searchNode, 0, 1)
 
-                setupGrid.getChildren().addAll(desc_setup_4_1, searchNode);
-                calculateSizes();
-                break;
+                setupGrid!!.children.addAll(desc_setup_4_1, searchNode)
+                calculateSizes()
+            }
 
             //select browser
-            case 2:
-                messageLabel.setText(LanguageController.getString("desc_setup_2_0"));
-                prevButton.setVisible(true);
-                nextButton.setDisable(true);
+            2 -> {
+                messageLabel!!.text = LanguageController.getString("desc_setup_2_0")
+                prevButton!!.isVisible = true
+                nextButton!!.isDisable = true
 
                 // create n button controls for ui.icons.browser selection
-                final ToggleGroup group = new ToggleGroup();
-                for (int i = 1; i <= nColumns; i++) {
+                val group = ToggleGroup()
+                var i = 1
+                while (i <= nColumns) {
                     // create a ToggleButton for choosing a browser.
-                    final ToggleButton browserChoice = new ToggleButton();
-                    browserChoice.setToggleGroup(group);
-                    browserChoice.setUserData(i);
-                    browserChoice.getStyleClass().add(getBrowserStyle(i));
+                    val browserChoice = ToggleButton()
+                    browserChoice.toggleGroup = group
+                    browserChoice.userData = i
+                    browserChoice.styleClass.add(getBrowserStyle(i))
 
                     // position the button in the grid.
-                    GridPane.setConstraints(browserChoice, i, 0);
-                    browserChoice.setMinSize(MIN_TILE_SIZE, MIN_TILE_SIZE);
-                    browserChoice.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                    setupGrid.getChildren().add(browserChoice);
+                    GridPane.setConstraints(browserChoice, i, 0)
+                    browserChoice.setMinSize(MIN_TILE_SIZE, MIN_TILE_SIZE)
+                    browserChoice.setMaxSize(java.lang.Double.MAX_VALUE, java.lang.Double.MAX_VALUE)
+                    setupGrid!!.children.add(browserChoice)
+                    i++
                 }
 
-                group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
-                    if (group.getSelectedToggle() != null) {
-                        switch ((int) group.getSelectedToggle().getUserData()) {
-                            case 1: PluginConfig.INSTANCE.setBotType(BotType.Bot.CHROME); break;
-                            case 2: PluginConfig.INSTANCE.setBotType(BotType.Bot.FIREFOX); break;
+                group.selectedToggleProperty().addListener { ov, old_toggle, new_toggle ->
+                    if (group.selectedToggle != null) {
+                        when (group.selectedToggle.userData as Int) {
+                            1 -> PluginConfig.botType = BotType.Bot.CHROME
+                            2 -> PluginConfig.botType = BotType.Bot.FIREFOX
                         }
-                        nextButton.setDisable(false);
+                        nextButton!!.isDisable = false
                     } else {
-                        PluginConfig.INSTANCE.setBotType(BotType.Bot.NONE);
-                        nextButton.setDisable(true);
+                        PluginConfig.botType = BotType.Bot.NONE
+                        nextButton!!.isDisable = true
                     }
-                });
-                calculateSizes();
-                break;
+                }
+                calculateSizes()
+            }
 
-//            //select driver location
-//            case 2:
-//                messageLabel.setText(LanguageController.getString("desc_setup_2_0"));
-//                prevButton.setVisible(true);
-//                nextButton.setDisable(true);
-//
-//                // create a ToggleButton for choosing a browser.
-//                final Button browserChoice = new Button(LanguageController.getString("search"));
-//                browserChoice.setOnAction(event -> {
-//                    DirectoryChooser directoryChooser = new DirectoryChooser();
-//                    directoryChooser.setInitialDirectory(BotConfig.getModulesDirFile());
-//                    File selectedDirectory = directoryChooser.showDialog(MainScene.mainScene.getWindowScene().getWindow());
-//
-//                    if (selectedDirectory != null) {
-//                        setupGrid.getChildren().clear();
-//                        Label text = new Label(selectedDirectory.getPath());
-//                        GridPane.setConstraints(text, 0, 0);
-//                        setupGrid.getChildren().add(text);
-//                        PluginConfig.driverPath = selectedDirectory.getPath();
-//                        nextButton.setDisable(false);
-//                    }
-//                });
-//
-//                final Button browserChoice1 = new Button(LanguageController.getString("download"));
-//                browserChoice1.setOnAction(event -> {
-//                    try {
-//                        switch (PluginConfig.botType) {
-//                            case CHROME: Desktop.getDesktop().browse(new URI(driverDownload[0])); break;
-//                            case FIREFOX: Desktop.getDesktop().browse(new URI(driverDownload[1])); break;
-//                        }
-//                    } catch (IOException | URISyntaxException e1) {
-//                        e1.printStackTrace();
-//                    }
-//                });
-//
-//                Label test = new Label(LanguageController.getString("desc_setup_2_1"));
-//                test.setAlignment(Pos.CENTER);
-//                GridPane.setConstraints(test, 0, 0);
-//
-//                Label test1 = new Label(LanguageController.getString("desc_setup_2_2"));
-//                test1.setAlignment(Pos.CENTER);
-//                GridPane.setConstraints(test1, 1, 0);
-//
-//
-//                // position the button in the grid.
-//                GridPane.setConstraints(browserChoice, 0, 1);
-//                GridPane.setConstraints(browserChoice1, 1, 1);
-//
-//                browserChoice.setMinSize(MIN_TILE_SIZE, MIN_TILE_SIZE);
-//                browserChoice.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-//                setupGrid.getChildren().addAll(test, browserChoice, test1, browserChoice1);
-//                calculateSizes();
-//                break;
+            //            //select driver location
+            //            case 2:
+            //                messageLabel.setText(LanguageController.getString("desc_setup_2_0"));
+            //                prevButton.setVisible(true);
+            //                nextButton.setDisable(true);
+            //
+            //                // create a ToggleButton for choosing a browser.
+            //                final Button browserChoice = new Button(LanguageController.getString("search"));
+            //                browserChoice.setOnAction(event -> {
+            //                    DirectoryChooser directoryChooser = new DirectoryChooser();
+            //                    directoryChooser.setInitialDirectory(BotConfig.getModulesDirFile());
+            //                    File selectedDirectory = directoryChooser.showDialog(MainScene.mainScene.getWindowScene().getWindow());
+            //
+            //                    if (selectedDirectory != null) {
+            //                        setupGrid.getChildren().clear();
+            //                        Label text = new Label(selectedDirectory.getPath());
+            //                        GridPane.setConstraints(text, 0, 0);
+            //                        setupGrid.getChildren().add(text);
+            //                        PluginConfig.driverPath = selectedDirectory.getPath();
+            //                        nextButton.setDisable(false);
+            //                    }
+            //                });
+            //
+            //                final Button browserChoice1 = new Button(LanguageController.getString("download"));
+            //                browserChoice1.setOnAction(event -> {
+            //                    try {
+            //                        switch (PluginConfig.botType) {
+            //                            case CHROME: Desktop.getDesktop().browse(new URI(driverDownload[0])); break;
+            //                            case FIREFOX: Desktop.getDesktop().browse(new URI(driverDownload[1])); break;
+            //                        }
+            //                    } catch (IOException | URISyntaxException e1) {
+            //                        e1.printStackTrace();
+            //                    }
+            //                });
+            //
+            //                Label test = new Label(LanguageController.getString("desc_setup_2_1"));
+            //                test.setAlignment(Pos.CENTER);
+            //                GridPane.setConstraints(test, 0, 0);
+            //
+            //                Label test1 = new Label(LanguageController.getString("desc_setup_2_2"));
+            //                test1.setAlignment(Pos.CENTER);
+            //                GridPane.setConstraints(test1, 1, 0);
+            //
+            //
+            //                // position the button in the grid.
+            //                GridPane.setConstraints(browserChoice, 0, 1);
+            //                GridPane.setConstraints(browserChoice1, 1, 1);
+            //
+            //                browserChoice.setMinSize(MIN_TILE_SIZE, MIN_TILE_SIZE);
+            //                browserChoice.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            //                setupGrid.getChildren().addAll(test, browserChoice, test1, browserChoice1);
+            //                calculateSizes();
+            //                break;
 
             //set profile name
-            case 3:
-                messageLabel.setText(LanguageController.getString("desc_setup_3_0"));
-                nextButton.setDisable(true);
+            3 -> {
+                messageLabel!!.text = LanguageController.getString("desc_setup_3_0")
+                nextButton!!.isDisable = true
 
-                Label testt = new Label(LanguageController.getString("desc_setup_3_1"));
-                testt.setAlignment(Pos.CENTER);
-                testt.setMaxHeight(50);
-                GridPane.setConstraints(testt, 0, 0);
+                val testt = Label(LanguageController.getString("desc_setup_3_1"))
+                testt.alignment = Pos.CENTER
+                testt.maxHeight = 50.0
+                GridPane.setConstraints(testt, 0, 0)
 
-                TextField profileNameTextField = new TextField();
-                profileNameTextField.setMaxHeight(50);
-                profileNameTextField.setAlignment(Pos.CENTER);
+                val profileNameTextField = TextField()
+                profileNameTextField.maxHeight = 50.0
+                profileNameTextField.alignment = Pos.CENTER
 
-                profileNameTextField.setOnKeyReleased(ke -> {
-                    if (!profileNameTextField.getText().isEmpty()) {
-                        nextButton.setDisable(false);
-                        PluginConfig.INSTANCE.setBrowserProfileName(profileNameTextField.getText());
-                        if (ke.getCode().equals(KeyCode.ENTER)) {
-                            nextButton.fire();
+                profileNameTextField.setOnKeyReleased { ke ->
+                    if (!profileNameTextField.text.isEmpty()) {
+                        nextButton!!.isDisable = false
+                        PluginConfig.browserProfileName = profileNameTextField.text
+                        if (ke.code == KeyCode.ENTER) {
+                            nextButton!!.fire()
                         }
                     } else {
-                        nextButton.setDisable(true);
+                        nextButton!!.isDisable = true
                     }
-                });
-                GridPane.setConstraints(profileNameTextField, 0, 1);
+                }
+                GridPane.setConstraints(profileNameTextField, 0, 1)
 
 
-//                ComboBox<BotType.Bot> typeField = new ComboBox<>();
-//                typeField.getItems().setAll(BotType.Bot.values());
-//                typeField.setMaxHeight(50);
-//                GridPane.setConstraints(profileNameTextField, 0, 2);
+                //                ComboBox<BotType.Bot> typeField = new ComboBox<>();
+                //                typeField.getItems().setAll(BotType.Bot.values());
+                //                typeField.setMaxHeight(50);
+                //                GridPane.setConstraints(profileNameTextField, 0, 2);
 
-                setupGrid.getChildren().addAll(testt, profileNameTextField);
-                calculateSizes();
-                break;
+                setupGrid!!.children.addAll(testt, profileNameTextField)
+                calculateSizes()
+            }
 
             //set chrome config directory
-            case 4:
-                messageLabel.setText(LanguageController.getString("desc_setup_4_0"));
-                prevButton.setVisible(true);
-                nextButton.setDisable(true);
+            4 -> {
+                messageLabel!!.text = LanguageController.getString("desc_setup_4_0")
+                prevButton!!.isVisible = true
+                nextButton!!.isDisable = true
 
-                Label testt2 = new Label(LanguageController.getString("desc_setup_4_1"));
-                testt2.setAlignment(Pos.CENTER);
-                testt2.setMaxHeight(100);
-                GridPane.setConstraints(testt2, 0, 0);
+                val testt2 = Label(LanguageController.getString("desc_setup_4_1"))
+                testt2.alignment = Pos.CENTER
+                testt2.maxHeight = 100.0
+                GridPane.setConstraints(testt2, 0, 0)
 
-                Button searchChrome = new Button(LanguageController.getString("search"));
-                searchChrome.setMaxHeight(100);
-                searchChrome.setAlignment(Pos.CENTER);
-                searchChrome.setOnAction(event -> {
-                    DirectoryChooser directoryChooser = new DirectoryChooser();
-                    File selectedDirectory = directoryChooser.showDialog(MainScene.Companion.getMainScene().getWindowScene().getWindow());
+                val searchChrome = Button(LanguageController.getString("search"))
+                searchChrome.maxHeight = 100.0
+                searchChrome.alignment = Pos.CENTER
+                searchChrome.setOnAction { event ->
+                    val directoryChooser = DirectoryChooser()
+                    val selectedDirectory = directoryChooser.showDialog(MainScene.mainScene.windowScene!!.window)
 
                     if (selectedDirectory != null) {
-                        setupGrid.getChildren().clear();
-                        Label text = new Label(selectedDirectory.getPath());
-                        GridPane.setConstraints(text, 0, 0);
-                        setupGrid.getChildren().add(text);
-                        PluginConfig.INSTANCE.setChromeConfigDirectory(selectedDirectory.getPath());
-                        nextButton.setDisable(false);
+                        setupGrid!!.children.clear()
+                        val text = Label(selectedDirectory.path)
+                        GridPane.setConstraints(text, 0, 0)
+                        setupGrid!!.children.add(text)
+                        PluginConfig.chromeConfigDirectory = selectedDirectory.path
+                        nextButton!!.isDisable = false
                     }
-                });
-                GridPane.setConstraints(searchChrome, 0, 1);
+                }
+                GridPane.setConstraints(searchChrome, 0, 1)
 
-                setupGrid.getChildren().addAll(testt2, searchChrome);
-                calculateSizes();
-                nextButton.setText(LanguageController.getString("finish"));
-                break;
+                setupGrid!!.children.addAll(testt2, searchChrome)
+                calculateSizes()
+                nextButton!!.text = LanguageController.getString("finish")
+            }
 
-            case 5:
-                writeBrowserSetting(); //save browser selection
-                Configuration.config.saveProperties(PluginConfig.class);
-                Configuration.config.saveProperties(BotConfig.class);
-                MainScene.Companion.getMainScene().getBorderPane().setCenter(null);
-                MainLayout layout = new MainLayout();
-                MainScene.Companion.getMainScene().getBorderPane().setTop(layout.getLaunchNode());
-                break;
+            5 -> {
+                writeBrowserSetting() //save browser selection
+                Configuration.config.saveProperties(PluginConfig::class.java)
+                Configuration.config.saveProperties(BotConfig::class.java)
+                MainScene.mainScene.borderPane.center = null
+                val layout = MainLayout()
+                MainScene.mainScene.borderPane.top = layout.launchNode
+            }
         }
     }
 
-    private String getBrowserStyle(int styleType) {
-        switch (styleType) {
-            case 1:
-                return "logo-button-chrome";
-            case 2:
-                return "logo-button-firefox";
-            default: return "";
-        }
-    }
-    private void calculateSizes() {
-        for (Node child : setupGrid.getChildren()) {
-            Control tile = (Control) child;
-            final double margin = prefTileSize.get() / 15;
-            tile.setPrefSize(prefTileSize.get(), prefTileSize.get());
-            GridPane.setMargin(child, new Insets(margin));
+    private fun getBrowserStyle(styleType: Int): String {
+        when (styleType) {
+            1 -> return "logo-button-chrome"
+            2 -> return "logo-button-firefox"
+            else -> return ""
         }
     }
 
-    private void writeBrowserSetting() {
-        final JSONObject[] deviceJson = {JsonParser.readJsonFromFile(new File(BotConfig.INSTANCE.getModulesDirFile() + File.separator + "devices" + File.separator + PluginConfig.INSTANCE.getBotType().getDisplayableType().toLowerCase() + ".json"))};
+    private fun calculateSizes() {
+        for (child in setupGrid!!.children) {
+            val tile = child as Control
+            val margin = prefTileSize.get() / 15
+            tile.setPrefSize(prefTileSize.get(), prefTileSize.get())
+            GridPane.setMargin(child, Insets(margin))
+        }
+    }
+
+    private fun writeBrowserSetting() {
+        val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.modulesDirFile.toString() + File.separator + "devices" + File.separator + PluginConfig.botType!!.getDisplayableType().toLowerCase() + ".json")))
         if (deviceJson[0] == null) {
-            deviceJson[0] = new JSONObject();
-            deviceJson[0].put("browser", PluginConfig.INSTANCE.getBotType());
+            deviceJson[0] = JSONObject()
+            deviceJson[0].put("browser", PluginConfig.botType)
         } else {
-            deviceJson[0].put("browser", PluginConfig.INSTANCE.getBotType());
+            deviceJson[0].put("browser", PluginConfig.botType)
         }
-        JsonParser.writeJsonObjectToFile(deviceJson[0], new File(BotConfig.INSTANCE.getModulesDirFile() + File.separator + "devices"), PluginConfig.INSTANCE.getBotType().getDisplayableType().toLowerCase() + ".json");
+        JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.modulesDirFile.toString() + File.separator + "devices"), PluginConfig.botType!!.getDisplayableType().toLowerCase() + ".json")
     }
- }
+}
 

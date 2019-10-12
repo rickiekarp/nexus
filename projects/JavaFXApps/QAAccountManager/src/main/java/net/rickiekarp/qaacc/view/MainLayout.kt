@@ -340,7 +340,7 @@ class MainLayout : AppLayout {
     }
 
     private fun debugMain() {
-        if (DebugHelper.isDebugVersion()) {
+        if (DebugHelper.isDebugVersion) {
             inputGrid!!.style = "-fx-background-color: #155ff9;"
             outputGrid!!.style = "-fx-background-color: #536699;"
             controls!!.style = "-fx-background-color: #336699;"

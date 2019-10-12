@@ -93,7 +93,7 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         closeProperty = SimpleBooleanProperty(false)
         closeProperty!!.addListener { ov, t, t1 -> controller!!.close() }
 
-        sideBarHeightProperty = SimpleDoubleProperty(stag.stage.height)
+        sideBarHeightProperty = SimpleDoubleProperty(stag.stage!!.height)
 
         // The controller
         controller = WindowController(this)
@@ -124,8 +124,8 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
 
         // UI part of the decoration
         val vbox = VBox()
-        stageDecoration = getStageDecoration(stag.stage, stag.stage.title, windowType)
-        controller!!.setAsStageDraggable(stag.stage, stageDecoration!!)
+        stageDecoration = getStageDecoration(stag.stage!!, stag.stage!!.title, windowType)
+        controller!!.setAsStageDraggable(stag.stage!!, stageDecoration!!)
 
         val contentStack = StackPane(clientArea)
         VBox.setVgrow(contentStack, Priority.ALWAYS)
@@ -140,13 +140,13 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
                 //create fadeIn/fadeOut transitions
                 AnimationHandler.stackFadeIn = AnimationHandler.fade(blurPane, 200, 0.0, 0.8)
                 AnimationHandler.stackFadeOut = AnimationHandler.fade(blurPane, 200, 0.8, 0.0)
-                AnimationHandler.stackFadeOut.setOnFinished { event -> blurPane.isVisible = false }
+                AnimationHandler.stackFadeOut!!.setOnFinished { event -> blurPane.isVisible = false }
 
                 //add slide handler for sidebar
-                AnimationHandler.addSlideHandlers(stag.stage.width)
+                AnimationHandler.addSlideHandlers(stag.stage!!.width)
 
                 //get Menu content
-                val menuView = getMenu(stag.stage.height)
+                val menuView = getMenu(stag.stage!!.height)
 
                 contentStack.children.addAll(blurPane, menuView)
             }
@@ -162,7 +162,7 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         resizeRect!!.strokeWidth = RESIZE_PADDING.toDouble()
         resizeRect!!.strokeType = StrokeType.INSIDE
         resizeRect!!.stroke = Configuration.decorationColor
-        controller!!.setStageResizableWith(stag.stage, resizeRect!!, RESIZE_PADDING, SHADOW_WIDTH)
+        controller!!.setStageResizableWith(stag.stage!!, resizeRect!!, RESIZE_PADDING, SHADOW_WIDTH)
 
         buildDockFeedbackStage()
 
@@ -175,12 +175,12 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         /*
          * Focused stage
          */
-        stag.stage.focusedProperty().addListener { ov, t, t1 -> setShadowFocused(t1!!) }
+        stag.stage!!.focusedProperty().addListener { ov, t, t1 -> setShadowFocused(t1!!) }
 
         val primaryScreenBounds = Screen.getPrimary().visualBounds
 
-        clientArea.setMinSize(stag.stage.minWidth - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble(), stag.stage.minHeight - TITLEBAR_HEIGHT.toDouble() - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble())
-        clientArea.setPrefSize(stag.stage.width, stag.stage.height - (SHADOW_WIDTH * 2).toDouble() - TITLEBAR_HEIGHT.toDouble() - (RESIZE_PADDING * 2).toDouble())
+        clientArea.setMinSize(stag.stage!!.minWidth - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble(), stag.stage!!.minHeight - TITLEBAR_HEIGHT.toDouble() - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble())
+        clientArea.setPrefSize(stag.stage!!.width, stag.stage!!.height - (SHADOW_WIDTH * 2).toDouble() - TITLEBAR_HEIGHT.toDouble() - (RESIZE_PADDING * 2).toDouble())
         clientArea.setMaxSize(primaryScreenBounds.width - RESIZE_PADDING * 2, primaryScreenBounds.height - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble())
     }
 
@@ -398,7 +398,7 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         anchor.children.add(console)
 
         // set debug colors
-        if (DebugHelper.isDebugVersion()) {
+        if (DebugHelper.isDebugVersion) {
             anchor.style = "-fx-background-color: gray;"
         } else {
             anchor.style = "-fx-background-color: #1d1d1d;-fx-focus-color: $colorTheme;"
@@ -432,10 +432,10 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         isMenuOpen = !isMenuOpen
         if (isMenuOpen) {
             AnimationHandler.slideOut.stop()
-            AnimationHandler.stackFadeOut.stop()
+            AnimationHandler.stackFadeOut!!.stop()
 
-            AnimationHandler.stackFadeIn.node.isVisible = true
-            AnimationHandler.stackFadeIn.play()
+            AnimationHandler.stackFadeIn!!.node.isVisible = true
+            AnimationHandler.stackFadeIn!!.play()
 
             AnimationHandler.menuBtnAnim.rate = 1.0
             AnimationHandler.menuBtnAnim.play()
@@ -444,9 +444,9 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
             console!!.requestFocus()
         } else {
             AnimationHandler.slideIn.stop()
-            AnimationHandler.stackFadeIn.stop()
+            AnimationHandler.stackFadeIn!!.stop()
 
-            AnimationHandler.stackFadeOut.play()
+            AnimationHandler.stackFadeOut!!.play()
 
             AnimationHandler.menuBtnAnim.rate = -1.0
             AnimationHandler.menuBtnAnim.playFrom("end")

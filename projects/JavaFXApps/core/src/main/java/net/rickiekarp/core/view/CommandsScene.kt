@@ -52,7 +52,7 @@ class CommandsScene {
         column2.percentWidth = 45.0
         grid.columnConstraints.addAll(column1, column2)
 
-        if (DebugHelper.isDebugVersion()) {
+        if (DebugHelper.isDebugVersion) {
             grid.style = "-fx-background-color: gray;"
             grid.isGridLinesVisible = true
             controls.style = "-fx-background-color: #336699;"

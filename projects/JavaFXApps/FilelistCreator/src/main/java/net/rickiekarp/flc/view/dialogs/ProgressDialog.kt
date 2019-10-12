@@ -73,7 +73,7 @@ class ProgressDialog : Stage() {
 
         LogFileHandler.logger.info("open.progressDialog")
 
-        if (DebugHelper.isDebugVersion()) {
+        if (DebugHelper.isDebugVersion) {
             vbox.style = "-fx-background-color: gray"
             controls.style = "-fx-background-color: #444444;"
         }

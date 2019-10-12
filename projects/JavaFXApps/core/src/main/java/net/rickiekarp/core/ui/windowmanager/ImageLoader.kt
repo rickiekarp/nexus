@@ -1,40 +1,40 @@
-package net.rickiekarp.core.ui.windowmanager;
+package net.rickiekarp.core.ui.windowmanager
 
-import javafx.scene.image.Image;
+import javafx.scene.image.Image
 
-public class ImageLoader {
-    private static Image appIcon;
-    private static Image appIconSmall;
-    private static Image menu;
-    private static Image menuHover;
+object ImageLoader {
+    private var appIcon: Image? = null
+    private var appIconSmall: Image? = null
+    private var menu: Image? = null
+    private var menuHover: Image? = null
 
-    public static Image getAppIcon() {
+    fun getAppIcon(): Image? {
         if (appIcon == null) {
-            appIcon = new Image("ui/icons/app_icon_big.png");
+            appIcon = Image("ui/icons/app_icon_big.png")
         }
-        return appIcon;
+        return appIcon
     }
 
-    public static Image getAppIconSmall() {
+    fun getAppIconSmall(): Image? {
         if (appIconSmall == null) {
-            appIconSmall = new Image("ui/icons/app_icon_small.png");
+            appIconSmall = Image("ui/icons/app_icon_small.png")
         }
-        return appIconSmall;
+        return appIconSmall
     }
 
-    static Image getMenu(ClassLoader loader) {
+    internal fun getMenu(loader: ClassLoader): Image? {
         if (menu == null) {
-            menu = new Image(String.valueOf(loader.getResource("components/titlebar/menu.png")));
+            menu = Image(loader.getResource("components/titlebar/menu.png").toString())
         }
-        System.out.println(menu);
-        return menu;
+        println(menu)
+        return menu
     }
 
-    static Image getMenuHover(ClassLoader loader) {
+    internal fun getMenuHover(loader: ClassLoader): Image? {
         if (menuHover == null) {
-            menuHover = new Image(String.valueOf(loader.getResource("components/titlebar/menu-hover.png")));
+            menuHover = Image(loader.getResource("components/titlebar/menu-hover.png").toString())
         }
-        System.out.println(menuHover);
-        return menuHover;
+        println(menuHover)
+        return menuHover
     }
 }

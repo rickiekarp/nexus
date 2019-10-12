@@ -1,31 +1,24 @@
-package net.rickiekarp.core.ui.windowmanager;
+package net.rickiekarp.core.ui.windowmanager
 
-import javafx.stage.Stage;
+import javafx.stage.Stage
 
-public class WindowStage {
-    private Stage stage;
-    private String identifier;
+class WindowStage {
+    var stage: Stage
+        private set
+    var identifier: String? = null
+        private set
 
-    public WindowStage(String identifier) {
-        this.stage = new Stage();
-        this.identifier = identifier;
+    constructor(identifier: String) {
+        this.stage = Stage()
+        this.identifier = identifier
     }
 
-    public WindowStage(String identifier, Stage stage) {
-        this.stage = stage;
-        this.identifier = identifier;
+    constructor(identifier: String, stage: Stage) {
+        this.stage = stage
+        this.identifier = identifier
     }
 
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    @Override
-    public String toString() {
-        return identifier + " - " + stage;
+    override fun toString(): String {
+        return "$identifier - $stage"
     }
 }

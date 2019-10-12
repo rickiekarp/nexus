@@ -372,7 +372,7 @@ class MainLayout : AppLayout {
         fillFileFormatList()
 
         //debug colors
-        if (DebugHelper.isDebugVersion()) {
+        if (DebugHelper.isDebugVersion) {
             controls.style = "-fx-background-color: #336699;"
             fileGrid.style = "-fx-background-color: #555555"
             settingsGrid.style = "-fx-background-color: #444444"

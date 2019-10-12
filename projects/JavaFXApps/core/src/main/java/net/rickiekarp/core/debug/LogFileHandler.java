@@ -58,7 +58,7 @@ public class LogFileHandler {
         if (Configuration.logState) { onLogStateChange(); }
 
         //shows logging in the console if DEBUGVERSION = true
-        if (DebugHelper.DEBUGVERSION) {
+        if (DebugHelper.INSTANCE.getDEBUGVERSION()) {
             ConsoleHandler ch = new ConsoleHandler();
             ch.setLevel(logLevel);
             ch.setFormatter(formatter);
@@ -79,7 +79,7 @@ public class LogFileHandler {
             try {
                 fh = new FileHandler(Configuration.config.getLogsDirFile().getPath() + File.separator + getLogFileName());
             } catch (IOException e1) {
-                if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
+                if (DebugHelper.INSTANCE.getDEBUGVERSION()) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
             }
             fh.setLevel(logLevel);
             fh.setFormatter(formatter);
@@ -141,7 +141,7 @@ public class LogFileHandler {
             logData.forEach(ps::print);
             ps.close();
         } catch (FileNotFoundException e1) {
-            if (DebugHelper.DEBUGVERSION) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
+            if (DebugHelper.INSTANCE.getDEBUGVERSION()) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
         }
         logData.clear();
     }

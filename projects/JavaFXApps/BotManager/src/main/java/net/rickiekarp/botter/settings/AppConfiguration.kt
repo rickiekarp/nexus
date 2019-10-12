@@ -1,7 +1,6 @@
-package net.rickiekarp.botter.settings;
+package net.rickiekarp.botter.settings
 
-public class AppConfiguration {
-
-    public static boolean canBotRunPeriodical;
-    public static int runInterval = 30; //min
+object AppConfiguration {
+    var canBotRunPeriodical: Boolean = false
+    var runInterval = 30 //min
 }

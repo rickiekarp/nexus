@@ -538,7 +538,7 @@ class MainLayout : AppLayout {
             if (botTask != null) {
                 botTask!!.resetTimer()
             }
-            botTask = BotTask(botLauncher, modCBox.selectionModel.selectedItem)
+            botTask = BotTask(botLauncher!!, modCBox.selectionModel.selectedItem)
         }
 
         stopBtn.setOnAction { event ->

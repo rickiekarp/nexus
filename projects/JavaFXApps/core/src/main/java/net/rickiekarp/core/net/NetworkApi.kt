@@ -1,61 +1,66 @@
-package net.rickiekarp.core.net;
+package net.rickiekarp.core.net
 
-import net.rickiekarp.core.AppContext;
-import net.rickiekarp.core.account.Account;
-import net.rickiekarp.core.net.provider.NetworkParameterProvider;
-import okhttp3.Response;
+import net.rickiekarp.core.AppContext
+import net.rickiekarp.core.account.Account
+import net.rickiekarp.core.net.provider.NetworkParameterProvider
+import okhttp3.Response
 
-import java.io.InputStream;
+import java.io.InputStream
 
-public class NetworkApi {
-    protected static String ACCOUNT_DOMAIN = "account";
-    protected static String INFO_DOMAIN = "info";
-    private static String TOKEN_ACTION = "authorize";
-    private static String REGISTER_ACTION = "create";
-    private static String LOGIN_ACTION = "login";
-    private static String UPDATE_ACTION = "update";
-    private static String CHANGELOG_ACTION = "changelog";
+open class NetworkApi {
+    private val mConnectionHandler: ConnectionHandler
 
-    private final ConnectionHandler mConnectionHandler;
-    public NetworkApi() {
-        mConnectionHandler = new ConnectionHandler();
-    }
-    public InputStream runNetworkAction(final NetworkAction networkAction) {
-        return mConnectionHandler.requestInputStream(networkAction);
-    }
-    public Response requestResponse(final NetworkAction networkAction) {
-        return mConnectionHandler.request(networkAction);
+    init {
+        mConnectionHandler = ConnectionHandler()
     }
 
-    public static NetworkAction requestAccessToken(Account account) {
-        NetworkParameterProvider provider = NetworkParameterProvider.Companion.create();
-        provider.put("username", account.getUser());
-        provider.put("password", account.getPassword());
-        return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(TOKEN_ACTION).setParameters(provider).setMethod("POST").build();
+    fun runNetworkAction(networkAction: NetworkAction): InputStream? {
+        return mConnectionHandler.requestInputStream(networkAction)
     }
 
-
-    public static NetworkAction requestLoginData() {
-        return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(LOGIN_ACTION).setMethod("POST").build();
+    fun requestResponse(networkAction: NetworkAction): Response? {
+        return mConnectionHandler.request(networkAction)
     }
 
-    public static NetworkAction requestCreateAccount(Account account) {
-        NetworkParameterProvider provider = NetworkParameterProvider.Companion.create();
-        provider.put("username", account.getUser());
-        provider.put("password", account.getPassword());
-        return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(REGISTER_ACTION).setParameters(provider).setMethod("POST").build();
-    }
+    companion object {
+        protected var ACCOUNT_DOMAIN = "account"
+        protected var INFO_DOMAIN = "info"
+        private val TOKEN_ACTION = "authorize"
+        private val REGISTER_ACTION = "create"
+        private val LOGIN_ACTION = "login"
+        private val UPDATE_ACTION = "update"
+        private val CHANGELOG_ACTION = "changelog"
 
-    public static NetworkAction requestVersionInfo(int updateChannel) {
-        NetworkParameterProvider provider = NetworkParameterProvider.Companion.create();
-        provider.put("identifier", AppContext.getContext().getContextIdentifier());
-        provider.put("channel", updateChannel);
-        return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(INFO_DOMAIN).setAction(UPDATE_ACTION).setParameters(provider).setMethod("GET").build();
-    }
+        fun requestAccessToken(account: Account): NetworkAction {
+            val provider = NetworkParameterProvider.create()
+            provider.put("username", account.user)
+            provider.put("password", account.password)
+            return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(TOKEN_ACTION).setParameters(provider).setMethod("POST").build()
+        }
 
-    public static NetworkAction requestChangelog() {
-        NetworkParameterProvider provider = NetworkParameterProvider.Companion.create();
-        provider.put("identifier", AppContext.getContext().getContextIdentifier());
-        return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(INFO_DOMAIN).setAction(CHANGELOG_ACTION).setParameters(provider).setMethod("GET").build();
+
+        fun requestLoginData(): NetworkAction {
+            return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(LOGIN_ACTION).setMethod("POST").build()
+        }
+
+        fun requestCreateAccount(account: Account): NetworkAction {
+            val provider = NetworkParameterProvider.create()
+            provider.put("username", account.user)
+            provider.put("password", account.password)
+            return NetworkAction.Builder.create().setHost(NetworkAction.LOGINSERVER).setDomain(ACCOUNT_DOMAIN).setAction(REGISTER_ACTION).setParameters(provider).setMethod("POST").build()
+        }
+
+        fun requestVersionInfo(updateChannel: Int): NetworkAction {
+            val provider = NetworkParameterProvider.create()
+            provider.put("identifier", AppContext.getContext().contextIdentifier)
+            provider.put("channel", updateChannel)
+            return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(INFO_DOMAIN).setAction(UPDATE_ACTION).setParameters(provider).setMethod("GET").build()
+        }
+
+        fun requestChangelog(): NetworkAction {
+            val provider = NetworkParameterProvider.create()
+            provider.put("identifier", AppContext.getContext().contextIdentifier)
+            return NetworkAction.Builder.create().setHost(NetworkAction.DATASERVER).setDomain(INFO_DOMAIN).setAction(CHANGELOG_ACTION).setParameters(provider).setMethod("GET").build()
+        }
     }
 }
