@@ -360,10 +360,10 @@ class MainLayout : AppLayout {
 
             if (file != null) {
                 FilelistController.flController!!.saveToFile(file, fileformatIDx)
-                AnimationHandler.statusFade(status, "success", LanguageController.getString("save_filelist_success"))
+                AnimationHandler.statusFade(status!!, "success", LanguageController.getString("save_filelist_success"))
                 LogFileHandler.logger.info("save.filelist:Success")
             } else {
-                AnimationHandler.statusFade(status, "neutral", LanguageController.getString("save_filelist_fail"))
+                AnimationHandler.statusFade(status!!, "neutral", LanguageController.getString("save_filelist_fail"))
                 LogFileHandler.logger.info("save.filelist:Fail")
             }
         }
@@ -485,7 +485,7 @@ class MainLayout : AppLayout {
      * Sets a status text in the MainScene
      */
     fun setStatus(type: String, msg: String) {
-        AnimationHandler.statusFade(status, type, msg)
+        AnimationHandler.statusFade(status!!, type, msg)
     }
 
     /**
