@@ -32,22 +32,22 @@ public class AppStarter extends Application {
         AppContext.create(mainClazz.getPackage().getName());
 
         //load config file
-        Configuration.config = new Configuration("config.xml", mainClazz);
-        isConfigLoaded = Configuration.config.load();
+        Configuration.Companion.setConfig(new Configuration("config.xml", mainClazz));
+        isConfigLoaded = Configuration.Companion.getConfig().load();
         if (isConfigLoaded) {
             //load additional application related configuration
-            Configuration.config.loadProperties(configClazz);
+            Configuration.Companion.getConfig().loadProperties(configClazz);
 
             //log properties of current program state0
             DebugHelper.INSTANCE.logProperties();
         } else {
             //if the config file can not be created, set settings anyway
-            Configuration.language = LoadSave.language;
+            Configuration.Companion.setLanguage(LoadSave.Companion.getLanguage());
             LanguageController.setCurrentLocale();
         }
 
         //load language properties file
-        LanguageController.loadLangFile(mainClazz.getClassLoader().getResourceAsStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties"));
+        LanguageController.loadLangFile(mainClazz.getClassLoader().getResourceAsStream("language_packs/language_" + Configuration.Companion.getCURRENT_LOCALE() + ".properties"));
 
         //set the default exception handler
         if (!DebugHelper.INSTANCE.getDEBUGVERSION()) {
@@ -69,7 +69,7 @@ public class AppStarter extends Application {
         node.postInit();
 
         //post launch settings
-        if (Configuration.showTrayIcon) {
+        if (Configuration.Companion.getShowTrayIcon()) {
             new ToolTrayIcon();
         }
 

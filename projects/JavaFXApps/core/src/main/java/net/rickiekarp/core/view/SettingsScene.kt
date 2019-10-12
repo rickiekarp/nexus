@@ -616,7 +616,7 @@ class SettingsScene {
                 SettingsList("decorationColor", ThemeSelector.getColorHexString(Configuration.decorationColor), "set window decoration color"),
                 SettingsList("shadowColorFocused", ThemeSelector.getColorHexString(Configuration.shadowColorFocused), "set shadow color when window focused"),
                 SettingsList("shadowColorNotFocused", ThemeSelector.getColorHexString(Configuration.shadowColorNotFocused), "set shadow color when window not focused"),
-                SettingsList("tabPosition", Configuration.tabPosition.name, "set tab position in Settings window")
+                SettingsList("tabPosition", Configuration.tabPosition!!.name, "set tab position in Settings window")
         )
     }
 

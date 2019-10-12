@@ -7,9 +7,7 @@ import net.rickiekarp.core.util.CommonUtil
 import net.rickiekarp.qaacc.model.Account
 import net.rickiekarp.qaacc.model.Projects
 import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import org.w3c.dom.Node
-import org.w3c.dom.NodeList
 
 object AppConfiguration {
 
@@ -62,7 +60,7 @@ object AppConfiguration {
     }
 
     fun readProjectData() {
-        val projList = Configuration.config.settingsXmlFactory.getNodeList("project")
+        val projList = Configuration.config.settingsXmlFactory!!.getNodeList("project")
 
         if (projList!!.length == 0) {
             for (i in projects.indices) {

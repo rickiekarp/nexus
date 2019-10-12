@@ -1,294 +1,277 @@
-package net.rickiekarp.core.settings;
+package net.rickiekarp.core.settings
 
-import net.rickiekarp.core.AppContext;
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.core.ui.windowmanager.ThemeSelector;
-import net.rickiekarp.core.ui.windowmanager.Window;
-import net.rickiekarp.core.util.CommonUtil;
-import net.rickiekarp.core.util.FileUtil;
-import javafx.geometry.Side;
-import javafx.scene.paint.Color;
-import net.rickiekarp.core.view.SettingsScene;
+import net.rickiekarp.core.AppContext
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.core.ui.windowmanager.ThemeSelector
+import net.rickiekarp.core.ui.windowmanager.Window
+import net.rickiekarp.core.util.CommonUtil
+import net.rickiekarp.core.util.FileUtil
+import javafx.geometry.Side
+import javafx.scene.paint.Color
+import net.rickiekarp.core.view.SettingsScene
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.URISyntaxException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
+import java.io.File
+import java.io.IOException
+import java.lang.reflect.Field
+import java.net.URISyntaxException
+import java.util.LinkedList
+import java.util.Locale
+import java.util.jar.JarFile
 
 /**
  * Contains general application information (Name, Version etc.)
  */
-public class Configuration {
-    public static Configuration config;
-    private SettingsXmlFactory cfgXmlFactory;
-    public SettingsXmlFactory getSettingsXmlFactory() { return cfgXmlFactory; }
+class Configuration
+/**
+ * Initialize configuration.
+ * @param fileName the filename
+ */
+(
+        /** config file  */
+        internal val configFileName: String, clazz: Class<*>) {
+    var settingsXmlFactory: SettingsXmlFactory? = null
+        private set
 
-    /** settings **/
-    @LoadSave
-    public static String host;
-    @LoadSave
-    public static int updateChannel;
-    @LoadSave
-    public static int language;
-    @LoadSave
-    public static int themeState;
-    @LoadSave
-    public static int colorScheme;
-    @LoadSave
-    public static boolean animations;
-    @LoadSave
-    public static boolean useSystemBorders;
-    @LoadSave
-    public static boolean logState;
-    @LoadSave
-    public static boolean showTrayIcon;
+    /** Jar location  */
+    lateinit var jarFile: File
+        private set
+    val configDirFile: File
+        get() = File(jarFile.parentFile.toString() + File.separator + "data")
+    val profileDirFile: File
+        get() = File(jarFile.parentFile.toString() + File.separator + "data" + File.separator + "profiles")
+    val pluginDirFile: File
+        get() = File(configDirFile.toString() + File.separator + "plugins")
+    val logsDirFile: File
+        get() = File(jarFile.parentFile.toString() + File.separator + "logs" + File.separator + CommonUtil.getTime("yyyy-MM-dd"))
+    val updatesDirFile: File
+        get() = File(configDirFile.toString() + File.separator + "update")
 
-    /** advanced settings **/
-    @LoadSave
-    public static boolean debugState;
-    @LoadSave
-    public static Color decorationColor;
-    @LoadSave
-    public static Color shadowColorFocused;
-    @LoadSave
-    public static Color shadowColorNotFocused;
-    @LoadSave
-    public static Side tabPosition;
-
-    /** locale **/
-    public static Locale CURRENT_LOCALE;
-
-    /** Jar location **/
-    private File jarFile;
-    public File getJarFile() {
-        return jarFile;
-    }
-    public File getConfigDirFile() {
-        return new File(getJarFile().getParentFile() + File.separator + "data");
-    }
-    public File getProfileDirFile() {
-        return new File(getJarFile().getParentFile() + File.separator + "data" + File.separator + "profiles");
-    }
-    public File getPluginDirFile() {
-        return new File(getConfigDirFile() + File.separator + "plugins");
-    }
-    public File getLogsDirFile() {
-        return new File(getJarFile().getParentFile() + File.separator + "logs" + File.separator + CommonUtil.getTime("yyyy-MM-dd"));
-    }
-    public File getUpdatesDirFile() {
-        return new File(getConfigDirFile() + File.separator + "update");
-    }
-
-    /** config file **/
-    private String fileName;
-    String getConfigFileName() {
-        return fileName;
-    }
-
-    /**
-     * Initialize configuration.
-     * @param fileName the filename
-     */
-    public Configuration(String fileName, Class clazz) {
-        this.fileName = fileName;
+    init {
 
         try {
-            jarFile = new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+            jarFile = File(clazz.protectionDomain.codeSource.location.toURI().path)
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
         }
 
         //set internal version number
         try {
-            Manifest manifest = new JarFile(jarFile.getPath()).getManifest();
-            AppContext.getContext().setInternalVersion(FileUtil.readManifestProperty(manifest, "Build-Time"));
-        } catch (IOException e) {
-            AppContext.getContext().setInternalVersion(CommonUtil.getDate("yyMMddHHmm"));
+            val manifest = JarFile(jarFile!!.path).manifest
+            AppContext.getContext().internalVersion = FileUtil.readManifestProperty(manifest, "Build-Time")
+        } catch (e: IOException) {
+            AppContext.getContext().internalVersion = CommonUtil.getDate("yyMMddHHmm")
         }
+
     }
 
     /**
      * Try to load the configuration file.
      */
-    public boolean load() {
+    fun load(): Boolean {
 
         //instantiate SettingsXmlFactory
-        cfgXmlFactory = new SettingsXmlFactory();
+        settingsXmlFactory = SettingsXmlFactory()
 
         //check if config file exists
-        if (!new File(config.getConfigDirFile() + File.separator + fileName).exists()) {
-            boolean isDirectoryCreated = Configuration.config.getConfigDirFile().exists();
+        if (!File(config.configDirFile.toString() + File.separator + configFileName).exists()) {
+            var isDirectoryCreated = Configuration.config.configDirFile.exists()
             if (!isDirectoryCreated) {
-                isDirectoryCreated = Configuration.config.getConfigDirFile().mkdir();
+                isDirectoryCreated = Configuration.config.configDirFile.mkdir()
             }
             if (isDirectoryCreated) {
-                cfgXmlFactory.createConfigXML();
+                settingsXmlFactory!!.createConfigXML()
             } else {
-                return false;
+                return false
             }
         }
-        loadProperties(this.getClass());
+        loadProperties(this.javaClass)
 
         //set current Locale
-        LanguageController.setCurrentLocale();
+        LanguageController.setCurrentLocale()
 
         //sets up the logger
-        LogFileHandler.setupLogger();
+        LogFileHandler.setupLogger()
 
         //starts logging
-        LogFileHandler.startLogging();
+        LogFileHandler.startLogging()
 
         //post config set ups
-        switch (colorScheme) {
-            case 0:  Window.Companion.setColorTheme("darkgray"); break;
-            case 1:  Window.Companion.setColorTheme("gray"); break;
-            case 2:  Window.Companion.setColorTheme("black"); break;
-            case 3:  Window.Companion.setColorTheme("red"); break;
-            case 4:  Window.Companion.setColorTheme("orange"); break;
-            case 5:  Window.Companion.setColorTheme("yellow"); break;
-            case 6:  Window.Companion.setColorTheme("blue"); break;
-            case 7:  Window.Companion.setColorTheme("magenta"); break;
-            case 8:  Window.Companion.setColorTheme("purple"); break;
-            case 9:  Window.Companion.setColorTheme("green"); break;
-            default:  Window.Companion.setColorTheme("darkgray"); break;
+        when (colorScheme) {
+            0 -> Window.colorTheme = "darkgray"
+            1 -> Window.colorTheme = "gray"
+            2 -> Window.colorTheme = "black"
+            3 -> Window.colorTheme = "red"
+            4 -> Window.colorTheme = "orange"
+            5 -> Window.colorTheme = "yellow"
+            6 -> Window.colorTheme = "blue"
+            7 -> Window.colorTheme = "magenta"
+            8 -> Window.colorTheme = "purple"
+            9 -> Window.colorTheme = "green"
+            else -> Window.colorTheme = "darkgray"
         }
-        return true;
+        return true
     }
 
     /**
      * Assign properties to fields.
      */
-    public void loadProperties(Class clazz) {
+    fun loadProperties(clazz: Class<*>) {
         try {
-            for (Field f : clazz.getDeclaredFields()) {
-                if (f.isAnnotationPresent(LoadSave.class)) {
-                    String n = f.getName();
-                    if (f.getType() == Boolean.TYPE) {
-                        String s = cfgXmlFactory.getElementValue(n, clazz);
+            for (f in clazz.declaredFields) {
+                if (f.isAnnotationPresent(LoadSave::class.java)) {
+                    val n = f.name
+                    if (f.type == java.lang.Boolean.TYPE) {
+                        val s = settingsXmlFactory!!.getElementValue(n, clazz)
                         if (s != null) {
-                            f.set(this,  Boolean.valueOf(s));
+                            f.set(this, java.lang.Boolean.valueOf(s))
                         }
-                    }
-                    else  if (f.getType() == Integer.TYPE || f.getType() == Integer.class) {
-                        String s = cfgXmlFactory.getElementValue(n, clazz);
+                    } else if (f.type == Integer.TYPE || f.type == Int::class.java) {
+                        val s = settingsXmlFactory!!.getElementValue(n, clazz)
                         if (s != null) {
-                            f.set(this, Integer.valueOf(s));
+                            f.set(this, Integer.valueOf(s))
                         }
-                    }
-                    else if (f.getType() == String.class) {
-                        String s = cfgXmlFactory.getElementValue(n, clazz);
-                        f.set(this, s);
-                    }
-                    else if (f.getType() == byte.class) {
-                        String s = cfgXmlFactory.getElementValue(n, clazz);
-                        f.set(this, Byte.valueOf(s));
-                    }
-                    else if (f.getType() == Color.class) {
-                        String s = cfgXmlFactory.getElementValue(n, clazz);
-                        f.set(this, Color.valueOf(s));
-                    }
-                    else if (f.getType() == Side.class) {
-                        String s = cfgXmlFactory.getElementValue(n, clazz);
-                        f.set(this, Side.valueOf(s));
-                    }
-                    else if (f.getType().isEnum()) {
-                        String s = cfgXmlFactory.getElementValue(n, clazz);
-                        if (s == null) { s = "NONE"; }
-                        f.set(this, Enum.valueOf((Class<Enum>) f.getType(), s));
-                    }
-                    else {
-                        LogFileHandler.logger.warning("Field type '" + f.getType() + "' not found!");
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Try to save the configuration file.
-     */
-    public void save() {
-        saveProperties(this.getClass());
-    }
-
-    /**
-     * Try to save the configuration file.
-     */
-    public void saveProperties(Class clazz) {
-        try {
-            for (Field f : clazz.getDeclaredFields()) {
-                if (f.isAnnotationPresent(LoadSave.class)) {
-                    String n = f.getName();
-                    Object o = f.get(this);
-                    if (f.getType() == Color.class) {
-                        cfgXmlFactory.setElementValue(n, ThemeSelector.getColorHexString((Color) o));
+                    } else if (f.type == String::class.java) {
+                        val s = settingsXmlFactory!!.getElementValue(n, clazz)
+                        f.set(this, s)
+                    } else if (f.type == Byte::class.javaPrimitiveType) {
+                        val s = settingsXmlFactory!!.getElementValue(n, clazz)
+                        f.set(this, java.lang.Byte.valueOf(s!!))
+                    } else if (f.type == Color::class.java) {
+                        val s = settingsXmlFactory!!.getElementValue(n, clazz)
+                        f.set(this, Color.valueOf(s!!))
+                    } else if (f.type == Side::class.java) {
+                        val s = settingsXmlFactory!!.getElementValue(n, clazz)
+                        f.set(this, Side.valueOf(s!!))
+                    } else if (f.type.isEnum) {
+                        var s = settingsXmlFactory!!.getElementValue(n, clazz)
+                        if (s == null) {
+                            s = "NONE"
+                        }
+                        f.set(this, f.type)
                     } else {
-                        cfgXmlFactory.setElementValue(n, String.valueOf(o));
+                        LogFileHandler.logger.warning("Field type '" + f.type + "' not found!")
                     }
                 }
             }
-        } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
         }
+
+    }
+
+    /**
+     * Try to save the configuration file.
+     */
+    fun save() {
+        saveProperties(this.javaClass)
+    }
+
+    /**
+     * Try to save the configuration file.
+     */
+    fun saveProperties(clazz: Class<*>) {
+        try {
+            for (f in clazz.declaredFields) {
+                if (f.isAnnotationPresent(LoadSave::class.java)) {
+                    val n = f.name
+                    val o = f.get(this)
+                    if (f.type == Color::class.java) {
+                        settingsXmlFactory!!.setElementValue(n, ThemeSelector.getColorHexString(o as Color))
+                    } else {
+                        settingsXmlFactory!!.setElementValue(n, o.toString())
+                    }
+                }
+            }
+        } catch (ex: IllegalAccessException) {
+            ex.printStackTrace()
+        }
+
     }
 
     /**
      * Resets all settings to the default value.
      */
-    public void setDefaults() {
-        Field[] fields0 = LoadSave.class.getDeclaredFields();
-        List<Field> list = new LinkedList<>();
+    fun setDefaults() {
+        val fields0 = LoadSave::class.java.declaredFields
+        val list = LinkedList<Field>()
 
         try {
-            for (int i = 0; i < LoadSave.class.getDeclaredFields().length; i++) {
-                for (Field f : this.getClass().getDeclaredFields()) {
-                    if (f.getName().equals(fields0[i].getName())) {
+            for (i in 0 until LoadSave::class.java.declaredFields.size) {
+                for (f in this.javaClass.declaredFields) {
+                    if (f.name == fields0[i].name) {
                         //System.out.println(f.getName() + " cur: " + f.get(LoadSave.class) + " - def: " + fields0[i].get(LoadSave.class));
 
                         //add setting that has changed to a list
-                        if (!f.get(LoadSave.class).equals(fields0[i].get(LoadSave.class))) {
-                            list.add(f);
+                        if (f.get(LoadSave::class.java) != fields0[i].get(LoadSave::class.java)) {
+                            list.add(f)
                         }
 
                         //Integer
-                        if (f.getType() == Integer.TYPE) {
-                            f.set(this, fields0[i].get(LoadSave.class));
-                            break;
-                        }
-
-                        //Boolean
-                        else if (f.getType() == Boolean.TYPE) {
-                            f.set(this, fields0[i].get(LoadSave.class));
-                            break;
-                        }
-
+                        if (f.type == Integer.TYPE) {
+                            f.set(this, fields0[i].get(LoadSave::class.java))
+                            break
+                        } else if (f.type == java.lang.Boolean.TYPE) {
+                            f.set(this, fields0[i].get(LoadSave::class.java))
+                            break
+                        } else if (f.type == Color::class.java) {
+                            f.set(this, fields0[i].get(LoadSave::class.java))
+                            break
+                        } else if (f.type == Side::class.java) {
+                            f.set(this, fields0[i].get(LoadSave::class.java))
+                            break
+                        }//Side
                         //Color
-                        else if (f.getType() == Color.class) {
-                            f.set(this, fields0[i].get(LoadSave.class));
-                            break;
-                        }
-
-                        //Side
-                        else if (f.getType() == Side.class) {
-                            f.set(this, fields0[i].get(LoadSave.class));
-                            break;
-                        }
+                        //Boolean
                     }
                 }
             }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
         }
 
         //update Settings GUI
-        if (SettingsScene.Companion.getSettingsScene() != null) { SettingsScene.Companion.getSettingsScene().updateGUI(list); }
+        if (SettingsScene.settingsScene != null) {
+            SettingsScene.settingsScene!!.updateGUI(list)
+        }
+    }
+
+    companion object {
+        lateinit var config: Configuration
+
+        /** settings  */
+        @LoadSave
+        var host: String? = null
+        @LoadSave
+        var updateChannel: Int = 0
+        @LoadSave
+        var language: Int = 0
+        @LoadSave
+        var themeState: Int = 0
+        @LoadSave
+        var colorScheme: Int = 0
+        @LoadSave
+        var animations: Boolean = false
+        @LoadSave
+        var useSystemBorders: Boolean = false
+        @LoadSave
+        var logState: Boolean = false
+        @LoadSave
+        var showTrayIcon: Boolean = false
+
+        /** advanced settings  */
+        @LoadSave
+        var debugState: Boolean = false
+        @LoadSave
+        var decorationColor: Color? = null
+        @LoadSave
+        var shadowColorFocused: Color? = null
+        @LoadSave
+        var shadowColorNotFocused: Color? = null
+        @LoadSave
+        var tabPosition: Side? = null
+
+        /** locale  */
+        var CURRENT_LOCALE: Locale? = null
     }
 }

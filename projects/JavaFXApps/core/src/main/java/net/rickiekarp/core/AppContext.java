@@ -61,7 +61,7 @@ public class AppContext {
     public String getVersionNumber() {
         Manifest manifest;
         try {
-            manifest = new JarFile(Configuration.config.getJarFile().getPath()).getManifest();
+            manifest = new JarFile(Configuration.Companion.getConfig().getJarFile().getPath()).getManifest();
             return FileUtil.readManifestProperty(manifest, "Version");
         } catch (IOException e) {
             return internalVersion;

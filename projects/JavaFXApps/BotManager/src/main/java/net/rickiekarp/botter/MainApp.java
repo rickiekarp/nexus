@@ -108,8 +108,8 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
 //    }
 
     private void loadLocalPlugins() throws IOException {
-        if (Configuration.config.getPluginDirFile().exists()) {
-            File[] pluginFileList = FileUtil.getListOfFiles(Configuration.config.getPluginDirFile());
+        if (Configuration.Companion.getConfig().getPluginDirFile().exists()) {
+            File[] pluginFileList = FileUtil.getListOfFiles(Configuration.Companion.getConfig().getPluginDirFile());
             List<String> valueList; //TODO: Use HashMap instead
             for (File file : pluginFileList) {
                 if (file.getName().endsWith(".jar")) {

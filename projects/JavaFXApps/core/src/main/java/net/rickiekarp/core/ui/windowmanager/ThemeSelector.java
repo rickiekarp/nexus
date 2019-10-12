@@ -19,7 +19,7 @@ public class ThemeSelector {
      * @param scene The scene
      */
     public static void setTheme(Scene scene, ClassLoader loader) {
-        switch (Configuration.themeState) {
+        switch (Configuration.Companion.getThemeState()) {
             case 0:
                 URL darkStyle = loader.getResource(DARK_THEME_CSS);
                 if(!scene.getStylesheets().contains(DARK_THEME_CSS)) { scene.getStylesheets().clear(); }
@@ -111,11 +111,11 @@ public class ThemeSelector {
     public static void changeWindowShadowColor(boolean focus, String value)
     {
         if (focus) {
-            Configuration.shadowColorFocused = Color.valueOf(value);
-            Window.Companion.getDsFocused().setColor(Configuration.shadowColorFocused);
+            Configuration.Companion.setShadowColorFocused(Color.valueOf(value));
+            Window.Companion.getDsFocused().setColor(Configuration.Companion.getShadowColorFocused());
         } else {
-            Configuration.shadowColorNotFocused = Color.valueOf(value);
-            Window.Companion.getDsNotFocused().setColor(Configuration.shadowColorNotFocused);
+            Configuration.Companion.setShadowColorNotFocused(Color.valueOf(value));
+            Window.Companion.getDsNotFocused().setColor(Configuration.Companion.getShadowColorNotFocused());
         }
     }
 
@@ -125,7 +125,7 @@ public class ThemeSelector {
     public static void changeDecorationColor(String newValue)
     {
         System.out.println("fixme: onThemeChange()");
-        Configuration.decorationColor = Color.valueOf(newValue);
+        Configuration.Companion.setDecorationColor(Color.valueOf(newValue));
         if (MainScene.Companion.getMainScene().getWindowScene() != null) { MainScene.Companion.getMainScene().getWindowScene().getWin().setDecorationColor(); }
 //        if (SettingsScene.Companion.getSettingsScene() != null) { SettingsScene.Companion.getSettingsScene().getSettingsWindow().getWin().setDecorationColor(); }
 //        if (AboutScene.aboutScene != null) { AboutScene.aboutScene.getAboutWindow().getWin().setDecorationColor(); }

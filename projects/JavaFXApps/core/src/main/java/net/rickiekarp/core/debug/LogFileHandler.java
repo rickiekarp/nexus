@@ -55,7 +55,7 @@ public class LogFileHandler {
 
     public static void startLogging() {
         //starts the fileHandler if logState = true
-        if (Configuration.logState) { onLogStateChange(); }
+        if (Configuration.Companion.getLogState()) { onLogStateChange(); }
 
         //shows logging in the console if DEBUGVERSION = true
         if (DebugHelper.INSTANCE.getDEBUGVERSION()) {
@@ -75,9 +75,9 @@ public class LogFileHandler {
     public static void onLogStateChange() {
 
         if (fh == null) {
-            if (!Configuration.config.getLogsDirFile().exists()) { Configuration.config.getLogsDirFile().mkdirs(); }
+            if (!Configuration.Companion.getConfig().getLogsDirFile().exists()) { Configuration.Companion.getConfig().getLogsDirFile().mkdirs(); }
             try {
-                fh = new FileHandler(Configuration.config.getLogsDirFile().getPath() + File.separator + getLogFileName());
+                fh = new FileHandler(Configuration.Companion.getConfig().getLogsDirFile().getPath() + File.separator + getLogFileName());
             } catch (IOException e1) {
                 if (DebugHelper.INSTANCE.getDEBUGVERSION()) { e1.printStackTrace(); } else { new ExceptionHandler(Thread.currentThread(), e1); }
             }
@@ -107,7 +107,7 @@ public class LogFileHandler {
             logData.clear();
 
             //open a new fileHandler for a new logfile
-            if (Configuration.logState) {
+            if (Configuration.Companion.getLogState()) {
                 onLogStateChange();
             }
         }
@@ -117,14 +117,14 @@ public class LogFileHandler {
             if (logData.size() > 0) {
 
                 //checks if 'logs' directory exists
-                if (Configuration.config.getLogsDirFile().exists()) {
+                if (Configuration.Companion.getConfig().getLogsDirFile().exists()) {
                     writeLog();
                 }
                 else
                 {
                     //create logs directory
-                    Configuration.config.getLogsDirFile().mkdirs();
-                    logger.log(Level.INFO, "'logs' directory created in " + Configuration.config.getJarFile().getParent());
+                    Configuration.Companion.getConfig().getLogsDirFile().mkdirs();
+                    logger.log(Level.INFO, "'logs' directory created in " + Configuration.Companion.getConfig().getJarFile().getParent());
                     writeLog();
                 }
             }
@@ -137,7 +137,7 @@ public class LogFileHandler {
 
     private static void writeLog() {
         try {
-            PrintStream ps = new PrintStream(new File(Configuration.config.getLogsDirFile(), getLogFileName()));
+            PrintStream ps = new PrintStream(new File(Configuration.Companion.getConfig().getLogsDirFile(), getLogFileName()));
             logData.forEach(ps::print);
             ps.close();
         } catch (FileNotFoundException e1) {
