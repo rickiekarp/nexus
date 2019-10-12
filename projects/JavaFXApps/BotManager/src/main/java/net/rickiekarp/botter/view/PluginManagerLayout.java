@@ -53,16 +53,16 @@ public class PluginManagerLayout {
         new Thread(() -> {
             //list all plugins where a new version needs to be fetched
             List<PluginData> toFetchVersion = new ArrayList<>();
-            for (int i = 0; i < PluginData.pluginData.size(); i++) {
-                if (PluginData.pluginData.get(i).getPluginNewVersion() == null) {
-                    toFetchVersion.add(PluginData.pluginData.get(i));
-                    PluginData.pluginData.get(i).setPluginNewVersion(LanguageController.getString("fetching"));
+            for (int i = 0; i < PluginData.Companion.getPluginData().size(); i++) {
+                if (PluginData.Companion.getPluginData().get(i).getPluginNewVersion() == null) {
+                    toFetchVersion.add(PluginData.Companion.getPluginData().get(i));
+                    PluginData.Companion.getPluginData().get(i).setPluginNewVersion(LanguageController.getString("fetching"));
                 }
             }
 
-            if (toFetchVersion.size() > 0 || PluginData.pluginData.size() == 0) {
+            if (toFetchVersion.size() > 0 || PluginData.Companion.getPluginData().size() == 0) {
                 pluginTable.refresh();
-                String response = NetResponse.getResponseString(AppContext.getContext().getNetworkApi().runNetworkAction(BotNetworkApi.requestPlugins()));
+                String response = NetResponse.getResponseString(AppContext.getContext().getNetworkApi().runNetworkAction(BotNetworkApi.Companion.requestPlugins()));
 
                 switch (response) {
                     case "no_connection":
@@ -75,10 +75,10 @@ public class PluginManagerLayout {
                         entry: for (int i = 0; i < pluginArray.length(); i++) {
                             pluginEntry = (JSONObject) pluginArray.get(i);
                             LogFileHandler.logger.info("Remote Plugin: " + pluginEntry.getString("identifier") + " - " + pluginEntry.getString("version"));
-                            for (int localPlugin = 0 ; localPlugin < PluginData.pluginData.size(); localPlugin++) {
-                                if (pluginEntry.getString("identifier").equals(PluginData.pluginData.get(localPlugin).getPluginName())) {
-                                    PluginData.pluginData.get(i).setPluginNewVersion(pluginEntry.getString("version"));
-                                    PluginData.pluginData.get(i).setUpdateEnable(pluginEntry.getBoolean("updateEnable"));
+                            for (int localPlugin = 0; localPlugin < PluginData.Companion.getPluginData().size(); localPlugin++) {
+                                if (pluginEntry.getString("identifier").equals(PluginData.Companion.getPluginData().get(localPlugin).getPluginName())) {
+                                    PluginData.Companion.getPluginData().get(i).setPluginNewVersion(pluginEntry.getString("version"));
+                                    PluginData.Companion.getPluginData().get(i).setUpdateEnable(pluginEntry.getBoolean("updateEnable"));
                                     continue entry;
                                 }
                             }
@@ -92,16 +92,16 @@ public class PluginManagerLayout {
                                     BotPlatforms.valueOf(pluginEntry.getString("type"))
                             );
                             pluginData.setUpdateEnable(pluginEntry.getBoolean("updateEnable"));
-                            PluginData.pluginData.add(pluginData);
+                            PluginData.Companion.getPluginData().add(pluginData);
                         }
                         pluginTable.refresh();
                 }
             }
 
             //set version to 'no version found' for plugins without remote version
-            for (int i = 0; i < PluginData.pluginData.size(); i++) {
-                if (PluginData.pluginData.get(i).getPluginNewVersion().equals(LanguageController.getString("fetching"))) {
-                    PluginData.pluginData.get(i).setPluginNewVersion(LanguageController.getString("no_version_found"));
+            for (int i = 0; i < PluginData.Companion.getPluginData().size(); i++) {
+                if (PluginData.Companion.getPluginData().get(i).getPluginNewVersion().equals(LanguageController.getString("fetching"))) {
+                    PluginData.Companion.getPluginData().get(i).setPluginNewVersion(LanguageController.getString("no_version_found"));
                 }
             }
 
@@ -165,7 +165,7 @@ public class PluginManagerLayout {
         GridPane.setHgrow(pluginTable, Priority.ALWAYS);
 
         pluginTable.setFixedCellSize(40);
-        pluginTable.setItems(PluginData.pluginData);
+        pluginTable.setItems(PluginData.Companion.getPluginData());
 
         controls.getChildren().addAll(statusBox);
 
@@ -225,7 +225,7 @@ public class PluginManagerLayout {
 
             final FileDownloader fileDownloader;
             try {
-                fileDownloader = new FileDownloader(new URL(Configuration.host + "files/apps/" + AppContext.getContext().getContextIdentifier() + "/download/plugins/" + PluginData.pluginData.get(getTableRow().getIndex()).getPluginName() + ".jar") );
+                fileDownloader = new FileDownloader(new URL(Configuration.host + "files/apps/" + AppContext.getContext().getContextIdentifier() + "/download/plugins/" + PluginData.Companion.getPluginData().get(getTableRow().getIndex()).getPluginName() + ".jar") );
             } catch (MalformedURLException e) {
                 if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); }
                 else { LogFileHandler.logger.warning(ExceptionHandler.Companion.getExceptionString(e)); }
@@ -262,7 +262,7 @@ public class PluginManagerLayout {
             // separate non-FX thread
             // runnable for that thread
             new Thread(() -> {
-                File pluginFile = new File(Configuration.config.getJarFile().getParentFile() + "/data/update/" + PluginData.pluginData.get(getTableRow().getIndex()).getPluginName() + ".jar");
+                File pluginFile = new File(Configuration.config.getJarFile().getParentFile() + "/data/update/" + PluginData.Companion.getPluginData().get(getTableRow().getIndex()).getPluginName() + ".jar");
 
                 //move plugin to plugin directory
                 if (pluginFile.exists()) {
@@ -271,14 +271,14 @@ public class PluginManagerLayout {
                     System.out.println("Plugin does not exist in " + pluginFile.getPath());
                 }
 
-                updateLocalPluginData(Configuration.config.getPluginDirFile() + File.separator + PluginData.pluginData.get(getTableRow().getIndex()).getPluginName() + ".jar");
+                updateLocalPluginData(Configuration.config.getPluginDirFile() + File.separator + PluginData.Companion.getPluginData().get(getTableRow().getIndex()).getPluginName() + ".jar");
 
                 Platform.runLater(() -> setGraphic(new Label(LanguageController.getString("ready"))));
             }).start();
         }
 
         private void updateLocalPluginData(String pluginJarPath) {
-            PluginData updatedData = PluginData.pluginData.get(getTableRow().getIndex());
+            PluginData updatedData = PluginData.Companion.getPluginData().get(getTableRow().getIndex());
             List<String> manifestValues;
             try {
                 manifestValues = FileUtil.readManifestPropertiesFromJar(pluginJarPath, "Main-Class", "Version");
@@ -288,7 +288,7 @@ public class PluginManagerLayout {
                 if (DebugHelper.DEBUGVERSION) { e.printStackTrace(); }
                 else { LogFileHandler.logger.warning(ExceptionHandler.Companion.getExceptionString(e)); }
             }
-            PluginData.pluginData.set(getTableRow().getIndex(), updatedData);
+            PluginData.Companion.getPluginData().set(getTableRow().getIndex(), updatedData);
         }
 
         /** places an add button in the row only if the row is not empty. */
@@ -296,9 +296,9 @@ public class PluginManagerLayout {
         protected void updateItem(Object item, boolean empty) {
             super.updateItem(item, empty);
             if (!empty) {
-                if (PluginData.pluginData.get(getTableRow().getIndex()).setNewEditButtonName() != null && !downloadButton.isVisible()) {
-                    downloadButton.setText(PluginData.pluginData.get(getTableRow().getIndex()).setNewEditButtonName());
-                    downloadButton.setDisable(!PluginData.pluginData.get(getTableRow().getIndex()).getUpdateEnable());
+                if (PluginData.Companion.getPluginData().get(getTableRow().getIndex()).setNewEditButtonName() != null && !downloadButton.isVisible()) {
+                    downloadButton.setText(PluginData.Companion.getPluginData().get(getTableRow().getIndex()).setNewEditButtonName());
+                    downloadButton.setDisable(!PluginData.Companion.getPluginData().get(getTableRow().getIndex()).getUpdateEnable());
                     downloadButton.setVisible(true);
                     setGraphic(downloadButton);
                 }

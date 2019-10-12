@@ -1,22 +1,21 @@
-package net.rickiekarp.botlib;
+package net.rickiekarp.botlib
 
-import net.rickiekarp.core.settings.Configuration;
-import net.rickiekarp.core.settings.LoadSave;
+import net.rickiekarp.core.settings.Configuration
+import net.rickiekarp.core.settings.LoadSave
 
-import java.io.File;
+import java.io.File
 
-public class BotConfig {
+object BotConfig {
     @LoadSave
-    public static String nodeBinary;
-    public static String appiumBinary = File.separator+"appium"+File.separator+"build"+File.separator+"lib"+File.separator+"main.js";
+    var nodeBinary: String? = null
+    var appiumBinary = File.separator + "appium" + File.separator + "build" + File.separator + "lib" + File.separator + "main.js"
 
-    public static File getModulesDirFile() {
-        return new File(Configuration.config.getConfigDirFile() + File.separator + "modules");
-    }
+    val modulesDirFile: File
+        get() = File(Configuration.config.configDirFile.toString() + File.separator + "modules")
 
-    public static int APPIUM_LOG_LEVEL = 1;
+    var APPIUM_LOG_LEVEL = 1
 
-    public static String DEVICE_NAME;
-    public static String VERSION;
-    public static String UDID;
+    var DEVICE_NAME: String? = null
+    var VERSION: String? = null
+    var UDID: String? = null
 }

@@ -38,7 +38,7 @@ public class BotTask extends Task<Void> {
                 if (launcher.isServiceRunning()) {
                     switch (plugin.getPluginType()) {
                         case WEB:
-                            switch (PluginConfig.botType) {
+                            switch (PluginConfig.INSTANCE.getBotType()) {
                                 case FIREFOX:
                                     launcher.launch(plugin);
                                     break;
@@ -193,6 +193,6 @@ public class BotTask extends Task<Void> {
      * @return true, if the plugin is allowed by the server
      */
     private boolean canExecutePlugin(PluginData plugin) {
-        return NetResponse.getResponseResultAsBoolean(AppContext.getContext().getNetworkApi().runNetworkAction(BotNetworkApi.requestValidation(plugin)), "result");
+        return NetResponse.getResponseResultAsBoolean(AppContext.getContext().getNetworkApi().runNetworkAction(BotNetworkApi.Companion.requestValidation(plugin)), "result");
     }
 }

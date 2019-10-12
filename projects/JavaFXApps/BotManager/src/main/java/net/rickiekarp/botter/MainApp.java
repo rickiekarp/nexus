@@ -127,7 +127,7 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
                             loadAndroidAttributes(file, data);
                         }
 
-                        PluginData.pluginData.add(data);
+                        PluginData.Companion.getPluginData().add(data);
                     } catch (IOException e) {
                         LogFileHandler.logger.warning("Plugin: " + file.getName() + " could not be loaded!");
                     }
@@ -193,7 +193,7 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
      * @return Status of the configuration where true = good, false = needs setup
      */
     private boolean isValidConfig() {
-        return BotConfig.nodeBinary != null && PluginConfig.browserProfileName != null && !(PluginConfig.botType == BotType.Bot.CHROME && PluginConfig.chromeConfigDirectory == null);
+        return BotConfig.INSTANCE.getNodeBinary() != null && PluginConfig.INSTANCE.getBrowserProfileName() != null && !(PluginConfig.INSTANCE.getBotType() == BotType.Bot.CHROME && PluginConfig.INSTANCE.getChromeConfigDirectory() == null);
     }
 
     /**

@@ -1,13 +1,13 @@
-package net.rickiekarp.botlib.plugin;
+package net.rickiekarp.botlib.plugin
 
 /**
  * Interface for the plugin classes.
  */
-public interface Plugin {
+interface Plugin {
 
     /**
      * Performs the plugin action.
      */
-    public void run();
+    fun run()
 
 }

@@ -45,11 +45,11 @@ class FoldableListCell(private val list: ListView<*>) : ListCell<BotSetting>() {
 
             labelHeader.setOnMouseEntered { me ->
                 labelHeader.style = "-fx-background-color: derive(-fx-base, 5%);"
-                settingVBox.style = "-fx-background-color: derive(-fx-base, 5%);"
+                settingVBox!!.style = "-fx-background-color: derive(-fx-base, 5%);"
             }
             labelHeader.setOnMouseExited { me ->
                 labelHeader.style = null
-                settingVBox.style = null
+                settingVBox!!.style = null
             }
 
             labelHeader.setOnMouseClicked { me ->

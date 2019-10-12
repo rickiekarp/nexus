@@ -74,7 +74,7 @@ public class BotSetupLayout {
         nextButton.setOnAction(event -> {
             setupGrid.getChildren().clear();
             browserSetupStep++;
-            if (browserSetupStep == 4 && PluginConfig.botType == BotType.Bot.FIREFOX) {
+            if (browserSetupStep == 4 && PluginConfig.INSTANCE.getBotType() == BotType.Bot.FIREFOX) {
                 browserSetupStep++;
             }
             showSetupStep(browserSetupStep);
@@ -127,7 +127,7 @@ public class BotSetupLayout {
                         Label text = new Label(selectedDirectory.getPath());
                         GridPane.setConstraints(text, 0, 0);
                         setupGrid.getChildren().add(text);
-                        BotConfig.nodeBinary = selectedDirectory.getPath();
+                        BotConfig.INSTANCE.setNodeBinary(selectedDirectory.getPath());
                         nextButton.setDisable(false);
                     }
                 });
@@ -162,12 +162,12 @@ public class BotSetupLayout {
                 group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
                     if (group.getSelectedToggle() != null) {
                         switch ((int) group.getSelectedToggle().getUserData()) {
-                            case 1: PluginConfig.botType = BotType.Bot.CHROME; break;
-                            case 2: PluginConfig.botType = BotType.Bot.FIREFOX; break;
+                            case 1: PluginConfig.INSTANCE.setBotType(BotType.Bot.CHROME); break;
+                            case 2: PluginConfig.INSTANCE.setBotType(BotType.Bot.FIREFOX); break;
                         }
                         nextButton.setDisable(false);
                     } else {
-                        PluginConfig.botType = BotType.Bot.NONE;
+                        PluginConfig.INSTANCE.setBotType(BotType.Bot.NONE);
                         nextButton.setDisable(true);
                     }
                 });
@@ -245,7 +245,7 @@ public class BotSetupLayout {
                 profileNameTextField.setOnKeyReleased(ke -> {
                     if (!profileNameTextField.getText().isEmpty()) {
                         nextButton.setDisable(false);
-                        PluginConfig.browserProfileName = profileNameTextField.getText();
+                        PluginConfig.INSTANCE.setBrowserProfileName(profileNameTextField.getText());
                         if (ke.getCode().equals(KeyCode.ENTER)) {
                             nextButton.fire();
                         }
@@ -288,7 +288,7 @@ public class BotSetupLayout {
                         Label text = new Label(selectedDirectory.getPath());
                         GridPane.setConstraints(text, 0, 0);
                         setupGrid.getChildren().add(text);
-                        PluginConfig.chromeConfigDirectory = selectedDirectory.getPath();
+                        PluginConfig.INSTANCE.setChromeConfigDirectory(selectedDirectory.getPath());
                         nextButton.setDisable(false);
                     }
                 });
@@ -329,14 +329,14 @@ public class BotSetupLayout {
     }
 
     private void writeBrowserSetting() {
-        final JSONObject[] deviceJson = {JsonParser.readJsonFromFile(new File(BotConfig.getModulesDirFile() + File.separator + "devices" + File.separator + PluginConfig.botType.getDisplayableType().toLowerCase() + ".json"))};
+        final JSONObject[] deviceJson = {JsonParser.readJsonFromFile(new File(BotConfig.INSTANCE.getModulesDirFile() + File.separator + "devices" + File.separator + PluginConfig.INSTANCE.getBotType().getDisplayableType().toLowerCase() + ".json"))};
         if (deviceJson[0] == null) {
             deviceJson[0] = new JSONObject();
-            deviceJson[0].put("browser", PluginConfig.botType);
+            deviceJson[0].put("browser", PluginConfig.INSTANCE.getBotType());
         } else {
-            deviceJson[0].put("browser", PluginConfig.botType);
+            deviceJson[0].put("browser", PluginConfig.INSTANCE.getBotType());
         }
-        JsonParser.writeJsonObjectToFile(deviceJson[0], new File(BotConfig.getModulesDirFile() + File.separator + "devices"), PluginConfig.botType.getDisplayableType().toLowerCase() + ".json");
+        JsonParser.writeJsonObjectToFile(deviceJson[0], new File(BotConfig.INSTANCE.getModulesDirFile() + File.separator + "devices"), PluginConfig.INSTANCE.getBotType().getDisplayableType().toLowerCase() + ".json");
     }
  }
 

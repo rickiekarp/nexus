@@ -1,46 +1,47 @@
-package net.rickiekarp.botlib.locator;
+package net.rickiekarp.botlib.locator
 
-import net.rickiekarp.core.debug.LogFileHandler;
-import net.rickiekarp.botlib.BotLauncher;
-import net.rickiekarp.botlib.PluginConfig;
-import io.appium.java_client.android.AndroidDriver;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import net.rickiekarp.core.debug.LogFileHandler
+import net.rickiekarp.botlib.BotLauncher
+import net.rickiekarp.botlib.PluginConfig
+import io.appium.java_client.android.AndroidDriver
+import net.rickiekarp.botlib.enums.BotType
+import org.openqa.selenium.By
+import org.openqa.selenium.WebElement
+import org.openqa.selenium.chrome.ChromeDriver
 //import org.openqa.selenium.firefox.MarionetteDriver;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
-public class Waiter {
+object Waiter {
 
-    public synchronized static WebElement waitForElement(final int timeOutInSeconds, By byString) {
-        final WebElement[] elem = new WebElement[1];
-        WebElementLocator locator = new WebElementLocator();
+    @Synchronized
+    fun waitForElement(timeOutInSeconds: Int, byString: By): WebElement? {
+        val elem = arrayOfNulls<WebElement>(1)
+        val locator = WebElementLocator()
 
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        val scheduler = Executors.newScheduledThreadPool(1)
 
-        final Runnable beeper = () -> {
-            elem[0] = locator.getElement(byString);
+        val beeper = {
+            elem[0] = locator.getElement(byString)
 
             if (elem[0] != null) {
-                scheduler.shutdownNow();
+                scheduler.shutdownNow()
             }
-        };
-        final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(beeper, 0, 1, TimeUnit.SECONDS);
-        scheduler.schedule(() -> {
-            beeperHandle.cancel(true);
-            scheduler.shutdown();
-        }, timeOutInSeconds, TimeUnit.SECONDS);
+        }
+        val beeperHandle = scheduler.scheduleAtFixedRate(beeper, 0, 1, TimeUnit.SECONDS)
+        scheduler.schedule({
+            beeperHandle.cancel(true)
+            scheduler.shutdown()
+        }, timeOutInSeconds.toLong(), TimeUnit.SECONDS)
 
         try {
-            scheduler.awaitTermination(timeOutInSeconds, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            scheduler.awaitTermination(timeOutInSeconds.toLong(), TimeUnit.SECONDS)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
         }
-        return elem[0];
+
+        return elem[0]
     }
 
     /**
@@ -49,50 +50,50 @@ public class Waiter {
      * @param byString byString to search for
      * @return Element of the given byString
      */
-    public static WebElement waitForElementToAppear(long timeout, By byString) {
-        long currentTime = System.currentTimeMillis() / 1000;
-        long endTime = currentTime + timeout;
-        WebElement element = null;
+    fun waitForElementToAppear(timeout: Long, byString: By): WebElement? {
+        val currentTime = System.currentTimeMillis() / 1000
+        val endTime = currentTime + timeout
+        var element: WebElement? = null
 
-        boolean whetherTimeout;
+        var whetherTimeout: Boolean
         while (true) {
-            whetherTimeout = System.currentTimeMillis() / 1000 > endTime;
+            whetherTimeout = System.currentTimeMillis() / 1000 > endTime
             if (whetherTimeout) {
-                LogFileHandler.logger.warning("no element found by " + byString);
-                break;
+                LogFileHandler.logger.warning("no element found by $byString")
+                break
             } else {
                 try {
-                    switch (PluginConfig.botType) {
-                        case ANDROID:
-                            AndroidDriver androidDriver = (AndroidDriver) BotLauncher.getRunnerInstance().get();
-                            element = androidDriver.findElement(byString);
-                            break;
-                        case FIREFOX:
-//                            MarionetteDriver firefoxDriver = (MarionetteDriver) BotLauncher.getRunnerInstance().get();
-//                            element = firefoxDriver.findElement(byString);
-                            break;
-                        case CHROME:
-                            ChromeDriver chromeDriver = (ChromeDriver) BotLauncher.getRunnerInstance().get();
-                            element = chromeDriver.findElement(byString);
-                            break;
-                        default:
-                            throw new RuntimeException("Invalid bot type! Check your settings!");
-                    }
-                } catch (Exception e) {
+                    when (PluginConfig.botType) {
+                        BotType.Bot.ANDROID -> {
+                            val androidDriver = BotLauncher.runnerInstance!!.get() as AndroidDriver<*>
+                            element = androidDriver.findElement(byString)
+                        }
+                        BotType.Bot.FIREFOX -> {
+                        }
+                        BotType.Bot.CHROME -> {
+                            val chromeDriver = BotLauncher.runnerInstance!!.get() as ChromeDriver
+                            element = chromeDriver.findElement(byString)
+                        }
+                        else -> throw RuntimeException("Invalid bot type! Check your settings!")
+                    }//                            MarionetteDriver firefoxDriver = (MarionetteDriver) BotLauncher.getRunnerInstance().get();
+                    //                            element = firefoxDriver.findElement(byString);
+                } catch (e: Exception) {
                     //ignore
                 }
+
                 if (element != null) {
-                    break;
+                    break
                 }
             }
 
             //prevent spamming of server requests
             try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.sleep(500)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
             }
+
         }
-        return element;
+        return element
     }
 }

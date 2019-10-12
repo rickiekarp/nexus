@@ -23,7 +23,7 @@ object PluginExecutor {
         val authorizedLoader: ClassLoader
         authorizedLoader = URLClassLoader.newInstance(arrayOf(authorizedJarFile.toURI().toURL()))
         val authorizedBotPlugin: BotPlugin
-        authorizedBotPlugin = authorizedLoader.loadClass(plugin.pluginClazz).newInstance() as BotPlugin
+        authorizedBotPlugin = authorizedLoader.loadClass(plugin.pluginClazz.get()).newInstance() as BotPlugin
         authorizedBotPlugin.setLayout(runner)
     }
 
@@ -37,7 +37,7 @@ object PluginExecutor {
         authorizedLoader = URLClassLoader.newInstance(arrayOf(authorizedJarFile.toURI().toURL()))
         val authorizedBotPlugin: BotPlugin
         LogFileHandler.logger.info("Starting " + plugin.pluginType + " bot - " + plugin.pluginName + " (" + plugin.pluginOldVersion + ")")
-        authorizedBotPlugin = authorizedLoader.loadClass(plugin.pluginClazz).newInstance() as BotPlugin
+        authorizedBotPlugin = authorizedLoader.loadClass(plugin.pluginClazz.get()).newInstance() as BotPlugin
         authorizedBotPlugin.run(runner)
     }
 
@@ -50,7 +50,7 @@ object PluginExecutor {
             val authorizedLoader: ClassLoader
             authorizedLoader = URLClassLoader.newInstance(arrayOf(authorizedJarFile.toURI().toURL()))
             val authorizedPlugin: Plugin
-            authorizedPlugin = authorizedLoader.loadClass(plugin.pluginClazz).newInstance() as Plugin
+            authorizedPlugin = authorizedLoader.loadClass(plugin.pluginClazz.get()).newInstance() as Plugin
             Platform.runLater { authorizedPlugin.run() }
         } catch (e: Exception) {
             if (DebugHelper.DEBUGVERSION) {

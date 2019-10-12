@@ -1,24 +1,25 @@
-package net.rickiekarp.botlib.locator;
+package net.rickiekarp.botlib.locator
 
-import net.rickiekarp.botlib.BotLauncher;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import net.rickiekarp.botlib.BotLauncher
+import org.openqa.selenium.By
+import org.openqa.selenium.NoSuchElementException
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
 
-class WebElementLocator {
-    private WebDriver driver;
+internal class WebElementLocator {
+    private val driver: WebDriver
 
-    WebElementLocator() {
-        driver = (WebDriver) BotLauncher.getRunnerInstance().get();
+    init {
+        driver = BotLauncher.runnerInstance!!.get() as WebDriver
     }
 
-    WebElement getElement(By byString) {
+    fun getElement(byString: By): WebElement? {
         try {
-            return driver.findElement(byString);
-        } catch (NoSuchElementException e) {
-            return null;
+            return driver.findElement(byString)
+        } catch (e: NoSuchElementException) {
+            return null
         }
+
     }
 
 }

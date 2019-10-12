@@ -1,80 +1,68 @@
-package net.rickiekarp.botlib.model;
+package net.rickiekarp.botlib.model
 
-import net.rickiekarp.core.controller.LanguageController;
-import net.rickiekarp.botlib.enums.BotPlatforms;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.botlib.enums.BotPlatforms
+import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleStringProperty
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 
-public class PluginData {
-    public static ObservableList<PluginData> pluginData = FXCollections.observableArrayList();
+class PluginData(pluginClazz: String?, pluginName: String?, pluginOldVersion: String?, pluginNewVersion: String?, platform: BotPlatforms?) {
 
-    private final SimpleStringProperty pluginClazz;
-    private final SimpleStringProperty pluginName;
-    private final SimpleStringProperty pluginOldVersion;
-    private final SimpleStringProperty pluginNewVersion;
-    private BotPlatforms pluginType;
-    private final SimpleBooleanProperty pluginUpdateEnable;
-    private final SimpleStringProperty pluginPackage;
-    private final SimpleStringProperty pluginActvity;
-    private Credentials pluginCredentials;
+    val pluginClazz: SimpleStringProperty = SimpleStringProperty(pluginClazz)
+    val pluginName: SimpleStringProperty = SimpleStringProperty(pluginName)
+    val pluginOldVersion: SimpleStringProperty = SimpleStringProperty(pluginOldVersion)
+    private val pluginNewVersion: SimpleStringProperty = SimpleStringProperty(pluginNewVersion)
+    var pluginType: BotPlatforms? = null
+        private set
+    private val pluginUpdateEnable: SimpleBooleanProperty
+    private val pluginPackage: SimpleStringProperty
+    private val pluginActvity: SimpleStringProperty
+    var pluginCredentials: Credentials? = null
 
-    public PluginData(String pluginClazz, String pluginName, String pluginOldVersion, String pluginNewVersion, BotPlatforms platform) {
-        this.pluginClazz = new SimpleStringProperty(pluginClazz);
-        this.pluginName = new SimpleStringProperty(pluginName);
-        this.pluginOldVersion = new SimpleStringProperty(pluginOldVersion);
-        this.pluginNewVersion = new SimpleStringProperty(pluginNewVersion);
-        this.pluginType = platform;
-        this.pluginUpdateEnable = new SimpleBooleanProperty();
-        this.pluginPackage = new SimpleStringProperty(); //android only
-        this.pluginActvity = new SimpleStringProperty(); //android only
+    var updateEnable: Boolean
+        get() = pluginUpdateEnable.get()
+        set(enable) = pluginUpdateEnable.set(enable)
+
+    init {
+        this.pluginType = platform
+        this.pluginUpdateEnable = SimpleBooleanProperty()
+        this.pluginPackage = SimpleStringProperty() //android only
+        this.pluginActvity = SimpleStringProperty() //android only
     }
 
-    public String getPluginClazz() {
-        return pluginClazz.get();
-    }
-    public void setPluginClazz(String clazz) {
-        this.pluginClazz.set(clazz);
+    fun getPluginClazz(): String {
+        return pluginClazz.get()
     }
 
-    public String getPluginName() {
-        return pluginName.get();
+    fun setPluginClazz(clazz: String) {
+        this.pluginClazz.set(clazz)
     }
 
-    public String getPluginOldVersion() {
-        return pluginOldVersion.get();
-    }
-    public void setPluginOldVersion(String version) {
-        this.pluginOldVersion.set(version);
+    fun getPluginOldVersion(): String {
+        return pluginOldVersion.get()
     }
 
-    public String getPluginNewVersion() {
-        return pluginNewVersion.get();
-    }
-    public void setPluginNewVersion(String version) {
-        this.pluginNewVersion.set(version);
+    fun setPluginOldVersion(version: String) {
+        this.pluginOldVersion.set(version)
     }
 
-
-    public BotPlatforms getPluginType() {
-        return pluginType;
-    }
-    public void setBotType(BotPlatforms type) {
-        pluginType = type;
+    fun getPluginNewVersion(): String {
+        return pluginNewVersion.get()
     }
 
-    public boolean getUpdateEnable() {
-        return pluginUpdateEnable.get();
-    }
-    public void setUpdateEnable(boolean enable) {
-        pluginUpdateEnable.set(enable);
+    fun setPluginNewVersion(version: String) {
+        this.pluginNewVersion.set(version)
     }
 
-    public String setNewEditButtonName() {
+    fun setBotType(type: BotPlatforms) {
+        pluginType = type
+    }
+
+    fun setNewEditButtonName(): String? {
         //if local plugin does not exist, show download button
         if (pluginOldVersion.get() == null) {
-            return LanguageController.getString("download");
+            return LanguageController.getString("download")
         } else if (pluginNewVersion.get() == null) {
             //show nothing
 
@@ -82,34 +70,34 @@ public class PluginData {
         } else {
             try {
                 if (Integer.parseInt(pluginNewVersion.get().replace(".", "")) > Integer.parseInt(pluginOldVersion.get().replace(".", ""))) {
-                    return LanguageController.getString("update");
+                    return LanguageController.getString("update")
                 }
-            } catch (NumberFormatException e) {
-                return null;
+            } catch (e: NumberFormatException) {
+                return null
             }
+
         }
-        return null;
+        return null
     }
 
-    public String getPluginPackage() {
-        return pluginPackage.get();
-    }
-    public void setPluginPackage(String name) {
-        pluginPackage.set(name);
+    fun getPluginPackage(): String {
+        return pluginPackage.get()
     }
 
-    public String getPluginActvity() {
-        return pluginActvity.get();
-    }
-    public void setPluginActvity(String activity) {
-        pluginActvity.set(activity);
+    fun setPluginPackage(name: String) {
+        pluginPackage.set(name)
     }
 
-    public Credentials getPluginCredentials() {
-        return pluginCredentials;
+    fun getPluginActvity(): String {
+        return pluginActvity.get()
     }
-    public void setPluginCredentials(Credentials credentials) {
-        pluginCredentials = credentials;
+
+    fun setPluginActvity(activity: String) {
+        pluginActvity.set(activity)
+    }
+
+    companion object {
+        var pluginData = FXCollections.observableArrayList<PluginData>()
     }
 }
 

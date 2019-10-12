@@ -1,60 +1,44 @@
-package net.rickiekarp.botlib.enums;
+package net.rickiekarp.botlib.enums
 
-public final class BotType {
+class BotType {
 
-    public enum Bot implements BotTypeInterface {
+    enum class Bot private constructor(val label: String, val botPlatform: BotPlatforms) : BotTypeInterface {
 
         NONE("none", BotPlatforms.NONE),
         CHROME("chrome", BotPlatforms.WEB),
         FIREFOX("firefox", BotPlatforms.WEB),
         ANDROID("android", BotPlatforms.ANDROID);
 
-        private final String label;
-        private final BotPlatforms type;
 
-        Bot(String label, BotPlatforms type) {
-            this.label = label;
-            this.type = type;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        public BotPlatforms getBotPlatform() {
-            return type;
-        }
-
-
-        public String getDisplayableType() {
-            return type.getDisplayableType();
+        override fun getDisplayableType(): String {
+            return botPlatform.getDisplayableType()
         }
     }
 
-    public BotType() {
-        super();
-    }
+    companion object {
 
-    public static void main(String[] args) {
-        System.out.println("All bot types");
-        for (BotPlatforms type : BotPlatforms.values()) {
-            displayType(type);
-            System.out.println();
+        @JvmStatic
+        fun main(args: Array<String>) {
+            println("All bot types")
+            for (type in BotPlatforms.values()) {
+                displayType(type)
+                println()
+            }
+            println("All bot platforms")
+            for (bot in Bot.values()) {
+                displayBot(bot)
+                println()
+            }
         }
-        System.out.println("All bot platforms");
-        for (Bot bot : Bot.values()) {
-            displayBot(bot);
-            System.out.println();
+
+        private fun displayBot(bot: Bot) {
+            displayType(bot)
+            print(" - ")
+            print(bot.label)
         }
-    }
 
-    private static void displayBot(Bot bot) {
-        displayType(bot);
-        System.out.print(" - ");
-        System.out.print(bot.getLabel());
-    }
-
-    private static void displayType(BotTypeInterface displayable) {
-        System.out.print(displayable.getDisplayableType());
+        private fun displayType(displayable: BotTypeInterface) {
+            print(displayable.getDisplayableType())
+        }
     }
 }

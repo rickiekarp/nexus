@@ -95,7 +95,7 @@ class MainLayout : AppLayout {
         get() {
             listView = ListView()
             PluginConfig.settingsList = FXCollections.observableArrayList()
-            PluginConfig.settingsList.add(
+            PluginConfig.settingsList!!.add(
                     BotSetting.Builder.create().setName(LanguageController.getString("option_timer")).setDescription(LanguageController.getString("option_timer_desc")).setVisible(true).setNode(timerSection).build()
             )
             listView!!.items = PluginConfig.settingsList
@@ -191,7 +191,7 @@ class MainLayout : AppLayout {
                 var cJson: JSONObject
                 for (i in 0 until jsonArray.length()) {
                     cJson = jsonArray.getJSONObject(i)
-                    if (cJson.getString("primaryKey") == modCBox.selectionModel.selectedItem.pluginName) {
+                    if (cJson.getString("primaryKey") == modCBox.selectionModel.selectedItem.pluginName.get()) {
                         loginTF.text = cJson.getString("login")
 
                         val encodedPass = cJson.getString("password")
@@ -216,7 +216,7 @@ class MainLayout : AppLayout {
             deleteButton.setOnAction { event ->
                 val jsonArray = deviceJson[0].getJSONArray("credentials")
                 for (i in 0 until jsonArray.length()) {
-                    if (jsonArray.getJSONObject(i).getString("primaryKey") == modCBox.selectionModel.selectedItem.pluginName) {
+                    if (jsonArray.getJSONObject(i).getString("primaryKey") == modCBox.selectionModel.selectedItem.pluginName.get()) {
                         jsonArray.remove(i)
                         JsonParser.writeJsonObjectToFile(deviceJson[0], File(Configuration.config.configDirFile.toString() + File.separator + "plugins"), "credentials.json")
                         break
@@ -266,7 +266,7 @@ class MainLayout : AppLayout {
                         var currentCredentials: JSONObject
                         for (i in 0 until jsonArray.length()) {
                             currentCredentials = jsonArray.getJSONObject(i)
-                            if (jsonArray.getJSONObject(i).getString("primaryKey") == modCBox.selectionModel.selectedItem.pluginName) {
+                            if (jsonArray.getJSONObject(i).getString("primaryKey") == modCBox.selectionModel.selectedItem.pluginName.get()) {
                                 currentCredentials.put("login", login)
                                 currentCredentials.put("password", pass)
                                 addEntry = false
@@ -314,7 +314,7 @@ class MainLayout : AppLayout {
                 }
             }
 
-            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.getModulesDirFile().toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType.getDisplayableType().toLowerCase() + ".json")))
+            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.modulesDirFile.toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType!!.getDisplayableType().toLowerCase() + ".json")))
             if (deviceJson[0] != null) {
                 for (bot in BotType.Bot.values()) {
                     if (BotType.Bot.valueOf(deviceJson[0].getString("browser")) == bot && bot.botPlatform == BotPlatforms.WEB) {
@@ -342,7 +342,7 @@ class MainLayout : AppLayout {
                     deviceJson[0].put("browser", browserSelector.selectionModel.selectedItem)
                 }
 
-                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.getModulesDirFile().toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType.getDisplayableType().toLowerCase() + ".json")
+                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.modulesDirFile.toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType!!.getDisplayableType().toLowerCase() + ".json")
                 setStatus("neutral", LanguageController.getString("device_info_updated"))
                 saveButton.isVisible = false
             }
@@ -366,7 +366,7 @@ class MainLayout : AppLayout {
             val verTF = TextField()
             val deviceSerialTF = TextField()
 
-            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.getModulesDirFile().toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType.getDisplayableType().toLowerCase() + ".json")))
+            val deviceJson = arrayOf(JsonParser.readJsonFromFile(File(BotConfig.modulesDirFile.toString() + File.separator + "devices" + File.separator + modCBox.selectionModel.selectedItem.pluginType!!.getDisplayableType().toLowerCase() + ".json")))
             if (deviceJson[0] != null) {
                 nameTF.text = deviceJson[0].getJSONObject("1").getString("name")
                 verTF.text = deviceJson[0].getJSONObject("1").getString("version")
@@ -395,7 +395,7 @@ class MainLayout : AppLayout {
                     deviceJson[0].getJSONObject("1").put("serial", deviceSerialTF.text)
                 }
 
-                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.getModulesDirFile().toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType.getDisplayableType().toLowerCase() + ".json")
+                JsonParser.writeJsonObjectToFile(deviceJson[0], File(BotConfig.modulesDirFile.toString() + File.separator + "devices"), modCBox.selectionModel.selectedItem.pluginType!!.getDisplayableType().toLowerCase() + ".json")
                 updateAndroidDeviceInfo(nameTF.text, verTF.text, deviceSerialTF.text)
                 setStatus("neutral", LanguageController.getString("browser_info_updated"))
                 saveButton.isVisible = false
@@ -434,7 +434,7 @@ class MainLayout : AppLayout {
         //selected value showed in combo box
         modCBox.setConverter(object : StringConverter<PluginData>() {
             override fun toString(plugin: PluginData?): String? {
-                return plugin?.pluginName
+                return plugin?.pluginName!!.get()
             }
 
             override fun fromString(plugin: String): PluginData {
@@ -485,23 +485,23 @@ class MainLayout : AppLayout {
                 MainScene.mainScene.borderPane.bottom = controlsNode
             }
 
-            PluginConfig.settingsList.clear()
-            PluginConfig.settingsList.add(
+            PluginConfig.settingsList!!.clear()
+            PluginConfig.settingsList!!.add(
                     BotSetting.Builder.create().setName(LanguageController.getString("option_timer")).setDescription(LanguageController.getString("option_timer_desc")).setVisible(true).setNode(timerSection).build()
             )
 
             when (modCBox.selectionModel.selectedItem.pluginType) {
                 BotPlatforms.ANDROID -> {
                     PluginConfig.botType = BotType.Bot.ANDROID
-                    PluginConfig.settingsList.add(
+                    PluginConfig.settingsList!!.add(
                             BotSetting.Builder.create().setName(LanguageController.getString("androidSelect")).setDescription(LanguageController.getString("androidSelect_desc")).setVisible(true).setNode(androidDeviceSelection).build()
                     )
                 }
                 BotPlatforms.WEB -> {
-                    PluginConfig.settingsList.add(
+                    PluginConfig.settingsList!!.add(
                             BotSetting.Builder.create().setName(LanguageController.getString("credentialsSelect")).setDescription(LanguageController.getString("credentialsSelect_desc")).setVisible(true).setNode(credentialsSection).build()
                     )
-                    PluginConfig.settingsList.add(
+                    PluginConfig.settingsList!!.add(
                             BotSetting.Builder.create().setName(LanguageController.getString("browserSelect")).setDescription(LanguageController.getString("browserSelect_desc")).setVisible(true).setNode(browserSelectionSection).build()
                     )
                 }
@@ -512,7 +512,7 @@ class MainLayout : AppLayout {
             botLauncher!!.createBotRunner(modCBox.selectionModel.selectedItem)
 
             try {
-                PluginExecutor.executeLayoutSetter(BotLauncher.getRunnerInstance(), modCBox.selectionModel.selectedItem)
+                PluginExecutor.executeLayoutSetter(BotLauncher.runnerInstance!!, modCBox.selectionModel.selectedItem)
             } catch (e: Exception) {
                 if (DebugHelper.DEBUGVERSION) {
                     e.printStackTrace()

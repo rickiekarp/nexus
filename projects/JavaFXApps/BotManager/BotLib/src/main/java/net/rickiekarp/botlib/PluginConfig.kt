@@ -1,23 +1,23 @@
-package net.rickiekarp.botlib;
+package net.rickiekarp.botlib
 
-import net.rickiekarp.core.settings.LoadSave;
-import net.rickiekarp.botlib.enums.BotPlatforms;
-import net.rickiekarp.botlib.enums.BotType;
-import net.rickiekarp.botlib.plugin.BotSetting;
-import javafx.collections.ObservableList;
+import net.rickiekarp.core.settings.LoadSave
+import net.rickiekarp.botlib.enums.BotPlatforms
+import net.rickiekarp.botlib.enums.BotType
+import net.rickiekarp.botlib.plugin.BotSetting
+import javafx.collections.ObservableList
 
-public class PluginConfig {
+object PluginConfig {
 
-    public static ObservableList<BotSetting> settingsList;
+    var settingsList: ObservableList<BotSetting>? = null
 
-    public static BotPlatforms botPlatform;
-    public static BotType.Bot botType;
+    var botPlatform: BotPlatforms? = null
+    var botType: BotType.Bot? = null
 
-    /** settings **/
+    /** settings  */
     @LoadSave
-    public static String browserProfileName;
+    var browserProfileName: String? = null
     @LoadSave
-    public static String chromeConfigDirectory;
+    var chromeConfigDirectory: String? = null
 
-    public static boolean isBrowserBotPlugin = true;
+    var isBrowserBotPlugin = true
 }
