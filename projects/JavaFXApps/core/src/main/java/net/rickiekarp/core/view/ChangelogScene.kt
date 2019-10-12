@@ -48,7 +48,7 @@ class ChangelogScene {
             val remoteVersionsXml = NetResponse.getResponseString(AppContext.context.networkApi.runNetworkAction(NetworkApi.requestChangelog()))
 
             try {
-                val doc = XmlParser.stringToDom(remoteVersionsXml)
+                val doc = XmlParser.stringToDom(remoteVersionsXml!!)
                 doc.documentElement.normalize()
 
                 val moduleList = doc.getElementsByTagName("change")

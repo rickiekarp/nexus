@@ -64,7 +64,7 @@ class AccountManager {
 
         val useraccount = JSONObject()
         if (rememberPass) {
-            useraccount.put("signinkey", Base64Coder.encodeString(account!!.password))
+            useraccount.put("signinkey", Base64Coder.encodeString(account!!.password!!))
         }
         useraccount.put("autoLogin", autoLogin)
         JsonParser.writeJsonObjectToFile(useraccount, profileDir, PROFILE_KEY)

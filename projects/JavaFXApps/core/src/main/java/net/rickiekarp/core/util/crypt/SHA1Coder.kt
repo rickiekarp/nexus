@@ -1,39 +1,45 @@
-package net.rickiekarp.core.util.crypt;
+package net.rickiekarp.core.util.crypt
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
+import java.io.UnsupportedEncodingException
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.security.SignatureException
 
-public class SHA1Coder {
+object SHA1Coder {
 
-    public static byte[] getSHA1(String p) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        MessageDigest md;
-        md = MessageDigest.getInstance("SHA1");
-        md.update(p.getBytes("utf-8"));
-        return md.digest();
+    @Throws(UnsupportedEncodingException::class, NoSuchAlgorithmException::class)
+    fun getSHA1(p: String): ByteArray {
+        val md: MessageDigest
+        md = MessageDigest.getInstance("SHA1")
+        md.update(p.toByteArray(charset("utf-8")))
+        return md.digest()
     }
 
-    public static byte[] getSHA1Bytes(String data, boolean isHMAC) {
-        byte[] sha1 = new byte[0];
+    fun getSHA1Bytes(data: String, isHMAC: Boolean): ByteArray {
+        var sha1 = ByteArray(0)
         try {
-            sha1 = getSHA1(data);
+            sha1 = getSHA1(data)
             if (isHMAC) {
-                sha1 = HMACCoder.encode(data, sha1);
+                sha1 = HMACCoder.encode(data, sha1)
             }
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | SignatureException e) {
-            e.printStackTrace();
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+        } catch (e: SignatureException) {
+            e.printStackTrace()
         }
-        return sha1;
+
+        return sha1
     }
 
-    public static String getSHA1String(byte[] digest) {
-        StringBuilder sb = new StringBuilder(digest.length*2);
-        String s;
-        for (byte b : digest) {
-            s = Integer.toHexString(0xFF & b);
-            sb.append(s);
+    fun getSHA1String(digest: ByteArray): String {
+        val sb = StringBuilder(digest.size * 2)
+        var s: String
+        for (b in digest) {
+            s = Integer.toHexString(0xFF and b.toInt())
+            sb.append(s)
         }
-        return sb.toString();
+        return sb.toString()
     }
 }

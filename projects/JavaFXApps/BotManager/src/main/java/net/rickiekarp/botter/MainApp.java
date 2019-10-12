@@ -106,7 +106,7 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
 
                         PluginData.Companion.getPluginData().add(data);
                     } catch (IOException e) {
-                        LogFileHandler.logger.warning("Plugin: " + file.getName() + " could not be loaded!");
+                        LogFileHandler.Companion.getLogger().warning("Plugin: " + file.getName() + " could not be loaded!");
                     }
                 }
             }
