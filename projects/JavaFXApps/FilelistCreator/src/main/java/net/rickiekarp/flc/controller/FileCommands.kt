@@ -13,9 +13,9 @@ import net.rickiekarp.flc.view.layout.MainLayout
 class FileCommands {
     @Throws(NoSuchMethodException::class)
     fun addFileCommands() {
-        AppCommands.commandsList.add(
-                ConsoleCommands("/selectRandomFile", "", LanguageController.getString("desc_file_select_random"), this.javaClass)
-        )
+        AppCommands.commandsList.add(ConsoleCommands("/selectRandomFile", "", LanguageController.getString("desc_file_select_random")) {
+            selectRandomFile()
+        })
     }
 
     companion object {

@@ -5,16 +5,16 @@ import javafx.beans.property.SimpleStringProperty
 /**
  * This is the model class for all ConsoleCommands
  */
-class ConsoleCommands(aCommandName: String, aCommandHelper: String, aCommandDesc: String, val method: Class<*>) {
-    private val command_name: SimpleStringProperty = SimpleStringProperty(aCommandName)
-    private val command_helper: SimpleStringProperty = SimpleStringProperty(aCommandHelper)
-    private val command_desc: SimpleStringProperty = SimpleStringProperty(aCommandDesc)
+class ConsoleCommands(aCommandName: String, aCommandHelper: String, aCommandDesc: String, val method: () -> Unit) {
+    private val name: SimpleStringProperty = SimpleStringProperty(aCommandName)
+    private val helper: SimpleStringProperty = SimpleStringProperty(aCommandHelper)
+    private val desc: SimpleStringProperty = SimpleStringProperty(aCommandDesc)
 
     val commandName: String
-        get() = command_name.get()
+        get() = name.get()
     val commandHelper: String
-        get() = command_helper.get()
+        get() = helper.get()
     val commandDesc: String
-        get() = command_desc.get()
+        get() = desc.get()
 
 }

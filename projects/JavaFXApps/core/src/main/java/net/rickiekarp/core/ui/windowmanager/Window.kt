@@ -12,10 +12,8 @@ import net.rickiekarp.core.view.AboutScene
 import net.rickiekarp.core.view.SettingsScene
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
-import javafx.collections.ObservableList
 import javafx.geometry.*
 import javafx.scene.CacheHint
-import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.effect.BlurType
@@ -29,7 +27,6 @@ import javafx.scene.shape.Rectangle
 import javafx.scene.shape.StrokeType
 import javafx.stage.*
 
-import java.net.URL
 import java.util.logging.Level
 
 /**
@@ -93,7 +90,7 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         closeProperty = SimpleBooleanProperty(false)
         closeProperty!!.addListener { ov, t, t1 -> controller!!.close() }
 
-        sideBarHeightProperty = SimpleDoubleProperty(stag.stage!!.height)
+        sideBarHeightProperty = SimpleDoubleProperty(stag.stage.height)
 
         // The controller
         controller = WindowController(this)
@@ -124,8 +121,8 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
 
         // UI part of the decoration
         val vbox = VBox()
-        stageDecoration = getStageDecoration(stag.stage!!, stag.stage!!.title, windowType)
-        controller!!.setAsStageDraggable(stag.stage!!, stageDecoration!!)
+        stageDecoration = getStageDecoration(stag.stage, stag.stage.title, windowType)
+        controller!!.setAsStageDraggable(stag.stage, stageDecoration!!)
 
         val contentStack = StackPane(clientArea)
         VBox.setVgrow(contentStack, Priority.ALWAYS)
@@ -143,10 +140,10 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
                 AnimationHandler.stackFadeOut!!.setOnFinished { event -> blurPane.isVisible = false }
 
                 //add slide handler for sidebar
-                AnimationHandler.addSlideHandlers(stag.stage!!.width)
+                AnimationHandler.addSlideHandlers(stag.stage.width)
 
                 //get Menu content
-                val menuView = getMenu(stag.stage!!.height)
+                val menuView = getMenu(stag.stage.height)
 
                 contentStack.children.addAll(blurPane, menuView)
             }
@@ -162,7 +159,7 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         resizeRect!!.strokeWidth = RESIZE_PADDING.toDouble()
         resizeRect!!.strokeType = StrokeType.INSIDE
         resizeRect!!.stroke = Configuration.decorationColor
-        controller!!.setStageResizableWith(stag.stage!!, resizeRect!!, RESIZE_PADDING, SHADOW_WIDTH)
+        controller!!.setStageResizableWith(stag.stage, resizeRect!!, RESIZE_PADDING, SHADOW_WIDTH)
 
         buildDockFeedbackStage()
 
@@ -175,12 +172,12 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         /*
          * Focused stage
          */
-        stag.stage!!.focusedProperty().addListener { ov, t, t1 -> setShadowFocused(t1!!) }
+        stag.stage.focusedProperty().addListener { ov, t, t1 -> setShadowFocused(t1!!) }
 
         val primaryScreenBounds = Screen.getPrimary().visualBounds
 
-        clientArea.setMinSize(stag.stage!!.minWidth - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble(), stag.stage!!.minHeight - TITLEBAR_HEIGHT.toDouble() - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble())
-        clientArea.setPrefSize(stag.stage!!.width, stag.stage!!.height - (SHADOW_WIDTH * 2).toDouble() - TITLEBAR_HEIGHT.toDouble() - (RESIZE_PADDING * 2).toDouble())
+        clientArea.setMinSize(stag.stage.minWidth - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble(), stag.stage.minHeight - TITLEBAR_HEIGHT.toDouble() - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble())
+        clientArea.setPrefSize(stag.stage.width, stag.stage.height - (SHADOW_WIDTH * 2).toDouble() - TITLEBAR_HEIGHT.toDouble() - (RESIZE_PADDING * 2).toDouble())
         clientArea.setMaxSize(primaryScreenBounds.width - RESIZE_PADDING * 2, primaryScreenBounds.height - (SHADOW_WIDTH * 2).toDouble() - (RESIZE_PADDING * 2).toDouble())
     }
 
@@ -362,13 +359,13 @@ class Window(val windowStage: WindowStage, val clientArea: Region, st: StageStyl
         clipShape.xProperty().bind(AnimationHandler.xPosMenu)
         clipShape.heightProperty().bind(sideBarHeightProperty)
 
-        val btnCfg = SidebarButton("settings")
+        val btnCfg = SidebarButton(LanguageController.getString("settings"))
         btnCfg.setOnAction { e ->
             SettingsScene()
             toggleSideBar()
         }
 
-        val btnAbout = SidebarButton("about")
+        val btnAbout = SidebarButton(LanguageController.getString("about"))
         btnAbout.setOnAction { e ->
             AboutScene()
             toggleSideBar()

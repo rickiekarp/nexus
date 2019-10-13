@@ -62,13 +62,12 @@ object LanguageController {
 
     @JvmStatic
     fun getString(textID: String): String {
-        return try {
-            val value = prop!!.getProperty(textID)
-            if (value == null || value.isBlank()) textID else value
-        } catch (var3: NullPointerException) {
+        val value = prop!!.getProperty(textID)
+        if (value == null || value.isBlank()) {
             LogFileHandler.logger.warning("Error when loading text ID: $textID")
-            textID
+            return textID
         }
+        return value
     }
 
     @JvmStatic
