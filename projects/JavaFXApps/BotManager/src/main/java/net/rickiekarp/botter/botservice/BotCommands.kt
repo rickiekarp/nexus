@@ -14,14 +14,13 @@ class BotCommands {
     @Throws(NoSuchMethodException::class)
     fun addBotCommands() {
         AppCommands.commandsList.add(
-                ConsoleCommands("/setInterval", "<minutes>", LanguageController.getString("timer_desc"), this.javaClass)
-        )
+                ConsoleCommands("/setInterval", "<minutes>", LanguageController.getString("timer_desc")) {
+                    setInterval("30") // set fixed interval until parameters are supported
+                })
     }
 
-    companion object {
-        fun setInterval(test: String) {
-            AppConfiguration.runInterval = Integer.parseInt(test)
-            MainLayout.mainLayout!!.setStatus("neutral", "Timer intervall: " + AppConfiguration.runInterval + " min")
-        }
+    fun setInterval(test: String) {
+        AppConfiguration.runInterval = Integer.parseInt(test)
+        MainLayout.mainLayout!!.setStatus("neutral", "Timer intervall: " + AppConfiguration.runInterval + " min")
     }
 }
