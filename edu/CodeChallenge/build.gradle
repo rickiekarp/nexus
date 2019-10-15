@@ -20,10 +20,7 @@ repositories {
 }
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testImplementation(
-            'org.assertj:assertj-core:3.12.2',
-            "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-    )
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 compileKotlin {
