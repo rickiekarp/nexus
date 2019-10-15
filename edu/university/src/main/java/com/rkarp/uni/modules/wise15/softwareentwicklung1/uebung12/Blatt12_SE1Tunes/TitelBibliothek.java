@@ -27,7 +27,7 @@ public class TitelBibliothek
     public TitelBibliothek(String bibliotheksdatei)
     {
         _bibliothek = new ArrayList<Titel>();
-        liesEin(System.getProperty("user.dir") + "/Sources/com/rkarp/uni/modules/wise15/softwareentwicklung1/uebung12/Blatt12_SE1Tunes/" + bibliotheksdatei);
+        liesEin(System.getProperty("user.dir") + "/src/main/java/com/rkarp/uni/modules/wise15/softwareentwicklung1/uebung12/Blatt12_SE1Tunes/" + bibliotheksdatei);
     }
 
     /**

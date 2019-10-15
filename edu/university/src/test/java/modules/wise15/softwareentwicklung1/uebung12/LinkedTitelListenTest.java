@@ -4,9 +4,10 @@ import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung12.Blatt12_SE1Tun
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung12.Blatt12_SE1Tunes.Titel;
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung12.Blatt12_SE1Tunes.TitelBibliothek;
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung12.Blatt12_SE1Tunes.TitelListe;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * JUnit-Test fuer die Klasse LinkedTitelListe.
@@ -17,11 +18,11 @@ import static org.junit.Assert.*;
  * @author Fredrik Winkler
  * @version 8. Januar 2015
  */
-public class LinkedTitelListenTest
+class LinkedTitelListenTest
 {
     private Titel[] _testTitel;
 
-    public LinkedTitelListenTest()
+    LinkedTitelListenTest()
     {
         TitelBibliothek bibliothek = new TitelBibliothek("JazzMix.txt");
         _testTitel = bibliothek.gibZufaelligeTitel(10);
@@ -31,7 +32,7 @@ public class LinkedTitelListenTest
      * Testet die Methode enthaelt(String) der Liste.
      */
     @Test
-    public void testeEnthaelt()
+    void testeEnthaelt()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -39,17 +40,17 @@ public class LinkedTitelListenTest
             titelListe.fuegeEin(_testTitel[i], titelListe.gibLaenge());
         }
 
-        assertTrue("titelListe soll den Test-Titel 0 enthalten", titelListe
-                .enthaelt(_testTitel[0]));
-        assertTrue("titelListe soll den Test-Titel 2 enthalten", titelListe
-                .enthaelt(_testTitel[2]));
-        assertTrue("titelListe soll den Test-Titel 9 enthalten", titelListe
-                .enthaelt(_testTitel[9]));
+        Assertions.assertTrue(titelListe
+                        .enthaelt(_testTitel[0]), "titelListe soll den Test-Titel 0 enthalten");
+        Assertions.assertTrue(titelListe
+                        .enthaelt(_testTitel[2]), "titelListe soll den Test-Titel 2 enthalten");
+        Assertions.assertTrue(titelListe
+                        .enthaelt(_testTitel[9]), "titelListe soll den Test-Titel 9 enthalten");
 
         Titel falscherTitel = new Titel("", "", "", 0, "", 0);
-        assertFalse(
-                "titelListe darf nicht den Titel 'falscherTitel' enthalten",
-                titelListe.enthaelt(falscherTitel));
+        Assertions.assertFalse(
+                titelListe.enthaelt(falscherTitel),
+                "titelListe darf nicht den Titel 'falscherTitel' enthalten");
     }
     
     /**
@@ -57,21 +58,21 @@ public class LinkedTitelListenTest
      * werden. 
      */
     @Test
-    public void testetEqualsVerwendungInEnthaelt()
+    void testetEqualsVerwendungInEnthaelt()
     {
        TitelListe titelListe = erzeugeListe();
        Titel titel = new Titel("At Saturday", "Esbjoern Svensson Trio", "Winter in Venice", 1999, "Jazz", 374);
        Titel gleicherTitel = new Titel("At Saturday", "Esbjoern Svensson Trio", "Winter in Venice", 1999, "Jazz", 374);
        titelListe.fuegeEin(titel, 0);
-       
-       assertTrue("titelListe soll gleicherTitel enthalten", titelListe.enthaelt(gleicherTitel));
+
+        Assertions.assertTrue(titelListe.enthaelt(gleicherTitel), "titelListe soll gleicherTitel enthalten");
     }
 
     /**
      * Testet die Methode gibLaenge der Liste.
      */
     @Test
-    public void testeGibLaenge()
+    void testeGibLaenge()
     {
         TitelListe titelListe = erzeugeListe();
         assertEquals(0, titelListe.gibLaenge());
@@ -90,7 +91,7 @@ public class LinkedTitelListenTest
      * ob sich Elemente mittig in die Liste einfuegen lassen.
      */
     @Test
-    public void testeFuegeEinMittig()
+    void testeFuegeEinMittig()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 9; i++)
@@ -99,8 +100,8 @@ public class LinkedTitelListenTest
         }
         titelListe.fuegeEin(_testTitel[9], 5);
         assertEquals(10, titelListe.gibLaenge());
-        assertTrue("titelListe soll den Test-Titel 9 enthalten", titelListe
-                .enthaelt(_testTitel[9]));
+        Assertions.assertTrue(titelListe
+                        .enthaelt(_testTitel[9]), "titelListe soll den Test-Titel 9 enthalten");
         assertEquals(_testTitel[9], titelListe.gibTitel(5));
         assertEquals(_testTitel[4], titelListe.gibTitel(4));
         assertEquals(_testTitel[5], titelListe.gibTitel(6));
@@ -112,7 +113,7 @@ public class LinkedTitelListenTest
      * ob sich Elemente am Anfang in die Liste einfuegen lassen.
      */
     @Test
-    public void testeFuegeEinListenanfang()
+    void testeFuegeEinListenanfang()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 9; i++)
@@ -121,8 +122,8 @@ public class LinkedTitelListenTest
         }
         titelListe.fuegeEin(_testTitel[9], 0);
         assertEquals(10, titelListe.gibLaenge());
-        assertTrue("titelListe soll den Test-Titel 9 enthalten", titelListe
-                .enthaelt(_testTitel[9]));
+        Assertions.assertTrue(titelListe
+                        .enthaelt(_testTitel[9]), "titelListe soll den Test-Titel 9 enthalten");
         assertEquals(_testTitel[9], titelListe.gibTitel(0));
         assertEquals(_testTitel[0], titelListe.gibTitel(1));
         assertEquals(_testTitel[8], titelListe.gibTitel(9));
@@ -133,7 +134,7 @@ public class LinkedTitelListenTest
      * ob sich Elemente am Ende in die Liste einfuegen lassen.
      */
     @Test
-    public void testeFuegeEinListenende()
+    void testeFuegeEinListenende()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -149,14 +150,14 @@ public class LinkedTitelListenTest
      * Testet, ob beim Einfuegen am Anfang korrekt verschoben wird.
      */
     @Test
-    public void testeEinfuegenUndEntfernen()
+    void testeEinfuegenUndEntfernen()
     {
         TitelListe titelListe = erzeugeListe();
         titelListe.fuegeEin(_testTitel[6], 0);
         titelListe.fuegeEin(_testTitel[5], 0);
         titelListe.entferne(1);
-        assertTrue("titelListe soll den Test-Titel 5 enthalten", titelListe
-                .enthaelt(_testTitel[5]));
+        Assertions.assertTrue(titelListe
+                        .enthaelt(_testTitel[5]), "titelListe soll den Test-Titel 5 enthalten");
     }
 
     /**
@@ -164,7 +165,7 @@ public class LinkedTitelListenTest
      * Elemente.
      */
     @Test
-    public void testeFuegeEinVergroessern()
+    void testeFuegeEinVergroessern()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 12; i++)
@@ -183,7 +184,7 @@ public class LinkedTitelListenTest
      * ungueltigen Indizes einzufuegen.
      */
     @Test
-    public void testeFuegeEinNegativtest()
+    void testeFuegeEinNegativtest()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -200,11 +201,11 @@ public class LinkedTitelListenTest
         {
             exception = true;
         }
-        assertTrue("es soll eine Exception aufgetreten sein", exception);
+        Assertions.assertTrue(exception, "es soll eine Exception aufgetreten sein");
         assertEquals(10, titelListe.gibLaenge());
-        assertFalse(
-                "titelListe darf nicht den Titel 'falscherTitel' enthalten",
-                titelListe.enthaelt(falscherTitel));
+        Assertions.assertFalse(
+                titelListe.enthaelt(falscherTitel),
+                "titelListe darf nicht den Titel 'falscherTitel' enthalten");
         assertEquals(_testTitel[0], titelListe.gibTitel(0));
         assertEquals(_testTitel[9], titelListe.gibTitel(9));
 
@@ -217,11 +218,11 @@ public class LinkedTitelListenTest
         {
             exception = true;
         }
-        assertTrue("es soll eine Exception aufgetreten sein", exception);
+        Assertions.assertTrue(exception, "es soll eine Exception aufgetreten sein");
         assertEquals(10, titelListe.gibLaenge());
-        assertFalse(
-                "titelListe darf nicht den Titel 'falscherTitel' enthalten",
-                titelListe.enthaelt(falscherTitel));
+        Assertions.assertFalse(
+                titelListe.enthaelt(falscherTitel),
+                "titelListe darf nicht den Titel 'falscherTitel' enthalten");
         assertEquals(_testTitel[0], titelListe.gibTitel(0));
         assertEquals(_testTitel[9], titelListe.gibTitel(9));
     }
@@ -231,7 +232,7 @@ public class LinkedTitelListenTest
      * Elemente mittig aus der Liste entfernen lassen.
      */
     @Test
-    public void testeEntferneMittig()
+    void testeEntferneMittig()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -240,8 +241,8 @@ public class LinkedTitelListenTest
         }
         titelListe.entferne(5);
         assertEquals(9, titelListe.gibLaenge());
-        assertFalse("titelListe darf nicht den Test-Titel 5 enthalten",
-                titelListe.enthaelt(_testTitel[5]));
+        Assertions.assertFalse(titelListe.enthaelt(_testTitel[5]),
+                "titelListe darf nicht den Test-Titel 5 enthalten");
         assertEquals(_testTitel[4], titelListe.gibTitel(4));
         assertEquals(_testTitel[6], titelListe.gibTitel(5));
         assertEquals(_testTitel[9], titelListe.gibTitel(8));
@@ -252,7 +253,7 @@ public class LinkedTitelListenTest
      * Elemente am Anfang aus der Liste entfernen lassen.
      */
     @Test
-    public void testeEntferneListenanfang()
+    void testeEntferneListenanfang()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -261,8 +262,8 @@ public class LinkedTitelListenTest
         }
         titelListe.entferne(0);
         assertEquals(9, titelListe.gibLaenge());
-        assertFalse("titelListe darf nicht den Test-Titel 0 enthalten",
-                titelListe.enthaelt(_testTitel[0]));
+        Assertions.assertFalse(titelListe.enthaelt(_testTitel[0]),
+                "titelListe darf nicht den Test-Titel 0 enthalten");
         assertEquals(_testTitel[1], titelListe.gibTitel(0));
         assertEquals(_testTitel[9], titelListe.gibTitel(8));
     }
@@ -272,7 +273,7 @@ public class LinkedTitelListenTest
      * Elemente am Ende aus der Liste entfernen lassen.
      */
     @Test
-    public void testeEntferneListenende()
+    void testeEntferneListenende()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -281,8 +282,8 @@ public class LinkedTitelListenTest
         }
         titelListe.entferne(9);
         assertEquals(9, titelListe.gibLaenge());
-        assertFalse("titelListe darf nicht den Test-Titel 9 enthalten",
-                titelListe.enthaelt(_testTitel[9]));
+        Assertions.assertFalse(titelListe.enthaelt(_testTitel[9]),
+                "titelListe darf nicht den Test-Titel 9 enthalten");
         assertEquals(_testTitel[0], titelListe.gibTitel(0));
         assertEquals(_testTitel[8], titelListe.gibTitel(8));
     }
@@ -292,7 +293,7 @@ public class LinkedTitelListenTest
      * Elemente enthaelt.
      */
     @Test
-    public void testeLoeschenAusGrosserListe()
+    void testeLoeschenAusGrosserListe()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 12; i++)
@@ -312,7 +313,7 @@ public class LinkedTitelListenTest
      * Indizes zu entfernen.
      */
     @Test
-    public void testeEntferneNegativtest()
+    void testeEntferneNegativtest()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -328,7 +329,7 @@ public class LinkedTitelListenTest
         {
             exception = true;
         }
-        assertTrue("es soll eine Exception aufgetreten sein", exception);
+        Assertions.assertTrue(exception, "es soll eine Exception aufgetreten sein");
         assertEquals(10, titelListe.gibLaenge());
         assertEquals(_testTitel[0], titelListe.gibTitel(0));
         assertEquals(_testTitel[9], titelListe.gibTitel(9));
@@ -342,7 +343,7 @@ public class LinkedTitelListenTest
         {
             exception = true;
         }
-        assertTrue("es soll eine Exception aufgetreten sein", exception);
+        Assertions.assertTrue(exception, "es soll eine Exception aufgetreten sein");
         assertEquals(10, titelListe.gibLaenge());
         assertEquals(_testTitel[0], titelListe.gibTitel(0));
         assertEquals(_testTitel[9], titelListe.gibTitel(9));
@@ -353,7 +354,7 @@ public class LinkedTitelListenTest
      * Elemente mittig in der Liste abfragen lassen.
      */
     @Test
-    public void testeGibMittig()
+    void testeGibMittig()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -362,8 +363,8 @@ public class LinkedTitelListenTest
         }
         assertEquals(_testTitel[5], titelListe.gibTitel(5));
         assertEquals(10, titelListe.gibLaenge());
-        assertTrue("titelListe soll den Test-Titel 5 enthalten", titelListe
-                .enthaelt(_testTitel[5]));
+        Assertions.assertTrue(titelListe
+                        .enthaelt(_testTitel[5]), "titelListe soll den Test-Titel 5 enthalten");
     }
 
     /**
@@ -371,7 +372,7 @@ public class LinkedTitelListenTest
      * Elemente am Anfang in der Liste abfragen lassen.
      */
     @Test
-    public void testeGibListenanfang()
+    void testeGibListenanfang()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -380,8 +381,8 @@ public class LinkedTitelListenTest
         }
         assertEquals(_testTitel[0], titelListe.gibTitel(0));
         assertEquals(10, titelListe.gibLaenge());
-        assertTrue("titelListe soll den Test-Titel 0 enthalten", titelListe
-                .enthaelt(_testTitel[0]));
+        Assertions.assertTrue(titelListe
+                        .enthaelt(_testTitel[0]), "titelListe soll den Test-Titel 0 enthalten");
     }
 
     /**
@@ -389,7 +390,7 @@ public class LinkedTitelListenTest
      * Elemente am Ende in der Liste abfragen lassen.
      */
     @Test
-    public void testeGibListenende()
+    void testeGibListenende()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -398,8 +399,8 @@ public class LinkedTitelListenTest
         }
         assertEquals(_testTitel[9], titelListe.gibTitel(9));
         assertEquals(10, titelListe.gibLaenge());
-        assertTrue("titelListe soll den Test-Titel 9 enthalten", titelListe
-                .enthaelt(_testTitel[9]));
+        Assertions.assertTrue(titelListe
+                        .enthaelt(_testTitel[9]), "titelListe soll den Test-Titel 9 enthalten");
     }
 
     /**
@@ -408,7 +409,7 @@ public class LinkedTitelListenTest
      * Indizes abzufragen.
      */
     @Test
-    public void testeGibNegativtest()
+    void testeGibNegativtest()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -424,7 +425,7 @@ public class LinkedTitelListenTest
         {
             exception = true;
         }
-        assertTrue("es soll eine Exception aufgetreten sein", exception);
+        Assertions.assertTrue(exception, "es soll eine Exception aufgetreten sein");
         assertEquals(10, titelListe.gibLaenge());
         assertEquals(_testTitel[0], titelListe.gibTitel(0));
         assertEquals(_testTitel[9], titelListe.gibTitel(9));
@@ -438,7 +439,7 @@ public class LinkedTitelListenTest
         {
             exception = true;
         }
-        assertTrue("es soll eine Exception aufgetreten sein", exception);
+        Assertions.assertTrue(exception, "es soll eine Exception aufgetreten sein");
         assertEquals(10, titelListe.gibLaenge());
         assertEquals(_testTitel[0], titelListe.gibTitel(0));
         assertEquals(_testTitel[9], titelListe.gibTitel(9));
@@ -448,7 +449,7 @@ public class LinkedTitelListenTest
      * Testet die Methode leere der Liste.
      */
     @Test
-    public void testeLeere()
+    void testeLeere()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 10; i++)
@@ -458,10 +459,10 @@ public class LinkedTitelListenTest
         assertEquals(10, titelListe.gibLaenge());
         titelListe.leere();
         assertEquals(0, titelListe.gibLaenge());
-        assertFalse("titelListe darf nicht den Test-Titel 0 enthalten",
-                titelListe.enthaelt(_testTitel[0]));
-        assertFalse("titelListe darf nicht den Test-Titel 0 enthalten",
-                titelListe.enthaelt(_testTitel[9]));
+        Assertions.assertFalse(titelListe.enthaelt(_testTitel[0]),
+                "titelListe darf nicht den Test-Titel 0 enthalten");
+        Assertions.assertFalse(titelListe.enthaelt(_testTitel[9]),
+                "titelListe darf nicht den Test-Titel 0 enthalten");
     }
 
     /**
@@ -469,7 +470,7 @@ public class LinkedTitelListenTest
      * Elemente.
      */
     @Test
-    public void testeVergroessern()
+    void testeVergroessern()
     {
         TitelListe titelListe = erzeugeListe();
         for (int i = 0; i < 100; i++)
@@ -489,7 +490,7 @@ public class LinkedTitelListenTest
      * 
      * @return Eine leere Liste.
      */
-    public TitelListe erzeugeListe()
+    TitelListe erzeugeListe()
     {
         return new LinkedTitelListe();
     }

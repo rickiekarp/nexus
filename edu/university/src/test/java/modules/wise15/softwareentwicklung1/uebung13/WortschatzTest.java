@@ -3,9 +3,10 @@ package modules.wise15.softwareentwicklung1.uebung13;
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung13.Blatt13_Hashing.Delegation;
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung13.Blatt13_Hashing.HashWortschatz;
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung13.Blatt13_Hashing.Wortschatz;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Diese Klasse testet den Wortschatz.
@@ -13,14 +14,14 @@ import static org.junit.Assert.*;
  * @author Fredrik Winkler
  * @version 20. Januar 2015
  */
-public class WortschatzTest
+class WortschatzTest
 {
     private final Wortschatz _schatz;
     
     /**
      * Jede Testmethode arbeitet auf einem frisch erzeugten Exemplar.
      */
-    public WortschatzTest()
+    WortschatzTest()
     {
         _schatz = new HashWortschatz(new Delegation(), 10);
     }
@@ -29,7 +30,7 @@ public class WortschatzTest
      * Stellt sicher, dass ein neuer Wortschatz leer ist.
      */
     @Test
-    public void testNeuerWortschatzIstLeer()
+    void testNeuerWortschatzIstLeer()
     {
         assertEquals(0, _schatz.anzahlWoerter());
     }
@@ -38,10 +39,10 @@ public class WortschatzTest
      * Stellt sicher, dass ein hinzugefuegtes Wort auch wirklich enthalten ist.
      */
     @Test
-    public void testHinzugefuegtesWortIstEnthalten()
+    void testHinzugefuegtesWortIstEnthalten()
     {
         _schatz.fuegeWortHinzu("Suppenkasper");
-        assertTrue(_schatz.enthaeltWort("Suppenkasper"));
+        Assertions.assertTrue(_schatz.enthaeltWort("Suppenkasper"));
         assertEquals(1, _schatz.anzahlWoerter());
     }
     
@@ -50,10 +51,10 @@ public class WortschatzTest
      * Stellt sicher, dass ein nicht hinzugefügtes Wort nicht enthalten ist.
      */
     @Test
-    public void testNichtHinzugefuegtesWortIstNichtEnthalten()
+    void testNichtHinzugefuegtesWortIstNichtEnthalten()
     {
         _schatz.fuegeWortHinzu("hello");
-        assertFalse(_schatz.enthaeltWort("world"));
+        Assertions.assertFalse(_schatz.enthaeltWort("world"));
     }
     
     /**
@@ -61,7 +62,7 @@ public class WortschatzTest
      * Stellt sicher, dass Duplikate nicht hinzugefügt werden.
      */
     @Test
-    public void testDuplikateWerdenNichtHinzugefuegt()
+    void testDuplikateWerdenNichtHinzugefuegt()
     {
         _schatz.fuegeWortHinzu("hello");
         _schatz.fuegeWortHinzu("HELLO".toLowerCase());

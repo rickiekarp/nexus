@@ -1,7 +1,7 @@
 package modules.wise15.softwareentwicklung1.uebung14;
 
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung14.Blatt14_LinkedStack.Stack;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Diese Klasse testet den Stack.
@@ -9,14 +9,14 @@ import org.junit.Test;
  * @author Fredrik Winkler
  * @version WiSe 2013/14
  */
-public class StackTest
+class StackTest
 {
     private Stack _stack;
     
     /**
      * Jede Testmethode arbeitet auf einem frisch erzeugten Exemplar.
      */
-    public StackTest()
+    StackTest()
     {
         // TODO: Stack erzeugen
     }
@@ -25,7 +25,7 @@ public class StackTest
      * Stellt sicher, dass ein neuer Stack leer ist.
      */
     @Test
-    public void testNeuerStackIstLeer()
+    void testNeuerStackIstLeer()
     {
         //assertTrue(_stack.isEmpty());
     }
@@ -34,34 +34,34 @@ public class StackTest
      * Stellt sicher, dass ein Stack nach einem Push nicht mehr leer ist.
      */
     @Test
-    public void testNachPushNichtLeer()
+    void testNachPushNichtLeer()
     {
         //_stack.push("test");
         //assertFalse(_stack.isEmpty());
     }
 
     @Test
-    public void testNachPushUndPopWiederLeer()
+    void testNachPushUndPopWiederLeer()
     {
     }
 
     @Test
-    public void testPeekEntferntKeinElement()
+    void testPeekEntferntKeinElement()
     {
     }
 
     @Test
-    public void testPeekAufLeeremStackLiefertNull()
+    void testPeekAufLeeremStackLiefertNull()
     {
     }
 
     @Test
-    public void testPopAufLeeremStackLiefertNull()
+    void testPopAufLeeremStackLiefertNull()
     {
     }
 
     @Test
-    public void testLastInFirstOutReihenfolge()
+    void testLastInFirstOutReihenfolge()
     {
     }
 }

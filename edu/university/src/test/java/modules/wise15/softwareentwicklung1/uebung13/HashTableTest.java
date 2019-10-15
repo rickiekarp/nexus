@@ -2,9 +2,10 @@ package modules.wise15.softwareentwicklung1.uebung13;
 
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung13.Hash.Delegation;
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung13.Hash.HashTable;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Diese Klasse testet den Wortschatz.
@@ -12,14 +13,14 @@ import static org.junit.Assert.*;
  * @author Fredrik Winkler
  * @version 20. Januar 2015
  */
-public class HashTableTest
+class HashTableTest
 {
     private final HashTable _hashTable;
 
     /**
      * Jede Testmethode arbeitet auf einem frisch erzeugten Exemplar.
      */
-    public HashTableTest()
+    HashTableTest()
     {
         _hashTable = new HashTable(new Delegation());
     }
@@ -28,7 +29,7 @@ public class HashTableTest
      * Stellt sicher, dass ein neuer Wortschatz leer ist.
      */
     @Test
-    public void neueHashTabelleIstLeer()
+    void neueHashTabelleIstLeer()
     {
         assertEquals(0, _hashTable.size());
     }
@@ -37,27 +38,27 @@ public class HashTableTest
      * Stellt sicher, dass ein hinzugefuegtes Wort auch wirklich enthalten ist.
      */
     @Test
-    public void hinzugefuegtesWortIstEnthalten()
+    void hinzugefuegtesWortIstEnthalten()
     {
         _hashTable.insert("hello");
-        assertTrue(_hashTable.contains("hello"));
+        Assertions.assertTrue(_hashTable.contains("hello"));
     }
 
     /**
      * Stellt sicher, dass ein nicht hinzugefügtes Wort nicht enthalten ist.
      */
     @Test
-    public void nichtHinzugefuegtesWortIstNichtEnthalten()
+    void nichtHinzugefuegtesWortIstNichtEnthalten()
     {
         _hashTable.insert("hello");
-        assertFalse(_hashTable.contains("world"));
+        Assertions.assertFalse(_hashTable.contains("world"));
     }
 
     /**
      * Stellt sicher, dass Duplikate nicht hinzugefügt werden.
      */
     @Test
-    public void duplikateWerdenNichtHinzugefuegt()
+    void duplikateWerdenNichtHinzugefuegt()
     {
         _hashTable.insert("hello");
         _hashTable.insert("HELLO".toLowerCase());

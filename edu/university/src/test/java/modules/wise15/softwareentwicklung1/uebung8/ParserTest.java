@@ -1,9 +1,9 @@
 package modules.wise15.softwareentwicklung1.uebung8;
 
 import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung8.Parser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The test class ParserTest.
@@ -11,20 +11,20 @@ import static org.junit.Assert.assertEquals;
  * @author  (your name)
  * @version (a version number or a date)
  */
-public class ParserTest
+class ParserTest
 {
     private Parser _parser;
     /**
      * Default constructor for test class ParserTest
      */
-    public ParserTest()
+    ParserTest()
     {
         _parser = new Parser();
         System.out.println("Neuer ParserTest initialisiert.");
     }
 
     @Test
-    public void alleEinstelligenZahlen()
+    void alleEinstelligenZahlen()
     {
         assertEquals(0, _parser.parse("0"));
         assertEquals(1, _parser.parse("1"));
@@ -36,17 +36,16 @@ public class ParserTest
         assertEquals(7, _parser.parse("7"));
         assertEquals(8, _parser.parse("8"));
         assertEquals(9, _parser.parse("9"));
-
     }
 
     @Test
-    public void punktVorStrichRechnung()
+    void punktVorStrichRechnung()
     {
         assertEquals(26, _parser.parse("2*3+4*5"));
     }
 
     @Test
-    public void geklammerteAusdruecke()
+    void geklammerteAusdruecke()
     {
         assertEquals(21, _parser.parse("(1+2)*(3+4)"));
     }
