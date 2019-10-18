@@ -1,22 +1,22 @@
-package modules.wise15.softwareentwicklung1.uebung11;
+package modules.wise15.softwareentwicklung1.uebung11
 
-import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung11.Elf.Eratosthenes;
-import org.junit.jupiter.api.Test;
+import com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung11.Elf.Eratosthenes
+import org.junit.jupiter.api.Test
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import org.junit.jupiter.api.Assertions.assertArrayEquals
 
-class Eratesthenes {
+internal class Eratesthenes {
     @Test
-    void testBis100() {
-        int[] expected = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
-        int[] actual = Eratosthenes.calcPrimesBelow(100);
-        assertArrayEquals(expected, actual);
+    fun testBis100() {
+        val expected = intArrayOf(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97)
+        val actual = Eratosthenes.calcPrimesBelow(100)
+        assertArrayEquals(expected, actual)
     }
 
     @Test
-    void testBis50() {
-        int[] expected = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47};
-        int[] actual = Eratosthenes.calcPrimesBelow(50);
-        assertArrayEquals(expected, actual);
+    fun testBis50() {
+        val expected = intArrayOf(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47)
+        val actual = Eratosthenes.calcPrimesBelow(50)
+        assertArrayEquals(expected, actual)
     }
 }

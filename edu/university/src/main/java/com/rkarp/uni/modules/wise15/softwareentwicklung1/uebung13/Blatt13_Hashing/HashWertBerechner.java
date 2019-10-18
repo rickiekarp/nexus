@@ -11,7 +11,7 @@ package com.rkarp.uni.modules.wise15.softwareentwicklung1.uebung13.Blatt13_Hashi
  * @author Fredrik Winkler, Petra Becker-Pechau, Axel Schmolitzky
  * @version September 2011
  */
-interface HashWertBerechner
+public interface HashWertBerechner
 {
     /**
      * Bilde das gegebene Wort auf einen ganzzahligen Wert ab.

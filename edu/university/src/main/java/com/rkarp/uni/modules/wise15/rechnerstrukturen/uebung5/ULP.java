@@ -1,6 +1,7 @@
 package com.rkarp.uni.modules.wise15.rechnerstrukturen.uebung5;
 
 /**
+ * Unit in the last place
  * Created by rickie on 12/8/2015.
  */
 public class ULP {
@@ -8,16 +9,17 @@ public class ULP {
     /**
      * ULP (Unit in the last place)
      */
-    public static void ulpNew() {
-        int n = 0; double sum; //double insted float
+    public double ulpNew() {
+        int n = 0; double sum; //double instead float
         double limit = 1.0E8f; //double instead float
-        for ( sum = 0; sum < limit; sum+= 0.1) {
+        for (sum = 0; sum < limit; sum+= 0.1) {
             n++;
-            if ((n % 100000) == 0) {
-                System.out.println("n=" + n + " sum=" + sum + " target=" + (n*0.1));
-            }
+//            if ((n % 1000000) == 0) {
+//                System.out.println("n=" + n + " sum=" + sum + " target=" + (n*0.1));
+//            }
         }
         System.out.println("sum is " + sum + " compared to " + (n*0.1));
+        return sum;
     }
 
     /**
@@ -31,7 +33,7 @@ public class ULP {
      * (b)Was passiert tatsächlich?Warum? (Es kann helfen, die auskommentierten Codezeilen wieder
      * zu aktivieren).
      */
-        public static void ulpOld() {
+        public void ulpOld() {
             // calculate the sum of 1E8 unprecise numbers
             int n = 0;
             float sum;

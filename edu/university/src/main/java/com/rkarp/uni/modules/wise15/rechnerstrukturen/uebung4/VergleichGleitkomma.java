@@ -13,7 +13,7 @@ public class VergleichGleitkomma {
      * @param epsilon Annehmbarer Wertebereich
      * @return returns 1 if two double-precision numbers are almost equal, considering their scale, and 0 otherwise.
      */
-    public static int almostEqual (double a, double b, double epsilon) {
+    public int almostEqual(double a, double b, double epsilon) {
         double diff = Math.max(Math.abs(a),Math.abs(b)) - Math.min(Math.abs(a),Math.abs(b));
         if (diff < epsilon) {
             return 1;

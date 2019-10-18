@@ -16,7 +16,7 @@ public class HammingDistance {
      * @param b Integer b
      * @return Hamming-Distanz
      */
-    public static int hamming(int a, int b) {
+    public int hamming(int a, int b) {
         // convert to binary
         int aBinary = Integer.parseInt(Integer.toBinaryString(a));
         int bBinary = Integer.parseInt(Integer.toBinaryString(b));
@@ -45,14 +45,14 @@ public class HammingDistance {
      * @param str a string containing a binary number
      * @return the numeric value of the supplied string
      */
-    private static int fromBinary(final String str) {
+    private int fromBinary(final String str) {
         return Integer.parseInt(str, 2);
     }
 
     /**
      * Generator matrix for the code, multiplied with a dataword to generate a codeword.
      */
-    private static final int[] sGenerator = {
+    private final int[] sGenerator = {
 
             fromBinary("100000000000"),
             fromBinary("010000000000"),
@@ -85,7 +85,7 @@ public class HammingDistance {
      * Generates the codewords array.
      * @return an array of codewords
      */
-    private static int[] computeCodewords() {
+    private int[] computeCodewords() {
         int[] cws = new int[4096];
         //iterate over all valid datawords
         for (int i = 0; i < 4096; i++) {
