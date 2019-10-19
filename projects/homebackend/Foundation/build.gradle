@@ -17,14 +17,17 @@ dependencies {
     
     //redis
     compile group: 'org.springframework.data', name: 'spring-data-redis', version: project.ext.springBootVersion
-    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+    compile group: 'redis.clients', name: 'jedis', version: project.ext.jedis
 
     compile group: 'com.google.code.gson', name: 'gson', version: project.ext.gsonVersion
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jacksonVersion
     compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: project.ext.jacksonVersion
 
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.13'
+    compile group: 'mysql', name: 'mysql-connector-java', version: project.ext.mysqlJavaConnector
     compile group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flywayVersion
 
-    compile group: 'org.apache.commons', name: 'commons-text', version: '1.6'
+    compile group: 'org.apache.commons', name: 'commons-text', version: project.ext.commonsText
+
+    // https://stackoverflow.com/questions/48986999/classnotfoundexception-for-javax-xml-bind-jaxbexception-with-spring-boot-when-sw
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 }

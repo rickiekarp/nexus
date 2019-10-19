@@ -9,15 +9,18 @@ public interface ShoppingStoreOrBuilder extends
 
   /**
    * <code>int32 id = 1;</code>
+   * @return The id.
    */
   int getId();
 
   /**
    * <code>string name = 2;</code>
+   * @return The name.
    */
   java.lang.String getName();
   /**
    * <code>string name = 2;</code>
+   * @return The bytes for name.
    */
   com.google.protobuf.ByteString
       getNameBytes();

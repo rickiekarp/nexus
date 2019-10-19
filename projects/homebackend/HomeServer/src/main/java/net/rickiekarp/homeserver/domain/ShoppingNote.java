@@ -150,6 +150,7 @@ private static final long serialVersionUID = 0L;
   private int id_;
   /**
    * <code>int32 id = 1;</code>
+   * @return The id.
    */
   public int getId() {
     return id_;
@@ -159,6 +160,7 @@ private static final long serialVersionUID = 0L;
   private volatile java.lang.Object title_;
   /**
    * <code>string title = 2;</code>
+   * @return The title.
    */
   public java.lang.String getTitle() {
     java.lang.Object ref = title_;
@@ -174,6 +176,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <code>string title = 2;</code>
+   * @return The bytes for title.
    */
   public com.google.protobuf.ByteString
       getTitleBytes() {
@@ -193,6 +196,7 @@ private static final long serialVersionUID = 0L;
   private double price_;
   /**
    * <code>double price = 3;</code>
+   * @return The price.
    */
   public double getPrice() {
     return price_;
@@ -202,6 +206,7 @@ private static final long serialVersionUID = 0L;
   private int userId_;
   /**
    * <code>int32 user_id = 4;</code>
+   * @return The userId.
    */
   public int getUserId() {
     return userId_;
@@ -211,12 +216,14 @@ private static final long serialVersionUID = 0L;
   private com.google.protobuf.Timestamp dateBought_;
   /**
    * <code>.google.protobuf.Timestamp dateBought = 5;</code>
+   * @return Whether the dateBought field is set.
    */
   public boolean hasDateBought() {
     return dateBought_ != null;
   }
   /**
    * <code>.google.protobuf.Timestamp dateBought = 5;</code>
+   * @return The dateBought.
    */
   public com.google.protobuf.Timestamp getDateBought() {
     return dateBought_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : dateBought_;
@@ -232,6 +239,7 @@ private static final long serialVersionUID = 0L;
   private int storeId_;
   /**
    * <code>int32 store_id = 6;</code>
+   * @return The storeId.
    */
   public int getStoreId() {
     return storeId_;
@@ -241,12 +249,14 @@ private static final long serialVersionUID = 0L;
   private com.google.protobuf.Timestamp dateAdded_;
   /**
    * <code>.google.protobuf.Timestamp dateAdded = 7;</code>
+   * @return Whether the dateAdded field is set.
    */
   public boolean hasDateAdded() {
     return dateAdded_ != null;
   }
   /**
    * <code>.google.protobuf.Timestamp dateAdded = 7;</code>
+   * @return The dateAdded.
    */
   public com.google.protobuf.Timestamp getDateAdded() {
     return dateAdded_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : dateAdded_;
@@ -262,12 +272,14 @@ private static final long serialVersionUID = 0L;
   private com.google.protobuf.Timestamp lastUpdated_;
   /**
    * <code>.google.protobuf.Timestamp lastUpdated = 8;</code>
+   * @return Whether the lastUpdated field is set.
    */
   public boolean hasLastUpdated() {
     return lastUpdated_ != null;
   }
   /**
    * <code>.google.protobuf.Timestamp lastUpdated = 8;</code>
+   * @return The lastUpdated.
    */
   public com.google.protobuf.Timestamp getLastUpdated() {
     return lastUpdated_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : lastUpdated_;
@@ -744,12 +756,15 @@ private static final long serialVersionUID = 0L;
     private int id_ ;
     /**
      * <code>int32 id = 1;</code>
+     * @return The id.
      */
     public int getId() {
       return id_;
     }
     /**
      * <code>int32 id = 1;</code>
+     * @param value The id to set.
+     * @return This builder for chaining.
      */
     public Builder setId(int value) {
       
@@ -759,6 +774,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>int32 id = 1;</code>
+     * @return This builder for chaining.
      */
     public Builder clearId() {
       
@@ -770,6 +786,7 @@ private static final long serialVersionUID = 0L;
     private java.lang.Object title_ = "";
     /**
      * <code>string title = 2;</code>
+     * @return The title.
      */
     public java.lang.String getTitle() {
       java.lang.Object ref = title_;
@@ -785,6 +802,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string title = 2;</code>
+     * @return The bytes for title.
      */
     public com.google.protobuf.ByteString
         getTitleBytes() {
@@ -801,6 +819,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string title = 2;</code>
+     * @param value The title to set.
+     * @return This builder for chaining.
      */
     public Builder setTitle(
         java.lang.String value) {
@@ -814,6 +834,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string title = 2;</code>
+     * @return This builder for chaining.
      */
     public Builder clearTitle() {
       
@@ -823,6 +844,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string title = 2;</code>
+     * @param value The bytes for title to set.
+     * @return This builder for chaining.
      */
     public Builder setTitleBytes(
         com.google.protobuf.ByteString value) {
@@ -839,12 +862,15 @@ private static final long serialVersionUID = 0L;
     private double price_ ;
     /**
      * <code>double price = 3;</code>
+     * @return The price.
      */
     public double getPrice() {
       return price_;
     }
     /**
      * <code>double price = 3;</code>
+     * @param value The price to set.
+     * @return This builder for chaining.
      */
     public Builder setPrice(double value) {
       
@@ -854,6 +880,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>double price = 3;</code>
+     * @return This builder for chaining.
      */
     public Builder clearPrice() {
       
@@ -865,12 +892,15 @@ private static final long serialVersionUID = 0L;
     private int userId_ ;
     /**
      * <code>int32 user_id = 4;</code>
+     * @return The userId.
      */
     public int getUserId() {
       return userId_;
     }
     /**
      * <code>int32 user_id = 4;</code>
+     * @param value The userId to set.
+     * @return This builder for chaining.
      */
     public Builder setUserId(int value) {
       
@@ -880,6 +910,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>int32 user_id = 4;</code>
+     * @return This builder for chaining.
      */
     public Builder clearUserId() {
       
@@ -893,12 +924,14 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> dateBoughtBuilder_;
     /**
      * <code>.google.protobuf.Timestamp dateBought = 5;</code>
+     * @return Whether the dateBought field is set.
      */
     public boolean hasDateBought() {
       return dateBoughtBuilder_ != null || dateBought_ != null;
     }
     /**
      * <code>.google.protobuf.Timestamp dateBought = 5;</code>
+     * @return The dateBought.
      */
     public com.google.protobuf.Timestamp getDateBought() {
       if (dateBoughtBuilder_ == null) {
@@ -1008,12 +1041,15 @@ private static final long serialVersionUID = 0L;
     private int storeId_ ;
     /**
      * <code>int32 store_id = 6;</code>
+     * @return The storeId.
      */
     public int getStoreId() {
       return storeId_;
     }
     /**
      * <code>int32 store_id = 6;</code>
+     * @param value The storeId to set.
+     * @return This builder for chaining.
      */
     public Builder setStoreId(int value) {
       
@@ -1023,6 +1059,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>int32 store_id = 6;</code>
+     * @return This builder for chaining.
      */
     public Builder clearStoreId() {
       
@@ -1036,12 +1073,14 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> dateAddedBuilder_;
     /**
      * <code>.google.protobuf.Timestamp dateAdded = 7;</code>
+     * @return Whether the dateAdded field is set.
      */
     public boolean hasDateAdded() {
       return dateAddedBuilder_ != null || dateAdded_ != null;
     }
     /**
      * <code>.google.protobuf.Timestamp dateAdded = 7;</code>
+     * @return The dateAdded.
      */
     public com.google.protobuf.Timestamp getDateAdded() {
       if (dateAddedBuilder_ == null) {
@@ -1153,12 +1192,14 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> lastUpdatedBuilder_;
     /**
      * <code>.google.protobuf.Timestamp lastUpdated = 8;</code>
+     * @return Whether the lastUpdated field is set.
      */
     public boolean hasLastUpdated() {
       return lastUpdatedBuilder_ != null || lastUpdated_ != null;
     }
     /**
      * <code>.google.protobuf.Timestamp lastUpdated = 8;</code>
+     * @return The lastUpdated.
      */
     public com.google.protobuf.Timestamp getLastUpdated() {
       if (lastUpdatedBuilder_ == null) {

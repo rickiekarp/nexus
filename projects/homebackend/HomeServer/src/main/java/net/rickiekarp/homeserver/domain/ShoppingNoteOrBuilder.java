@@ -9,35 +9,42 @@ public interface ShoppingNoteOrBuilder extends
 
   /**
    * <code>int32 id = 1;</code>
+   * @return The id.
    */
   int getId();
 
   /**
    * <code>string title = 2;</code>
+   * @return The title.
    */
   java.lang.String getTitle();
   /**
    * <code>string title = 2;</code>
+   * @return The bytes for title.
    */
   com.google.protobuf.ByteString
       getTitleBytes();
 
   /**
    * <code>double price = 3;</code>
+   * @return The price.
    */
   double getPrice();
 
   /**
    * <code>int32 user_id = 4;</code>
+   * @return The userId.
    */
   int getUserId();
 
   /**
    * <code>.google.protobuf.Timestamp dateBought = 5;</code>
+   * @return Whether the dateBought field is set.
    */
   boolean hasDateBought();
   /**
    * <code>.google.protobuf.Timestamp dateBought = 5;</code>
+   * @return The dateBought.
    */
   com.google.protobuf.Timestamp getDateBought();
   /**
@@ -47,15 +54,18 @@ public interface ShoppingNoteOrBuilder extends
 
   /**
    * <code>int32 store_id = 6;</code>
+   * @return The storeId.
    */
   int getStoreId();
 
   /**
    * <code>.google.protobuf.Timestamp dateAdded = 7;</code>
+   * @return Whether the dateAdded field is set.
    */
   boolean hasDateAdded();
   /**
    * <code>.google.protobuf.Timestamp dateAdded = 7;</code>
+   * @return The dateAdded.
    */
   com.google.protobuf.Timestamp getDateAdded();
   /**
@@ -65,10 +75,12 @@ public interface ShoppingNoteOrBuilder extends
 
   /**
    * <code>.google.protobuf.Timestamp lastUpdated = 8;</code>
+   * @return Whether the lastUpdated field is set.
    */
   boolean hasLastUpdated();
   /**
    * <code>.google.protobuf.Timestamp lastUpdated = 8;</code>
+   * @return The lastUpdated.
    */
   com.google.protobuf.Timestamp getLastUpdated();
   /**

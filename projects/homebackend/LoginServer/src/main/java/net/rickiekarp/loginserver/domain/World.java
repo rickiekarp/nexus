@@ -108,6 +108,7 @@ private static final long serialVersionUID = 0L;
   private int id_;
   /**
    * <code>int32 id = 1;</code>
+   * @return The id.
    */
   public int getId() {
     return id_;
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
   private volatile java.lang.Object name_;
   /**
    * <code>string name = 2;</code>
+   * @return The name.
    */
   public java.lang.String getName() {
     java.lang.Object ref = name_;
@@ -132,6 +134,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <code>string name = 2;</code>
+   * @return The bytes for name.
    */
   public com.google.protobuf.ByteString
       getNameBytes() {
@@ -151,6 +154,7 @@ private static final long serialVersionUID = 0L;
   private volatile java.lang.Object url_;
   /**
    * <code>string url = 3;</code>
+   * @return The url.
    */
   public java.lang.String getUrl() {
     java.lang.Object ref = url_;
@@ -166,6 +170,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <code>string url = 3;</code>
+   * @return The bytes for url.
    */
   public com.google.protobuf.ByteString
       getUrlBytes() {
@@ -185,6 +190,7 @@ private static final long serialVersionUID = 0L;
   private int worldstatusid_;
   /**
    * <code>int32 worldstatusid = 4;</code>
+   * @return The worldstatusid.
    */
   public int getWorldstatusid() {
     return worldstatusid_;
@@ -546,12 +552,15 @@ private static final long serialVersionUID = 0L;
     private int id_ ;
     /**
      * <code>int32 id = 1;</code>
+     * @return The id.
      */
     public int getId() {
       return id_;
     }
     /**
      * <code>int32 id = 1;</code>
+     * @param value The id to set.
+     * @return This builder for chaining.
      */
     public Builder setId(int value) {
       
@@ -561,6 +570,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>int32 id = 1;</code>
+     * @return This builder for chaining.
      */
     public Builder clearId() {
       
@@ -572,6 +582,7 @@ private static final long serialVersionUID = 0L;
     private java.lang.Object name_ = "";
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -587,6 +598,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -603,6 +615,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string name = 2;</code>
+     * @param value The name to set.
+     * @return This builder for chaining.
      */
     public Builder setName(
         java.lang.String value) {
@@ -616,6 +630,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string name = 2;</code>
+     * @return This builder for chaining.
      */
     public Builder clearName() {
       
@@ -625,6 +640,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string name = 2;</code>
+     * @param value The bytes for name to set.
+     * @return This builder for chaining.
      */
     public Builder setNameBytes(
         com.google.protobuf.ByteString value) {
@@ -641,6 +658,7 @@ private static final long serialVersionUID = 0L;
     private java.lang.Object url_ = "";
     /**
      * <code>string url = 3;</code>
+     * @return The url.
      */
     public java.lang.String getUrl() {
       java.lang.Object ref = url_;
@@ -656,6 +674,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string url = 3;</code>
+     * @return The bytes for url.
      */
     public com.google.protobuf.ByteString
         getUrlBytes() {
@@ -672,6 +691,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string url = 3;</code>
+     * @param value The url to set.
+     * @return This builder for chaining.
      */
     public Builder setUrl(
         java.lang.String value) {
@@ -685,6 +706,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string url = 3;</code>
+     * @return This builder for chaining.
      */
     public Builder clearUrl() {
       
@@ -694,6 +716,8 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>string url = 3;</code>
+     * @param value The bytes for url to set.
+     * @return This builder for chaining.
      */
     public Builder setUrlBytes(
         com.google.protobuf.ByteString value) {
@@ -710,12 +734,15 @@ private static final long serialVersionUID = 0L;
     private int worldstatusid_ ;
     /**
      * <code>int32 worldstatusid = 4;</code>
+     * @return The worldstatusid.
      */
     public int getWorldstatusid() {
       return worldstatusid_;
     }
     /**
      * <code>int32 worldstatusid = 4;</code>
+     * @param value The worldstatusid to set.
+     * @return This builder for chaining.
      */
     public Builder setWorldstatusid(int value) {
       
@@ -725,6 +752,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <code>int32 worldstatusid = 4;</code>
+     * @return This builder for chaining.
      */
     public Builder clearWorldstatusid() {
       
