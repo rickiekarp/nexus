@@ -7,7 +7,7 @@ import { ContactDto } from '../model/contact.model';
 
 @Injectable()
 export class ContactService {
-  private contactApiUrl = 'api/contact';
+  private contactApiUrl = '/HomeServer/api/contact';
 
   constructor(private http: Http) { }
 
