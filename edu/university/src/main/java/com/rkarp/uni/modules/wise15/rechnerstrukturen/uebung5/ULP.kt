@@ -1,25 +1,28 @@
-package com.rkarp.uni.modules.wise15.rechnerstrukturen.uebung5;
+package com.rkarp.uni.modules.wise15.rechnerstrukturen.uebung5
 
 /**
  * Unit in the last place
  * Created by rickie on 12/8/2015.
  */
-public class ULP {
+class ULP {
 
     /**
      * ULP (Unit in the last place)
      */
-    public double ulpNew() {
-        int n = 0; double sum; //double instead float
-        double limit = 1.0E8f; //double instead float
-        for (sum = 0; sum < limit; sum+= 0.1) {
-            n++;
-//            if ((n % 1000000) == 0) {
-//                System.out.println("n=" + n + " sum=" + sum + " target=" + (n*0.1));
-//            }
+    fun ulpNew(): Double {
+        var n = 0
+        var sum: Double //double instead float
+        val limit = 1.0E8 //double instead float
+        sum = 0.0
+        while (sum < limit) {
+            n++
+            sum += 0.1
+            //            if ((n % 1000000) == 0) {
+            //                System.out.println("n=" + n + " sum=" + sum + " target=" + (n*0.1));
+            //            }
         }
-        System.out.println("sum is " + sum + " compared to " + (n*0.1));
-        return sum;
+        println("sum is " + sum + " compared to " + n * 0.1)
+        return sum
     }
 
     /**
@@ -33,18 +36,20 @@ public class ULP {
      * (b)Was passiert tatsächlich?Warum? (Es kann helfen, die auskommentierten Codezeilen wieder
      * zu aktivieren).
      */
-        public void ulpOld() {
-            // calculate the sum of 1E8 unprecise numbers
-            int n = 0;
-            float sum;
-            float limit = 1.0E8f;
-            for( sum = 0; sum < limit; sum += 0.1 ) {
-                n++;
-                // if ((n % 100000) == 0) {
-                // System.out.println( "n=" + n + " sum=" + sum + " target=" + (n*0.1));
-                // }
-            }
-            System.out.println( "sum is " + sum + " compared to " + (n*0.1) );
+    fun ulpOld() {
+        // calculate the sum of 1E8 unprecise numbers
+        var n = 0
+        var sum: Float
+        val limit = 1.0E8f
+        sum = 0f
+        while (sum < limit) {
+            n++
+            sum += 0.1f
+            // if ((n % 100000) == 0) {
+            // System.out.println( "n=" + n + " sum=" + sum + " target=" + (n*0.1));
+            // }
         }
+        println("sum is " + sum + " compared to " + n * 0.1)
+    }
 
 }
