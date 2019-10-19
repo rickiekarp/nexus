@@ -1,5 +1,5 @@
 extra.set("springBootVersion", "2.2.0.RELEASE")
-extra.set("flywayVersion", "6.0.4")
+extra.set("flywayVersion", "5.2.4")
 extra.set("guavaVersion", "28.1-jre")
 extra.set("gsonVersion", "2.8.6")
 extra.set("jacksonVersion", "2.10.0")
