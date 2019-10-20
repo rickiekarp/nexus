@@ -63,3 +63,29 @@ build-SHA1Pass:
   only:
     changes:
       - projects/JavaFXApps/*
+
+detekt-JavaFXApps:
+  stage: report
+  image: openjdk:11.0.5-jdk
+  script:
+    - cd projects/JavaFXApps
+    - ./gradlew :AppUpdater:detekt
+    - ./gradlew :BotLib:detekt
+    - ./gradlew :BotManager:detekt
+    - ./gradlew :core:detekt
+    - ./gradlew :FilelistCreator:detekt
+    - ./gradlew :QAAccountManager:detekt
+    - ./gradlew :SHA1Pass:detekt
+  artifacts:
+    paths:
+      - projects/JavaFXApps/AppUpdater/build/reports/detekt/
+      - projects/JavaFXApps/BotLib/build/reports/detekt/
+      - projects/JavaFXApps/BotManager/build/reports/detekt/
+      - projects/JavaFXApps/core/build/reports/detekt/
+      - projects/JavaFXApps/FilelistCreator/build/reports/detekt/
+      - projects/JavaFXApps/QAAccountManager/build/reports/detekt/
+      - projects/JavaFXApps/SHA1Pass/build/reports/detekt/
+    expire_in: 1 week
+  only:
+    changes:
+      - projects/JavaFXApps/*
