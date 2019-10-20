@@ -39,7 +39,7 @@ allprojects {
     detekt {
         toolVersion = "$detektVersion"
         input = files("src/main/kotlin")
-        config = files("../config/detekt/detekt.yml")
+        config = files("../../../libs/kotlin/plugins/config/detekt/detekt.yml")
     }
 }
 

@@ -7,3 +7,17 @@ test-university:
   only:
     changes:
       - edu/university/*
+
+detekt-university:
+  stage: report
+  image: openjdk:11.0.5-jdk
+  script:
+    - cd edu/university
+    - ./gradlew detektTest
+  artifacts:
+    paths:
+      - edu/university/build/reports/detekt/
+    expire_in: 1 week
+  only:
+    changes:
+      - edu/university/*

@@ -36,7 +36,7 @@ build-HomeServer:
     changes:
       - projects/homebackend/*
 
-detekt:
+detekt-homebackend:
   stage: report
   image: openjdk:11.0.5-jdk
   script:
@@ -54,7 +54,7 @@ detekt:
     changes:
       - projects/homebackend/*
 
-dokka:
+dokka-homebackend:
   stage: report
   image: openjdk:11.0.5-jdk
   script:
