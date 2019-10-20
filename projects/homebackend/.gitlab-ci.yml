@@ -1,6 +1,6 @@
 test-homebackend:
   stage: test
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/homebackend
     - ./gradlew clean test
@@ -10,7 +10,7 @@ test-homebackend:
 
 build-LoginServer:
   stage: build
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/homebackend
     - ./gradlew :LoginServer:build
@@ -24,7 +24,7 @@ build-LoginServer:
 
 build-HomeServer:
   stage: build
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/homebackend
     - ./gradlew :HomeServer:build
@@ -38,7 +38,7 @@ build-HomeServer:
 
 detekt:
   stage: report
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/homebackend
     - ./gradlew :Foundation:detekt
@@ -56,7 +56,7 @@ detekt:
 
 dokka:
   stage: report
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/homebackend
     - ./gradlew :Foundation:dokka

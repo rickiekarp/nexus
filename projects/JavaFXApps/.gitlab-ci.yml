@@ -1,6 +1,6 @@
 test-javafxapps:
   stage: test
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/JavaFXApps
     - ./gradlew clean :core:test
@@ -10,7 +10,7 @@ test-javafxapps:
 
 build-BotManager:
   stage: build
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/JavaFXApps
     - ./gradlew clean :BotManager:distZip
@@ -24,7 +24,7 @@ build-BotManager:
 
 build-FilelistCreator:
   stage: build
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/JavaFXApps
     - ./gradlew clean :FilelistCreator:distZip
@@ -38,7 +38,7 @@ build-FilelistCreator:
 
 build-QAAccountManager:
   stage: build
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/JavaFXApps
     - ./gradlew clean :QAAccountManager:distZip
@@ -52,7 +52,7 @@ build-QAAccountManager:
 
 build-SHA1Pass:
   stage: build
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd projects/JavaFXApps
     - ./gradlew clean :SHA1Pass:distZip

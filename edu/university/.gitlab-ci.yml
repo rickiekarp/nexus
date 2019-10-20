@@ -1,6 +1,6 @@
 test-university:
   stage: test
-  image: openjdk:11.0.4-jdk
+  image: openjdk:11.0.5-jdk
   script:
     - cd edu/university
     - ./gradlew clean test
