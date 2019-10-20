@@ -36,6 +36,24 @@ build-HomeServer:
     changes:
       - projects/homebackend/*
 
+detekt:
+  stage: report
+  image: openjdk:11.0.4-jdk
+  script:
+    - cd projects/homebackend
+    - ./gradlew :Foundation:detekt
+    - ./gradlew :LoginServer:detekt
+    - ./gradlew :HomeServer:detekt
+  artifacts:
+    paths:
+      - projects/homebackend/Foundation/build/reports/detekt/
+      - projects/homebackend/LoginServer/build/reports/detekt/
+      - projects/homebackend/HomeServer/build/reports/detekt/
+    expire_in: 1 week
+  only:
+    changes:
+      - projects/homebackend/*
+
 dokka:
   stage: report
   image: openjdk:11.0.4-jdk

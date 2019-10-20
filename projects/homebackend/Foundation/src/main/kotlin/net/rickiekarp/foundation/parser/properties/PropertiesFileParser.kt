@@ -15,7 +15,6 @@ class PropertiesFileParser {
          * @param propertiesFile File path of the .properties file
          * @return Properties object of the given properties file
          */
-        @JvmStatic
         fun readPropertiesFromFile(clazz: Class<*>, propertiesFile: String): Properties {
             val properties = Properties()
             val inputStream = clazz.classLoader.getResourceAsStream(propertiesFile)
@@ -25,7 +24,6 @@ class PropertiesFileParser {
             return properties
         }
 
-        @JvmStatic
         fun readPropertiesFileFromSetupDirectory(propertiesFile: String): Properties {
             val properties = Properties()
 
@@ -39,7 +37,6 @@ class PropertiesFileParser {
             return properties
         }
 
-        @JvmStatic
         fun writePropertiesFile(properties: Properties, filePath: String, fileName: String, comment: String) {
             FileUtil.checkCreateDirectories(File(filePath))
             val os: OutputStream
@@ -52,7 +49,6 @@ class PropertiesFileParser {
 
         }
 
-        @JvmStatic
         fun printProperties(propertiesMap: HashMap<String, Properties>) {
             for ((key1, value) in propertiesMap) {
                 Log.DEBUG.debug("Properties loaded: " + value.size + " (" + key1 + ".properties)")

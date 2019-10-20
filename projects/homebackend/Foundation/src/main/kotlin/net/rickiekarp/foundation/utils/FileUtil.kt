@@ -18,7 +18,6 @@ class FileUtil {
          * Creates the file path of the given file in case it does not exist.
          * @param file File to check
          */
-        @JvmStatic
         fun checkCreateDirectories(file: File) {
             if (!file.exists()) {
                 if (file.mkdirs()) {
@@ -28,47 +27,42 @@ class FileUtil {
         }
 
         /* JSON utility method */
-        @JvmStatic
         fun readJsonFromString(jsonString: String): JsonObject {
-            val jelement = JsonParser().parse(jsonString)
+            val jelement = JsonParser.parseString(jsonString)
             return jelement.asJsonObject
         }
 
         /* JSON utility method */
-        @JvmStatic
         @Throws(IOException::class)
         fun readJsonFromFile(path: File): JsonObject {
             val rd = BufferedReader(FileReader(path))
-            val jsonText = readAll(rd)
-            val jelement = JsonParser().parse(jsonText)
+            val jsonString = readAll(rd)
+            val jelement = JsonParser.parseString(jsonString)
             return jelement.asJsonObject
         }
 
         /* JSON utility method */
-        @JvmStatic
         @Throws(IOException::class)
         fun readJsonFromInputStream(inputStream: InputStream): JsonObject {
             val rd = BufferedReader(InputStreamReader(inputStream))
-            val jsonText = readAll(rd)
-            val jelement = JsonParser().parse(jsonText)
+            val jsonString = readAll(rd)
+            val jelement = JsonParser.parseString(jsonString)
             return jelement.asJsonObject
         }
 
         /* JSON utility method */
-        @JvmStatic
         @Throws(IOException::class)
         private fun readJsonFromUrl(url: String): JsonObject {
             URL(url).openStream().use { `is` ->
                 val rd = BufferedReader(InputStreamReader(`is`,
                         Charset.forName("UTF-8")))
-                val jsonText = readAll(rd)
-                val jelement = JsonParser().parse(jsonText)
+                val jsonString = readAll(rd)
+                val jelement = JsonParser.parseString(jsonString)
                 return jelement.asJsonObject
             }
         }
 
         /* JSON utility method */
-        @JvmStatic
         @Throws(IOException::class)
         private fun readAll(rd: Reader): String {
             val sb = StringBuilder()
@@ -80,13 +74,10 @@ class FileUtil {
             return sb.toString()
         }
 
-        @JvmStatic
         fun readJsonArrayFromString(jsonString: String): JsonArray {
-            val parser = JsonParser()
-            return parser.parse(jsonString).asJsonArray
+            return JsonParser.parseString(jsonString).asJsonArray
         }
 
-        @JvmStatic
         fun writeJsonToFile(outputPath: String, fileName: String, jsonDataObject: Any) {
             val mapper = ObjectMapper()
             val writer = mapper.writer(DefaultPrettyPrinter())
@@ -97,7 +88,6 @@ class FileUtil {
             }
         }
 
-        @JvmStatic
         @Throws(FileNotFoundException::class)
         fun clearFileContent(file: File) {
             val writer = PrintWriter(file)

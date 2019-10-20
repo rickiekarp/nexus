@@ -14,8 +14,8 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" as Object
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion" as Object
-//        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.1"
         classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufGradlePlugin"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
     }
 }
 
@@ -27,12 +27,19 @@ allprojects {
     apply plugin: "org.jetbrains.kotlin.jvm"
     apply plugin: 'org.jetbrains.dokka'
     apply plugin: 'com.google.protobuf'
+    apply plugin: "io.gitlab.arturbosch.detekt"
 
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 
     repositories {
         mavenCentral()
+    }
+
+    detekt {
+        toolVersion = "$detektVersion"
+        input = files("src/main/kotlin")
+        config = files("../config/detekt/detekt.yml")
     }
 }
 
