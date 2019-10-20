@@ -79,7 +79,7 @@ detekt-JavaFXApps:
   artifacts:
     paths:
       - projects/JavaFXApps/AppUpdater/build/reports/detekt/
-      - projects/JavaFXApps/BotLib/build/reports/detekt/
+      - projects/JavaFXApps/BotManager/BotLib/build/reports/detekt/
       - projects/JavaFXApps/BotManager/build/reports/detekt/
       - projects/JavaFXApps/core/build/reports/detekt/
       - projects/JavaFXApps/FilelistCreator/build/reports/detekt/
