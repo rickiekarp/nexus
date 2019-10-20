@@ -16,7 +16,7 @@ internal class ConfigLoader {
                 e.printStackTrace()
             }
         } else {
-            println("No resources could be found for file: " + propertiesFile)
+            println("No resources could be found for file: $propertiesFile")
         }
         return properties
     }
