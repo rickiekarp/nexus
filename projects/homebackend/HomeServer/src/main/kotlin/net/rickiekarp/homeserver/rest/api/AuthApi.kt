@@ -15,17 +15,13 @@ class AuthApi {
 
     /**
      * Checks whether the user is allowed to execute the requested plugin
-     * @param pluginIdentifierJson Plugin to check
+     * @param pluginIdentifier Plugin to check
      * @return True if user is allowed, false otherwise
      */
     @RequestMapping(value = ["validate"], method = [RequestMethod.POST])
     fun validatePlugin(pluginIdentifier: String): ResponseEntity<String> {
         val result = BaseConfig.get().application().getProperty("$pluginIdentifier.enable")
-        return if (result == null) {
-            throw RuntimeException("Config not found!")
-        } else {
-            return ResponseEntity(result, HttpStatus.OK)
-        }
+        return ResponseEntity(result, HttpStatus.OK)
     }
 
     @RequestMapping(
@@ -34,9 +30,6 @@ class AuthApi {
     )
     fun validateProperties(pluginIdentifier: String): ResponseEntity<HashMap<String, HashMap<Any, Any>>> {
         val filteredProperties = PropertiesParser.filterPropertiesAndReplaceIdentifier(BaseConfig.get().application(), pluginIdentifier)
-        if (filteredProperties.size == 0) {
-            //throw NotFoundException()
-        }
         val list = PropertiesParser.getPropertyMapWithIdentifier(filteredProperties, pluginIdentifier)
         return ResponseEntity(list, HttpStatus.OK)
     }
