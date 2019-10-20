@@ -9,7 +9,7 @@ extra.set("junitVersion", "5.5.2")
 
 // analysis
 extra.set("dokkaVersion", "0.9.17")
-extra.set("detektVersion", "1.0.1")
+extra.set("detektVersion", "1.1.1")
 extra.set("spotbugsPluginVersion", "3.1.12")
 
 // protocols
