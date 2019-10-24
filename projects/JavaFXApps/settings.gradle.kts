@@ -6,6 +6,7 @@ include("BotLib")
 include("FilelistCreator")
 include("QAAccountManager")
 include("SHA1Pass")
+include("SnakeFX")
 include("core")
 
 for (project in rootProject.children) {

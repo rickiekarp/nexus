@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="net.rickiekarp.snakefx.view.presenter.MainPresenter">
+  <center>
+    <Pane fx:id="gridContainer" style="-fx-background-color:grey;" BorderPane.alignment="CENTER" />
+  </center>
+  <left>
+    <fx:include source="panel.fxml" />
+  </left>
+</BorderPane>

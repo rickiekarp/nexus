@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.collections.*?>
+<?import net.rickiekarp.snakefx.highscore.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox
+	xmlns:fx="http://javafx.com/fxml"
+	alignment="center"
+	spacing="10"
+        fx:controller="net.rickiekarp.snakefx.view.presenter.HighscorePresenter">
+	<stylesheets>
+		<URL value="@highscore.css"/>
+	</stylesheets>
+	<padding>
+		<Insets
+			top="10"
+			right="10"
+			bottom="10"
+			left="10" />
+	</padding>
+
+	<Label
+		id="titleLabel"
+		text="High Score" />
+
+	<TableView
+		fx:id="tableView"
+		prefHeight="450"
+		prefWidth="300">
+		<columns>
+			<TableColumn
+				text="#"
+				fx:id="rankingColumn"
+				sortable="false"
+				resizable="false"
+				prefWidth="48">
+				<cellValueFactory>
+					<PropertyValueFactory property="ranking" />
+				</cellValueFactory>
+			</TableColumn>
+			<TableColumn
+				text="Name"
+				fx:id="nameColumn"
+				sortable="false"
+				resizable="false"
+				prefWidth="180">
+				<cellValueFactory>
+					<PropertyValueFactory property="playername" />
+				</cellValueFactory>
+			</TableColumn>
+			<TableColumn
+				text="Points"
+				fx:id="pointsColumn"
+				sortable="false"
+				resizable="false"
+				prefWidth="70">
+				<cellValueFactory>
+					<PropertyValueFactory property="points" />
+				</cellValueFactory>
+
+			</TableColumn>
+		</columns>
+
+		<placeholder>
+			<Label text="No Highscore yet" />
+		</placeholder>
+	</TableView>
+
+</VBox>

@@ -64,6 +64,20 @@ build-SHA1Pass:
     changes:
       - projects/JavaFXApps/*
 
+build-SnakeFX:
+  stage: build
+  image: openjdk:11.0.5-jdk
+  script:
+    - cd projects/SnakeFX
+    - ./gradlew clean :SnakeFX:distZip
+  artifacts:
+    paths:
+      - projects/JavaFXApps/SnakeFX/build/distributions
+    expire_in: 1 week
+  only:
+    changes:
+      - projects/JavaFXApps/*
+
 detekt-javafxapps:
   stage: report
   image: openjdk:11.0.5-jdk
