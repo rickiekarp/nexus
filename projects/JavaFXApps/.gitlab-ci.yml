@@ -68,7 +68,7 @@ build-SnakeFX:
   stage: build
   image: openjdk:11.0.5-jdk
   script:
-    - cd projects/SnakeFX
+    - cd projects/JavaFXApps
     - ./gradlew clean :SnakeFX:distZip
   artifacts:
     paths:
