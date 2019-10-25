@@ -8,7 +8,12 @@
                 <div class="card-content-right">
                     <h5 class="card-title">{{ project.name }}</h5>
                     <p class="card-text">{{ project.description }}</p>
-                    <a href="{{project.projectUrl}}" class="btn btn-info" target="_blank">Visit</a>
+                    <br>
+                    <div class="tile_div">
+                        <a *ngIf="project.projectUrl != null" href="{{project.projectUrl}}" class="btn btn-info" target="_blank">Visit</a>
+                        <a *ngIf="project.downloadUrl != null" href="{{project.downloadUrl}}" class="btn btn-info">Download</a>
+                    </div>
+
                 </div>
             </div>
             <!-- End .project -->
@@ -17,7 +22,8 @@
                 <div class="education-block">
                     <span class="education-date">{{ project.projectDuration}}</span>
                     <h3>{{ project.company }}</h3><br><br>
-                        {{ project.text }}
+                        <p *ngIf="project.function != null">Role: {{ project.function }}</p><br>
+                        <h5>{{ project.text }}</h5>
                         <ul style="margin-left: 20px;">
                             <li *ngFor="let task of project.tasks">
                                 {{ task }}
@@ -32,7 +38,7 @@
 
         </div>
 
-        <iframe width="900" height="526" [src]="project.trailerUrl | safe" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <iframe *ngIf="project.trailerUrl != null" width="900" height="526" [src]="project.trailerUrl | safe" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
 <div class="row-back">

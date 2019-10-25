@@ -408,7 +408,7 @@ footer{
    background: #111111;
    text-align:center
 }
-#projects h2{
+.projects h2{
    color:#dcd9d9;
    margin-bottom:50px
 }
@@ -427,14 +427,11 @@ footer{
 }
 .project-info h3{
    font-size:1.5em;
-   font-weight:300;
+   margin-bottom: .1rem;
    color:white;
-   margin:0 0 15px 0
 }
 .project-info p{
    color:#a3a9ad;
-   margin:0 0 15px 0;
-   font-size:1.1em
 }
 .no-image .project-info{
    position:relative;
