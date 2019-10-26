@@ -37,6 +37,8 @@ import { MenuExample } from './shared/components/popover/profile/profile-popover
 import { PagesModule } from './pages/pages.module';
 import { SharedModule } from './shared/shared.module';
 
+import {SlideshowModule} from 'ng-simple-slideshow';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -49,7 +51,8 @@ import { SharedModule } from './shared/shared.module';
     routing,
     SatPopoverModule,
     PagesModule,
-    SharedModule
+    SharedModule,
+    SlideshowModule
   ],
   declarations: [
     AppComponent,

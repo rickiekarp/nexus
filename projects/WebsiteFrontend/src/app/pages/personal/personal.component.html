@@ -1,5 +1,4 @@
 <div id="projects">
-
     <div class="container">
         <div class="row">
             <div class="project shadow-large">
@@ -17,3 +16,27 @@
         </div>
     </div>
 </div>
+
+
+<slideshow #slideshow
+               [imageUrls]="imageUrls"
+               [height]="height"
+               [minHeight]="minHeight"
+               [arrowSize]="arrowSize"
+               [showArrows]="showArrows"
+               [disableSwiping]="disableSwiping"
+               [autoPlay]="autoPlay"
+               [stopAutoPlayOnSlide]="stopAutoPlayOnSlide"
+               [debug]="debug"
+               [backgroundSize]="backgroundSize"
+               [backgroundPosition]="backgroundPosition"
+               [backgroundRepeat]="backgroundRepeat"
+               [showDots]="showDots"
+               [dotColor]="dotColor"
+               [showCaptions]="showCaptions"
+               [captionColor]="captionColor"
+               [captionBackground]="captionBackground"
+               [lazyLoad]="lazyLoad"
+               [hideOnNoSlides]="hideOnNoSlides"
+               [fullscreen]="fullscreen">
+    </slideshow>

@@ -1,10 +1,10 @@
 {
   "/HomeServer/*": {
-    "target": "https://app.rickiekarp.net/HomeServer",
+    "target": "https://app.rickiekarp.net/",
     "secure": false
   },
   "/LoginServer/*": {
-    "target": "https://app.rickiekarp.net/LoginServer",
+    "target": "https://app.rickiekarp.net/",
     "secure": false
   }
 }

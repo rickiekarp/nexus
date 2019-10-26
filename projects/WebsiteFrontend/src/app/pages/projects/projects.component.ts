@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ProjectDto } from '../../model/project.model'
 import { Router,ActivatedRoute } from '@angular/router';
+import { IImage } from 'ng-simple-slideshow';
 
 @Component({
   selector: 'app-my-project',
@@ -13,6 +14,28 @@ import { Router,ActivatedRoute } from '@angular/router';
 export class ProjectsComponent implements OnInit {
   id: string;
   project: ProjectDto;
+
+  height: string = '600px';
+  minHeight: string;
+  arrowSize: string = '30px';
+  showArrows: boolean = true;
+  disableSwiping: boolean = false;
+  autoPlay: boolean = true;
+  autoPlayInterval: number = 3333;
+  stopAutoPlayOnSlide: boolean = true;
+  debug: boolean = false;
+  backgroundSize: string = 'cover';
+  backgroundPosition: string = 'center center';
+  backgroundRepeat: string = 'no-repeat';
+  showDots: boolean = false;
+  dotColor: string = '#FFF';
+  showCaptions: boolean = true;
+  captionColor: string = '#FFF';
+  captionBackground: string = 'rgba(0, 0, 0, .35)';
+  lazyLoad: boolean = false;
+  hideOnNoSlides: boolean = false;
+  width: string = '100%';
+  imageUrls: (string | IImage)[] = [];
 
   constructor(
     private activatedroute:ActivatedRoute,
@@ -163,12 +186,16 @@ export class ProjectsComponent implements OnInit {
         this.project.name = 'SnakeFX'
         this.project.description = 'Snake game implementation'
         this.project.projectUrl = 'https://git.rickiekarp.net/rickie/home/src/master/projects/JavaFXApps/SnakeFX'
-        this.project.downloadUrl = 'https://drive.google.com/open?id=1qRbS7OkmPPoYzkdM2dQtYzoP0b4N_S9r'
+        this.project.downloadUrl = 'https://drive.google.com/open?id=1rut3LQAT78lcs23L-3swXuL04jwKa09m'
         this.project.projectImage = 'images/logo-snakefx.png'
         this.project.company = 'Private project'
         this.project.function = 'Creator'
         this.project.projectDuration = 'October 2019'
         this.project.text = "Simple Snake implementation using JavaFX"
+        this.imageUrls.push(
+          { url: 'assets/images/projects/snakefx/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
+          { url: 'assets/images/projects/snakefx/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center' }
+        );
         break;
 
       case 'homebackend': 
@@ -192,6 +219,7 @@ export class ProjectsComponent implements OnInit {
         this.project.name = 'SHA1Pass'
         this.project.description = 'A sentence based password generation program'
         this.project.projectUrl = 'https://git.rickiekarp.net/rickie/home/src/master/projects/JavaFXApps/SHA1Pass'
+        this.project.downloadUrl = 'https://drive.google.com/open?id=13pCI7Q0miUfk7fXJsmQxtWgXRamgvxgi'
         this.project.projectImage = 'images/logo-sha1pass.png'
         this.project.company = 'Private project'
         this.project.function = 'Creator'
@@ -204,12 +232,18 @@ export class ProjectsComponent implements OnInit {
           'Color code encryption',
           'HMAC and Complex Mode'
         ]
+        this.imageUrls.push(
+          { url: 'assets/images/projects/sha1pass/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
+          { url: 'assets/images/projects/sha1pass/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center' },
+          { url: 'assets/images/projects/sha1pass/preview_3.png', backgroundSize: 'contain', backgroundPosition: 'center' }
+        );
         break;
      
       case 'filelistcreator': 
         this.project.name = 'FilelistCreator'
         this.project.description = 'Application to create file lists'
         this.project.projectUrl = 'https://git.rickiekarp.net/rickie/home/src/master/projects/JavaFXApps/FilelistCreator'
+        this.project.downloadUrl = 'https://drive.google.com/open?id=12C138Ek6ncQmQBa-Y6MpcS0b3i8KfjJA'
         this.project.projectImage = 'images/logo-filelistcreator.png'
         this.project.company = 'Private project'
         this.project.function = 'Creator'
@@ -220,6 +254,11 @@ export class ProjectsComponent implements OnInit {
           'Group files by folder',
           'Save file list to html / text file'
         ]
+        this.imageUrls.push(
+          { url: 'assets/images/projects/filelistcreator/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
+          { url: 'assets/images/projects/filelistcreator/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center' },
+          { url: 'assets/images/projects/filelistcreator/preview_3.png', backgroundSize: 'contain', backgroundPosition: 'center' }
+        );
         break;
 
       case 'botmanager': 
@@ -251,6 +290,12 @@ export class ProjectsComponent implements OnInit {
           'Shopping list',
           'Shopping history view'
         ]
+        this.imageUrls.push(
+          { url: 'assets/images/projects/assistant/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
+          { url: 'assets/images/projects/assistant/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center' },
+          { url: 'assets/images/projects/assistant/preview_3.png', backgroundSize: 'contain', backgroundPosition: 'center' },
+          { url: 'assets/images/projects/assistant/preview_4.png', backgroundSize: 'contain', backgroundPosition: 'center' }
+        );
         break;
 
       case 'reddit': 
