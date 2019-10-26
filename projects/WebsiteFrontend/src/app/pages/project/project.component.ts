@@ -31,7 +31,7 @@ export class ProjectComponent implements OnInit {
   dotColor: string = '#FFF';
   showCaptions: boolean = true;
   captionColor: string = '#FFF';
-  captionBackground: string = 'rgba(0, 0, 0, .35)';
+  captionBackground: string = 'rgba(0, 0, 0, .7)';
   lazyLoad: boolean = false;
   hideOnNoSlides: boolean = false;
   width: string = '100%';
@@ -116,6 +116,7 @@ export class ProjectComponent implements OnInit {
           'Developed UI tests for Android/Browser/iOS platforms using Selenium',
           'Assigned tasks to individual developers in test',
           'Created and improved Jenkins build scripts for continuous integration',
+          'Extended the Docker setup of the game backend',
           'Maintained the Jenkins slave machines used for test automation',
           'Implemented a test coverage system to generate reports for project management',
           'Provided feedback in regards to game design and gameplay',
@@ -273,7 +274,7 @@ export class ProjectComponent implements OnInit {
         this.project.tasks = [ 
           'Login system',
           'Plugin system',
-          'Periodic execution'
+          'Periodic task execution'
         ]
         break;
 
@@ -291,10 +292,10 @@ export class ProjectComponent implements OnInit {
           'Shopping history view'
         ]
         this.imageUrls.push(
-          { url: 'assets/images/projects/assistant/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
-          { url: 'assets/images/projects/assistant/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center' },
-          { url: 'assets/images/projects/assistant/preview_3.png', backgroundSize: 'contain', backgroundPosition: 'center' },
-          { url: 'assets/images/projects/assistant/preview_4.png', backgroundSize: 'contain', backgroundPosition: 'center' }
+          { url: 'assets/images/projects/assistant/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center', caption: 'Login view' },
+          { url: 'assets/images/projects/assistant/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center', caption: 'Navigation drawer' },
+          { url: 'assets/images/projects/assistant/preview_3.png', backgroundSize: 'contain', backgroundPosition: 'center', caption: 'Shopping list' },
+          { url: 'assets/images/projects/assistant/preview_4.png', backgroundSize: 'contain', backgroundPosition: 'center', caption: 'Add item dialog' }
         );
         break;
 

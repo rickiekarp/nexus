@@ -1,42 +1,46 @@
 <div id="projects">
     <div class="container">
         <div class="row">
-            <div class="project shadow-large">
-                <!-- End .project-image -->
-                <div class="project-info">
-                    <h3></h3>
-                    <p>
-                        Welcome
-                    </p>
-                </div>
-                <!-- End .project-info -->
+
+            <div class="home-info shadow-large">
+                <h3>Hi, I'm Rickie!</h3>
+                <p>
+                    I'm a passionate software developer currently working in the video games industry
+                </p>
+
+                <br><br>
+                <h5>Feel free to check out some of the projects I have been involved in</h5>
+                <slideshow #slideshow
+                    [imageUrls]="imageUrls"
+                    [height]="height"
+                    [minHeight]="minHeight"
+                    [arrowSize]="arrowSize"
+                    [showArrows]="showArrows"
+                    [disableSwiping]="disableSwiping"
+                    [autoPlay]="autoPlay"
+                    [stopAutoPlayOnSlide]="stopAutoPlayOnSlide"
+                    [debug]="debug"
+                    [backgroundSize]="backgroundSize"
+                    [backgroundPosition]="backgroundPosition"
+                    [backgroundRepeat]="backgroundRepeat"
+                    [showDots]="showDots"
+                    [dotColor]="dotColor"
+                    [showCaptions]="showCaptions"
+                    [captionColor]="captionColor"
+                    [captionBackground]="captionBackground"
+                    [lazyLoad]="lazyLoad"
+                    [hideOnNoSlides]="hideOnNoSlides"
+                    [fullscreen]="fullscreen">
+                </slideshow>
+
+                <br><br>
+                <button routerLink="/contact" class="btn btn-info">Contact me</button>
+
             </div>
-            <!-- End .project -->
+            <!-- End .home-info -->
 
         </div>
     </div>
 </div>
 
 
-<slideshow #slideshow
-               [imageUrls]="imageUrls"
-               [height]="height"
-               [minHeight]="minHeight"
-               [arrowSize]="arrowSize"
-               [showArrows]="showArrows"
-               [disableSwiping]="disableSwiping"
-               [autoPlay]="autoPlay"
-               [stopAutoPlayOnSlide]="stopAutoPlayOnSlide"
-               [debug]="debug"
-               [backgroundSize]="backgroundSize"
-               [backgroundPosition]="backgroundPosition"
-               [backgroundRepeat]="backgroundRepeat"
-               [showDots]="showDots"
-               [dotColor]="dotColor"
-               [showCaptions]="showCaptions"
-               [captionColor]="captionColor"
-               [captionBackground]="captionBackground"
-               [lazyLoad]="lazyLoad"
-               [hideOnNoSlides]="hideOnNoSlides"
-               [fullscreen]="fullscreen">
-    </slideshow>
