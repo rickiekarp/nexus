@@ -21,7 +21,7 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.css",
+              "src/styles.scss",
               "src/style.less",
               "node_modules/sweetalert2/dist/sweetalert2.css",
               "node_modules/animate.css/animate.css",
@@ -87,7 +87,7 @@
               "src/assets/js/scripts.min.js"
             ],
             "styles": [
-              "src/styles.css",
+              "src/styles.scss",
               "src/style.less"
             ],
             "assets": [
