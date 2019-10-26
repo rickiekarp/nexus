@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy-dev.json",
-    "buildProd": "ng build --prod --output-path=../web",
+    "buildProd": "ng build --prod --output-path=../module-deployment/service-nginx/html",
     "buildStandalone": "ng build",
     "serveStandaloneWatch": "ng serve --proxy-config proxy-dev.json --watch=true",
     "buildToSpring": "ng build --prod --output-path=../WebsiteBackend/src/main/resources/static --base-href=/Website/",
