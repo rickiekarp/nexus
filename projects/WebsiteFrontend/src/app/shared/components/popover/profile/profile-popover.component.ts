@@ -51,7 +51,7 @@ export class MenuExample {
 
     switch(this.selection) { 
       case "Settings": { 
-        this.router.navigate(['home']);
+        this.router.navigate(['userarea']);
          break; 
       } 
       case "Logout": { 

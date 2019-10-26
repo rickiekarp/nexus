@@ -1,0 +1,75 @@
+<div id="projects" class="background-alt">
+        <div class="row">
+
+            <div class="centerDiv">
+                <div class="card-image-left">
+                    <img class="card-img-top" src="assets/{{project.projectImage}}" alt="image">
+                </div>
+                <div class="card-content-right">
+                    <h5 class="card-title">{{ project.name }}</h5>
+                    <p class="card-text">{{ project.description }}</p>
+                    <br>
+                    <div class="tile_div">
+                        <a *ngIf="project.projectUrl != null" href="{{project.projectUrl}}" class="btn btn-info" target="_blank">Visit</a>
+                        <a *ngIf="project.downloadUrl != null" href="{{project.downloadUrl}}" class="btn btn-info">Download</a>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End .project -->
+
+            <div id="education">
+                <div class="education-block">
+                    <span class="education-date">{{ project.projectDuration}}</span>
+                    <h3>{{ project.company }}</h3><br><br>
+                        <p *ngIf="project.function != null">Role: {{ project.function }}</p><br>
+                        <h5>{{ project.text }}</h5>
+                        <ul style="margin-left: 20px;">
+                            <li *ngFor="let task of project.tasks">
+                                {{ task }}
+                            </li>
+                        </ul>
+                        <br><br>
+                        <iframe *ngIf="project.trailerUrl != null" width="100%" height="526" [src]="project.trailerUrl | safe" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <!-- End .education-block -->
+
+
+            </div>
+            <!-- End #education -->
+
+        </div>
+
+        <div style="margin-left: 20%; margin-right: 20%" *ngIf="imageUrls.length > 0">
+            <slideshow #slideshow
+                [imageUrls]="imageUrls"
+                [height]="height"
+                [minHeight]="minHeight"
+                [arrowSize]="arrowSize"
+                [showArrows]="showArrows"
+                [disableSwiping]="disableSwiping"
+                [autoPlay]="autoPlay"
+                [stopAutoPlayOnSlide]="stopAutoPlayOnSlide"
+                [debug]="debug"
+                [backgroundSize]="backgroundSize"
+                [backgroundPosition]="backgroundPosition"
+                [backgroundRepeat]="backgroundRepeat"
+                [showDots]="showDots"
+                [dotColor]="dotColor"
+                [showCaptions]="showCaptions"
+                [captionColor]="captionColor"
+                [captionBackground]="captionBackground"
+                [lazyLoad]="lazyLoad"
+                [hideOnNoSlides]="hideOnNoSlides"
+                [fullscreen]="fullscreen">
+             </slideshow>
+        </div>
+        
+
+        
+</div>
+
+<div class="row-back">
+        <a class="btn btn-info" [routerLink]="['/projects']">Back</a>
+</div>
+

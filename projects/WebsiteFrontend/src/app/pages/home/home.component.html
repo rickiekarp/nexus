@@ -1,13 +1,42 @@
-<div style="background: #111111; margin: 0 auto; padding: 50px 55px 0px 55px;">
-    <h1>Hi {{currentUser.username}}!</h1>
-    <h3>All registered users:</h3>
-    <ul>
-        <li *ngFor="let user of users">
-            {{user.username}}
-            - <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>
-        </li>
-    </ul>
-    
-    <h3>Inline Edit Example</h3>
-    <app-edit-example></app-edit-example>
+<div id="projects">
+    <div class="container">
+        <div class="row">
+            <div class="project shadow-large">
+                <!-- End .project-image -->
+                <div class="project-info">
+                    <h3></h3>
+                    <p>
+                        Welcome
+                    </p>
+                </div>
+                <!-- End .project-info -->
+            </div>
+            <!-- End .project -->
+
+        </div>
+    </div>
 </div>
+
+
+<slideshow #slideshow
+               [imageUrls]="imageUrls"
+               [height]="height"
+               [minHeight]="minHeight"
+               [arrowSize]="arrowSize"
+               [showArrows]="showArrows"
+               [disableSwiping]="disableSwiping"
+               [autoPlay]="autoPlay"
+               [stopAutoPlayOnSlide]="stopAutoPlayOnSlide"
+               [debug]="debug"
+               [backgroundSize]="backgroundSize"
+               [backgroundPosition]="backgroundPosition"
+               [backgroundRepeat]="backgroundRepeat"
+               [showDots]="showDots"
+               [dotColor]="dotColor"
+               [showCaptions]="showCaptions"
+               [captionColor]="captionColor"
+               [captionBackground]="captionBackground"
+               [lazyLoad]="lazyLoad"
+               [hideOnNoSlides]="hideOnNoSlides"
+               [fullscreen]="fullscreen">
+    </slideshow>

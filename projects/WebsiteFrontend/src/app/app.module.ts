@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { ProfessionalComponent } from './pages/professional/professional.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
-import { PersonalComponent } from './pages/personal/personal.component';
+import { ProjectComponent } from './pages/project/project.component';
+import { HomeComponent } from './pages/home/home.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { ContactService } from './service/contact.service';
 import { SafePipe } from './core/pipe/safepipe.service';
@@ -24,7 +24,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routing } from './app.routing';
 
 import { JwtInterceptor, ErrorInterceptor } from './helpers';
-import { HomeComponent } from './pages/home';
+import { UserAreaComponent } from './pages/userarea';
 import { LoginComponent } from './pages/login';
 import { RegisterComponent } from './pages/register';
 
@@ -56,13 +56,13 @@ import {SlideshowModule} from 'ng-simple-slideshow';
   ],
   declarations: [
     AppComponent,
-    ProfessionalComponent,
-    PersonalComponent,
     ProjectsComponent,
+    HomeComponent,
+    ProjectComponent,
     ContactComponent,
     SafePipe,
     AboutComponent,
-    HomeComponent,
+    UserAreaComponent,
     LoginComponent,
     RegisterComponent,
     EditExample,

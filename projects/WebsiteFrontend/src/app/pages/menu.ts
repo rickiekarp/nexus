@@ -10,11 +10,11 @@ export let MENU_ITEM = [
         children: [
             {
                 path: 'charts',
-                title: 'Proffessional',
+                title: 'Home',
             },
             {
                 path: 'charts',
-                title: 'Personal',
+                title: 'Projects',
             },
             {
                 path: 'charts',

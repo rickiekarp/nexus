@@ -1,24 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ProfessionalComponent } from './pages/professional/professional.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
+import { ProjectComponent } from './pages/project/project.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { AboutComponent } from "./pages/about/about.component";
-import { PersonalComponent } from './pages/personal/personal.component';
+import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login';
 import { RegisterComponent } from './pages/register';
 import { AuthGuard } from './guards';
-import { HomeComponent } from './pages/home';
+import { UserAreaComponent } from './pages/userarea';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'professional', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'userarea', component: UserAreaComponent, canActivate: [AuthGuard] },
   { path: 'pages/index',  redirectTo: 'pages/index', pathMatch: 'full' },
-  { path: 'professional',  component: ProfessionalComponent },
-  { path: 'personal',  component: PersonalComponent },
+  { path: 'projects',  component: ProjectsComponent },
+  { path: 'home',  component: HomeComponent },
   { path: 'contact',  component: ContactComponent },
-  { path: 'projects/:id',  component: ProjectsComponent},
+  { path: 'projects/:id',  component: ProjectComponent},
   { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }

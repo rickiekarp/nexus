@@ -1,75 +1,269 @@
-<div id="projects" class="background-alt">
-        <div class="row">
+<div id="projects">
 
-            <div class="centerDiv">
-                <div class="card-image-left">
-                    <img class="card-img-top" src="assets/{{project.projectImage}}" alt="image">
-                </div>
-                <div class="card-content-right">
-                    <h5 class="card-title">{{ project.name }}</h5>
-                    <p class="card-text">{{ project.description }}</p>
-                    <br>
-                    <div class="tile_div">
-                        <a *ngIf="project.projectUrl != null" href="{{project.projectUrl}}" class="btn btn-info" target="_blank">Visit</a>
-                        <a *ngIf="project.downloadUrl != null" href="{{project.downloadUrl}}" class="btn btn-info">Download</a>
+        <div class="container">
+            <h2 class="heading">Professional</h2>
+            <div class="c0144 c0156 c0157">
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'kingdomunderfire2']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-kuf2.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Kingdom Under Fire 2</h3>
+                            <p>
+                                RTS / MMORPG
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
                     </div>
-
                 </div>
-            </div>
-            <!-- End .project -->
-
-            <div id="education">
-                <div class="education-block">
-                    <span class="education-date">{{ project.projectDuration}}</span>
-                    <h3>{{ project.company }}</h3><br><br>
-                        <p *ngIf="project.function != null">Role: {{ project.function }}</p><br>
-                        <h5>{{ project.text }}</h5>
-                        <ul style="margin-left: 20px;">
-                            <li *ngFor="let task of project.tasks">
-                                {{ task }}
-                            </li>
-                        </ul>
-                        <br><br>
-                        <iframe *ngIf="project.trailerUrl != null" width="100%" height="526" [src]="project.trailerUrl | safe" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'guardiansofember']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-goe.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Guardians of Ember</h3>
+                            <p>
+                                MMORPG
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
                 </div>
-                <!-- End .education-block -->
-
-
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'battlehordes']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-bh.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Battle Hordes</h3>
+                            <p>
+                                Strategy MMO
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'lordsandknights']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-lk.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Lords & Knights</h3>
+                            <p>
+                                Strategy MMO
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'bigfarm']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-bf.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Goodgame BigFarm</h3>
+                            <p>
+                                    Simulation
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'empirefourkingdoms']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-e4k.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Empire: Four Kingdoms</h3>
+                            <p>
+                                Strategy MMO
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'empire']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-ep.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Goodgame Empire</h3>
+                            <p>
+                                Strategy MMO
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
             </div>
-            <!-- End #education -->
-
+    
+            <br><br>
+            <h2 class="heading">Private</h2>
+            <div class="c0144 c0156 c01384">
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'snakefx']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-snakefx.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>SnakeFX</h3>
+                            <p>
+                                Snake game
+                            </p>
+                        </div>
+                        <!-- End .project-info --> 
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'homebackend']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-homebackend.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Home Automation</h3>
+                            <p>
+                                Home Server
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'sha1pass']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-sha1pass.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>SHA1Pass</h3>
+                            <p>
+                                Password generator
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'filelistcreator']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-filelistcreator.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>FilelistCreator</h3>
+                            <p>
+                                Filelist generator
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'botmanager']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-botmanager.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Web Bot</h3>
+                            <p>
+                                Browser automation
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'assistant']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-assistant.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>Assistant</h3>
+                            <p>
+                                Android App
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'reddit']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-reddit.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>RedditIsFun (Fork)</h3>
+                            <p>
+                                Android App
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+                <div class="c01159">
+                    <div class="c01160 c01105" [routerLink]="['/projects', 'university']">
+                        <div class="project-image">
+                            <img src="assets/images/logo-unihh.png" />
+                        </div>
+                        <!-- End .project-image -->
+                        <div class="project-info">
+                            <h3>University</h3>
+                            <p>
+                                Assignment collection
+                            </p>
+                        </div>
+                        <!-- End .project-info -->
+                    </div>
+                </div>
+                <!-- End .project -->
+    
+            </div>
         </div>
-
-        <div style="margin-left: 20%; margin-right: 20%" *ngIf="imageUrls.length > 0">
-            <slideshow #slideshow
-                [imageUrls]="imageUrls"
-                [height]="height"
-                [minHeight]="minHeight"
-                [arrowSize]="arrowSize"
-                [showArrows]="showArrows"
-                [disableSwiping]="disableSwiping"
-                [autoPlay]="autoPlay"
-                [stopAutoPlayOnSlide]="stopAutoPlayOnSlide"
-                [debug]="debug"
-                [backgroundSize]="backgroundSize"
-                [backgroundPosition]="backgroundPosition"
-                [backgroundRepeat]="backgroundRepeat"
-                [showDots]="showDots"
-                [dotColor]="dotColor"
-                [showCaptions]="showCaptions"
-                [captionColor]="captionColor"
-                [captionBackground]="captionBackground"
-                [lazyLoad]="lazyLoad"
-                [hideOnNoSlides]="hideOnNoSlides"
-                [fullscreen]="fullscreen">
-             </slideshow>
-        </div>
-        
-
-        
-</div>
-
-<div class="row-back">
-        <a class="btn btn-info" [routerLink]="['/professional']">Back</a>
-</div>
-
+    </div>
