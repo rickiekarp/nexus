@@ -57,7 +57,7 @@ export class ProjectComponent implements OnInit {
         this.project.projectImage = 'images/logo-kuf2.png'
         this.project.company = 'Gameforge'
         this.project.function = 'DevOps Engineer'
-        this.project.projectDuration = 'December 2018 - present'
+        this.project.projectDuration = 'June 2019 - present'
         this.project.text = "Responsibilities in the project:"
         this.project.tasks = [
           'Support game integration into portfolio',
@@ -72,7 +72,7 @@ export class ProjectComponent implements OnInit {
         this.project.projectImage = 'images/logo-goe.png'
         this.project.company = 'Gameforge'
         this.project.function = 'DevOps Engineer'
-        this.project.projectDuration = 'December 2018 - present'
+        this.project.projectDuration = 'January 2019 - March 2019'
         this.project.text = "Responsibilities in the project:"
         this.project.tasks = [
           'Support game integration into portfolio',
@@ -88,7 +88,7 @@ export class ProjectComponent implements OnInit {
         this.project.projectImage = 'images/logo-bh.png'
         this.project.company = 'XYRALITY GmbH'
         this.project.function = 'Software engineering trainee'
-        this.project.projectDuration = 'February 2016 - June 2018'
+        this.project.projectDuration = 'November 2016 - July 2017'
         this.project.text = "Responsibilities in the project:"
         this.project.tasks = [
           'Supported the development/testing process by implementing a test automation strategy',
@@ -191,7 +191,7 @@ export class ProjectComponent implements OnInit {
         this.project.projectImage = 'images/logo-snakefx.png'
         this.project.company = 'Private project'
         this.project.function = 'Creator'
-        this.project.projectDuration = 'October 2019'
+        this.project.projectDuration = 'October 2019 - present'
         this.project.text = "Simple Snake implementation using JavaFX"
         this.imageUrls.push(
           { url: 'assets/images/projects/snakefx/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
@@ -248,7 +248,7 @@ export class ProjectComponent implements OnInit {
         this.project.projectImage = 'images/logo-filelistcreator.png'
         this.project.company = 'Private project'
         this.project.function = 'Creator'
-        this.project.projectDuration = 'October 2013 - February 2015'
+        this.project.projectDuration = 'June 2014 - present'
         this.project.text = "Content of this project:"
         this.project.tasks = [ 
           'Create file lists',
@@ -269,7 +269,7 @@ export class ProjectComponent implements OnInit {
         this.project.projectImage = 'images/logo-botmanager.png'
         this.project.company = 'Private project'
         this.project.function = 'Creator'
-        this.project.projectDuration = 'October 2013 - February 2015'
+        this.project.projectDuration = 'June 2015 - February 2016'
         this.project.text = "Content of this project:"
         this.project.tasks = [ 
           'Login system',
@@ -285,7 +285,7 @@ export class ProjectComponent implements OnInit {
         this.project.projectImage = 'images/logo-assistant.png'
         this.project.company = 'Private project'
         this.project.function = 'Creator'
-        this.project.projectDuration = 'October 2013 - February 2015'
+        this.project.projectDuration = 'October 2017 - June 2018'
         this.project.text = "Content of this project:"
         this.project.tasks = [ 
           'Shopping list',
@@ -315,7 +315,7 @@ export class ProjectComponent implements OnInit {
         this.project.projectUrl = 'https://git.rickiekarp.net/rickie/home/src/master/edu/university'
         this.project.projectImage = 'images/logo-unihh.png'
         this.project.company = 'Private project'
-        this.project.projectDuration = 'August 2015 - February 2016'
+        this.project.projectDuration = 'August 2015 - March 2016'
         this.project.text = "Courses:"
         this.project.tasks = [ 
           'Software development I',
