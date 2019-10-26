@@ -12,6 +12,11 @@ import { ContactService } from '../../service/contact.service';
 export class ContactComponent implements OnInit {
   contactInfo: ContactDto = new ContactDto();
   constructor(private contactService: ContactService) { }
+
+  location: string = "Karlsruhe"
+  avatarImage: string = 'assets/images/0.jpg';
+  role: string = 'DevOps Engineer';
+
   ngOnInit(): void {
 
     this.contactService.getContactInformation().subscribe(

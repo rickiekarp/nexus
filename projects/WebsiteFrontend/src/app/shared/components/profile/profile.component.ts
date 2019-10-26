@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { ContactDto } from '../../../model/contact.model';
 
 @Component({
   selector: 'profile',
@@ -6,11 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  avatarImgSrc: string = 'assets/images/0.jpg';
-  userName: string = 'Rickie Karp';
-  userPost: string = 'DevOps Engineer';
-  location: string = 'Karlsruhe';
-  email: string = 'contact@rickiekarp.net'
+  @Input("avatarImage") avatarImage: string;
+  @Input("role") role: string;
+  @Input("location") location: string;
+  @Input("contactInfo") contactInfo: ContactDto;
 
   constructor() { }
 

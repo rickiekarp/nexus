@@ -2,17 +2,17 @@
   <div class="profile-wrap animated fadeIn">
     <div class="info-wrap">
       <div class="avatar-wrap">
-        <img src="{{avatarImgSrc}}" alt="avatar">
+        <img src="{{avatarImage}}" alt="avatar">
       </div>
-      <span class="user-name">{{userName}}</span>
-      <span class="user-post">{{userPost}}</span>
+      <span class="user-name">{{contactInfo.name}}</span>
+      <span class="user-post">{{role}}</span>
       <span class="map-location">
         <i class="fa fa-map-marker"></i>
         <span>{{location}}</span>
       </span>
     </div>
     <div class="profile-head">
-      <img src="{{avatarImgSrc}}" alt="profile-head-bg" class="profile-head-bg">
+      <img src="{{avatarImage}}" alt="profile-head-bg" class="profile-head-bg">
     </div>
     <div class="profile-foot">
       <br><p align="center">If you would like to meet me in person or have any other questions, feel free to contact me!</p><br>
@@ -35,9 +35,24 @@
             <a href="https://twitter.com/rickiekarp" target="_blank" class="info-icon fa fa-twitter"></a>
         </li>
         <li class="contact-way-list">
-          <a href="mailto:{{email}}" class="info-icon fa fa-envelope"></a>
+          <a href="mailto:{{contactInfo.email}}" class="info-icon fa fa-envelope"></a>
         </li>
       </ul>
     </div>
   </div>
+</div>
+
+<div id="education">
+    <div class="education-block">
+        <table>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td>E-Mail</td>
+                <td><input class="inputCopy" type="text" value={{contactInfo.email}} id="myInput" readonly></td>
+                <td><button class="btn btn-info" onclick="copy()"><i class="fa fa-clipboard" aria-hidden="true"></i></button></td>
+            </tr>
+        </table>
+    </div>
 </div>
