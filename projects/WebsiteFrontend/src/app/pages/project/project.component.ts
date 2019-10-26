@@ -147,7 +147,7 @@ export class ProjectComponent implements OnInit {
       case 'empirefourkingdoms': 
         this.project.name = 'Empire: Four Kingdoms'
         this.project.description = 'Make your dream a reality and become a king and castle lord with the Empire: Four Kingdoms app! Produce new resources and build your small castle into a mighty fortress!'
-        this.project.projectUrl = 'https://lordsandknights.com'
+        this.project.projectUrl = 'https://www.goodgamestudios.com/games/empire-four-kingdoms-app'
         this.project.projectImage = 'images/logo-e4k.png'
         this.project.company = 'Goodgame Studios'
         this.project.function = 'Quality Assurance Technician'
@@ -231,7 +231,8 @@ export class ProjectComponent implements OnInit {
           'Base64 encryption',
           'Bcrypt encryption',
           'Color code encryption',
-          'HMAC and Complex Mode'
+          'HMAC and Complex Mode',
+          'Application ported to Android'
         ]
         this.imageUrls.push(
           { url: 'assets/images/projects/sha1pass/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
