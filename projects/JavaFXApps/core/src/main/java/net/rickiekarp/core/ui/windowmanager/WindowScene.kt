@@ -56,7 +56,7 @@ private constructor(stage: WindowStage, stageStyle: StageStyle, root: Region, wi
             }
 
             // Default Accelerators
-            win!!.installAccelerators(this, winType)
+            win.installAccelerators(this, winType)
         }
 
         ThemeSelector.setTheme(this, this.javaClass.classLoader)

@@ -49,7 +49,7 @@ public class MainApp extends AppStarter implements AppLaunch, ILoginHandler {
         setMinHeight(550);
         setWidth(900);
         setHeight(600);
-        setResizable(true);
+        makeResizable();
         setLayout(new MainLayout());
 
         super.start(stage);

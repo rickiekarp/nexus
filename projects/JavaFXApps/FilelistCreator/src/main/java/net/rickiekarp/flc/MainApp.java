@@ -27,7 +27,7 @@ public class MainApp extends AppStarter implements AppLaunch {
         setMinHeight(600);
         setWidth(1024);
         setHeight(768);
-        setResizable(true);
+        makeResizable();
         setLayout(new MainLayout());
 
         super.start(stage);

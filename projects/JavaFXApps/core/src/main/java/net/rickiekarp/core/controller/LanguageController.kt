@@ -42,8 +42,8 @@ object LanguageController {
         }
 
     @JvmStatic
-    fun loadLangFile(utf8in: InputStream) {
-        try {
+    fun loadLangFile(utf8in: InputStream?) {
+        if (utf8in != null) {
             println("Locale: " + Configuration.CURRENT_LOCALE)
             try {
                 prop!!.load(utf8in)
@@ -52,12 +52,9 @@ object LanguageController {
             }
 
             utf8in.close()
-        } catch (var3: NullPointerException) {
-            LogFileHandler.logger.warning("Error")
-        } catch (var3: IOException) {
-            LogFileHandler.logger.warning("Error")
+        } else {
+            LogFileHandler.logger.warning("Could not load language file")
         }
-
     }
 
     @JvmStatic

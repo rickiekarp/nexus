@@ -37,7 +37,7 @@ class MainScene {
 
         when (winType) {
             0.toByte() -> {
-                windowScene!!.win!!.calcSidebarButtonSize(stage.height)
+                windowScene!!.win.calcSidebarButtonSize(stage.height)
 
                 //add available commands to a list
                 try {

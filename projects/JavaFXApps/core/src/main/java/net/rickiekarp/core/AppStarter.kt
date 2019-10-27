@@ -2,6 +2,8 @@ package net.rickiekarp.core
 
 import javafx.application.Application
 import javafx.application.Platform
+import javafx.event.EventHandler
+import javafx.scene.input.KeyEvent
 import javafx.stage.Stage
 import net.rickiekarp.core.controller.LanguageController
 import net.rickiekarp.core.debug.DebugHelper
@@ -24,6 +26,7 @@ open class AppStarter : Application() {
     private var width: Int = 0
     private var height: Int = 0
     private var resizable: Boolean = false
+    private var onKeyPressedHandler: EventHandler<KeyEvent>? = null
 
     override fun start(stage: Stage) {
         AppContext.create(mainClazz!!.getPackage().name)
@@ -44,7 +47,7 @@ open class AppStarter : Application() {
         }
 
         //load language properties file
-        LanguageController.loadLangFile(mainClazz!!.classLoader.getResourceAsStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties")!!)
+        LanguageController.loadLangFile(mainClazz!!.classLoader.getResourceAsStream("language_packs/language_" + Configuration.CURRENT_LOCALE + ".properties"))
 
         //set the default exception handler
         if (!DebugHelper.DEBUGVERSION) {
@@ -54,7 +57,7 @@ open class AppStarter : Application() {
 
         //application related configuration
         stage.title = AppContext.context.applicationName
-        stage.icons.add(ImageLoader.getAppIconSmall())
+        stage.icons.add(ImageLoader.getAppIcon())
         stage.isResizable = resizable
         stage.minWidth = minWidth.toDouble()
         stage.minHeight = minHeight.toDouble()
@@ -64,12 +67,18 @@ open class AppStarter : Application() {
         MainScene(stage, winType)
 
         //set up the Client Area to display
-        MainScene.mainScene.borderPane.center = node!!.layout
-        node!!.postInit()
+        if (node != null) {
+            MainScene.mainScene.borderPane.center = node!!.layout
+            node!!.postInit()
+        }
 
         //post launch settings
         if (Configuration.showTrayIcon) {
             ToolTrayIcon()
+        }
+
+        if (onKeyPressedHandler != null) {
+            MainScene.mainScene.windowScene!!.onKeyPressed = onKeyPressedHandler
         }
 
         //disable settings view if no config file is present
@@ -87,7 +96,7 @@ open class AppStarter : Application() {
         configClazz = clazz
     }
 
-    protected fun setLayout(node: AppLayout) {
+    protected fun setLayout(node: AppLayout?) {
         AppStarter.node = node
     }
 
@@ -111,8 +120,12 @@ open class AppStarter : Application() {
         height = defHeight
     }
 
-    protected fun setResizable(isResizable: Boolean) {
-        resizable = isResizable
+    protected fun makeResizable() {
+        resizable = true
+    }
+
+    protected fun setOnKeyPressedHandler(handler: EventHandler<KeyEvent>) {
+        onKeyPressedHandler = handler
     }
 
     companion object {
