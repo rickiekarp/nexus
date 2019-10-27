@@ -13,7 +13,6 @@ import java.util.function.Consumer;
  */
 public class MainPresenter {
 
-	@FXML
 	private Pane gridContainer;
 
 	private final Grid grid;
@@ -24,13 +23,13 @@ public class MainPresenter {
 
 
 	public MainPresenter(final ViewModel viewModel, final Grid grid, final Consumer<?> newGameFunction) {
+		this.gridContainer = new Pane();
 		this.viewModel = viewModel;
 		this.grid = grid;
 		this.newGameFunction = newGameFunction;
 	}
 
 
-	@FXML
 	public void initialize() {
 		grid.init();
 
@@ -41,4 +40,7 @@ public class MainPresenter {
 		newGameFunction.accept(null);
 	}
 
+	public Pane getGridContainer() {
+		return gridContainer;
+	}
 }

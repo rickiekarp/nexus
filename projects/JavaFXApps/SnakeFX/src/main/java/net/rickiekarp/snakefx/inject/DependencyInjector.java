@@ -20,8 +20,6 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
         injectCore();
 
         injectOthers();
-
-        injectPresenter();
     }
 
     private void injectCore() {
@@ -40,23 +38,6 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
         put(NewGameFunction.class, newGameFunction);
     }
 
-    private void injectPresenter() {
-        final ViewModel viewModel = get(ViewModel.class);
-
-        final MainPresenter mainPresenter = new MainPresenter(viewModel, get(Grid.class),
-                get(NewGameFunction.class));
-        final PanelPresenter panelPresenter = new PanelPresenter(viewModel, get(NewGameFunction.class));
-
-        final HighscorePresenter highscorePresenter = new HighscorePresenter(viewModel, get(HighscoreManager.class));
-
-        final NewScoreEntryPresenter newScoreEntryPresenter = new NewScoreEntryPresenter(get(HighscoreManager.class), viewModel);
-
-        put(MainPresenter.class, mainPresenter);
-        put(PanelPresenter.class, panelPresenter);
-        put(HighscorePresenter.class, highscorePresenter);
-        put(NewScoreEntryPresenter.class, newScoreEntryPresenter);
-    }
-
     private void injectOthers() {
         final KeyboardHandler keyboardHandler = new KeyboardHandler(get(ViewModel.class));
         final HighscoreDao highscoreDao = new HighscoreJsonDao();
@@ -68,7 +49,7 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
     }
 
 
-    private <T> void put(Class<T> clazz, T instance) {
+    public <T> void put(Class<T> clazz, T instance) {
         instances.put(clazz, instance);
     }
 

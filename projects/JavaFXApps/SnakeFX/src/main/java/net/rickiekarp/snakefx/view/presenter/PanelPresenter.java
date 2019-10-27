@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.rickiekarp.core.view.AboutScene;
 import net.rickiekarp.snakefx.core.SpeedLevel;
 import net.rickiekarp.snakefx.util.PopupDialogHelper;
 import net.rickiekarp.snakefx.view.FXMLFile;
@@ -49,15 +50,7 @@ public class PanelPresenter {
 
 	@FXML
 	public void showAbout() {
-		Stage stage = new Stage();
-		stage.setMinWidth(200);
-		stage.setMinHeight(200);
-		VBox vBox = new VBox(new Label("1.0"));
-		vBox.setAlignment(Pos.CENTER);
-		Scene scene = new Scene(vBox);
-		stage.setScene(scene);
-		stage.initModality(Modality.WINDOW_MODAL);
-		stage.show();
+		new AboutScene();
 	}
 
 	@FXML

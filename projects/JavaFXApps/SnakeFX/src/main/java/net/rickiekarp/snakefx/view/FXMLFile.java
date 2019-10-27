@@ -5,8 +5,6 @@ import java.net.URL;
 public enum FXMLFile {
 
 
-	MAIN("main.fxml"),
-
 	PANEL("panel.fxml"),
 
 	HIGHSCORE("highscore.fxml"),
