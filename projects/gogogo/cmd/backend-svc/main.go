@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"rickiekarp.net/command"
 	"rickiekarp.net/database"
 	"rickiekarp.net/http"
 	"rickiekarp.net/parser"
@@ -12,6 +13,11 @@ import (
 func main() {
 	argsWithProg := os.Args
 	fmt.Println(argsWithProg)
+
+	command.ExecuteCommandAndPrintResult()
+
+	returnCode := command.ExecuteCommandAndGetExitCode()
+	fmt.Println(returnCode)
 
 	parser.Read("conf/config.properties")
 
