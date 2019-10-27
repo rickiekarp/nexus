@@ -1,6 +1,5 @@
 package net.rickiekarp.snakefx;
 
-import javafx.scene.Node;
 import javafx.stage.Stage;
 import net.rickiekarp.core.AppStarter;
 import net.rickiekarp.snakefx.core.Grid;
@@ -34,24 +33,20 @@ public class MainApp extends AppStarter {
         setMainClazz(MainApp.class);
         setConfigClazz(AppConfiguration.class);
 
-        setWinType((byte) 1);
-        setMinWidth(500);
-        setMinHeight(350);
-        setWidth(800);
-        setHeight(600);
+        setWinType((byte) 0);
+        setMinWidth(650);
+        setMinHeight(620);
+        setWidth(670);
+        setHeight(650);
 
         DependencyInjector dependencyInjector = new DependencyInjector();
         final ViewModel viewModel = dependencyInjector.get(ViewModel.class);
 
         FxmlFactory fxmlFactory = new FxmlFactory(dependencyInjector);
 
-
-        final MainPresenter mainPresenter = new MainPresenter(viewModel, dependencyInjector.get(Grid.class),
-                dependencyInjector.get(NewGameFunction.class));
+        final MainPresenter mainPresenter = new MainPresenter(dependencyInjector.get(Grid.class), dependencyInjector.get(NewGameFunction.class));
         final PanelPresenter panelPresenter = new PanelPresenter(viewModel, dependencyInjector.get(NewGameFunction.class));
-
         final HighscorePresenter highscorePresenter = new HighscorePresenter(viewModel, dependencyInjector.get(HighscoreManager.class));
-
         final NewScoreEntryPresenter newScoreEntryPresenter = new NewScoreEntryPresenter(dependencyInjector.get(HighscoreManager.class), viewModel);
 
         dependencyInjector.put(MainPresenter.class, mainPresenter);

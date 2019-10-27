@@ -5,17 +5,17 @@ package net.rickiekarp.snakefx.core;
 * stored as Frames per Second.
 */
 public enum SpeedLevel {
-	SLOW(5),
+	EASY(5),
 
 	MEDIUM(10),
 
-	FAST(15),
+	HARD(15),
 
-	EXTRA(30);
+	INSANE(30);
 
 	private int fps;
 
-	private SpeedLevel(final int fps) {
+	SpeedLevel(final int fps) {
 		this.fps = fps;
 	}
 

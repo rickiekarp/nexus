@@ -7,12 +7,11 @@ import net.rickiekarp.core.settings.Configuration
 import net.rickiekarp.core.ui.anim.AnimationHandler
 import net.rickiekarp.core.view.MainScene
 import net.rickiekarp.core.view.layout.AppLayout
-import net.rickiekarp.flc.listcell.FoldableListCell
 import net.rickiekarp.flc.controller.FilelistController
 import net.rickiekarp.flc.model.Directorylist
 import net.rickiekarp.flc.model.Filelist
 import net.rickiekarp.flc.model.FilelistFormats
-import net.rickiekarp.flc.model.FilelistSettings
+import net.rickiekarp.core.model.SettingEntry
 import net.rickiekarp.flc.settings.AppConfiguration
 import net.rickiekarp.flc.tasks.FilelistPreviewTask
 import net.rickiekarp.flc.tasks.ListTask
@@ -29,9 +28,13 @@ import javafx.scene.input.KeyCode
 import javafx.scene.layout.*
 import javafx.stage.DirectoryChooser
 import javafx.stage.FileChooser
+import net.rickiekarp.core.view.AboutScene
+import net.rickiekarp.core.view.SettingsScene
+import net.rickiekarp.flc.tasks.FileSizeTask
 
 import java.text.DecimalFormatSymbols
 import java.util.Collections
+import net.rickiekarp.core.components.FoldableListCell
 
 class MainLayout : AppLayout {
     override val layout: Node
@@ -44,6 +47,206 @@ class MainLayout : AppLayout {
         mainLayout = this
     }
 
+    private fun createGenerat(description: String): VBox {
+        val content = VBox()
+        content.spacing = 5.0
+
+        val btn_settings = Button()
+        btn_settings.tooltip = Tooltip(LanguageController.getString("settings"))
+        btn_settings.styleClass.add("decoration-button-settings")
+
+        val btn_about = Button()
+        btn_about.tooltip = Tooltip(LanguageController.getString("about"))
+        btn_about.styleClass.add("decoration-button-about")
+
+        btn_settings.setOnAction { event -> SettingsScene() }
+        btn_about.setOnAction { event -> AboutScene() }
+
+        val hbox = HBox()
+        hbox.alignment = Pos.CENTER
+        hbox.spacing = 5.0
+        hbox.children.addAll(btn_settings, btn_about)
+
+        content.children.addAll(hbox)
+        return content
+    }
+
+    private fun createBox2(description: String): VBox {
+        val content = VBox()
+        content.spacing = 5.0
+
+        val option2_desc = Label(LanguageController.getString(description))
+        option2_desc.isWrapText = true
+        option2_desc.style = "-fx-font-size: 9pt;"
+        option2_desc.maxWidth = 175.0
+
+        val filename = CheckBox(LanguageController.getString("name"))
+        filename.isSelected = true
+        FilelistController.option[0] = true
+        filename.setOnAction { event ->
+            FilelistController.option[0] = !FilelistController.option[0]
+            LogFileHandler.logger.config("change_filename_option: " + !FilelistController.option[0] + " -> " + FilelistController.option[0])
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+        }
+
+        val type = CheckBox(LanguageController.getString("ftype"))
+        type.isSelected = false
+        FilelistController.option[1] = false
+        type.setOnAction { event ->
+            FilelistController.option[1] = !FilelistController.option[1]
+            LogFileHandler.logger.config("change_type_option: " + !FilelistController.option[1] + " -> " + FilelistController.option[1])
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+        }
+
+        val path = CheckBox(LanguageController.getString("fpath"))
+        path.isSelected = true
+        FilelistController.option[2] = true
+        path.setOnAction { event ->
+            FilelistController.option[2] = !FilelistController.option[2]
+            LogFileHandler.logger.config("change_path_option: " + !FilelistController.option[2] + " -> " + FilelistController.option[2])
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+        }
+
+        val size = CheckBox(LanguageController.getString("fsize"))
+        size.isSelected = true
+        FilelistController.option[3] = true
+        size.setOnAction { event ->
+            FilelistController.option[3] = !FilelistController.option[3]
+            LogFileHandler.logger.config("change_filesize_option: " + !FilelistController.option[3] + " -> " + FilelistController.option[3])
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+        }
+
+        val created = CheckBox(LanguageController.getString("fcreation"))
+        created.isSelected = false
+        FilelistController.option[4] = false
+        created.setOnAction { event ->
+            FilelistController.option[4] = !FilelistController.option[4]
+            LogFileHandler.logger.config("change_creationdate_option: " + !FilelistController.option[4] + " -> " + FilelistController.option[4])
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+        }
+
+        val changed = CheckBox(LanguageController.getString("fmodif"))
+        changed.isSelected = true
+        FilelistController.option[5] = true
+        changed.setOnAction { event ->
+            FilelistController.option[5] = !FilelistController.option[5]
+            LogFileHandler.logger.config("change_lastchanged_option: " + !FilelistController.option[5] + " -> " + FilelistController.option[5])
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+        }
+
+        val lastAccess = CheckBox(LanguageController.getString("faccessed"))
+        lastAccess.isSelected = false
+        FilelistController.option[6] = false
+        lastAccess.setOnAction { event ->
+            FilelistController.option[6] = !FilelistController.option[6]
+            LogFileHandler.logger.config("change_lastaccess_option: " + !FilelistController.option[6] + " -> " + FilelistController.option[6])
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+        }
+
+        val hidden = CheckBox(LanguageController.getString("fhidden"))
+        hidden.isSelected = false
+        FilelistController.option[7] = false
+        hidden.setOnAction { event ->
+            FilelistController.option[7] = !FilelistController.option[7]
+            LogFileHandler.logger.config("change_hidden: " + !FilelistController.option[7] + " -> " + FilelistController.option[7])
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+        }
+
+        content.children.addAll(option2_desc, filename, type, path, size, created, changed, lastAccess, hidden)
+        return content
+    }
+
+    private fun createBox1(description: String): VBox {
+        val content = VBox()
+        content.spacing = 5.0
+
+        val option1_desc = Label(LanguageController.getString(description))
+        option1_desc.isWrapText = true
+        option1_desc.style = "-fx-font-size: 9pt;"
+        option1_desc.maxWidth = 175.0
+
+        val option = Label(LanguageController.getString("grouping"))
+        val option1 = Label(LanguageController.getString("unit"))
+
+        val cbox_sorting = ComboBox<String>()
+        cbox_sorting.items.addAll(LanguageController.getString("none"), LanguageController.getString("folder"))
+        cbox_sorting.selectionModel.select(0)
+        cbox_sorting.minWidth = 100.0
+
+        val cbox_unit = ComboBox<String>()
+        cbox_unit.items.addAll(AppConfiguration.unitList)
+        cbox_unit.selectionModel.select(FilelistController.UNIT_IDX)
+        cbox_unit.minWidth = 100.0
+
+        val header = CheckBox(LanguageController.getString("headerShow"))
+        header.isSelected = FilelistController.canShowHeader
+
+        val empty = CheckBox(LanguageController.getString("emptyFolderShow"))
+        empty.isSelected = true
+
+        cbox_sorting.valueProperty().addListener { ov, t, t1 ->
+            FilelistController.sortingIdx = cbox_sorting.selectionModel.selectedIndex
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+            when (cbox_sorting.selectionModel.selectedIndex) {
+                0 -> content.children.remove(empty)
+                1 -> content.children.add(empty)
+            }
+        }
+
+        cbox_unit.valueProperty().addListener { ov, t, t1 ->
+            FilelistController.UNIT_IDX = cbox_unit.selectionModel.selectedIndex
+            if (AppConfiguration.fileData.size > 0) {
+                FileSizeTask()
+            }
+        }
+
+        header.setOnAction { event ->
+            FilelistController.canShowHeader = header.isSelected
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+
+        }
+
+        empty.setOnAction { event ->
+            FilelistController.canShowEmptyFolder = empty.isSelected
+            if (AppConfiguration.fileData.size > 0) {
+                FilelistPreviewTask()
+            }
+        }
+
+        val hbox = HBox()
+        hbox.alignment = Pos.CENTER_LEFT
+        hbox.spacing = 5.0
+        hbox.children.addAll(cbox_sorting, option)
+
+        val hbox1 = HBox()
+        hbox1.alignment = Pos.CENTER_LEFT
+        hbox1.spacing = 5.0
+        hbox1.children.addAll(cbox_unit, option1)
+
+        content.children.addAll(option1_desc, hbox, hbox1, header)
+        return content
+    }
+
     private fun createLayout(): Node {
         val mainContent = BorderPane()
 
@@ -52,12 +255,6 @@ class MainLayout : AppLayout {
         columnConstraints.isFillWidth = true
         columnConstraints.hgrow = Priority.ALWAYS
         fileGrid.columnConstraints.add(columnConstraints)
-
-        val settingsGrid = GridPane()
-        settingsGrid.prefWidth = 200.0
-        settingsGrid.vgap = 10.0
-        settingsGrid.padding = Insets(5.0, 0.0, 0.0, 0.0)  //padding top, left, bottom, right
-        settingsGrid.alignment = Pos.BASELINE_CENTER
 
         val controls = AnchorPane()
         controls.minHeight = 50.0
@@ -183,21 +380,27 @@ class MainLayout : AppLayout {
         GridPane.setConstraints(fileunit, 0, 2)
         GridPane.setHalignment(fileunit, HPos.RIGHT)
 
+        val settingsGrid = GridPane()
+        settingsGrid.prefWidth = 200.0
+        settingsGrid.vgap = 10.0
+        settingsGrid.padding = Insets(5.0, 0.0, 0.0, 0.0)  //padding top, left, bottom, right
+        settingsGrid.alignment = Pos.BASELINE_CENTER
+
         //SETTINGS LIST
-        val list = ListView<FilelistSettings>()
+        val list = ListView<SettingEntry>()
         GridPane.setConstraints(list, 0, 0)
         GridPane.setVgrow(list, Priority.ALWAYS)
         settingsGrid.children.add(list)
 
-        val items = FXCollections.observableArrayList<FilelistSettings>()
+        val items = FXCollections.observableArrayList<SettingEntry>()
         if (Configuration.useSystemBorders) {
-            items.add(FilelistSettings("flSetting_0", "flSetting_0_desc", false))
+            items.add(SettingEntry("flSetting_0",false, createGenerat("flSetting_0_desc")))
         }
-        items.add(FilelistSettings("flSetting_1", "flSetting_1_desc", false))
-        items.add(FilelistSettings("flSetting_2", "flSetting_2_desc", false))
-        list.setItems(items)
+        items.add(SettingEntry("flSetting_1",false, createBox1("flSetting_1_desc")))
+        items.add(SettingEntry("flSetting_2",false, createBox2("flSetting_2_desc")))
+        list.items = items
 
-        list.setCellFactory { lv -> FoldableListCell(list) }
+        list.setCellFactory { FoldableListCell(list) }
 
 
         status = Label()

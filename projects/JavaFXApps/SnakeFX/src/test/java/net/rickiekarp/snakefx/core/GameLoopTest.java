@@ -19,7 +19,7 @@ public class GameLoopTest {
 	@Before
 	public void setup() {
 		viewModel = new ViewModel();
-		viewModel.speed.set(SpeedLevel.SLOW);
+		viewModel.speed.set(SpeedLevel.EASY);
 		gameLoop = new GameLoop(viewModel);
 	}
 
@@ -28,7 +28,7 @@ public class GameLoopTest {
 	public void testStoppedTimelineStaysStoppedAfterSpeedChange() {
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.STOPPED);
 
-		viewModel.speed.set(SpeedLevel.FAST);
+		viewModel.speed.set(SpeedLevel.HARD);
 
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.STOPPED);
 	}
@@ -38,7 +38,7 @@ public class GameLoopTest {
 		getTimeline().play();
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);
 
-		viewModel.speed.set(SpeedLevel.FAST);
+		viewModel.speed.set(SpeedLevel.HARD);
 
 
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);

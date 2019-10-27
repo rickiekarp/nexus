@@ -17,14 +17,11 @@ public class MainPresenter {
 
 	private final Grid grid;
 
-	private final ViewModel viewModel;
-
 	private final Consumer<?> newGameFunction;
 
 
-	public MainPresenter(final ViewModel viewModel, final Grid grid, final Consumer<?> newGameFunction) {
+	public MainPresenter(final Grid grid, final Consumer<?> newGameFunction) {
 		this.gridContainer = new Pane();
-		this.viewModel = viewModel;
 		this.grid = grid;
 		this.newGameFunction = newGameFunction;
 	}

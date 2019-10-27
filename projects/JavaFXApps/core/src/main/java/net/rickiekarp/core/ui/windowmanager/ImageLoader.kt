@@ -26,7 +26,6 @@ object ImageLoader {
         if (menu == null) {
             menu = Image(loader.getResource("components/titlebar/menu.png").toString())
         }
-        println(menu)
         return menu
     }
 
@@ -34,7 +33,6 @@ object ImageLoader {
         if (menuHover == null) {
             menuHover = Image(loader.getResource("components/titlebar/menu-hover.png").toString())
         }
-        println(menuHover)
         return menuHover
     }
 }
