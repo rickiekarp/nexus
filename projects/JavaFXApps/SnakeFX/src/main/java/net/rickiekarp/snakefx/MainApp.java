@@ -34,9 +34,9 @@ public class MainApp extends AppStarter {
         setConfigClazz(AppConfiguration.class);
 
         setWinType((byte) 0);
-        setMinWidth(650);
+        setMinWidth(700);
         setMinHeight(620);
-        setWidth(670);
+        setWidth(700);
         setHeight(650);
 
         DependencyInjector dependencyInjector = new DependencyInjector();
@@ -49,7 +49,6 @@ public class MainApp extends AppStarter {
         final HighscorePresenter highscorePresenter = new HighscorePresenter(viewModel, dependencyInjector.get(HighscoreManager.class));
         final NewScoreEntryPresenter newScoreEntryPresenter = new NewScoreEntryPresenter(dependencyInjector.get(HighscoreManager.class), viewModel);
 
-        dependencyInjector.put(MainPresenter.class, mainPresenter);
         dependencyInjector.put(PanelPresenter.class, panelPresenter);
         dependencyInjector.put(HighscorePresenter.class, highscorePresenter);
         dependencyInjector.put(NewScoreEntryPresenter.class, newScoreEntryPresenter);

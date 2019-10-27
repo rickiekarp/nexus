@@ -4,21 +4,12 @@ import javafx.collections.FXCollections
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.ListView
-import javafx.scene.control.Tooltip
+import javafx.scene.control.*
 import javafx.scene.layout.*
 import net.rickiekarp.core.components.FoldableListCell
-import net.rickiekarp.core.controller.LanguageController
 import net.rickiekarp.core.model.SettingEntry
-import net.rickiekarp.core.settings.Configuration
-import net.rickiekarp.core.view.AboutScene
-import net.rickiekarp.core.view.SettingsScene
 import net.rickiekarp.core.view.layout.AppLayout
-import net.rickiekarp.snakefx.core.Grid
 import net.rickiekarp.snakefx.util.FxmlFactory
-import net.rickiekarp.snakefx.view.presenter.MainPresenter
 
 class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer: Pane) : AppLayout {
     override val layout: Node
@@ -48,9 +39,38 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
             borderpane.center = gridContainer
 //            borderpane.right = settingsGrid
             borderpane.top = fxmlFactory.getFxmlRoot(FXMLFile.PANEL)
+//            borderpane.top = getPanel()
 
             return borderpane
         }
+
+    private fun getPanel(): Node {
+        val hbox = HBox()
+        hbox.spacing = 15.0
+        hbox.prefWidth = 74.0
+        hbox.alignment = Pos.CENTER_LEFT
+        hbox.padding = Insets(10.0, 10.0, 10.0, 10.0)
+
+
+//        Button fx:id="playPause" focusTraversable="false" mnemonicParsing="false" onAction="#togglePlayPause" text="Start" />
+//        <Button fx:id="newGame" focusTraversable="false" mnemonicParsing="false" onAction="#newGame" text="New Game" />
+//        <Button fx:id="showHighscores" focusTraversable="false" mnemonicParsing="false" onAction="#showHighscores" text="Highscores" />
+//        <Label text="Difficulty:" />
+//        <ChoiceBox fx:id="speed" focusTraversable="false" />
+
+        val pointsText = Label("Points: ")
+        val pointsLabel = Label("0")
+        val playPause = Button("playPause")
+        val newGame = Button("newGame")
+        val showHighscores = Button("showHighscores")
+        val difficultyLabel = Label("Difficulty:")
+        val speed = ChoiceBox<String>()
+
+
+        hbox.children.addAll(pointsText, pointsLabel, playPause, newGame, showHighscores, difficultyLabel, speed)
+
+        return hbox
+    }
 
     private fun getOptions(description: String): VBox {
         val content = VBox()

@@ -39,7 +39,7 @@ public class Field {
 		rectangle = new Rectangle(x * sizeInPixel, y * sizeInPixel,
 				sizeInPixel, sizeInPixel);
 
-		rectangle.setStroke(Color.LIGHTGRAY);
+		//rectangle.setStroke(Color.LIGHTGRAY);
 		rectangle.setFill(Color.WHITE);
 
 	}
