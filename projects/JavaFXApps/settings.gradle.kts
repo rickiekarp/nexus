@@ -3,6 +3,7 @@ rootProject.name = "JavaFXApps"
 include("AppUpdater")
 include("BotManager")
 include("BotLib")
+include("ColorPuzzle")
 include("FilelistCreator")
 include("QAAccountManager")
 include("SHA1Pass")
