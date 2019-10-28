@@ -1,19 +1,19 @@
+import java.text.SimpleDateFormat
+
 plugins {
-  id 'java'
-  id 'application'
-  id 'org.openjfx.javafxplugin'
+    id 'application'
+    id 'org.openjfx.javafxplugin'
 }
 
-sourceCompatibility = 1.8
-
-version = '1.0'
-
-mainClassName = "net.rickiekarp.colorpuzzlefx.Main"
+repositories {
+    mavenCentral()
+}
 
 javafx {
     version = "13"
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
+mainClassName = "net.rickiekarp.colorpuzzlefx.Main"
 
 repositories {
     mavenCentral()
@@ -23,6 +23,8 @@ repositories {
 }
 
 dependencies {
+    compile project(":core")
+
     compile 'de.saxsys:mvvmfx:1.3.0'
     compile "eu.lestard:easy-di:0.3.0"
     compile "eu.lestard:grid:0.2.0"
@@ -33,4 +35,29 @@ dependencies {
     testCompile "junit:junit:4.12"
     testCompile "org.assertj:assertj-core:1.7.1"
     testCompile "eu.lestard:assertj-javafx:0.3.0"
+}
+
+jar {
+    println("Building " + project.name)
+
+    def minorVersion = 0
+    def publicVersion = 0
+
+    if (minorVersion > 0) {
+        publicVersion = new SimpleDateFormat("yy.MM").format(new Date()) + '.' + minorVersion
+    } else {
+        publicVersion = new SimpleDateFormat("yy.MM").format(new Date())
+    }
+
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': application.mainClassName,
+                'Build-Time': new SimpleDateFormat("yyMMddHHmm").format(new Date()),
+                'Version': publicVersion
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
