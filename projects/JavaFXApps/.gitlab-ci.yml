@@ -22,6 +22,20 @@ build-BotManager:
     changes:
       - projects/JavaFXApps/*
 
+build-ColorPuzzle:
+  stage: build
+  image: openjdk:11.0.5-jdk
+  script:
+    - cd projects/JavaFXApps
+    - ./gradlew clean :ColorPuzzle:distZip
+  artifacts:
+    paths:
+      - projects/JavaFXApps/ColorPuzzle/build/distributions
+    expire_in: 1 week
+  only:
+    changes:
+      - projects/JavaFXApps/*
+
 build-FilelistCreator:
   stage: build
   image: openjdk:11.0.5-jdk
