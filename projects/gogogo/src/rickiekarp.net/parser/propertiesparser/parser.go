@@ -1,4 +1,4 @@
-package parser
+package propertiesparser
 
 import (
 	"bufio"
@@ -14,7 +14,7 @@ func Read(filename string) {
 
 	test()
 
-	config, err := readConfig(filename)
+	config, err := ReadConfig(filename)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -28,9 +28,10 @@ func Read(filename string) {
 	fmt.Println("url :", url)
 	fmt.Println("user :", user)
 	fmt.Println("pass :", issuetype)
+
 }
 
-func readConfig(filename string) (Config, error) {
+func ReadConfig(filename string) (Config, error) {
 	// init with some bogus data
 	config := Config{
 		"port": "1111",

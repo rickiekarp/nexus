@@ -4,14 +4,39 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
+	"rickiekarp.net/command"
+	"rickiekarp.net/database"
 	"rickiekarp.net/game/snakefx"
+	"rickiekarp.net/network"
+	"rickiekarp.net/parser/propertiesparser"
+	"rickiekarp.net/parser/yamlparser"
 )
 
 const port = 8080
 
 func main() {
+	argsWithProg := os.Args
+	fmt.Println(argsWithProg)
+
+	command.ExecuteCommandAndPrintResult()
+	returnCode := command.ExecuteCommandAndGetExitCode()
+	fmt.Println(returnCode)
+
+	// read config
+	var config yamlparser.Requestdata
+	config.GetConf()
+	fmt.Println(config)
+
+	network.Get()
+
+	propertiesparser.Read("conf/config.properties")
+
+	database.InitDB("mysql://user:pass@tcp(database:3306)/login")
+	database.GetUsers()
+
 	router := mux.NewRouter()
 
 	router.HandleFunc("/highscore", snakefx.GetEmps).Methods("GET")
