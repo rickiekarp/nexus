@@ -3,40 +3,49 @@ package snakefx
 import (
 	"database/sql"
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type Tag struct {
-	ID   int    `json:"id"`
-	Name string `json:"username"`
+const GET_HIGHSCORES = "SELECT id, name, points, dateAdded FROM snake_highscore"
+const ADD_HIGHSCORE = "INSERT INTO snake_highscore (name, points) VALUES ($1, $2)"
+
+type Highscore struct {
+	Id     int       `json:"id"`
+	Name   string    `json:"name"`
+	Points int       `json:"points"`
+	Date   time.Time `json:"dateAdded"`
 }
 
-func GetRanking() {
-	// Open up our database connection.
-	db, err := sql.Open("mysql", "user:pass@tcp(database:3306)/gamedata")
-
-	// if there is an error opening the connection, handle it
-	if err != nil {
-		log.Print(err.Error())
-	}
-	defer db.Close()
-
-	// Execute the query
-	results, err := db.Query("SELECT id, username FROM users")
+func GetRanking(db *sql.DB) *[]Highscore {
+	results, err := db.Query(GET_HIGHSCORES)
 	if err != nil {
 		panic(err.Error()) // proper error handling instead of panic in your app
 	}
 
+	var emps []Highscore
+
 	for results.Next() {
-		var tag Tag
+		var emp Highscore
 		// for each row, scan the result into our tag composite object
-		err = results.Scan(&tag.ID, &tag.Name)
+		err = results.Scan(&emp.Id, &emp.Name, &emp.Points, &emp.Date)
 		if err != nil {
 			panic(err.Error()) // proper error handling instead of panic in your app
 		}
+		emps = append(emps, emp)
 		// and then print out the tag's Name attribute
-		log.Printf("%s %d", tag.Name, tag.ID)
+		//log.Printf("%s %d %d %s", emp.Name, emp.Id, emp.Points, emp.Date)
 	}
 
+	return &emps
+}
+
+func AddHighscore(db *sql.DB, name string, points int) {
+	statement, err := db.Prepare("INSERT INTO snake_highscore (name, points) VALUES(?,?)")
+	if err != nil {
+		panic(err.Error())
+	}
+	statement.Exec(name, points)
+	log.Println("Added:", name, points)
 }
