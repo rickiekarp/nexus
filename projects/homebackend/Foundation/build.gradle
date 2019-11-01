@@ -24,7 +24,6 @@ dependencies {
     compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: project.ext.jacksonVersion
 
     compile group: 'mysql', name: 'mysql-connector-java', version: project.ext.mysqlJavaConnector
-    compile group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flywayVersion
 
     compile group: 'org.apache.commons', name: 'commons-text', version: project.ext.commonsText
 
