@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/network"
 	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/parser/yamlparser"
@@ -14,6 +15,9 @@ func main() {
 	config.GetConf()
 	fmt.Println(config)
 
+	curDate := time.Now().Format("01-2006")
+	fmt.Println(curDate)
+
 	//prepare request
 	headerMap := map[string]string{
 		"Authorization":        fmt.Sprintf("Basic %s", config.Authorization),
@@ -25,8 +29,8 @@ func main() {
 
 	data := network.RequestData{
 		Recipient: config.Recipient,
-		Subject:   "subject",
-		Message:   "message",
+		Subject:   fmt.Sprintf("Shopping Statistic - %s", curDate),
+		Message:   "Here is what you've spend last month.",
 	}
 
 	// Both calls below produce same result
