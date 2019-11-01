@@ -7,12 +7,12 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"rickiekarp.net/command"
-	"rickiekarp.net/database"
-	"rickiekarp.net/game/snakefx"
-	"rickiekarp.net/network"
-	"rickiekarp.net/parser/propertiesparser"
-	"rickiekarp.net/parser/yamlparser"
+	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/command"
+	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/database"
+	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/game/snakefx"
+	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/network"
+	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/parser/propertiesparser"
+	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/parser/yamlparser"
 )
 
 const port = 8080

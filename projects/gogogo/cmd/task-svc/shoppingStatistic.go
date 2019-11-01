@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"rickiekarp.net/network"
-	"rickiekarp.net/parser/yamlparser"
+	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/network"
+	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/parser/yamlparser"
 )
 
 func main() {

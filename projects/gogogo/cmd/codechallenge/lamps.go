@@ -19,31 +19,31 @@ func main() {
 
 	//first step: set all bools to true
 	var boolArray [arraySize]bool
-	for i := range(boolArray) { 
+	for i := range boolArray {
 		boolArray[i] = true
 	}
 
 	//second step: update bools with each iteration
 	for i := 2; i < arraySize; i++ {
-        a := 0
-        for a < len(boolArray) {
-            if (i <= a) {
-                boolArray[a] = !boolArray[a]
-            }
-            a += i
-		}	
+		a := 0
+		for a < len(boolArray) {
+			if i <= a {
+				boolArray[a] = !boolArray[a]
+			}
+			a += i
+		}
 	}
 
-    fmt.Println("Lamps active:", getTrueCount(boolArray))
+	fmt.Println("Lamps active:", getTrueCount(boolArray))
 }
 
 func getTrueCount(array [arraySize]bool) int {
 	boolCounter := 0
 	for i, selectedBool := range array {
 		fmt.Println(i, selectedBool)
-		if (selectedBool) {
-		    boolCounter++
+		if selectedBool {
+			boolCounter++
 		}
 	}
-    return boolCounter
+	return boolCounter
 }

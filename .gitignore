@@ -1,5 +1,7 @@
 .idea
 *.iml
 
+.vscode
+
 # WebsiteFrontend
 projects/WebsiteFrontend/node_modules/
