@@ -33,7 +33,7 @@ public class MainApp extends AppStarter {
         setMainClazz(MainApp.class);
         setConfigClazz(AppConfiguration.class);
 
-        setWinType((byte) 0);
+        setWinType((byte) 1);
         setMinWidth(700);
         setMinHeight(620);
         setWidth(700);
