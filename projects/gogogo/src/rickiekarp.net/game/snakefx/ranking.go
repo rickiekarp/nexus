@@ -8,7 +8,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const GET_HIGHSCORES = "SELECT id, name, points, dateAdded FROM highscore"
+const GET_HIGHSCORES = "SELECT id, name, points, dateAdded FROM highscore order by points desc limit 50"
 const ADD_HIGHSCORE = "INSERT INTO highscore (name, points) VALUES ($1, $2)"
 
 type Highscore struct {

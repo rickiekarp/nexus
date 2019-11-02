@@ -2,6 +2,7 @@ package snakefx
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -25,6 +26,7 @@ func CreateEmp(w http.ResponseWriter, r *http.Request) {
 	var emp Highscore
 	_ = json.NewDecoder(r.Body).Decode(&emp)
 	json.NewEncoder(w).Encode(emp)
+	log.Println(emp)
 	AddHighscore(db, emp.Name, emp.Points)
 }
 

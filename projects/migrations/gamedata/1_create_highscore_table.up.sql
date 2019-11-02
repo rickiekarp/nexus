@@ -4,3 +4,4 @@ create table highscore(
    points           int unsigned DEFAULT 0,
    dateAdded        timestamp    DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX i_highscore ON highscore(points);
