@@ -102,6 +102,7 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
             val label = Label("Highscore")
 
             table = TableView()
+            table.isFocusTraversable = false
             table.prefHeight = 450.0
             table.prefWidth = 300.0
             table.placeholder = Label("No Highscore yet")
@@ -109,12 +110,14 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
 
             val id = TableColumn<HighScoreEntry, String>(LanguageController.getString("rank"))
             id.cellValueFactory = PropertyValueFactory("ranking")
+            id.minWidth = 60.0
 
             val name = TableColumn<HighScoreEntry, String>(LanguageController.getString("name"))
             name.cellValueFactory = PropertyValueFactory("name")
 
             val points = TableColumn<HighScoreEntry, String>(LanguageController.getString("points"))
             points.cellValueFactory = PropertyValueFactory("points")
+            points.minWidth = 80.0
 
             val date = TableColumn<HighScoreEntry, String>(LanguageController.getString("date"))
             date.cellValueFactory = PropertyValueFactory("dateAdded")
@@ -149,6 +152,11 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
         }
 
         table.items.setAll(highscoreManager.highScoreEntries())
+
+        if (confirmDialog("submit_desc", 400, 250)) {
+            table.items.clear()
+            table.items.setAll(highscoreManager.highScoreEntries())
+        }
     }
 
     fun gameFinished() {
@@ -158,7 +166,7 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
         if (size < Config.MAX_SCORE_COUNT.get()) {
 
             Platform.runLater() {
-                if (confirmDialog("submit_desc", 400, 230)) {
+                if (confirmDialog("submit_desc", 400, 250)) {
                     table.items.clear()
                     table.items.setAll(highscoreManager.highScoreEntries())
                 }
@@ -187,7 +195,7 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
         val bool = BooleanArray(1)
 
         val contentVbox = VBox()
-        contentVbox.spacing = 10.0
+        contentVbox.spacing = 5.0
         contentVbox.padding = Insets(0.0, 30.0, 0.0, 30.0)
 
         val optionHBox = HBox()
@@ -195,20 +203,21 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
         optionHBox.alignment = Pos.CENTER
         optionHBox.padding = Insets(5.0, 0.0, 15.0, 0.0)
 
-        //components
         val label = Label(LanguageController.getString(msg))
+        label.padding = Insets(20.0, 0.0, 10.0, 20.0)
         label.isWrapText = true
-        label.padding = Insets(20.0, 10.0, 10.0, 20.0)
 
-        val points = Label()
-        points.textProperty().bind(viewModel.points.asString())
+        val points = Label("Points: " + viewModel.points.get())
+        points.padding = Insets(0.0, 0.0, 15.0, 20.0)
 
-        val textfield = TextField("asd")
+        val nameLabel = Label(LanguageController.getString("name"))
+        val textfield = TextField()
+        textfield.promptText = "Name"
 
         val yesButton = Button(LanguageController.getString("ok"))
         yesButton.setOnAction { event ->
             if (!highscoreManager.isNameValid(textfield.text)) {
-                label.text = "Name is invalid!"
+                nameLabel.text = "Name is invalid!"
                 return@setOnAction
             }
 
@@ -217,12 +226,8 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
             modalDialog.close()
         }
 
-        val errorLabel = Label(LanguageController.getString("error"))
-
         optionHBox.children.addAll(yesButton)
-
-        // The UI (Client Area) to display
-        contentVbox.children.addAll(label, points, errorLabel, textfield, optionHBox)
+        contentVbox.children.addAll(label, points, nameLabel, textfield, optionHBox)
         VBox.setVgrow(contentVbox, Priority.ALWAYS)
 
         // The Window as a Scene

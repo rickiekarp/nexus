@@ -5,11 +5,11 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import net.rickiekarp.core.AppContext;
-import net.rickiekarp.core.net.NetResponse;
 import net.rickiekarp.snakefx.net.SnakeNetworkApi;
 import okhttp3.Response;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static net.rickiekarp.snakefx.config.Config.*;
 
@@ -32,14 +32,12 @@ public class HighscoreManager {
 	}
 
 	public void addScore(final String name, final int points) {
-        final HighScoreEntry entry = new HighScoreEntry(name, points);
-
+        final HighScoreEntry entry = new HighScoreEntry(name, points, new Date());
 		Response response = AppContext.Companion.getContext().getNetworkApi().requestResponse(SnakeNetworkApi.Companion.requestAddHighscore(entry));
 		if (response.code() == 200) {
 			highScoreEntries.add(entry);
 			updateList();
 		}
-
 	}
 
 	public boolean isNameValid(final String name) {
@@ -57,7 +55,6 @@ public class HighscoreManager {
 
 	private void updateList() {
         FXCollections.sort(highScoreEntries);
-
 		for (int i = 0; i < highScoreEntries.size(); i++) {
 			if (i < MAX_SCORE_COUNT.get()) {
 				highScoreEntries.get(i).setRanking(i + 1);
@@ -65,7 +62,5 @@ public class HighscoreManager {
 				highScoreEntries.remove(i);
 			}
 		}
-
-//		dao.persist(highScoreEntries);
 	}
 }

@@ -17,9 +17,10 @@ public class HighScoreEntry implements Comparable<HighScoreEntry> {
 	public HighScoreEntry(){
 	}
 
-	public HighScoreEntry(String playername, int points){
+	public HighScoreEntry(String playername, int points, Date dateAdded){
 		this.name = playername;
 		this.points = points;
+		this.dateAdded = dateAdded;
 	}
 
 	public int getRanking() {

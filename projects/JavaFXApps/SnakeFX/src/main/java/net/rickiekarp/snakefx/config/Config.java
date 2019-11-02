@@ -29,13 +29,13 @@ public enum Config {
 	/**
 	 * The max number of HighScore entries that are saved and persisted
 	 */
-	MAX_SCORE_COUNT(10)
+	MAX_SCORE_COUNT(50)
 
 	;
 
 	private Integer value;
 
-	private Config(final Integer value) {
+	Config(final Integer value) {
 		this.value = value;
 	}
 
