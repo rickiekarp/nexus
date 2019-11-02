@@ -68,20 +68,20 @@ internal class ConnectionHandler {
 
         val request = builder.build()
         LogFileHandler.logger.info(request.method + ": " + decodedUrl)
-        //		printRequestHeaders(request);
-        //		printRequestBody(request);
+        printRequestHeaders(request);
+        printRequestBody(request);
 
-        try {
+        return try {
             val response = mHttpClient.newCall(request).execute()
             if (response.code == RESPONSE_ERROR_CODE_SERVER_UNAVAILABLE) {
                 throw RuntimeException("Error")
             }
             //LogFileHandler.logger.info(String.valueOf(response.code()));
             //printResponseHeaders(response);
-            return response
+            response
         } catch (e: ConnectException) {
             LogFileHandler.logger.severe(e.message)
-            return null
+            null
         }
 
     }
@@ -89,9 +89,10 @@ internal class ConnectionHandler {
     private fun addHeaders(parameterMap: Map<String, String>, builder: Request.Builder) {
         builder.addHeader(HEADER_USER_AGENT, AppContext.context.contextIdentifier + "/" + AppContext.context.internalVersion)
 
-        if (AppContext.context.accountManager.account != null) {
-            if (AppContext.context.accountManager.account!!.accessToken != null) {
-                builder.addHeader(HEADER_AUTHORIZATION, "Basic " + AppContext.context.accountManager.account!!.accessToken!!)
+        val accountManager = AppContext.context.accountManager
+        if (accountManager.account != null) {
+            if (accountManager.account!!.accessToken != null) {
+                builder.addHeader(HEADER_AUTHORIZATION, "Basic " + accountManager.account!!.accessToken!!)
             }
         }
     }

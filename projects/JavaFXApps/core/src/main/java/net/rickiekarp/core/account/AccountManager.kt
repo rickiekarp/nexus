@@ -24,12 +24,7 @@ class AccountManager {
 
     private val PROFILE_KEY = "profile.json"
 
-    init {
-        this.account = loadAccountFromFile()
-        LogFileHandler.logger.config("ACCOUNT=" + account)
-    }
-
-    private fun loadAccountFromFile(): Account? {
+    fun loadAccountFromFile(): Account? {
         var activeProfile = File(Configuration.config.profileDirFile.toString() + "/active")
         if (activeProfile.exists()) {
             try {

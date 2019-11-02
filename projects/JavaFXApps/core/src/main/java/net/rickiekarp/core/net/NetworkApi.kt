@@ -8,11 +8,7 @@ import okhttp3.Response
 import java.io.InputStream
 
 open class NetworkApi {
-    private val mConnectionHandler: ConnectionHandler
-
-    init {
-        mConnectionHandler = ConnectionHandler()
-    }
+    private val mConnectionHandler: ConnectionHandler = ConnectionHandler()
 
     fun runNetworkAction(networkAction: NetworkAction): InputStream? {
         return mConnectionHandler.requestInputStream(networkAction)

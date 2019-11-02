@@ -5,8 +5,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.rickiekarp.core.AppContext;
+import net.rickiekarp.core.net.NetResponse;
 import net.rickiekarp.core.view.AboutScene;
 import net.rickiekarp.snakefx.core.SpeedLevel;
+import net.rickiekarp.snakefx.net.SnakeNetworkApi;
 import net.rickiekarp.snakefx.util.PopupDialogHelper;
 import net.rickiekarp.snakefx.view.FXMLFile;
 import net.rickiekarp.snakefx.viewmodel.ViewModel;
@@ -15,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import okhttp3.Response;
 
 import java.util.function.Consumer;
 
@@ -46,6 +50,10 @@ public class PanelPresenter {
 	@FXML
 	public void showHighscores() {
 		viewModel.highscoreWindowOpen.set(true);
+
+
+		String response = NetResponse.Companion.getResponseString(AppContext.Companion.getContext().getNetworkApi().runNetworkAction(SnakeNetworkApi.Companion.requestRanking()));
+		System.out.println(response);
 	}
 
 	@FXML
