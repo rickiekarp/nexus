@@ -2,7 +2,6 @@ package net.rickiekarp.snakefx.net
 
 import net.rickiekarp.core.net.NetworkAction
 import net.rickiekarp.core.net.NetworkApi
-import net.rickiekarp.core.net.provider.NetworkParameterProvider
 
 class SnakeNetworkApi : NetworkApi() {
     companion object {
