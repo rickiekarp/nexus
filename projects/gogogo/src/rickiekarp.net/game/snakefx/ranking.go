@@ -8,8 +8,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const GET_HIGHSCORES = "SELECT id, name, points, dateAdded FROM snake_highscore"
-const ADD_HIGHSCORE = "INSERT INTO snake_highscore (name, points) VALUES ($1, $2)"
+const GET_HIGHSCORES = "SELECT id, name, points, dateAdded FROM highscore"
+const ADD_HIGHSCORE = "INSERT INTO highscore (name, points) VALUES ($1, $2)"
 
 type Highscore struct {
 	Id     int       `json:"id"`
@@ -42,7 +42,7 @@ func GetRanking(db *sql.DB) *[]Highscore {
 }
 
 func AddHighscore(db *sql.DB, name string, points int) {
-	statement, err := db.Prepare("INSERT INTO snake_highscore (name, points) VALUES(?,?)")
+	statement, err := db.Prepare("INSERT INTO highscore (name, points) VALUES(?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
