@@ -1,0 +1,13 @@
+build-gobackend:
+  stage: build
+  image: golang:alpine
+  script:
+    - cd projects/gogogo
+    - CGO_ENABLED=0 go build -o ../module-deployment/service-gobackend/app cmd/rest-svc/main.go
+  artifacts:
+    paths:
+      - projects/module-deployment/service-gobackend/
+    expire_in: 1 week
+  only:
+    changes:
+      - projects/gogogo/**/*
