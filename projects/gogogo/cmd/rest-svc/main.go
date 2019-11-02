@@ -29,10 +29,10 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/gamedata/highscore", snakefx.GetEmps).Methods("GET")
-	router.HandleFunc("/gamedata/highscore/{name}", snakefx.GetEmp).Methods("GET")
-	router.HandleFunc("/gamedata/addHighscore", snakefx.CreateEmp).Methods("POST")
-	router.HandleFunc("/gamedata/highscore/{name}", snakefx.DeleteEmp).Methods("DELETE")
+	router.HandleFunc("/gamedata/ranking/highscore", snakefx.GetEmps).Methods("GET")
+	router.HandleFunc("/gamedata/ranking/highscore/{name}", snakefx.GetEmp).Methods("GET")
+	router.HandleFunc("/gamedata/ranking/addHighscore", snakefx.CreateEmp).Methods("POST")
+	router.HandleFunc("/gamedata/ranking/highscore/{name}", snakefx.DeleteEmp).Methods("DELETE")
 
 	fmt.Println("Start listening on", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
