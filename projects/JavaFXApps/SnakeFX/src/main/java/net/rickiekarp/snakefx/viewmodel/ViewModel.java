@@ -23,11 +23,7 @@ public class ViewModel {
 
 	public final IntegerProperty gridSize = new SimpleIntegerProperty(ROW_AND_COLUMN_COUNT.get());
 
-	public final BooleanProperty highscoreWindowOpen = new SimpleBooleanProperty(false);
-
 	public final BooleanProperty newHighscoreWindowOpen = new SimpleBooleanProperty(false);
-
-	public final BooleanProperty aboutWindowOpen = new SimpleBooleanProperty(false);
 
 	public final ObjectProperty<Direction> snakeDirection = new SimpleObjectProperty<>(Direction.UP);
 }

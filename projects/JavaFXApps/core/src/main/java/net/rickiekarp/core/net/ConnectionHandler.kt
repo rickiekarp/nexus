@@ -86,7 +86,7 @@ internal class ConnectionHandler {
 
     }
 
-    private fun addHeaders(parameterMap: Map<String, String>, builder: Request.Builder) {
+    private fun addHeaders(parameterMap: Map<String, Any>, builder: Request.Builder) {
         builder.addHeader(HEADER_USER_AGENT, AppContext.context.contextIdentifier + "/" + AppContext.context.internalVersion)
 
         val accountManager = AppContext.context.accountManager
@@ -102,7 +102,7 @@ internal class ConnectionHandler {
      * @param params Parameter map to encode
      * @return JSON String of the parameter map
      */
-    private fun encodeParametersToJson(params: Map<String, String>): String {
+    private fun encodeParametersToJson(params: Map<String, Any>): String {
         val resultJson = JSONObject()
         for ((key, value) in params) {
             resultJson.put(key, value)
@@ -117,7 +117,7 @@ internal class ConnectionHandler {
      * @throws UnsupportedEncodingException UnsupportedEncodingException
      */
     @Throws(UnsupportedEncodingException::class)
-    private fun encodeParametersToString(params: Map<String, String>): String {
+    private fun encodeParametersToString(params: Map<String, Any>): String {
         val result = StringBuilder()
         var isFirst = true
 
@@ -131,7 +131,7 @@ internal class ConnectionHandler {
 
             result.append(URLEncoder.encode(key, UTF_8))
             result.append('=')
-            result.append(URLEncoder.encode(value, UTF_8))
+            result.append(URLEncoder.encode(value.toString(), UTF_8))
         }
         return result.toString()
     }

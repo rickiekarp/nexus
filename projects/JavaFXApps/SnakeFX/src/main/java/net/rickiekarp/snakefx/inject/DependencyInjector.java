@@ -5,20 +5,19 @@ import net.rickiekarp.snakefx.highscore.HighscoreDao;
 import net.rickiekarp.snakefx.highscore.HighscoreJsonDao;
 import net.rickiekarp.snakefx.highscore.HighscoreManager;
 import net.rickiekarp.snakefx.util.KeyboardHandler;
-import net.rickiekarp.snakefx.view.presenter.*;
 import net.rickiekarp.snakefx.viewmodel.ViewModel;
 import javafx.util.Callback;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class DependencyInjector implements Callback<Class<?>, Object> {
 
     private final Map<Class<?>, Object> instances = new HashMap<>();
 
     public DependencyInjector() {
         injectCore();
-
         injectOthers();
     }
 
@@ -40,12 +39,7 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
 
     private void injectOthers() {
         final KeyboardHandler keyboardHandler = new KeyboardHandler(get(ViewModel.class));
-        final HighscoreDao highscoreDao = new HighscoreJsonDao();
-        final HighscoreManager highscoreManager = new HighscoreManager(highscoreDao);
-
         put(KeyboardHandler.class, keyboardHandler);
-        put(HighscoreDao.class, highscoreDao);
-        put(HighscoreManager.class, highscoreManager);
     }
 
 

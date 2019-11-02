@@ -1,5 +1,6 @@
 package net.rickiekarp.snakefx.view.presenter;
 
+import javafx.geometry.Insets;
 import net.rickiekarp.snakefx.core.Grid;
 import net.rickiekarp.snakefx.viewmodel.ViewModel;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import java.util.function.Consumer;
  * Presenter class for the main.fxml file.
  *
  */
+@Deprecated
 public class MainPresenter {
 
 	private Pane gridContainer;

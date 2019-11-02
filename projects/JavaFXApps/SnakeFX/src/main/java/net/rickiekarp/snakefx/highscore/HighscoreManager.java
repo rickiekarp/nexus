@@ -4,6 +4,10 @@ import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import net.rickiekarp.core.AppContext;
+import net.rickiekarp.core.net.NetResponse;
+import net.rickiekarp.snakefx.net.SnakeNetworkApi;
+import okhttp3.Response;
 
 import java.util.ArrayList;
 
@@ -17,14 +21,10 @@ import static net.rickiekarp.snakefx.config.Config.*;
 public class HighscoreManager {
 
 	private final ListProperty<HighScoreEntry> highScoreEntries = new SimpleListProperty<>(
-			new ObservableListWrapper<HighScoreEntry>(new ArrayList<HighScoreEntry>()));
+			new ObservableListWrapper<>(new ArrayList<>()));
 
-	private final HighscoreDao dao;
+	public HighscoreManager() {
 
-	public HighscoreManager(final HighscoreDao highScoreDao) {
-		dao = highScoreDao;
-
-		highScoreEntries.setAll(dao.load());
 	}
 
 	public ListProperty<HighScoreEntry> highScoreEntries() {
@@ -32,11 +32,27 @@ public class HighscoreManager {
 	}
 
 	public void addScore(final String name, final int points) {
-        final HighScoreEntry entry = new HighScoreEntry(1, name, points);
+        final HighScoreEntry entry = new HighScoreEntry(name, points);
 
-		highScoreEntries.add(entry);
+		Response response = AppContext.Companion.getContext().getNetworkApi().requestResponse(SnakeNetworkApi.Companion.requestAddHighscore(entry));
+		if (response.code() == 200) {
+			highScoreEntries.add(entry);
+			updateList();
+		}
 
-		updateList();
+	}
+
+	public boolean isNameValid(final String name) {
+		if (name == null) {
+			return false;
+		}
+		if (name.isEmpty()) {
+			return false;
+		}
+		if (name.contains(",")) {
+			return false;
+		}
+		return !name.contains(";");
 	}
 
 	private void updateList() {
@@ -50,6 +66,6 @@ public class HighscoreManager {
 			}
 		}
 
-		dao.persist(highScoreEntries);
+//		dao.persist(highScoreEntries);
 	}
 }

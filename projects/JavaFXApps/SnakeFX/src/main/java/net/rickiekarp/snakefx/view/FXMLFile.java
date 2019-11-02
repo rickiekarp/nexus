@@ -4,26 +4,17 @@ import java.net.URL;
 
 public enum FXMLFile {
 
-
-	PANEL("panel.fxml"),
-
-	HIGHSCORE("highscore.fxml"),
-
-	NEW_HIGHSCORE("newHighscore.fxml")
+	PANEL("panel.fxml")
 
 	;
 
 	private static final String BASE_DIR = "fxml";
 
-	private String filename;
-
-	private URL base;
 	private URL url;
 
 	FXMLFile(final String path) {
-		filename = path;
 
-		base = this.getClass().getClassLoader().getResource(BASE_DIR);
+		URL base = this.getClass().getClassLoader().getResource(BASE_DIR);
 		if (base == null) {
 			throw new IllegalStateException("Can't find the base directory of the fxml files [" + base + "]");
 		}
@@ -36,15 +27,7 @@ public enum FXMLFile {
 		}
 	}
 
-	public String filename() {
-		return filename;
-	}
-
 	public URL url() {
 		return url;
-	}
-
-	public URL base() {
-		return base;
 	}
 }

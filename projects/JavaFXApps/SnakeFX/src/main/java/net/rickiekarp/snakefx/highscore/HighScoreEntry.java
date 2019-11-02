@@ -1,19 +1,24 @@
 package net.rickiekarp.snakefx.highscore;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import java.util.Date;
+
 public class HighScoreEntry implements Comparable<HighScoreEntry> {
 
+	@JsonIgnore
 	private int ranking;
 
-	private String playername;
-
+	private int id;
+	private String name;
 	private int points;
+	private Date dateAdded;
 
 	public HighScoreEntry(){
 	}
 
-	public HighScoreEntry(int ranking, String playername, int points){
-		this.ranking = ranking;
-		this.playername = playername;
+	public HighScoreEntry(String playername, int points){
+		this.name = playername;
 		this.points = points;
 	}
 
@@ -25,20 +30,36 @@ public class HighScoreEntry implements Comparable<HighScoreEntry> {
 		this.ranking = ranking;
 	}
 
-	public String getPlayername() {
-		return playername;
-	}
-
-	public void setPlayername(String playername) {
-		this.playername = playername;
-	}
-
 	public int getPoints() {
 		return points;
 	}
 
 	public void setPoints(int points) {
 		this.points = points;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Date getDateAdded() {
+		return dateAdded;
+	}
+
+	public void setDateAdded(Date dateAdded) {
+		this.dateAdded = dateAdded;
 	}
 
 	@Override
@@ -48,7 +69,7 @@ public class HighScoreEntry implements Comparable<HighScoreEntry> {
 
 	@Override
 	public String toString(){
-		return "#" + ranking + ":" + playername + "->" + points + " points";
+		return ":" + name + "->" + points + " points";
 	}
 
 }

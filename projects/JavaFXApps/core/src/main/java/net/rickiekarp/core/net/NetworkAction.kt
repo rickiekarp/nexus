@@ -17,7 +17,7 @@ import java.util.HashMap
 
 class NetworkAction internal constructor(builder: Builder) {
     internal val method: String?
-    internal val parameterMap: Map<String, String>
+    internal val parameterMap: Map<String, Any>
     internal val hostUrl: String?
     internal val actionUrl: String
 
@@ -34,7 +34,7 @@ class NetworkAction internal constructor(builder: Builder) {
     }
 
     interface IParameterProvider {
-        val parameters: Map<String, String>
+        val parameters: Map<String, Any>
     }
 
     /**

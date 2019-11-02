@@ -12,7 +12,6 @@
         </HBox>
         <Button fx:id="playPause" focusTraversable="false" mnemonicParsing="false" onAction="#togglePlayPause" text="Start" />
         <Button fx:id="newGame" focusTraversable="false" mnemonicParsing="false" onAction="#newGame" text="New Game" />
-        <Button fx:id="showHighscores" focusTraversable="false" mnemonicParsing="false" onAction="#showHighscores" text="Highscores" />
         <Label text="Difficulty:" />
         <ChoiceBox fx:id="speed" focusTraversable="false" />
         <padding>

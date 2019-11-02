@@ -6,9 +6,9 @@ import java.util.LinkedHashMap
 import java.util.Locale
 
 class NetworkParameterProvider private constructor() : NetworkAction.IParameterProvider {
-    private val mParameterMap = LinkedHashMap<String, String>()
+    private val mParameterMap = LinkedHashMap<String, Any>()
 
-    override val parameters: Map<String, String>
+    override val parameters: Map<String, Any>
         get() = mParameterMap
 
     fun put(key: String, parameter: String?): NetworkParameterProvider {
@@ -24,7 +24,7 @@ class NetworkParameterProvider private constructor() : NetworkAction.IParameterP
     }
 
     fun put(key: String, parameter: Int): NetworkParameterProvider {
-        mParameterMap[key] = parameter.toString()
+        mParameterMap[key] = parameter
         return this
     }
 

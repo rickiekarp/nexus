@@ -1,21 +1,46 @@
 package net.rickiekarp.snakefx.view
 
+import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.*
+import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.layout.*
+import javafx.stage.Modality
+import javafx.stage.Stage
+import net.rickiekarp.core.AppContext
 import net.rickiekarp.core.components.FoldableListCell
+import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.LogFileHandler
 import net.rickiekarp.core.model.SettingEntry
+import net.rickiekarp.core.net.NetResponse
+import net.rickiekarp.core.ui.windowmanager.ImageLoader
+import net.rickiekarp.core.ui.windowmanager.WindowScene
+import net.rickiekarp.core.ui.windowmanager.WindowStage
 import net.rickiekarp.core.view.layout.AppLayout
+import net.rickiekarp.snakefx.config.Config
+import net.rickiekarp.snakefx.highscore.HighScoreEntry
+import net.rickiekarp.snakefx.highscore.HighscoreJsonDao
+import net.rickiekarp.snakefx.highscore.HighscoreManager
+import net.rickiekarp.snakefx.net.SnakeNetworkApi
 import net.rickiekarp.snakefx.util.FxmlFactory
+import net.rickiekarp.snakefx.viewmodel.ViewModel
 
-class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer: Pane) : AppLayout {
+class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer: Pane, private val viewModel: ViewModel, private val highscoreManager: HighscoreManager) : AppLayout {
+    init {
+        viewModel.collision.addListener { observable, oldValue, collisionHappend ->
+            if (collisionHappend!!) {
+                gameFinished()
+            }
+        }
+    }
+
     override val layout: Node
         get() {
-
             val borderpane = BorderPane()
+            borderpane.style = "-fx-background-color: #1d1d1d;"
 
             val settingsGrid = GridPane()
             settingsGrid.prefWidth = 200.0
@@ -35,9 +60,8 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
 
             list.setCellFactory { FoldableListCell(list) }
 
-
             borderpane.center = gridContainer
-//            borderpane.right = settingsGrid
+            borderpane.right = content
             borderpane.top = fxmlFactory.getFxmlRoot(FXMLFile.PANEL)
 //            borderpane.top = getPanel()
 
@@ -51,13 +75,6 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
         hbox.alignment = Pos.CENTER_LEFT
         hbox.padding = Insets(10.0, 10.0, 10.0, 10.0)
 
-
-//        Button fx:id="playPause" focusTraversable="false" mnemonicParsing="false" onAction="#togglePlayPause" text="Start" />
-//        <Button fx:id="newGame" focusTraversable="false" mnemonicParsing="false" onAction="#newGame" text="New Game" />
-//        <Button fx:id="showHighscores" focusTraversable="false" mnemonicParsing="false" onAction="#showHighscores" text="Highscores" />
-//        <Label text="Difficulty:" />
-//        <ChoiceBox fx:id="speed" focusTraversable="false" />
-
         val pointsText = Label("Points: ")
         val pointsLabel = Label("0")
         val playPause = Button("playPause")
@@ -66,11 +83,52 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
         val difficultyLabel = Label("Difficulty:")
         val speed = ChoiceBox<String>()
 
-
         hbox.children.addAll(pointsText, pointsLabel, playPause, newGame, showHighscores, difficultyLabel, speed)
-
         return hbox
     }
+
+    lateinit var table: TableView<HighScoreEntry>
+
+    private
+    val content: BorderPane
+        get() {
+
+            val borderpane = BorderPane()
+            borderpane.style = "-fx-background-color: #1d1d1d;"
+
+            val vbox = VBox()
+            vbox.padding = Insets(10.0, 10.0,10.0,10.0)
+
+            val label = Label("Highscore")
+
+            table = TableView()
+            table.prefHeight = 450.0
+            table.prefWidth = 300.0
+            table.placeholder = Label("No Highscore yet")
+
+
+            val id = TableColumn<HighScoreEntry, String>(LanguageController.getString("rank"))
+            id.cellValueFactory = PropertyValueFactory("ranking")
+
+            val name = TableColumn<HighScoreEntry, String>(LanguageController.getString("name"))
+            name.cellValueFactory = PropertyValueFactory("name")
+
+            val points = TableColumn<HighScoreEntry, String>(LanguageController.getString("points"))
+            points.cellValueFactory = PropertyValueFactory("points")
+
+            val date = TableColumn<HighScoreEntry, String>(LanguageController.getString("date"))
+            date.cellValueFactory = PropertyValueFactory("dateAdded")
+
+            table.columns.addAll(id, name, points, date)
+
+
+            vbox.children.add(label)
+            vbox.children.add(table)
+
+            borderpane.center = vbox
+
+            return borderpane
+        }
 
     private fun getOptions(description: String): VBox {
         val content = VBox()
@@ -82,7 +140,100 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
     }
 
     override fun postInit() {
-        // do nothing
+        val response = NetResponse.getResponseString(AppContext.context.networkApi.runNetworkAction(SnakeNetworkApi.requestRanking()))
+        val items = HighscoreJsonDao().load(response)
+
+        for (i in 0 until items.size) {
+            items[i].ranking = i + 1
+            highscoreManager.highScoreEntries().add(items[i])
+        }
+
+        table.items.setAll(highscoreManager.highScoreEntries())
     }
 
+    fun gameFinished() {
+        val points = viewModel.points.get()
+        val size = highscoreManager.highScoreEntries().size
+
+        if (size < Config.MAX_SCORE_COUNT.get()) {
+
+            Platform.runLater() {
+                if (confirmDialog("submit_desc", 400, 230)) {
+                    table.items.clear()
+                    table.items.setAll(highscoreManager.highScoreEntries())
+                }
+            }
+
+        } else {
+            // check whether the last entry on the list has more points then the
+            // current game
+
+            if (highscoreManager.highScoreEntries().get(size - 1).getPoints() < points) {
+                viewModel.newHighscoreWindowOpen.set(true)
+            }
+        }
+    }
+
+
+    fun confirmDialog(msg: String, width: Int, height: Int): Boolean {
+        val modalDialog = Stage()
+        modalDialog.icons.add(ImageLoader.getAppIconSmall())
+        modalDialog.initModality(Modality.APPLICATION_MODAL)
+        modalDialog.isResizable = false
+        modalDialog.width = width.toDouble()
+        modalDialog.height = height.toDouble()
+        modalDialog.title = LanguageController.getString("highscore")
+
+        val bool = BooleanArray(1)
+
+        val contentVbox = VBox()
+        contentVbox.spacing = 10.0
+        contentVbox.padding = Insets(0.0, 30.0, 0.0, 30.0)
+
+        val optionHBox = HBox()
+        optionHBox.spacing = 20.0
+        optionHBox.alignment = Pos.CENTER
+        optionHBox.padding = Insets(5.0, 0.0, 15.0, 0.0)
+
+        //components
+        val label = Label(LanguageController.getString(msg))
+        label.isWrapText = true
+        label.padding = Insets(20.0, 10.0, 10.0, 20.0)
+
+        val points = Label()
+        points.textProperty().bind(viewModel.points.asString())
+
+        val textfield = TextField("asd")
+
+        val yesButton = Button(LanguageController.getString("ok"))
+        yesButton.setOnAction { event ->
+            if (!highscoreManager.isNameValid(textfield.text)) {
+                label.text = "Name is invalid!"
+                return@setOnAction
+            }
+
+            highscoreManager.addScore(textfield.text, viewModel.points.get())
+            bool[0] = true
+            modalDialog.close()
+        }
+
+        val errorLabel = Label(LanguageController.getString("error"))
+
+        optionHBox.children.addAll(yesButton)
+
+        // The UI (Client Area) to display
+        contentVbox.children.addAll(label, points, errorLabel, textfield, optionHBox)
+        VBox.setVgrow(contentVbox, Priority.ALWAYS)
+
+        // The Window as a Scene
+        val modalDialogScene = WindowScene(WindowStage("confirm", modalDialog), contentVbox, 1)
+
+        modalDialog.scene = modalDialogScene
+
+        LogFileHandler.logger.info("open.highscoreDialog")
+
+        modalDialog.showAndWait()
+
+        return bool[0]
+    }
 }
