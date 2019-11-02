@@ -2,6 +2,7 @@ package net.rickiekarp.core
 
 import net.rickiekarp.core.account.AccountManager
 import net.rickiekarp.core.controller.LanguageController
+import net.rickiekarp.core.debug.LogFileHandler
 import net.rickiekarp.core.net.NetworkApi
 import net.rickiekarp.core.settings.Configuration
 import net.rickiekarp.core.util.FileUtil
@@ -11,7 +12,7 @@ import java.util.jar.JarFile
 import java.util.jar.Manifest
 
 class AppContext protected constructor(val contextIdentifier: String, val networkApi: NetworkApi) {
-    lateinit var accountManager: AccountManager
+    var accountManager: AccountManager
         private set
     var internalVersion: String? = null
 
@@ -30,8 +31,13 @@ class AppContext protected constructor(val contextIdentifier: String, val networ
 
         }
 
-    fun initAccountManager() {
+    init {
         accountManager = AccountManager()
+    }
+
+    fun initAccountManager() {
+        accountManager.account = accountManager.loadAccountFromFile()
+        LogFileHandler.logger.config("ACCOUNT=" + accountManager.account)
     }
 
     companion object {

@@ -62,14 +62,12 @@ class LogFileHandler {
             }
 
             //shows logging in the console if DEBUGVERSION = true
-            if (DebugHelper.DEBUGVERSION) {
-                val ch = ConsoleHandler()
-                ch.level = logLevel
-                ch.formatter = formatter
+            val ch = ConsoleHandler()
+            ch.level = logLevel
+            ch.formatter = formatter
 
-                //add the console handler to the logger
-                logger.addHandler(ch)
-            }
+            //add the console handler to the logger
+            logger.addHandler(ch)
         }
 
         /**
