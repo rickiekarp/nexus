@@ -152,11 +152,6 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
         }
 
         table.items.setAll(highscoreManager.highScoreEntries())
-
-        if (confirmDialog("submit_desc", 400, 250)) {
-            table.items.clear()
-            table.items.setAll(highscoreManager.highScoreEntries())
-        }
     }
 
     fun gameFinished() {
