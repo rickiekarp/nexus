@@ -5,6 +5,7 @@ stages:
 
 include:
   - 'edu/university/.gitlab-ci.yml'
+  - 'projects/gogogo/.gitlab-ci.yml'
   - 'projects/homebackend/.gitlab-ci.yml'
   - 'projects/JavaFXApps/.gitlab-ci.yml'
   - 'projects/WebsiteFrontend/.gitlab-ci.yml'
