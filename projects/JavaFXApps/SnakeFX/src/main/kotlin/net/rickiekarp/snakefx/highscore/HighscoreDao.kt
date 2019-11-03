@@ -1,12 +1,9 @@
-package net.rickiekarp.snakefx.highscore;
-
-import java.util.List;
+package net.rickiekarp.snakefx.highscore
 
 /**
  * Interface for Data Access Object implementations to handle the persistence of
- * {@link HighScoreEntry} instances.
+ * [HighScoreEntry] instances.
  */
-public interface HighscoreDao {
-
-	List<HighScoreEntry> load(String jsonString);
+interface HighscoreDao {
+    fun load(jsonString: String): List<HighScoreEntry>
 }

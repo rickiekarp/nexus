@@ -1,4 +1,4 @@
-package net.rickiekarp.snakefx.view
+package net.rickiekarp.snakefx.view.layout
 
 import javafx.application.Platform
 import javafx.collections.FXCollections
@@ -20,13 +20,14 @@ import net.rickiekarp.core.ui.windowmanager.ImageLoader
 import net.rickiekarp.core.ui.windowmanager.WindowScene
 import net.rickiekarp.core.ui.windowmanager.WindowStage
 import net.rickiekarp.core.view.layout.AppLayout
-import net.rickiekarp.snakefx.config.Config
+import net.rickiekarp.snakefx.settings.Config
 import net.rickiekarp.snakefx.highscore.HighScoreEntry
 import net.rickiekarp.snakefx.highscore.HighscoreJsonDao
 import net.rickiekarp.snakefx.highscore.HighscoreManager
 import net.rickiekarp.snakefx.net.SnakeNetworkApi
 import net.rickiekarp.snakefx.util.FxmlFactory
-import net.rickiekarp.snakefx.viewmodel.ViewModel
+import net.rickiekarp.snakefx.view.FXMLFile
+import net.rickiekarp.snakefx.view.ViewModel
 
 class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer: Pane, private val viewModel: ViewModel, private val highscoreManager: HighscoreManager) : AppLayout {
     init {
@@ -143,15 +144,18 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
     }
 
     override fun postInit() {
-        val response = NetResponse.getResponseString(AppContext.context.networkApi.runNetworkAction(SnakeNetworkApi.requestRanking()))
-        val items = HighscoreJsonDao().load(response)
-
-        for (i in 0 until items.size) {
-            items[i].ranking = i + 1
-            highscoreManager.highScoreEntries().add(items[i])
+        val response = AppContext.context.networkApi.requestResponse(SnakeNetworkApi.requestRanking())
+        if (response!!.code != 200) {
+            table.placeholder = Label("Could not load highscores!")
+        } else {
+            val responseBody = NetResponse.getResponseString(response)
+            val items = HighscoreJsonDao().load(responseBody!!)
+            for (i in 0 until items.size) {
+                items[i].ranking = i + 1
+                highscoreManager.highScoreEntries().add(items[i])
+            }
+            table.items.setAll(highscoreManager.highScoreEntries())
         }
-
-        table.items.setAll(highscoreManager.highScoreEntries())
     }
 
     fun gameFinished() {
@@ -171,7 +175,7 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
             // check whether the last entry on the list has more points then the
             // current game
 
-            if (highscoreManager.highScoreEntries().get(size - 1).getPoints() < points) {
+            if (highscoreManager.highScoreEntries().get(size - 1).points < points) {
                 viewModel.newHighscoreWindowOpen.set(true)
             }
         }

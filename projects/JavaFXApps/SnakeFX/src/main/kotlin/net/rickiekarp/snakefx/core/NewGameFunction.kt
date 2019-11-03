@@ -1,38 +1,26 @@
-package net.rickiekarp.snakefx.core;
+package net.rickiekarp.snakefx.core
 
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
-import javafx.animation.Animation.Status;
+import net.rickiekarp.snakefx.view.ViewModel
+import javafx.animation.Animation.Status
 
-import java.util.function.Consumer;
+import java.util.function.Consumer
 
 /**
  * The purpose of this function is to start a new Game.
  */
-public class NewGameFunction implements Consumer<Void> {
-	private final ViewModel viewModel;
-	private final Grid grid;
-	private final Snake snake;
-	private final FoodGenerator foodGenerator;
+class NewGameFunction(private val viewModel: ViewModel, private val grid: Grid, private val snake: Snake,
+                      private val foodGenerator: FoodGenerator) : Consumer<Void?> {
 
-	public NewGameFunction(final ViewModel viewModel, final Grid grid, final Snake snake,
-			final FoodGenerator foodGenerator) {
-		this.viewModel = viewModel;
-		this.grid = grid;
-		this.snake = snake;
-		this.foodGenerator = foodGenerator;
-	}
+    override fun accept(aVoid: Void?) {
+        viewModel.gameloopStatus.set(Status.STOPPED)
 
-    @Override
-    public void accept(Void aVoid) {
-        viewModel.gameloopStatus.set(Status.STOPPED);
+        grid.newGame()
 
-        grid.newGame();
+        snake.newGame()
 
-        snake.newGame();
+        foodGenerator.generateFood()
 
-        foodGenerator.generateFood();
-
-        viewModel.gameloopStatus.set(Status.RUNNING);
-        viewModel.gameloopStatus.set(Status.PAUSED);
+        viewModel.gameloopStatus.set(Status.RUNNING)
+        viewModel.gameloopStatus.set(Status.PAUSED)
     }
 }

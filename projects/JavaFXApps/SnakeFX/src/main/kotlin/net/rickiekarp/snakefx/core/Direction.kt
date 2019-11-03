@@ -1,28 +1,21 @@
-package net.rickiekarp.snakefx.core;
+package net.rickiekarp.snakefx.core
 
 /**
-* This enum represents the directions that the snake can go.
-*/
-public enum Direction {
+ * This enum represents the directions that the snake can go.
+ */
+enum class Direction private constructor(private val horizontal: Boolean) {
 
-	UP(false),
+    UP(false),
 
-	DOWN(false),
+    DOWN(false),
 
-	LEFT(true),
+    LEFT(true),
 
-	RIGHT(true);
+    RIGHT(true);
 
-	private boolean horizontal;
-
-	private Direction(final boolean horizontal) {
-		this.horizontal = horizontal;
-	}
-
-	public boolean hasSameOrientation(final Direction other) {
-		if (other == null) {
-			return false;
-		}
-		return (horizontal == other.horizontal);
-	}
+    fun hasSameOrientation(other: Direction?): Boolean {
+        return if (other == null) {
+            false
+        } else horizontal == other.horizontal
+    }
 }

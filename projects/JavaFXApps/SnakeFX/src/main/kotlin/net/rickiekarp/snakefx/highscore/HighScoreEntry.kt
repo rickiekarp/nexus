@@ -1,76 +1,33 @@
-package net.rickiekarp.snakefx.highscore;
+package net.rickiekarp.snakefx.highscore
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnore
 
-import java.util.Date;
+import java.util.Date
 
-public class HighScoreEntry implements Comparable<HighScoreEntry> {
+class HighScoreEntry : Comparable<HighScoreEntry> {
 
-	@JsonIgnore
-	private int ranking;
+    @JsonIgnore
+    var ranking: Int = 0
 
-	private int id;
-	private String name;
-	private int points;
-	private Date dateAdded;
+    var id: Int = 0
+    var name: String? = null
+    var points: Int = 0
+    var dateAdded: Date? = null
 
-	public HighScoreEntry(){
-	}
+    // used for serialization. do not remove
+    constructor() {}
 
-	public HighScoreEntry(String playername, int points, Date dateAdded){
-		this.name = playername;
-		this.points = points;
-		this.dateAdded = dateAdded;
-	}
+    constructor(playername: String, points: Int, dateAdded: Date) {
+        this.name = playername
+        this.points = points
+        this.dateAdded = dateAdded
+    }
 
-	public int getRanking() {
-		return ranking;
-	}
+    override fun compareTo(o: HighScoreEntry): Int {
+        return Integer.compare(o.points, this.points)
+    }
 
-	public void setRanking(int ranking) {
-		this.ranking = ranking;
-	}
-
-	public int getPoints() {
-		return points;
-	}
-
-	public void setPoints(int points) {
-		this.points = points;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Date getDateAdded() {
-		return dateAdded;
-	}
-
-	public void setDateAdded(Date dateAdded) {
-		this.dateAdded = dateAdded;
-	}
-
-	@Override
-	public int compareTo(HighScoreEntry o) {
-		return Integer.compare(o.points, this.points);
-	}
-
-	@Override
-	public String toString(){
-		return ":" + name + "->" + points + " points";
-	}
-
+    override fun toString(): String {
+        return "$name->$points points"
+    }
 }

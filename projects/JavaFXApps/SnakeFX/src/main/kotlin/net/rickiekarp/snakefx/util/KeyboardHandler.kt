@@ -1,7 +1,7 @@
 package net.rickiekarp.snakefx.util
 
 import net.rickiekarp.snakefx.core.Direction
-import net.rickiekarp.snakefx.viewmodel.ViewModel
+import net.rickiekarp.snakefx.view.ViewModel
 import javafx.event.EventHandler
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent

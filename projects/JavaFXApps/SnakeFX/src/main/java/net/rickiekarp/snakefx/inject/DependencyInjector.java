@@ -1,11 +1,8 @@
 package net.rickiekarp.snakefx.inject;
 
 import net.rickiekarp.snakefx.core.*;
-import net.rickiekarp.snakefx.highscore.HighscoreDao;
-import net.rickiekarp.snakefx.highscore.HighscoreJsonDao;
-import net.rickiekarp.snakefx.highscore.HighscoreManager;
 import net.rickiekarp.snakefx.util.KeyboardHandler;
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
+import net.rickiekarp.snakefx.view.ViewModel;
 import javafx.util.Callback;
 
 import java.util.HashMap;
@@ -23,7 +20,7 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
 
     private void injectCore() {
         final ViewModel viewModel = new ViewModel();
-        final Grid grid = new Grid(viewModel);
+        final Grid grid = new Grid();
         final GameLoop gameLoop = new GameLoop(viewModel);
         final Snake snake = new Snake(viewModel, grid, gameLoop);
         final FoodGenerator foodGenerator = new FoodGenerator(viewModel, grid);

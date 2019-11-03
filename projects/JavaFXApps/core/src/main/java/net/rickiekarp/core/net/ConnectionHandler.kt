@@ -68,8 +68,8 @@ internal class ConnectionHandler {
 
         val request = builder.build()
         LogFileHandler.logger.info(request.method + ": " + decodedUrl)
-        printRequestHeaders(request);
-        printRequestBody(request);
+        //printRequestHeaders(request);
+        //printRequestBody(request);
 
         return try {
             val response = mHttpClient.newCall(request).execute()

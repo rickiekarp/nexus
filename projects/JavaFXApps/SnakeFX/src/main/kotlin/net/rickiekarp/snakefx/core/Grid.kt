@@ -1,132 +1,108 @@
-package net.rickiekarp.snakefx.core;
+package net.rickiekarp.snakefx.core
 
-import com.sun.javafx.collections.ObservableListWrapper;
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
-import javafx.collections.ObservableList;
+import com.sun.javafx.collections.ObservableListWrapper
+import net.rickiekarp.snakefx.settings.Config
+import net.rickiekarp.snakefx.view.ViewModel
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.ArrayList
+import java.util.Collections
+import java.util.Random
 
-import static net.rickiekarp.snakefx.config.Config.*;
+import net.rickiekarp.snakefx.settings.Config.*
 
 /**
- * This class is the grid of the game. It contains a collection of {@link Field}
+ * This class is the grid of the game. It contains a collection of [GameField]
  * instances.
  */
-public class Grid {
+open class Grid {
 
-	private final Integer gridSizeInPixel;
+    private val gridSizeInPixel = GRID_SIZE_IN_PIXEL.get()
 
-	private final ObservableList<Field> fields = new ObservableListWrapper<>(new ArrayList<>());
+    private val fields = ObservableListWrapper(ArrayList<GameField>())
 
-	private final ViewModel viewModel;
+    // filter the list to only empty fields.
+    open val randomEmptyField: GameField?
+        get() {
+            val emptyFields = fields.filter { it.state == State.EMPTY }.map { it }
 
-	/**
-	 * @param viewModel
-	 *            the viewModel instance.
-	 */
-	public Grid(final ViewModel viewModel) {
-		this.viewModel = viewModel;
-		gridSizeInPixel = GRID_SIZE_IN_PIXEL.get();
-	}
+            return if (emptyFields.isEmpty()) {
+                null
+            } else {
+                val nextInt = Random().nextInt(emptyFields.size)
+                emptyFields[nextInt]
+            }
+        }
 
-	/**
-	 * This method initializes the grid. According to the
-	 * {@link ViewModel#gridSize} the fields ({@link Field}) are
-	 * created with the coordinates and the size that is calculated with the
-	 * value of {@link net.rickiekarp.snakefx.config.Config#GRID_SIZE_IN_PIXEL}.
-	 * 
-	 */
-	public void init() {
-		final int gridSize = viewModel.gridSize.get();
+    /**
+     * This method initializes the grid. According to the
+     * [ViewModel.gridSize] the fields ([GameField]) are
+     * created with the coordinates and the size that is calculated with the
+     * value of [Config.GRID_SIZE_IN_PIXEL].
+     *
+     */
+    fun init() {
+        val gridSize = ROW_AND_COLUMN_COUNT.get()
 
-		for (int y = 0; y < gridSize; y++) {
-			for (int x = 0; x < gridSize; x++) {
-                fields.add(new Field(x, y, (gridSizeInPixel / gridSize)));
-			}
-		}
-	}
+        for (y in 0 until gridSize) {
+            for (x in 0 until gridSize) {
+                fields.add(GameField(x, y, gridSizeInPixel / gridSize))
+            }
+        }
+    }
 
-	/**
-	 * @return an unmodifiable list of all fields.
-	 */
-	public List<Field> getFields() {
-		return Collections.unmodifiableList(fields);
-	}
+    /**
+     * @return an unmodifiable list of all fields.
+     */
+    fun getFields(): List<GameField> {
+        return Collections.unmodifiableList(fields)
+    }
 
-	/**
-	 * 
-	 * @param x
-	 *            the x coordinate
-	 * @param y
-	 *            the y coordinate
-	 * @return the field with the given coordinates or null if no field with
-	 *         this coordinates is available.
-	 */
-	public Field getXY(final int x, final int y) {
+    /**
+     *
+     * @param x
+     * the x coordinate
+     * @param y
+     * the y coordinate
+     * @return the field with the given coordinates or null if no field with
+     * this coordinates is available.
+     */
+    open fun getXY(x: Int, y: Int): GameField {
         return fields.stream()
-                .filter(field -> (field.getX() == x && field.getY() == y))
+                .filter { field -> field.x == x && field.y == y }
                 .findFirst()
-                .orElse(null);
-	}
+                .orElse(null)
+    }
 
-	/**
-	 * returns the field that is located next to the given field in the given
-	 * direction.
-	 * 
-	 * @param field
-	 * @param direction
-	 * @return the field in the given direction
-	 */
-	public Field getFromDirection(final Field field, final Direction direction) {
-		int x = field.getX();
-		int y = field.getY();
+    /**
+     * returns the field that is located next to the given field in the given
+     * direction.
+     *
+     * @param field
+     * @param direction
+     * @return the field in the given direction
+     */
+    fun getFromDirection(field: GameField, direction: Direction): GameField {
+        var x = field.x
+        var y = field.y
 
-		switch (direction) {
-		case DOWN:
-			y += 1;
-			break;
-		case LEFT:
-			x -= 1;
-			break;
-		case RIGHT:
-			x += 1;
-			break;
-		case UP:
-			y -= 1;
-			break;
-		}
+        when (direction) {
+            Direction.DOWN -> y += 1
+            Direction.LEFT -> x -= 1
+            Direction.RIGHT -> x += 1
+            Direction.UP -> y -= 1
+        }
 
-		final int gridSize = viewModel.gridSize.get();
+        val gridSize = ROW_AND_COLUMN_COUNT.get()
 
-		x += gridSize;
-		y += gridSize;
-		x = x % gridSize;
-		y = y % gridSize;
+        x += gridSize
+        y += gridSize
+        x = x % gridSize
+        y = y % gridSize
 
-		return getXY(x, y);
-	}
+        return getXY(x, y)
+    }
 
-	public Field getRandomEmptyField() {
-        // filter the list to only empty fields.
-        List<Field> emptyFields = fields.stream()
-                .filter(field -> field.getState().equals(State.EMPTY))
-                .collect(Collectors.<Field>toList());
-
-		if (emptyFields.isEmpty()) {
-			return null;
-		} else {
-			final int nextInt = new Random().nextInt(emptyFields.size());
-			return emptyFields.get(nextInt);
-		}
-	}
-
-	public void newGame() {
-        fields.forEach(field -> {
-            field.changeState(State.EMPTY);
-        });
-	}
+    fun newGame() {
+        fields.forEach { field -> field.changeState(State.EMPTY) }
+    }
 }

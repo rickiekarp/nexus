@@ -1,34 +1,25 @@
-package net.rickiekarp.snakefx.core;
+package net.rickiekarp.snakefx.core
 
-import javafx.scene.paint.Color;
+import javafx.scene.paint.Color
 
 /**
  * Represents the states that a field can has.
- * 
- * Every state is connected to a {@link Color} that the field will get when it
+ *
+ * Every state is connected to a [Color] that the field will get when it
  * is in the given state.
  */
-public enum State {
+enum class State constructor(
+        /**
+         * @return the color of the State.
+         */
+        val color: Color) {
 
-	EMPTY(Color.WHITE),
+    EMPTY(Color.WHITE),
 
-	HEAD(Color.DARKGREEN),
+    HEAD(Color.DARKGREEN),
 
-	TAIL(Color.FORESTGREEN),
+    TAIL(Color.FORESTGREEN),
 
-	FOOD(Color.BLACK);
-
-	private Color color;
-
-	private State(final Color color) {
-		this.color = color;
-	}
-
-	/**
-	 * @return the color of the State.
-	 */
-	public Color getColor() {
-		return color;
-	}
+    FOOD(Color.BLACK)
 
 }

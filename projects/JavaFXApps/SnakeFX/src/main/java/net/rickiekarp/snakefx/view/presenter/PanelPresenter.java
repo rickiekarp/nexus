@@ -3,7 +3,7 @@ package net.rickiekarp.snakefx.view.presenter;
 import net.rickiekarp.core.view.AboutScene;
 import net.rickiekarp.snakefx.core.SpeedLevel;
 import net.rickiekarp.snakefx.view.FXMLFile;
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
+import net.rickiekarp.snakefx.view.ViewModel;
 import javafx.animation.Animation.Status;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -54,14 +54,14 @@ public class PanelPresenter {
 	public void initialize() {
 		speed.itemsProperty().get().addAll(SpeedLevel.values());
 
-		points.textProperty().bind(viewModel.points.asString());
+		points.textProperty().bind(viewModel.getPoints().asString());
 		speed.getSelectionModel().selectFirst();
 
-		speed.valueProperty().bindBidirectional(viewModel.speed);
+		speed.valueProperty().bindBidirectional(viewModel.getSpeed());
 
-		playPause.disableProperty().bind(viewModel.collision);
+		playPause.disableProperty().bind(viewModel.getCollision());
 
-		viewModel.gameloopStatus.addListener((observable, oldStatus, newStatus) -> {
+		viewModel.getGameloopStatus().addListener((observable, oldStatus, newStatus) -> {
             if (Status.STOPPED.equals(newStatus)) {
                 playPause.textProperty().set(LABEL_START);
             }
@@ -70,19 +70,19 @@ public class PanelPresenter {
 
 	@FXML
 	public void togglePlayPause() {
-		final Status status = viewModel.gameloopStatus.get();
+		final Status status = viewModel.getGameloopStatus().get();
 		switch (status) {
 		case PAUSED:
 			playPause.textProperty().set(LABEL_PAUSE);
-			viewModel.gameloopStatus.set(Status.RUNNING);
+			viewModel.getGameloopStatus().set(Status.RUNNING);
 			break;
 		case RUNNING:
 			playPause.textProperty().set(LABEL_RESUME);
-			viewModel.gameloopStatus.set(Status.PAUSED);
+			viewModel.getGameloopStatus().set(Status.PAUSED);
 			break;
 		case STOPPED:
 			playPause.textProperty().set(LABEL_PAUSE);
-			viewModel.gameloopStatus.set(Status.RUNNING);
+			viewModel.getGameloopStatus().set(Status.RUNNING);
 			break;
 		}
 	}

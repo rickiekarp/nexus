@@ -1,33 +1,25 @@
 package net.rickiekarp.snakefx.core;
 
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
+import net.rickiekarp.snakefx.view.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import static net.rickiekarp.snakefx.config.Config.*;
+import static net.rickiekarp.snakefx.settings.Config.*;
 
 /**
  * This class represents the snake.
  */
 public class Snake {
-
-    private Field head;
-
+    private GameField head;
     private final Grid grid;
-
     private final int x;
     private final int y;
-
     private Direction currentDirection;
-
     private Direction nextDirection;
-
-    private final List<Field> tail;
-
-
+    private final List<GameField> tail;
     private final ViewModel viewModel;
-
 
     /**
      * @param viewModel the viewModel
@@ -42,11 +34,9 @@ public class Snake {
 
         tail = new ArrayList<>();
 
-        gameLoop.addActions(x -> {
-            move();
-        });
+        gameLoop.addActions(x -> move());
 
-        viewModel.snakeDirection.addListener( (observable,oldDirection,newDirection) -> {
+        viewModel.getSnakeDirection().addListener( (observable, oldDirection, newDirection) -> {
             this.changeDirection(newDirection);
         });
     }
@@ -57,9 +47,9 @@ public class Snake {
     public void init() {
         setHead(grid.getXY(x, y));
 
-        viewModel.collision.set(false);
+        viewModel.getCollision().set(false);
 
-        viewModel.points.set(0);
+        viewModel.getPoints().set(0);
 
         currentDirection = Direction.UP;
         nextDirection = Direction.UP;
@@ -89,27 +79,27 @@ public class Snake {
         currentDirection = nextDirection;
 
         // prevent snake direction from being different than the current direction
-        if (viewModel.snakeDirection.get() != currentDirection) {
-           viewModel.snakeDirection.set(currentDirection);
+        if (viewModel.getSnakeDirection().get() != currentDirection) {
+           viewModel.getSnakeDirection().set(currentDirection);
         }
 
 
-        final Field newHead = grid.getFromDirection(head, currentDirection);
+        final GameField newHead = grid.getFromDirection(head, currentDirection);
 
-        if (newHead.getState().equals(State.TAIL)) {
-            viewModel.collision.set(true);
+        if (Objects.equals(newHead.getState(), State.TAIL)) {
+            viewModel.getCollision().set(true);
             return;
         }
 
         boolean grow = false;
-        if (newHead.getState().equals(State.FOOD)) {
+        if (Objects.equals(newHead.getState(), State.FOOD)) {
             grow = true;
         }
 
-        Field lastField = head;
+        GameField lastField = head;
 
         for (int i = 0; i < tail.size(); i++) {
-            final Field f = tail.get(i);
+            final GameField f = tail.get(i);
 
             lastField.changeState(State.TAIL);
             tail.set(i, lastField);
@@ -132,7 +122,7 @@ public class Snake {
         init();
     }
 
-    private void setHead(final Field head) {
+    private void setHead(final GameField head) {
         this.head = head;
         head.changeState(State.HEAD);
     }
@@ -142,15 +132,29 @@ public class Snake {
      *
      * @param field
      */
-    private void grow(final Field field) {
+    private void grow(final GameField field) {
         field.changeState(State.TAIL);
         tail.add(field);
     }
 
     private void addPoints() {
-        final int current = viewModel.points.get();
-        viewModel.points.set(current + 1);
+        final int current = viewModel.getPoints().get();
+        viewModel.getPoints().set(current + 1);
     }
 
+    public GameField getHead() {
+        return head;
+    }
 
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
+
+    public Direction getNextDirection() {
+        return nextDirection;
+    }
+
+    public List<GameField> getTail() {
+        return tail;
+    }
 }

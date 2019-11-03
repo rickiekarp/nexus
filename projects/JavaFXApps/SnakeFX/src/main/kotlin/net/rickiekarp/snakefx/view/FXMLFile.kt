@@ -1,33 +1,26 @@
-package net.rickiekarp.snakefx.view;
+package net.rickiekarp.snakefx.view
 
-import java.net.URL;
+import java.net.URL
 
-public enum FXMLFile {
+enum class FXMLFile private constructor(path: String) {
 
-	PANEL("panel.fxml")
+    PANEL("panel.fxml");
 
-	;
+    private val url: URL?
+    private val BASEDIR = "fxml"
 
-	private static final String BASE_DIR = "fxml";
+    init {
 
-	private URL url;
+        val base = this.javaClass.classLoader.getResource(BASEDIR)
+        checkNotNull(base) { "Can't find the base directory of the fxml files [$base]" }
 
-	FXMLFile(final String path) {
+        val fxmlFilePath = "$BASEDIR/$path"
+        url = this.javaClass.classLoader.getResource(fxmlFilePath)
 
-		URL base = this.getClass().getClassLoader().getResource(BASE_DIR);
-		if (base == null) {
-			throw new IllegalStateException("Can't find the base directory of the fxml files [" + base + "]");
-		}
+        checkNotNull(url) { "Can't find the fxml file [$fxmlFilePath]" }
+    }
 
-		final String fxmlFilePath = BASE_DIR + "/" + path;
-		url = this.getClass().getClassLoader().getResource(fxmlFilePath);
-
-		if (url == null) {
-			throw new IllegalStateException("Can't find the fxml file [" + fxmlFilePath + "]");
-		}
-	}
-
-	public URL url() {
-		return url;
-	}
+    fun url(): URL? {
+        return url
+    }
 }

@@ -1,6 +1,6 @@
 package net.rickiekarp.snakefx.core;
 
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
+import net.rickiekarp.snakefx.view.ViewModel;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -18,21 +18,16 @@ import java.util.function.Consumer;
  * This class is the game loop of the game.
  */
 public class GameLoop {
-
     private static final int ONE_SECOND = 1000;
-
     private Timeline timeline;
-
-
     private final List<Consumer<?>> actions = new ArrayList<>();
-
     private final ViewModel viewModel;
 
     public GameLoop(final ViewModel viewModel) {
         this.viewModel = viewModel;
-        viewModel.collision.addListener(new CollisionListener());
-        viewModel.speed.addListener(new SpeedChangeListener());
-        viewModel.gameloopStatus.addListener(new StatusChangedListener());
+        viewModel.getCollision().addListener(new CollisionListener());
+        viewModel.getSpeed().addListener(new SpeedChangeListener());
+        viewModel.getGameloopStatus().addListener(new StatusChangedListener());
 
         init();
     }
@@ -57,9 +52,7 @@ public class GameLoop {
         // in this place we can't use a direct binding as the ViewModel property
         // can also be changed in other places.
         timeline.statusProperty().addListener((observable, oldStatus,
-                                               newStatus) -> {
-            viewModel.gameloopStatus.set(newStatus);
-        });
+                                               newStatus) -> viewModel.getGameloopStatus().set(newStatus));
     }
 
     /**
@@ -67,16 +60,12 @@ public class GameLoop {
      */
     private KeyFrame buildKeyFrame() {
 
-        final int fps = viewModel.speed.get().getFps();
-        final Duration duration = Duration.millis(ONE_SECOND / fps);
+        final int fps = viewModel.getSpeed().get().getFps();
+        final Duration duration = Duration.millis((double) ONE_SECOND / fps);
 
-        final KeyFrame frame = new KeyFrame(duration, event -> {
-            actions.forEach(consumer -> {
-                consumer.accept(null);
-            });
+        return new KeyFrame(duration, event -> {
+            actions.forEach(consumer -> consumer.accept(null));
         });
-
-        return frame;
     }
 
 
@@ -150,4 +139,7 @@ public class GameLoop {
         timeline.stop();
     }
 
+    public Timeline getTimeline() {
+        return timeline;
+    }
 }

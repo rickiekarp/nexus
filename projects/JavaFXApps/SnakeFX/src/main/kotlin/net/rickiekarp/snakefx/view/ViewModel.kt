@@ -1,29 +1,29 @@
-package net.rickiekarp.snakefx.viewmodel;
+package net.rickiekarp.snakefx.view
 
-import net.rickiekarp.snakefx.core.Direction;
-import net.rickiekarp.snakefx.core.SpeedLevel;
-import javafx.animation.Animation.Status;
-import javafx.beans.property.*;
+import net.rickiekarp.snakefx.core.Direction
+import net.rickiekarp.snakefx.core.SpeedLevel
+import javafx.animation.Animation.Status
+import javafx.beans.property.*
 
-import static net.rickiekarp.snakefx.config.Config.*;
+import net.rickiekarp.snakefx.settings.Config.*
 
 /**
  * This class is the central viewmodel that contains the current state of the
  * applications main properties.
  */
-public class ViewModel {
+class ViewModel {
 
-	public final IntegerProperty points = new SimpleIntegerProperty(0);
+    val points: IntegerProperty = SimpleIntegerProperty(0)
 
-	public final ObjectProperty<SpeedLevel> speed = new SimpleObjectProperty<>(SpeedLevel.MEDIUM);
+    val speed: ObjectProperty<SpeedLevel> = SimpleObjectProperty(SpeedLevel.MEDIUM)
 
-	public final BooleanProperty collision = new SimpleBooleanProperty(false);
+    val collision: BooleanProperty = SimpleBooleanProperty(false)
 
-	public final ObjectProperty<Status> gameloopStatus = new SimpleObjectProperty<>(Status.STOPPED);
+    val gameloopStatus: ObjectProperty<Status> = SimpleObjectProperty(Status.STOPPED)
 
-	public final IntegerProperty gridSize = new SimpleIntegerProperty(ROW_AND_COLUMN_COUNT.get());
+    val gridSize: IntegerProperty = SimpleIntegerProperty(ROW_AND_COLUMN_COUNT.get())
 
-	public final BooleanProperty newHighscoreWindowOpen = new SimpleBooleanProperty(false);
+    val newHighscoreWindowOpen: BooleanProperty = SimpleBooleanProperty(false)
 
-	public final ObjectProperty<Direction> snakeDirection = new SimpleObjectProperty<>(Direction.UP);
+    val snakeDirection: ObjectProperty<Direction> = SimpleObjectProperty(Direction.UP)
 }

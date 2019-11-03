@@ -1,35 +1,32 @@
-package net.rickiekarp.snakefx.core;
+package net.rickiekarp.snakefx.core
 
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
+import net.rickiekarp.snakefx.view.ViewModel
 
 
 /**
  * This class generates new food that the snake can eat.
- * 
- * "Food" means that the given field gets the state {@link State#FOOD}.
- * 
+ *
+ * "Food" means that the given field gets the state [State.FOOD].
+ *
  * The food is generated at an empty field at a random location.
  */
-public class FoodGenerator {
+class FoodGenerator(viewModel: ViewModel, private val grid: Grid) {
 
-	private final Grid grid;
+    init {
 
-	public FoodGenerator(final ViewModel viewModel, final Grid grid) {
-		this.grid = grid;
-
-        viewModel.points.addListener((observable, oldValue, newValue) -> {
-            if (oldValue.intValue() < newValue.intValue()) {
-                generateFood();
+        viewModel.points.addListener { observable, oldValue, newValue ->
+            if (oldValue.toInt() < newValue.toInt()) {
+                generateFood()
             }
-        });
-	}
+        }
+    }
 
-	/**
-	 * Generates new food.
-	 */
-	public void generateFood() {
-		final Field field = grid.getRandomEmptyField();
+    /**
+     * Generates new food.
+     */
+    fun generateFood() {
+        val field = grid.randomEmptyField
 
-		field.changeState(State.FOOD);
-	}
+        field!!.changeState(State.FOOD)
+    }
 }

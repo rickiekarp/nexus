@@ -1,9 +1,6 @@
 package net.rickiekarp.snakefx.view.presenter;
 
-import javafx.geometry.Insets;
 import net.rickiekarp.snakefx.core.Grid;
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
-import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
 import java.util.function.Consumer;

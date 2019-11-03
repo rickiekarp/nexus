@@ -1,37 +1,32 @@
-package net.rickiekarp.snakefx.highscore;
+package net.rickiekarp.snakefx.highscore
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig.Feature;
-import org.codehaus.jackson.map.type.TypeFactory;
+import org.codehaus.jackson.map.ObjectMapper
+import org.codehaus.jackson.map.SerializationConfig.Feature
+import org.codehaus.jackson.map.type.TypeFactory
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.io.IOException
+import java.util.Collections
 
 /**
- * DAO implementation for {@link HighScoreEntry} that is using a JSON for persistence.
+ * DAO implementation for [HighScoreEntry] that is using a JSON for persistence.
  */
-public class HighscoreJsonDao implements HighscoreDao {
+class HighscoreJsonDao : HighscoreDao {
 
-    private final ObjectMapper mapper;
-    private final TypeFactory typeFactory;
+    private val mapper: ObjectMapper
+    private val typeFactory: TypeFactory
 
-    public HighscoreJsonDao() {
-        mapper = new ObjectMapper();
-        mapper.configure(Feature.INDENT_OUTPUT, true);
-        typeFactory = TypeFactory.defaultInstance();
+    init {
+        mapper = ObjectMapper()
+        mapper.configure(Feature.INDENT_OUTPUT, true)
+        typeFactory = TypeFactory.defaultInstance()
     }
 
-    @Override
-    public List<HighScoreEntry> load(String jsonString) {
-        if (jsonString != null) {
-            try {
-                return mapper.readValue(jsonString, typeFactory.constructCollectionType(List.class, HighScoreEntry.class));
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
+    override fun load(jsonString: String): List<HighScoreEntry> {
+        return try {
+            mapper.readValue(jsonString, typeFactory.constructCollectionType(List::class.java, HighScoreEntry::class.java))
+        } catch (e: IOException) {
+            e.printStackTrace()
+            emptyList()
         }
-        return Collections.emptyList();
     }
-
 }
