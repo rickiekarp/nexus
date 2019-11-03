@@ -1,13 +1,14 @@
 package net.rickiekarp.snakefx.core;
 
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.internal.util.reflection.Whitebox;
+import net.rickiekarp.snakefx.view.ViewModel;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.internal.util.reflection.FieldSetter;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class SnakeTest {
@@ -22,22 +23,21 @@ public class SnakeTest {
 
 	private ViewModel viewModel;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	public void setUp() throws NoSuchFieldException {
 		gridMock = mock(Grid.class);
 		gameLoopMock = mock(GameLoop.class);
 
 		viewModel = new ViewModel();
 
 		snake = new Snake(viewModel, gridMock, gameLoopMock);
-		Whitebox.setInternalState(snake, "x", X);
-		Whitebox.setInternalState(snake, "y", Y);
-
+		FieldSetter.setField(snake, snake.getClass().getDeclaredField("x"), X);
+		FieldSetter.setField(snake, snake.getClass().getDeclaredField("y"), Y);
 	}
 
 	@Test
 	public void testInitialization() {
-		final Field field = mock(Field.class);
+		final GameField field = mock(GameField.class);
 
 		when(gridMock.getXY(X, Y)).thenReturn(field);
 
@@ -46,19 +46,19 @@ public class SnakeTest {
 		verify(gridMock, times(1)).getXY(X, Y);
 		verify(field, times(1)).changeState(State.HEAD);
 
-		assertThat(getHead()).isEqualTo(field);
+		Assertions.assertEquals(getHead(), field);
 
 		// The direction of the snake is UP on start.
 		final Direction direction = currentDirectionFromSnake();
-		assertThat(direction).isEqualTo(Direction.UP);
+		Assertions.assertEquals(direction, Direction.UP);
 	}
 
 	@Test
 	public void testChangeDirection() {
-		viewModel.snakeDirection.set(Direction.LEFT);
+		viewModel.getSnakeDirection().set(Direction.LEFT);
 		final Direction direction = nextDirectionFromSnake();
 
-		assertThat(direction).isEqualTo(Direction.LEFT);
+		Assertions.assertEquals(direction, Direction.LEFT);
 	}
 
 	/**
@@ -84,59 +84,59 @@ public class SnakeTest {
 	 */
 	@Test
 	public void testChangeDirectionNewHasSameOrientationAsOld() {
-		final Field head = mock(Field.class);
+		final GameField head = mock(GameField.class);
 		when(gridMock.getXY(X, Y)).thenReturn(head);
 
-		final Field newHead = mock(Field.class);
+		final GameField newHead = mock(GameField.class);
 		when(newHead.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getFromDirection(head, Direction.LEFT)).thenReturn(newHead);
 
 		// Snake is initialized with currentDirection=UP and nextDirection=UP
 		snake.init();
 
-		viewModel.snakeDirection.set(Direction.DOWN);
+		viewModel.getSnakeDirection().set(Direction.DOWN);
 
 		// currentDirection and nextDirection is still UP because the
 		// orientation is the same
-		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.UP);
-		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
+		Assertions.assertEquals(nextDirectionFromSnake(), Direction.UP);
+		Assertions.assertEquals(currentDirectionFromSnake(), Direction.UP);
 
-		viewModel.snakeDirection.set(Direction.LEFT);
+		viewModel.getSnakeDirection().set(Direction.LEFT);
 		// the nextDirection is now changed...
-		assertThat(nextDirectionFromSnake()).isEqualsToByComparingFields(Direction.LEFT);
+		Assertions.assertEquals(nextDirectionFromSnake(), Direction.LEFT);
 		// ... the currentDirection is still the old one. It is only changed
 		// when the
 		// snake moves.
-		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
+		Assertions.assertEquals(currentDirectionFromSnake(), Direction.UP);
 
-		viewModel.snakeDirection.set(Direction.DOWN);
+		viewModel.getSnakeDirection().set(Direction.DOWN);
 		// nextDirection is not changed as the currentDirection is still UP and
 		// has the same orientation as DOWN
-		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.LEFT);
-		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
+		Assertions.assertEquals(nextDirectionFromSnake(), Direction.LEFT);
+		Assertions.assertEquals(currentDirectionFromSnake(), Direction.UP);
 
 		snake.move();
 
-		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.LEFT);
+		Assertions.assertEquals(nextDirectionFromSnake(), Direction.LEFT);
 		// now the currentDirection has changed.
-		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.LEFT);
+		Assertions.assertEquals(currentDirectionFromSnake(), Direction.LEFT);
 	}
 
 	@Test
 	public void testMove() {
-		final Field oldHead = mock(Field.class);
+		final GameField oldHead = mock(GameField.class);
 		when(oldHead.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getXY(X, Y)).thenReturn(oldHead);
 
 		snake.init();
 
-		final Field newHead = mock(Field.class);
+		final GameField newHead = mock(GameField.class);
 		when(newHead.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getFromDirection(oldHead, Direction.UP)).thenReturn(newHead);
 
 		snake.move();
 
-		assertThat(getHead()).isEqualTo(newHead);
+		Assertions.assertEquals(getHead(), newHead);
 
 		verify(oldHead).changeState(State.EMPTY);
 	}
@@ -147,17 +147,17 @@ public class SnakeTest {
 	 */
 	@Test
 	public void testGrow() {
-		final Field field1 = new Field(0, 3, 10);
+		final GameField field1 = new GameField(0, 3, 10);
 		// at the start field1 is the head
 		when(gridMock.getXY(X, Y)).thenReturn(field1);
 
 		// field2 is above field1
-		final Field field2 = new Field(0, 2, 10);
+		final GameField field2 = new GameField(0, 2, 10);
 		field2.changeState(State.FOOD);
 		when(gridMock.getFromDirection(field1, Direction.UP)).thenReturn(field2);
 
 		// field3 is above field2
-		final Field field3 = new Field(0, 1, 10);
+		final GameField field3 = new GameField(0, 1, 10);
 		when(gridMock.getFromDirection(field2, Direction.UP)).thenReturn(field3);
 
 		snake.init();
@@ -165,13 +165,13 @@ public class SnakeTest {
 		snake.move();
 
 		// the head of the snake is now on field2
-		assertThat(getHead()).isEqualTo(field2);
+		Assertions.assertEquals(getHead(), field2);
 
 		// field1 is now a part of the tail
-		assertThat(field1.getState()).isEqualTo(State.TAIL);
+		Assertions.assertEquals(field1.getState(), State.TAIL);
 
 		// One Point has to be added.
-		assertThat(viewModel.points.get()).isEqualTo(1);
+		Assertions.assertEquals(viewModel.getPoints().get(), 1);
 
 		// Now the snake is moving another field forward. This time the new
 		// field (field3)
@@ -180,31 +180,31 @@ public class SnakeTest {
 		snake.move();
 
 		// field3 becomes the new head
-		assertThat(getHead()).isEqualTo(field3);
+		Assertions.assertEquals(getHead(), field3);
 
 		// field2 becomes the tail
-		assertThat(field2.getState()).isEqualTo(State.TAIL);
+		Assertions.assertEquals(field2.getState(), State.TAIL);
 
 		// field1 is now empty
-		assertThat(field1.getState()).isEqualTo(State.EMPTY);
+		Assertions.assertEquals(field1.getState(), State.EMPTY);
 	}
 
 	@Test
-	public void testCollision() {
+	void testCollision() {
 
-		final Field oldHead = mock(Field.class);
+		final GameField oldHead = new GameField(0, 0, 4);
 		when(oldHead.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getXY(X, Y)).thenReturn(oldHead);
 
 		snake.init();
 
-		final Field tail = mock(Field.class);
+		final GameField tail = mock(GameField.class);
 		when(tail.getState()).thenReturn(State.TAIL);
 		when(gridMock.getFromDirection(oldHead, Direction.UP)).thenReturn(tail);
 
 		snake.move();
 
-		assertThat(viewModel.collision.get()).isTrue();
+		Assertions.assertTrue(viewModel.getCollision().get());
 	}
 
 	/**
@@ -214,44 +214,44 @@ public class SnakeTest {
 	 * The init method has to be called too.
 	 */
 	@Test
-	public void testNewGame() {
-		final Field head = mock(Field.class);
+	void testNewGame() {
+		final GameField head = mock(GameField.class);
 		when(head.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getXY(X, Y)).thenReturn(head);
 
-		final Field food = mock(Field.class);
+		final GameField food = mock(GameField.class);
 		when(food.getState()).thenReturn(State.FOOD);
 		when(gridMock.getFromDirection(head, Direction.UP)).thenReturn(food);
 
 		snake.init();
 		snake.move();
 
-		assertThat(getHead()).isEqualTo(food);
-		assertThat(getTail()).hasSize(1);
-		assertThat(getTail().contains(head));
+		Assertions.assertEquals(getHead(), food);
+		Assertions.assertEquals(1, getTail().size());
+		Assertions.assertTrue(getTail().contains(head));
 
 		snake.newGame();
 
 		// the head is reset and the tail is empty
-		assertThat(getHead()).isEqualTo(head);
-		assertThat(getTail()).isEmpty();
+		Assertions.assertEquals(getHead(), head);
+		Assertions.assertTrue(getTail().isEmpty());
 
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Field> getTail() {
-		return (List<Field>) Whitebox.getInternalState(snake, "tail");
+	private List<GameField> getTail() {
+		return snake.getTail();
 	}
 
-	private Field getHead() {
-		return (Field) Whitebox.getInternalState(snake, "head");
+	private GameField getHead() {
+		return snake.getHead();
 	}
 
 	private Direction nextDirectionFromSnake() {
-		return (Direction) Whitebox.getInternalState(snake, "nextDirection");
+		return snake.getNextDirection();
 	}
 
 	private Direction currentDirectionFromSnake() {
-		return (Direction) Whitebox.getInternalState(snake, "currentDirection");
+		return snake.getCurrentDirection();
 	}
 }

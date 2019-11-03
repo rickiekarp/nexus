@@ -1,79 +1,51 @@
 package net.rickiekarp.snakefx.core;
 
 
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
+import net.rickiekarp.snakefx.view.ViewModel;
 import javafx.animation.Animation.Status;
 import javafx.animation.Timeline;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.internal.util.reflection.Whitebox;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-
-public class GameLoopTest {
-
+class GameLoopTest {
 	private GameLoop gameLoop;
 	private ViewModel viewModel;
 
-
-	@Before
-	public void setup() {
+	@BeforeEach
+	void setup() {
 		viewModel = new ViewModel();
-		viewModel.speed.set(SpeedLevel.EASY);
+		viewModel.getSpeed().set(SpeedLevel.EASY);
 		gameLoop = new GameLoop(viewModel);
 	}
 
-
 	@Test
-	public void testStoppedTimelineStaysStoppedAfterSpeedChange() {
-		assertThat(getTimeline().getStatus()).isEqualTo(Status.STOPPED);
-
-		viewModel.speed.set(SpeedLevel.HARD);
-
-		assertThat(getTimeline().getStatus()).isEqualTo(Status.STOPPED);
+	void testStoppedTimelineStaysStoppedAfterSpeedChange() {
+		Assertions.assertEquals(getTimeline().getStatus(), Status.STOPPED);
+		viewModel.getSpeed().set(SpeedLevel.HARD);
+		Assertions.assertEquals(getTimeline().getStatus(), Status.STOPPED);
 	}
 
 	@Test
-	public void testPlayingTimelineStaysPlayingAfterSpeedChange() {
+	void testPlayingTimelineStaysPlayingAfterSpeedChange() {
 		getTimeline().play();
-		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);
-
-		viewModel.speed.set(SpeedLevel.HARD);
-
-
-		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);
+		Assertions.assertEquals(getTimeline().getStatus(), Status.RUNNING);
+		viewModel.getSpeed().set(SpeedLevel.HARD);
+		Assertions.assertEquals(getTimeline().getStatus(), Status.RUNNING);
 	}
 
 	@Test
-	public void testTimelineIsPlayingAfterChangeInViewModel() {
-		assertThat(viewModel.gameloopStatus.get()).isEqualTo(Status.STOPPED);
-		assertThat(getTimeline().getStatus()).isEqualTo(Status.STOPPED);
+	void testTimelineIsPlayingAndStoppedAfterChangeInViewModel() {
+		Assertions.assertEquals(viewModel.getGameloopStatus().get(), Status.STOPPED);
+		Assertions.assertEquals(getTimeline().getStatus(), Status.STOPPED);
+		viewModel.getGameloopStatus().set(Status.RUNNING);
+		Assertions.assertEquals(getTimeline().getStatus(), Status.RUNNING);
 
-		viewModel.gameloopStatus.set(Status.RUNNING);
-
-		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);
+		viewModel.getGameloopStatus().set(Status.PAUSED);
+		Assertions.assertEquals(getTimeline().getStatus(), Status.PAUSED);
 	}
 
-
-	@Test
-	public void testPlayingTimelineIsStoppedAfterChangeInViewModel() {
-		assertThat(viewModel.gameloopStatus.get()).isEqualTo(Status.STOPPED);
-
-		getTimeline().play();
-		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);
-		assertThat(viewModel.gameloopStatus.get()).isEqualTo(Status.RUNNING);
-
-		viewModel.gameloopStatus.set(Status.PAUSED);
-
-		assertThat(getTimeline().getStatus()).isEqualTo(Status.PAUSED);
-	}
-
-
-	/**
-	 * Helper method to get the internal {@link Timeline} instance of the
-	 * gameloop.
-	 */
 	private Timeline getTimeline() {
-		return (Timeline) Whitebox.getInternalState(gameLoop, "timeline");
+		return gameLoop.getTimeline();
 	}
 }

@@ -1,50 +1,45 @@
 package net.rickiekarp.snakefx.core;
 
 
-import net.rickiekarp.snakefx.viewmodel.ViewModel;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.internal.util.reflection.Whitebox;
+import net.rickiekarp.snakefx.settings.Config;
+import net.rickiekarp.snakefx.view.ViewModel;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
-
-public class GridTest {
-
-	private static final int ROW_AND_COLUMN_COUNT = 4;
-	private static final int GRID_SIZE_IN_PIXEL = 300;
+class GridTest {
 
 	private Grid grid;
 	private ViewModel viewModel;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		viewModel = new ViewModel();
-		viewModel.gridSize.set(ROW_AND_COLUMN_COUNT);
-		grid = new Grid(viewModel);
-		Whitebox.setInternalState(grid, "gridSizeInPixel", GRID_SIZE_IN_PIXEL);
+		viewModel.getGridSize().set(Config.ROW_AND_COLUMN_COUNT.get());
+		grid = new Grid();
 
 		grid.init();
 	}
 
 	/**
-	 * The init method has to create a list of {@link Field} instances with the
+	 * The init method has to create a list of {@link GameField} instances with the
 	 * right coordinates.
 	 */
 	@Test
-	public void testInitialization() {
+	void testInitialization() {
 
-		final List<Field> fields = grid.getFields();
+		final List<GameField> fields = grid.getFields();
 
-		final int fieldCount = ROW_AND_COLUMN_COUNT * ROW_AND_COLUMN_COUNT;
-		assertThat(fields).hasSize(fieldCount);
+		final int fieldCount = Config.ROW_AND_COLUMN_COUNT.get() * Config.ROW_AND_COLUMN_COUNT.get();
+		Assertions.assertEquals(fields.size(), fieldCount);
 
 		// first check the calculated Size for all Fields
 
         fields.forEach(field->{
-			assertThat(field.getRectangle().getWidth()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
-			assertThat(field.getRectangle().getHeight()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
+			Assertions.assertEquals(field.getRectangle().getWidth(), Config.GRID_SIZE_IN_PIXEL.get() / Config.ROW_AND_COLUMN_COUNT.get());
+			Assertions.assertEquals(field.getRectangle().getHeight(), Config.GRID_SIZE_IN_PIXEL.get() / Config.ROW_AND_COLUMN_COUNT.get());
         });
 
 		// choose some sample fields and check there x and y values
@@ -54,9 +49,9 @@ public class GridTest {
 		 * _|_|_|_
 		 * | | |
 		 */
-		final Field x0y0 = fields.get(0);
-		assertThat(x0y0.getX()).isEqualTo(0);
-		assertThat(x0y0.getY()).isEqualTo(0);
+		final GameField x0y0 = fields.get(0);
+		Assertions.assertEquals(x0y0.getX(), 0);
+		Assertions.assertEquals(x0y0.getY(), 0);
 
 		/*
 		 * _|_|_|_
@@ -64,9 +59,9 @@ public class GridTest {
 		 * _|o|_|_
 		 * | | |
 		 */
-		final Field x1y2 = fields.get(9);
-		assertThat(x1y2.getX()).isEqualTo(1);
-		assertThat(x1y2.getY()).isEqualTo(2);
+		final GameField x1y2 = fields.get(9);
+		Assertions.assertEquals(x1y2.getX(), 9);
+		Assertions.assertEquals(x1y2.getY(), 0);
 
 		/*
 		 * _|_|_|_
@@ -74,17 +69,17 @@ public class GridTest {
 		 * _|_|_|_
 		 * | | |o
 		 */
-		final Field x3y3 = fields.get(fieldCount - 1);
-		assertThat(x3y3.getX()).isEqualTo(3);
-		assertThat(x3y3.getY()).isEqualTo(3);
+		final GameField x3y3 = fields.get(fieldCount - 1);
+		Assertions.assertEquals(x3y3.getX(), 19);
+		Assertions.assertEquals(x3y3.getY(), 19);
 	}
 
 	@Test
-	public void testGetXY() {
-		final Field x2y1 = grid.getXY(2, 1);
+	void testGetXY() {
+		final GameField x2y1 = grid.getXY(2, 1);
 
-		assertThat(x2y1.getX()).isEqualTo(2);
-		assertThat(x2y1.getY()).isEqualTo(1);
+		Assertions.assertEquals(x2y1.getX(), 2);
+		Assertions.assertEquals(x2y1.getY(), 1);
 	}
 
 	/**
@@ -92,28 +87,27 @@ public class GridTest {
 	 * to be returned.
 	 */
 	@Test
-	public void testGetXYFail() {
-		final Field x2y5 = grid.getXY(2, 5);
-
-		assertThat(x2y5).isNull();
+	void testGetXYFail() {
+		final GameField x2y5 = grid.getXY(2, 5);
+		Assertions.assertNotNull(x2y5);
 	}
 
 	/**
 	 * From a given field get the field next to it from a given direction.
 	 */
 	@Test
-	public void testGetFromDirection() {
-		final Field x2y2 = grid.getXY(2, 2);
+	void testGetFromDirection() {
+		final GameField x2y2 = grid.getXY(2, 2);
 
-		final Field x2y3 = grid.getFromDirection(x2y2, Direction.DOWN);
+		final GameField x2y3 = grid.getFromDirection(x2y2, Direction.DOWN);
 
-		assertThat(x2y3.getX()).isEqualTo(2);
-		assertThat(x2y3.getY()).isEqualTo(3);
+		Assertions.assertEquals(x2y3.getX(), 2);
+		Assertions.assertEquals(x2y3.getY(), 3);
 
-		final Field x3y3 = grid.getFromDirection(x2y3, Direction.RIGHT);
+		final GameField x3y3 = grid.getFromDirection(x2y3, Direction.RIGHT);
 
-		assertThat(x3y3.getX()).isEqualTo(3);
-		assertThat(x3y3.getY()).isEqualTo(3);
+		Assertions.assertEquals(x3y3.getX(), 3);
+		Assertions.assertEquals(x3y3.getY(), 3);
 	}
 
 	/**
@@ -126,27 +120,27 @@ public class GridTest {
 	 * has to be returned.
 	 */
 	@Test
-	public void testGetFromDirectionOtherSideOfTheGrid() {
+	void testGetFromDirectionOtherSideOfTheGrid() {
 
-		Field x0y3 = grid.getXY(0, 3);
-		final Field x3y3 = grid.getFromDirection(x0y3, Direction.LEFT);
+		GameField x0y3 = grid.getXY(0, 3);
+		final GameField x3y3 = grid.getFromDirection(x0y3, Direction.LEFT);
 
-		assertThat(x3y3.getX()).isEqualTo(3);
-		assertThat(x3y3.getY()).isEqualTo(3);
+		Assertions.assertEquals(x3y3.getX(), 19);
+		Assertions.assertEquals(x3y3.getY(), 3);
 
 		x0y3 = grid.getFromDirection(x3y3, Direction.RIGHT);
-		assertThat(x0y3.getX()).isEqualTo(0);
-		assertThat(x0y3.getY()).isEqualTo(3);
+		Assertions.assertEquals(x0y3.getX(), 0);
+		Assertions.assertEquals(x0y3.getY(), 3);
 
-		Field x2y0 = grid.getXY(2, 0);
-		final Field x2y3 = grid.getFromDirection(x2y0, Direction.UP);
+		GameField x2y0 = grid.getXY(2, 0);
+		final GameField x2y3 = grid.getFromDirection(x2y0, Direction.UP);
 
-		assertThat(x2y3.getX()).isEqualTo(2);
-		assertThat(x2y3.getY()).isEqualTo(3);
+		Assertions.assertEquals(x2y3.getX(), 2);
+		Assertions.assertEquals(x2y3.getY(), 19);
 
 		x2y0 = grid.getFromDirection(x2y3, Direction.DOWN);
-		assertThat(x2y0.getX()).isEqualTo(2);
-		assertThat(x2y0.getY()).isEqualTo(0);
+		Assertions.assertEquals(x2y0.getX(), 2);
+		Assertions.assertEquals(x2y0.getY(), 0);
 	}
 
 	/**
@@ -154,32 +148,32 @@ public class GridTest {
 	 * EMPTY.
 	 */
 	@Test
-	public void testNewGame() {
+	void testNewGame() {
 
 		// First change the state of some fields
 
-		final Field x2y1 = grid.getXY(2, 1);
+		final GameField x2y1 = grid.getXY(2, 1);
 		x2y1.changeState(State.FOOD);
 
-		final Field x3y3 = grid.getXY(3, 3);
+		final GameField x3y3 = grid.getXY(3, 3);
 
 		x3y3.changeState(State.HEAD);
 
-		final Field x0y2 = grid.getXY(0, 2);
+		final GameField x0y2 = grid.getXY(0, 2);
 		x0y2.changeState(State.TAIL);
 
 		grid.newGame();
 
 		// now the fields must be EMPTY
-		assertThat(x2y1.getState()).isEqualTo(State.EMPTY);
-		assertThat(x3y3.getState()).isEqualTo(State.EMPTY);
-		assertThat(x0y2.getState()).isEqualTo(State.EMPTY);
+		Assertions.assertEquals(x2y1.getState(), State.EMPTY);
+		Assertions.assertEquals(x3y3.getState(), State.EMPTY);
+		Assertions.assertEquals(x0y2.getState(), State.EMPTY);
 
 		// All other fields must be empty too
-		final List<Field> fields = grid.getFields();
+		final List<GameField> fields = grid.getFields();
 
         fields.forEach(field -> {
-            assertThat(field.getState()).isEqualTo(State.EMPTY);
+            Assertions.assertEquals(field.getState(), State.EMPTY);
         });
 	}
 }

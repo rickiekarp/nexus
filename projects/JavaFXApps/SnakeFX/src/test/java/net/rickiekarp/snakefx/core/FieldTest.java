@@ -1,61 +1,58 @@
 package net.rickiekarp.snakefx.core;
 
 import javafx.scene.shape.Rectangle;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-
-public class FieldTest {
+class FieldTest {
 
 	/**
 	 * When the Field is initialized, the rectangle inside of the field has to
 	 * be created and the state has to be set to the default (empty).
 	 */
 	@Test
-	public void testInitialization() {
-
+	void testInitialization() {
 		int x = 3;
 		int y = 5;
 
 		int sizeInPixel = 100;
 
-		Field field = new Field(x, y, sizeInPixel);
+		GameField field = new GameField(x, y, sizeInPixel);
 
 		Rectangle rectangle = field.getRectangle();
 
-		assertThat(rectangle.getWidth()).isEqualTo(sizeInPixel);
-		assertThat(rectangle.getHeight()).isEqualTo(sizeInPixel);
+		Assertions.assertEquals(rectangle.getWidth(), sizeInPixel);
+		Assertions.assertEquals(rectangle.getHeight(), sizeInPixel);
 
 		/*
 		 * the x value has to be (x * sizeInPixel) because there are x other
 		 * Fields on the left of this field, each with the same sizeInPixel.
 		 * Same is true for the y value.
 		 */
-		assertThat(rectangle.getX()).isEqualTo(300);
-		assertThat(rectangle.getY()).isEqualTo(500);
+		Assertions.assertEquals(rectangle.getX(), 300);
+		Assertions.assertEquals(rectangle.getY(), 500);
 
-		assertThat(field.getX()).isEqualTo(x);
-		assertThat(field.getY()).isEqualTo(y);
+		Assertions.assertEquals(field.getX(), x);
+		Assertions.assertEquals(field.getY(), y);
 
-		assertThat(field.getState()).isEqualTo(State.EMPTY);
+		Assertions.assertEquals(field.getState(), State.EMPTY);
 
-		assertThat(rectangle.getFill()).isEqualTo(State.EMPTY.getColor());
+		Assertions.assertEquals(rectangle.getFill(), State.EMPTY.getColor());
 
 	}
 
 	/**
-	 * Test the behavior of the method {@link Field#changeState}.
+	 * Test the behavior of the method {@link GameField#changeState}.
 	 */
 	@Test
-	public void testChangeState() {
+	void testChangeState() {
 
-		Field field = new Field(1, 1, 10);
+		GameField field = new GameField(1, 1, 10);
 
 		field.changeState(State.HEAD);
 
-		assertThat(field.getState()).isEqualTo(State.HEAD);
-		assertThat(field.getRectangle().getFill()).isEqualTo(
+		Assertions.assertEquals(field.getState(), State.HEAD);
+		Assertions.assertEquals(field.getRectangle().getFill(), 
 				State.HEAD.getColor());
 	}
-
 }
