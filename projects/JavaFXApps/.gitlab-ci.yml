@@ -4,6 +4,7 @@ test-javafxapps:
   script:
     - cd projects/JavaFXApps
     - ./gradlew clean :core:test
+    - ./gradlew clean :SnakeFX:test
   only:
     changes:
       - projects/JavaFXApps/*

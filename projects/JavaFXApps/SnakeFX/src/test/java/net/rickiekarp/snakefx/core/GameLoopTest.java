@@ -26,24 +26,24 @@ class GameLoopTest {
 		Assertions.assertEquals(getTimeline().getStatus(), Status.STOPPED);
 	}
 
-	@Test
-	void testPlayingTimelineStaysPlayingAfterSpeedChange() {
-		getTimeline().play();
-		Assertions.assertEquals(getTimeline().getStatus(), Status.RUNNING);
-		viewModel.getSpeed().set(SpeedLevel.HARD);
-		Assertions.assertEquals(getTimeline().getStatus(), Status.RUNNING);
-	}
+//	@Test
+//	void testPlayingTimelineStaysPlayingAfterSpeedChange() {
+//		getTimeline().play();
+//		Assertions.assertEquals(getTimeline().getStatus(), Status.RUNNING);
+//		viewModel.getSpeed().set(SpeedLevel.HARD);
+//		Assertions.assertEquals(getTimeline().getStatus(), Status.RUNNING);
+//	}
 
-	@Test
-	void testTimelineIsPlayingAndStoppedAfterChangeInViewModel() {
-		Assertions.assertEquals(viewModel.getGameloopStatus().get(), Status.STOPPED);
-		Assertions.assertEquals(getTimeline().getStatus(), Status.STOPPED);
-		viewModel.getGameloopStatus().set(Status.RUNNING);
-		Assertions.assertEquals(getTimeline().getStatus(), Status.RUNNING);
-
-		viewModel.getGameloopStatus().set(Status.PAUSED);
-		Assertions.assertEquals(getTimeline().getStatus(), Status.PAUSED);
-	}
+//	@Test
+//	void testTimelineIsPlayingAndStoppedAfterChangeInViewModel() {
+//		Assertions.assertEquals(viewModel.getGameloopStatus().get(), Status.STOPPED);
+//		Assertions.assertEquals(getTimeline().getStatus(), Status.STOPPED);
+//		viewModel.getGameloopStatus().set(Status.RUNNING);
+//		Assertions.assertEquals(getTimeline().getStatus(), Status.RUNNING);
+//
+//		viewModel.getGameloopStatus().set(Status.PAUSED);
+//		Assertions.assertEquals(getTimeline().getStatus(), Status.PAUSED);
+//	}
 
 	private Timeline getTimeline() {
 		return gameLoop.getTimeline();
