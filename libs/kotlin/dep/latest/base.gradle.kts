@@ -6,7 +6,7 @@ extra.set("gradleVersion", "5.6.2")
 
 // testing
 extra.set("junitVersion", "5.5.2")
-extra.set("mockitoCore", "2.1.0")
+extra.set("mockitoCore", "3.1.0")
 
 // analysis
 extra.set("dokkaVersion", "0.9.17")
