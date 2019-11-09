@@ -1,21 +1,4 @@
-html {
-   overflow-y: scroll; 
-   background: #111111;
-}
-
-body{
-   color:white;
-   font-family:'Lato', sans-serif;
-   font-size:16px;
-   background: #1a1c1f;
-}
-   
-body.active{
-   overflow:hidden;
-   z-index:-1
-}
-  
-.inputCopy {
+ .inputCopy {
   color: white;
   background-color: transparent;
   border: 0;
@@ -25,16 +8,6 @@ body.active{
   caret-color: transparent;
   outline: 0 !important;
 }
-
-h1 {
-    color:#dcd9d9;
-    padding: 10px 0;
-    font-weight: 400;
-    text-align: center;
-    font-size: 2em;
-    margin: 0.67em 0;
-}
-
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
@@ -225,7 +198,7 @@ header.sticky{
 }
 footer{
    padding:50px 0;
-   background: #1a1c1f;
+   background: #001a38;
 }
 .copyright{
    padding-top:20px
@@ -235,7 +208,7 @@ footer{
    color: #a3a9ad
 }
 .row-back {
-   background: #1a1c1f;
+   background: #001a38;
    font-size:1.5em;
    margin: 0 auto;
    padding-top: 25px;
@@ -266,7 +239,7 @@ footer{
    color: white;
    max-width: 900px;
    margin: 0 auto;
-   background-color:#1a1c1f;
+   background-color:#001a38;
    width: 900px;
 }
 
@@ -328,7 +301,7 @@ footer{
    background:#3498db
 }
 .background-alt{
-   background:#111111;
+   background:#002650;
 }
 @keyframes pulsate{
    0%{
@@ -360,53 +333,12 @@ footer{
 #experience h2{
    color:#fff
 }
-#education {
-   width: 100%;
-   padding:50px 15px 20px 15px;
-   border-bottom:0px solid #dcd9d9;
-   text-align:center;
-   background: #111111;
-}
-#education h2 {
-   color:#dcd9d9;
-   margin-bottom:50px
-}
-.education-block{
-   max-width:900px;
-   margin:0 auto 30px auto;
-   padding:15px;
-   border:1px solid #131313;
-   text-align:left;
-   background:#1a1c1f
-}
-.education-block h3{
-   font-weight:500;
-   float:left;
-   margin:0;
-   color:#a3a9ad
-}
-.education-block span{
-   color:#a3a9ad;
-   float:right
-}
-.education-block h4{
-   color:#a3a9ad;
-   clear:both;
-   font-weight:500;
-   margin:0 0 15px 0
-}
-.education-block p,.education-block ul{
-   margin:0;
-   color:#ffffff;
-   font-size:1.1em
-}
-.education-block ul{
-   padding:0 0 0 15px
-}
+
+
 #projects {
    padding:50px 15px;
    border-bottom:0px solid #dcd9d9;
-   background: #111111;
+   background: #002650;
    text-align:center
 }
 .projects h2{
@@ -419,7 +351,7 @@ footer{
    margin:0 auto 30px auto;
    padding:15px;
    overflow:hidden;
-   background:#1a1c1f;
+   background:#001a38;
    border-radius:4px
 }
 .project-info{
@@ -446,7 +378,7 @@ footer{
     margin:0 auto 30px auto;
     padding:0px;
     overflow:hidden;
-    background:#1a1c1f;
+    background:#001a38;
     border-radius:4px
  }
 .project-small-image{
@@ -473,34 +405,10 @@ footer{
 #more-projects{
    display:none
 }
-#skills {
-   padding:50px 15px;
-   text-align:center;
-   background: #111111;
-}
-#skills h2{
-   color:#dcd9d9;
-   margin-bottom:50px
-}
-#skills ul{
-   display:block;
-   margin:0 auto;
-   padding:0;
-   max-width:800px
-}
-#skills li{
-   display:inline-block;
-   margin:7px;
-   padding:5px 10px;
-   color:white;
-   background:#1a1c1f;
-   list-style:none;
-   cursor:default;
-   font-size:1.2em
-}
+
 #contact {
    padding:50px 15px;
-   background:#1a1c1f;
+   background:#001a38;
    text-align:center;
    max-width:900px;
    margin:0 auto 30px auto;
@@ -639,9 +547,6 @@ footer{
    .education-block h3,.education-block span{
        float:none
    }
-   .project-image{
-       display:none
-   }
    .project-info{
        position:relative;
        margin:0;
@@ -662,7 +567,7 @@ main {
     max-width: 1200px;
     padding: 50px;
     margin: 0 auto;
-    background: #111111;
+    background: #002650;
   }
   
   section {

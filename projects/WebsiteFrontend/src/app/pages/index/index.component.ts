@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartsService } from '../charts/components/echarts/charts.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-index',
@@ -12,9 +13,10 @@ export class IndexComponent implements OnInit {
 
   public AnimationBarOption;
 
-  constructor(private _chartsService: ChartsService) { }
+  constructor(private _chartsService: ChartsService, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Dashboard");
     this.AnimationBarOption = this._chartsService.getAnimationBarOption();
   }
 }

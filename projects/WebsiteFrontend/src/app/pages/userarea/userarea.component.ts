@@ -4,6 +4,7 @@ import { first } from 'rxjs/operators';
 
 import { User } from '../../model';
 import { UserService, AuthenticationService } from '../../service';
+import { Title } from '@angular/platform-browser';
 
 @Component({ templateUrl: 'userarea.component.html' })
 export class UserAreaComponent implements OnInit, OnDestroy {
@@ -13,7 +14,8 @@ export class UserAreaComponent implements OnInit, OnDestroy {
 
     constructor(
         private authenticationService: AuthenticationService,
-        private userService: UserService
+        private userService: UserService,
+        private titleService: Title
     ) {
         this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
             this.currentUser = user;
@@ -21,6 +23,7 @@ export class UserAreaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.titleService.setTitle("Settings");
         this.loadAllUsers();
     }
 

@@ -16,6 +16,13 @@
     </div>
     <div class="profile-foot">
       <br><p align="center">If you would like to meet me in person or have any other questions, feel free to contact me!</p><br>
+      <table style="margin: 0 auto;">
+          <tr>
+              <td><input class="inputCopy" type="text" value={{contactInfo.email}} id="myInput" readonly></td>
+              <td><button class="btn btn-info" onclick="copy()"><i class="fa fa-clipboard" aria-hidden="true"></i></button></td>
+          </tr>
+      </table>
+      <br><br>
 
       <h4>Social</h4>
       <ul class="contact-way-item">
@@ -34,25 +41,6 @@
         <li class="contact-way-list">
             <a href="https://twitter.com/rickiekarp" target="_blank" class="info-icon fa fa-twitter"></a>
         </li>
-        <li class="contact-way-list">
-          <a href="mailto:{{contactInfo.email}}" class="info-icon fa fa-envelope"></a>
-        </li>
       </ul>
-    </div>
   </div>
-</div>
-
-<div id="education">
-    <div class="education-block">
-        <table>
-            <tr>
-                <td></td>
-            </tr>
-            <tr>
-                <td>E-Mail</td>
-                <td><input class="inputCopy" type="text" value={{contactInfo.email}} id="myInput" readonly></td>
-                <td><button class="btn btn-info" onclick="copy()"><i class="fa fa-clipboard" aria-hidden="true"></i></button></td>
-            </tr>
-        </table>
-    </div>
 </div>

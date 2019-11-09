@@ -4,8 +4,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, AuthenticationService } from '../../service';
+import { Title } from '@angular/platform-browser';
 
-@Component({templateUrl: 'login.component.html'})
+@Component({
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: [ './login.component.less' ]
+  })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
@@ -17,7 +22,8 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private titleService: Title
     ) {
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) { 
@@ -26,6 +32,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.titleService.setTitle("Login");
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]

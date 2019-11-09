@@ -42,6 +42,8 @@
     @include placeholderStyle($fonts-color, 0.4);
     &:focus {
         @include box-shadow(none);
+        background-color: lighten(#001d3f, 8%);
+        color: #fff;
     }
 }
 
@@ -58,13 +60,10 @@
 input.form-control {
     border-radius: 0;
     border: none;
-    border-bottom: 1px solid transparent;
-    background: black;
+    background:darken(#001d3f, 5%);
     font-size: 18px;
+    border: 1px solid #0d639f;
     @include transition(all 0.5s);
-    &:focus {
-        border-bottom: 1px solid $primary;
-    }
 }
 
 input.form-control[disabled] {

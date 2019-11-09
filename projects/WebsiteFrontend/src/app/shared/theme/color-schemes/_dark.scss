@@ -2,8 +2,8 @@
 $default-text:14px;
 $sm-text:12px;
 $lg-text:16px;
-$body-bg:#2e3238;
-$sidebar-bg:#1a1c1f;
+$body-bg:#002650;
+$sidebar-bg:#001d3f;
 $sidebar-fonts-color:#fff;
 $card-bg:#171824;
 $card-border:transparent;
@@ -26,21 +26,16 @@ body {
 }
 
 .bg-primary {
-    @include linear-gradient(to top right, $primary, #ffda33);
 }
 
 .bg-success {
-    @include linear-gradient(to top right, $success, #1dffc7);
 }
 
 .bg-danger {
-    @include linear-gradient(to top right, $danger, #fc85a2);
 }
 
 .bg-warning {
-    @include linear-gradient(to top right, $warning, #fce16a);
 }
 
 .bg-info {
-    @include linear-gradient(to top right, $info, #04f7fb);
 }

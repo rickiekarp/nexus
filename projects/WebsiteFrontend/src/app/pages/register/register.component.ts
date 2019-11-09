@@ -4,8 +4,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, UserService, AuthenticationService } from '../../service';
+import { Title } from '@angular/platform-browser';
 
-@Component({templateUrl: 'register.component.html'})
+@Component({
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: [ './register.component.less' ]
+  })
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
@@ -16,7 +21,8 @@ export class RegisterComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
         private userService: UserService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private titleService: Title
     ) { 
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) { 
@@ -25,6 +31,7 @@ export class RegisterComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.titleService.setTitle("Register");
         this.registerForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', [Validators.required, Validators.minLength(6)]]

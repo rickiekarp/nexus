@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectDto } from '../../model/project.model'
 import { Router,ActivatedRoute } from '@angular/router';
 import { IImage } from 'ng-simple-slideshow';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-my-project',
   templateUrl: './project.component.html',
-  styleUrls: [ './project.component.css' ],
+  styleUrls: [ './project.component.less' ],
   providers: []
 })
 
@@ -39,7 +40,8 @@ export class ProjectComponent implements OnInit {
 
   constructor(
     private activatedroute:ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private titleService: Title) { }
     
   ngOnInit(): void {
     this.id=this.activatedroute.snapshot.params['id'];
@@ -301,7 +303,7 @@ export class ProjectComponent implements OnInit {
         break;
 
       case 'reddit': 
-        this.project.name = 'reddit'
+        this.project.name = 'RedditIsFun'
         this.project.description = 'Android app to read reddit.com'
         this.project.projectUrl = 'https://git.rickiekarp.net/rickie/home/src/master/projects/MobileApps/redditApp'
         this.project.projectImage = 'images/logo-reddit.png'
@@ -311,7 +313,7 @@ export class ProjectComponent implements OnInit {
         break;
 
       case 'university': 
-        this.project.name = 'university'
+        this.project.name = 'University'
         this.project.description = 'Collection of my university assignments'
         this.project.projectUrl = 'https://git.rickiekarp.net/rickie/home/src/master/edu/university'
         this.project.projectImage = 'images/logo-unihh.png'
@@ -324,6 +326,7 @@ export class ProjectComponent implements OnInit {
         ]
         break;
     }
+    this.titleService.setTitle(this.project.name);
   }
 
   ngAfterViewInit() {

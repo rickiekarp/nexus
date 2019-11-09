@@ -8,7 +8,7 @@ import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css', './app.component.scss' ]
+  styleUrls: ['./app.component.less', './app.component.scss' ]
 })
 export class AppComponent {
   currentUser: User;

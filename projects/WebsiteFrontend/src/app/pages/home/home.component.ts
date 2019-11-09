@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IImage } from 'ng-simple-slideshow';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-my-home',
@@ -38,8 +39,9 @@ export class HomeComponent implements OnInit {
   width: string = '100%';
   fullscreen: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private titleService: Title) { }
   
   ngOnInit(): void {
+    this.titleService.setTitle( "Home - Rickie Karp" );
   }
 }

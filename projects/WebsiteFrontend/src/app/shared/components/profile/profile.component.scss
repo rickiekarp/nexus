@@ -1,4 +1,6 @@
 @import '../../theme/conf';
+
+
 .profile-wrap {
     padding: 0;
 }
@@ -64,9 +66,9 @@
 .skills-tag {
     display: inline-block;
     padding: .3em .7em;
-    margin: 5px;
+    margin: 10px;
     border: 0px solid $fonts-color;
-    border-radius: 6px;
+    border-radius: 12px;
     background: transparent;
     text-decoration: none;
     color: rgba($fonts-color, .7);
@@ -91,11 +93,11 @@
     list-style: none;
     a.info-icon {
         display: inline-block;
-        width: 50px;
-        height: 50px;
+        width: 65px;
+        height: 65px;
         border-radius: 50%;
-        line-height: 50px;
-        font-size: 22px;
+        line-height: 65px;
+        font-size: 40px;
         color: rgba($fonts-color, .5);
         @include transition(all .4s);
         &:hover {
