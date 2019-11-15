@@ -12,7 +12,7 @@ import javax.sql.DataSource
 @Repository
 open class ReminderRepo : ReminderDao {
 
-    private val SELECT_REMINDER_LIST = "select * from tracking_todo where users_id = ? AND (reminder_enddate IS NULL OR reminder_enddate > now())"
+    private val SELECT_REMINDER_LIST = "select * from tracking_todo where users_id = ? AND reminder_startdate < now() AND (reminder_enddate IS NULL OR reminder_enddate > now())"
     private val UPDATE_REMINDER_SEND_DATE = "update tracking_todo set reminder_senddate = now(), lastUpdated = now() where id in (?)"
 
     @Autowired
