@@ -18,14 +18,13 @@ open class ReminderRepo : ReminderDao {
     @Autowired
     private val dataSource: DataSource? = null
 
-    override fun getActiveReminders(userId: Int, daysInFuture: Int): List<ReminderDto> {
+    override fun getActiveReminders(userId: Int): List<ReminderDto> {
         val notesList = ArrayList<ReminderDto>()
 
         var stmt: PreparedStatement? = null
         try {
             stmt = dataSource!!.connection.prepareStatement(SELECT_REMINDER_LIST)
             stmt!!.setInt(1, userId)
-            stmt.setInt(2, daysInFuture)
             val rs = stmt.executeQuery()
             while (rs.next()) {
                 val userVO = ReminderDto()
@@ -34,6 +33,7 @@ open class ReminderRepo : ReminderDao {
                 userVO.dateAdded = rs.getDate("dateAdded")
                 userVO.description = rs.getString("description")
                 userVO.reminder_interval = rs.getByte("reminder_interval")
+                userVO.reminder_startdate = rs.getDate("reminder_startdate")
                 userVO.reminder_senddate = rs.getDate("reminder_senddate")
                 userVO.reminder_enddate = rs.getDate("reminder_enddate")
                 userVO.isDeleted = rs.getBoolean("isDeleted")

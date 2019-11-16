@@ -8,6 +8,7 @@ class ReminderDto {
     var dateAdded: Date? = null
     var description: String? = null
     var reminder_interval: Byte? = null
+    var reminder_startdate: Date? = null
     var reminder_senddate: Date? = null
     var reminder_enddate: Date? = null
     var isDeleted: Boolean = false

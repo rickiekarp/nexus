@@ -35,14 +35,13 @@ class ReminderApi {
 
     @PostMapping(value = ["send"])
     fun sendReminders(@RequestHeader(name = "X-Notification-Token") notificationToken: String,
-                      @RequestHeader(name = "X-Reminder-Days") daysOfFutureReminders: Int,
                       @RequestBody mail: EmailDto): ResponseEntity<ResultDTO> {
         val applicationSetting = settingsRepo!!.getApplicationSettingByIdentifier("notificationtoken")
         if (applicationSetting != null) {
             val notificationTokenList: List<NotificationTokenData> = jacksonObjectMapper().readValue(applicationSetting.content!!)
             val notificationData = emailService!!.findNotificationData(notificationToken, notificationTokenList)
             if (notificationData != null) {
-                val reminderList = reminderDao!!.getActiveReminders(BaseConfig.get().getUserId(), daysOfFutureReminders)
+                val reminderList = reminderDao!!.getActiveReminders(BaseConfig.get().getUserId())
                 if (reminderList.isNotEmpty()) {
                     val reminderMap = getFinalReminders(reminderList)
                     if (reminderMap.size > 0) {
@@ -50,12 +49,14 @@ class ReminderApi {
                         emailService!!.sendInfoMail(mail, notificationData)
                         reminderDao!!.updateReminderSendDate(reminderMap)
                     } else {
-                        Log.DEBUG.info("No reminder data found for user (${BaseConfig.get().getUserId()})!")
+                        Log.DEBUG.info("No reminder data found for user (${BaseConfig.get().getUserId()}) after filtering!")
                     }
+                } else {
+                    Log.DEBUG.info("No reminders found for user (${BaseConfig.get().getUserId()})!")
                 }
                 return ResponseEntity(ResultDTO("success"), HttpStatus.OK)
             } else {
-                Log.DEBUG.info("Mail was not sent! Invalid notification token: $notificationToken")
+                Log.DEBUG.warn("Mail was not sent! Invalid notification token: $notificationToken")
             }
         }
 
@@ -69,7 +70,7 @@ class ReminderApi {
 
     private fun getFinalReminders(reminderList: List<ReminderDto>): HashMap<String, ReminderDto> {
         val reminderMap = HashMap<String, ReminderDto>()
-        for (i in 0 until reminderList.size) {
+        for (i in reminderList.indices) {
             val sendDate = reminderList[i].reminder_senddate
             if (sendDate != null)  {
                 if (!isSendingPending(
