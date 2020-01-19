@@ -9,15 +9,7 @@ repositories {
     mavenCentral()
 }
 
-javafx {
-    version = "13"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
-}
-
 mainClassName = 'net.rickiekarp.snakefx.Main'
-
-
-
 
 dependencies {
     compile project(":core")
@@ -27,7 +19,6 @@ dependencies {
 
     // testing
     testCompile "org.mockito:mockito-core:$mockitoCore"
-
 }
 
 jar {

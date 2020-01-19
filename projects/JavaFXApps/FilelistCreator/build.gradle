@@ -17,11 +17,6 @@ dependencies {
 //    runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:mac"
 }
 
-javafx {
-    version = "13"
-    modules = [ 'javafx.controls' ]
-}
-
 mainClassName = 'net.rickiekarp.flc.Main'
 
 jar {

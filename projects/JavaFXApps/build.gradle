@@ -27,7 +27,7 @@ allprojects {
 
     apply plugin: "org.openjfx.javafxplugin"
     javafx {
-        version = "13"
+        version = "$javafxVersion"
         modules = [ 'javafx.controls' ]
     }
 
