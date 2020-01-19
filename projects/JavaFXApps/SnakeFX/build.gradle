@@ -5,10 +5,6 @@ plugins {
     id 'org.openjfx.javafxplugin'
 }
 
-repositories {
-    mavenCentral()
-}
-
 mainClassName = 'net.rickiekarp.snakefx.Main'
 
 dependencies {

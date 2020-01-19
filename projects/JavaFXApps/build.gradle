@@ -16,10 +16,6 @@ buildscript {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 allprojects {
     apply plugin:'java'
     apply plugin:'kotlin'
@@ -33,7 +29,8 @@ allprojects {
 
     repositories {
         // this repo should be available in every subproject that uses kotlin
-        mavenCentral() // or jcenter
+        mavenCentral()
+        jcenter()
     }
 
     dependencies {
