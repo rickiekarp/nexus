@@ -1,2 +1,2 @@
-extra.set("log4jVersion", "2.11.2")
+extra.set("log4jVersion", "2.13.0")
 
