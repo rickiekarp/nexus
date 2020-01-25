@@ -26,4 +26,6 @@ class ViewModel {
     val newHighscoreWindowOpen: BooleanProperty = SimpleBooleanProperty(false)
 
     val snakeDirection: ObjectProperty<Direction> = SimpleObjectProperty(Direction.UP)
+
+    val pointIncrement: IntegerProperty = SimpleIntegerProperty(speed.get().fps / 5)
 }

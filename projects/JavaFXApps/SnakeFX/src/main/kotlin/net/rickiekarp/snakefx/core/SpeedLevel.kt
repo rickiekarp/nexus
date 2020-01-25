@@ -11,6 +11,6 @@ enum class SpeedLevel private constructor(val fps: Int) {
 
     HARD(15),
 
-    INSANE(30)
+    INSANE(25)
 
 }

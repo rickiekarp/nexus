@@ -139,7 +139,7 @@ public class Snake {
 
     private void addPoints() {
         final int current = viewModel.getPoints().get();
-        viewModel.getPoints().set(current + 1);
+        viewModel.getPoints().set(current + viewModel.getPointIncrement().get());
     }
 
     public GameField getHead() {

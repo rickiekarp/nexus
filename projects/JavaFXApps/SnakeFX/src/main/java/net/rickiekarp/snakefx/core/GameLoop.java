@@ -106,6 +106,9 @@ public class GameLoop {
                 pause();
             }
 
+            // change points depending on difficulty
+            viewModel.getPointIncrement().set(newSpeed.getFps() / 5);
+
             init();
 
             if (Status.RUNNING.equals(oldStatus)) {
