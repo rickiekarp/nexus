@@ -52,7 +52,7 @@ subprojects {
         compile "com.googlecode.protobuf-java-format:protobuf-java-format:$protobufJavaFormat"
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
         testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
-        testCompile "org.mockito:mockito-core:2.1.0"
+        testCompile "org.mockito:mockito-core:$mockitoCore"
     }
 
     sourceSets {
