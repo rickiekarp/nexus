@@ -1,6 +1,8 @@
 package net.rickiekarp.snakefx.view.layout
 
+import javafx.animation.Animation
 import javafx.application.Platform
+import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -20,16 +22,28 @@ import net.rickiekarp.core.ui.windowmanager.ImageLoader
 import net.rickiekarp.core.ui.windowmanager.WindowScene
 import net.rickiekarp.core.ui.windowmanager.WindowStage
 import net.rickiekarp.core.view.layout.AppLayout
-import net.rickiekarp.snakefx.settings.Config
+import net.rickiekarp.snakefx.core.NewGameFunction
+import net.rickiekarp.snakefx.core.SpeedLevel
 import net.rickiekarp.snakefx.highscore.HighScoreEntry
 import net.rickiekarp.snakefx.highscore.HighscoreJsonDao
 import net.rickiekarp.snakefx.highscore.HighscoreManager
 import net.rickiekarp.snakefx.net.SnakeNetworkApi
-import net.rickiekarp.snakefx.util.FxmlFactory
-import net.rickiekarp.snakefx.view.FXMLFile
+import net.rickiekarp.snakefx.settings.Config
 import net.rickiekarp.snakefx.view.ViewModel
+import net.rickiekarp.snakefx.view.presenter.MainPresenter
 
-class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer: Pane, private val viewModel: ViewModel, private val highscoreManager: HighscoreManager) : AppLayout {
+class MainLayout(val mainPresenter: MainPresenter, private val viewModel: ViewModel, private val highscoreManager: HighscoreManager) : AppLayout {
+    lateinit var playPause: Button
+    lateinit var points: Label
+    lateinit var speed: ChoiceBox<SpeedLevel>
+    lateinit var table: TableView<HighScoreEntry>
+
+    val LABEL_START = "Start"
+    val LABEL_RESUME = "Resume"
+    val LABEL_PAUSE = "Pause"
+
+    val gridContainer: Pane = mainPresenter.gridContainer
+
     init {
         viewModel.collision.addListener { observable, oldValue, collisionHappend ->
             if (collisionHappend!!) {
@@ -63,8 +77,7 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
 
             borderpane.center = gridContainer
             borderpane.right = content
-            borderpane.top = fxmlFactory.getFxmlRoot(FXMLFile.PANEL)
-//            borderpane.top = getPanel()
+            borderpane.top = getPanel()
 
             return borderpane
         }
@@ -77,18 +90,54 @@ class MainLayout(private val fxmlFactory: FxmlFactory, private val gridContainer
         hbox.padding = Insets(10.0, 10.0, 10.0, 10.0)
 
         val pointsText = Label("Points: ")
-        val pointsLabel = Label("0")
-        val playPause = Button("playPause")
-        val newGame = Button("newGame")
-        val showHighscores = Button("showHighscores")
-        val difficultyLabel = Label("Difficulty:")
-        val speed = ChoiceBox<String>()
+        points = Label("0")
+        playPause = Button("playPause")
+        playPause.setOnAction { togglePlayPause() }
 
-        hbox.children.addAll(pointsText, pointsLabel, playPause, newGame, showHighscores, difficultyLabel, speed)
+        val newGame = Button("newGame")
+        newGame.setOnAction { mainPresenter.newGame() }
+
+        val difficultyLabel = Label("Difficulty:")
+
+        speed = ChoiceBox()
+
+        hbox.children.addAll(pointsText, points, playPause, newGame, difficultyLabel, speed)
+
+        initialize()
+
         return hbox
     }
 
-    lateinit var table: TableView<HighScoreEntry>
+    fun initialize() {
+        speed.itemsProperty().get().addAll(*SpeedLevel.values())
+        points.textProperty().bind(viewModel.points.asString())
+        speed.getSelectionModel().selectFirst()
+        speed.valueProperty().bindBidirectional(viewModel.speed)
+        playPause.disableProperty().bind(viewModel.collision)
+        viewModel.gameloopStatus.addListener { observable: ObservableValue<out Animation.Status>?, oldStatus: Animation.Status?, newStatus: Animation.Status ->
+            if (Animation.Status.STOPPED == newStatus) {
+                playPause.textProperty().set(LABEL_START)
+            }
+        }
+    }
+
+    fun togglePlayPause() {
+        val status = viewModel.gameloopStatus.get()
+        when (status) {
+            Animation.Status.PAUSED -> {
+                playPause.textProperty().set(LABEL_PAUSE)
+                viewModel.gameloopStatus.set(Animation.Status.RUNNING)
+            }
+            Animation.Status.RUNNING -> {
+                playPause.textProperty().set(LABEL_RESUME)
+                viewModel.gameloopStatus.set(Animation.Status.PAUSED)
+            }
+            Animation.Status.STOPPED -> {
+                playPause.textProperty().set(LABEL_PAUSE)
+                viewModel.gameloopStatus.set(Animation.Status.RUNNING)
+            }
+        }
+    }
 
     private
     val content: BorderPane

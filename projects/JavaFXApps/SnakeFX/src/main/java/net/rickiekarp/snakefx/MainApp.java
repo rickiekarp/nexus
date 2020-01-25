@@ -7,11 +7,9 @@ import net.rickiekarp.snakefx.core.NewGameFunction;
 import net.rickiekarp.snakefx.highscore.HighscoreManager;
 import net.rickiekarp.snakefx.inject.DependencyInjector;
 import net.rickiekarp.snakefx.settings.AppConfiguration;
-import net.rickiekarp.snakefx.util.FxmlFactory;
 import net.rickiekarp.snakefx.util.KeyboardHandler;
 import net.rickiekarp.snakefx.view.layout.MainLayout;
 import net.rickiekarp.snakefx.view.presenter.MainPresenter;
-import net.rickiekarp.snakefx.view.presenter.PanelPresenter;
 import net.rickiekarp.snakefx.view.ViewModel;
 
 public class MainApp extends AppStarter {
@@ -38,16 +36,11 @@ public class MainApp extends AppStarter {
         DependencyInjector dependencyInjector = new DependencyInjector();
         final ViewModel viewModel = dependencyInjector.get(ViewModel.class);
 
-        FxmlFactory fxmlFactory = new FxmlFactory(dependencyInjector);
-
         final MainPresenter mainPresenter = new MainPresenter(dependencyInjector.get(Grid.class), dependencyInjector.get(NewGameFunction.class));
-        final PanelPresenter panelPresenter = new PanelPresenter(viewModel, dependencyInjector.get(NewGameFunction.class));
-
-        dependencyInjector.put(PanelPresenter.class, panelPresenter);
 
         mainPresenter.initialize();
 
-        setLayout(new MainLayout(fxmlFactory, mainPresenter.getGridContainer(), viewModel, new HighscoreManager()));
+        setLayout(new MainLayout(mainPresenter, viewModel, new HighscoreManager()));
         setOnKeyPressedHandler(dependencyInjector.get(KeyboardHandler.class));
 
         super.start(stage);

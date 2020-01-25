@@ -7,24 +7,18 @@ import java.util.function.Consumer;
 
 /**
  * Presenter class for the main.fxml file.
- *
  */
 @Deprecated
 public class MainPresenter {
-
 	private Pane gridContainer;
-
 	private final Grid grid;
-
 	private final Consumer<?> newGameFunction;
-
 
 	public MainPresenter(final Grid grid, final Consumer<?> newGameFunction) {
 		this.gridContainer = new Pane();
 		this.grid = grid;
 		this.newGameFunction = newGameFunction;
 	}
-
 
 	public void initialize() {
 		grid.init();
@@ -33,6 +27,10 @@ public class MainPresenter {
             gridContainer.getChildren().add(field.getRectangle());
         });
 
+		newGameFunction.accept(null);
+	}
+
+	public void newGame() {
 		newGameFunction.accept(null);
 	}
 
