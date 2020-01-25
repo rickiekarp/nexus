@@ -167,7 +167,7 @@ class SnakeTest {
 		Assertions.assertEquals(field1.getState(), State.TAIL);
 
 		// One Point has to be added.
-		Assertions.assertEquals(viewModel.getPoints().get(), 1);
+		Assertions.assertEquals(viewModel.getPoints().get(), 2);
 
 		// Now the snake is moving another field forward. This time the new
 		// field (field3)
