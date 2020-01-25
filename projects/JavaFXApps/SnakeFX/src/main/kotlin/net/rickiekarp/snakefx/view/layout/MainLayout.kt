@@ -91,10 +91,10 @@ class MainLayout(val mainPresenter: MainPresenter, private val viewModel: ViewMo
 
         val pointsText = Label("Points: ")
         points = Label("0")
-        playPause = Button("playPause")
+        playPause = Button("Start")
         playPause.setOnAction { togglePlayPause() }
 
-        val newGame = Button("newGame")
+        val newGame = Button("New Game")
         newGame.setOnAction { mainPresenter.newGame() }
 
         val difficultyLabel = Label("Difficulty:")
