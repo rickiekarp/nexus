@@ -8,4 +8,4 @@ include:
   - 'projects/gogogo/.gitlab-ci.yml'
   - 'projects/homebackend/.gitlab-ci.yml'
   - 'projects/JavaFXApps/.gitlab-ci.yml'
-  - 'projects/WebsiteFrontend/.gitlab-ci.yml'
+  - 'projects/WebsiteFrontendLegacy/.gitlab-ci.yml'

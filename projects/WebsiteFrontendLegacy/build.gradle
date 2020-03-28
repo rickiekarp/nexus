@@ -29,8 +29,8 @@ node {
     version = '10.14.1'
     npmVersion = '6.8.0'
     download = true
-    workDir = file("${rootDir}/Website/WebsiteFrontend/node")
-    nodeModulesDir = file("${rootDir}/Website/WebsiteFrontend")
+    workDir = file("${rootDir}/Website/WebsiteFrontendLegacy/node")
+    nodeModulesDir = file("${rootDir}/Website/WebsiteFrontendLegacy")
 }
 
 
@@ -41,13 +41,13 @@ node {
 
 task cleanFrontend(type: Delete) {
     group 'build client'
-    delete "${rootDir}/Website/WebsiteFrontend/dist", "${rootDir}/Website/WebsiteBackend/src/main/resources/static"
+    delete "${rootDir}/Website/WebsiteFrontendLegacy/dist", "${rootDir}/Website/WebsiteBackend/src/main/resources/static"
 }
 
 task cleanNpm(type: Delete) {
     group 'build client'
     dependsOn 'clean'
-    delete "${rootDir}/Website/WebsiteFrontend/node", "${rootDir}/Website/WebsiteFrontend/node_modules"
+    delete "${rootDir}/Website/WebsiteFrontendLegacy/node", "${rootDir}/Website/WebsiteFrontendLegacy/node_modules"
 }
 
 task npmUpdate {
@@ -95,7 +95,7 @@ task bootStandaloneClientWatch(type: GradleBuild) {
 
 task bootFullApplication(type: GradleBuild) {
     group 'application'
-    setTasks([':WebsiteFrontend:npmUpdate', ':WebsiteFrontend:clean', ':WebsiteFrontend:buildClientToSpring', ':WebsiteBackend:bootRun'])
+    setTasks([':WebsiteFrontendLegacy:npmUpdate', ':WebsiteFrontendLegacy:clean', ':WebsiteFrontendLegacy:buildClientToSpring', ':WebsiteBackend:bootRun'])
 }
 
 //------------------------------------------------------------------------------------------------------------------------

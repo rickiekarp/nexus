@@ -3,5 +3,5 @@
 
 .vscode
 
-# WebsiteFrontend
-projects/WebsiteFrontend/node_modules/
+# WebsiteFrontendLegacy
+node_modules

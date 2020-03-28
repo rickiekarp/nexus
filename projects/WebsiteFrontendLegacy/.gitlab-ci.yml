@@ -1,14 +1,14 @@
-build-WebsiteFrontend:
+build-WebsiteFrontendLegacy:
   stage: build
   image: trion/ng-cli
   script:
-    - cd projects/WebsiteFrontend
+    - cd projects/WebsiteFrontendLegacy
     - npm install
     - ng build --prod
   artifacts:
     paths:
-      - projects/WebsiteFrontend/dist/
+      - projects/WebsiteFrontendLegacy/dist/
     expire_in: 1 week
   only:
     changes:
-      - projects/WebsiteFrontend/*
+      - projects/WebsiteFrontendLegacy/*
