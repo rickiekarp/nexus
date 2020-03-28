@@ -37,5 +37,5 @@ func main() {
 	data.StructMethod()
 	network.FuncPassStruct(data)
 
-	network.Post("https://app.rickiekarp.net/HomeServer/statistics/shoppingValue", headerMap, &data)
+	network.Post("https://api.rickiekarp.net/HomeServer/statistics/shoppingValue", headerMap, &data)
 }

@@ -10,7 +10,7 @@ import javafx.scene.paint.Color
 annotation class LoadSave {
     companion object {
         /** settings defaults  */
-        @JvmField val host = "https://app.rickiekarp.net/"
+        @JvmField val host = "https://api.rickiekarp.net/"
         @JvmField val updateChannel = 0
         @JvmField val language = LanguageController.locale
         @JvmField val themeState = 0
