@@ -1,10 +1,13 @@
 import { colors } from '@material-ui/core';
 
 const white = '#FFFFFF';
+const defaultBackground = '#002650';
+const darkBlue = '#001d3f';
 const black = '#000000';
 
 export default {
   black,
+  darkBlue,
   white,
   primary: {
     contrastText: white,

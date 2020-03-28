@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Grid } from '@material-ui/core';
 
 import {
   Button
@@ -39,11 +38,7 @@ const Home = () => {
           xs={12}
         >
           <div className={classes.content}>
-            <Link to="/dashboard">
-              <Button renderAs="button" color="primary">
-                <span>Dashboard</span>
-              </Button>
-            </Link>
+            
           </div>
         </Grid>
       </Grid>

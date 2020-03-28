@@ -1,14 +1,13 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { AppBar, Toolbar } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
-  root: {
+  colorPirmary: {
     boxShadow: 'none',
-    background: '#001d3f'
+    background: 'blue'
   }
 }));
 
@@ -19,18 +18,15 @@ const Topbar = props => {
 
   return (
     <AppBar
-      {...rest}
-      className={clsx(classes.root, className)}
-      color="primary"
+      className={classes.root, className}
       position="fixed"
     >
       <Toolbar>
-        <RouterLink to="/">
-          <img
-            alt="Logo"
-            src="/images/logos/logo--white.svg"
-          />
-        </RouterLink>
+        <Link to="/sign-in">
+          <Button renderAs="button" color="primary">
+            <span>Login</span>
+          </Button>
+        </Link>
       </Toolbar>
     </AppBar>
   );
