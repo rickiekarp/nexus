@@ -7,7 +7,8 @@ import { AppBar, Toolbar } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   root: {
-    boxShadow: 'none'
+    boxShadow: 'none',
+    background: '#001d3f'
   }
 }));
 

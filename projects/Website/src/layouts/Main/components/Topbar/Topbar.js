@@ -10,7 +10,8 @@ import InputIcon from '@material-ui/icons/Input';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    boxShadow: 'none'
+    boxShadow: 'none',
+    background: '#001d3f'
   },
   flexGrow: {
     flexGrow: 1
