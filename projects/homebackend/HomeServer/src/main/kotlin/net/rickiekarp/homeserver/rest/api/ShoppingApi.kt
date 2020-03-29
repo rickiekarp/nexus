@@ -18,11 +18,6 @@ class ShoppingApi {
     @Autowired
     var repo: ShoppingNoteDAO? = null
 
-    /**
-     * Checks whether the user is allowed to execute the requested plugin
-     * @param pluginIdentifierJson Plugin to check
-     * @return True if user is allowed, false otherwise
-     */
     @GetMapping(value = ["get"])
     fun getList(): ResponseEntity<List<ShoppingNoteDto>> {
         val noteList = repo!!.getNotesFromUserId(BaseConfig.get().getUserId())

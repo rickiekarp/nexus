@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 class ProtobufConfig {
 
     @Bean
-    open fun protobufHttpMessageConverter(): ProtobufHttpMessageConverter {
+    fun protobufHttpMessageConverter(): ProtobufHttpMessageConverter {
         return ProtobufHttpMessageConverter()
     }
 }
