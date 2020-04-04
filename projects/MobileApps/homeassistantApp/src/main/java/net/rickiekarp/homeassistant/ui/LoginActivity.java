@@ -39,17 +39,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by sebastian on 24.11.17.
- */
-
 public class LoginActivity extends AppCompatActivity implements IOnCreateAccountResult, IOnLoginResult, IOnGetTokenResult, AdapterView.OnItemSelectedListener {
 
     private SharedPreferences sp;
     private ProgressDialog progressDialog;
     private AppDatabase database;
     private Spinner spinner;
-    private ImageView accountsettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,9 +99,7 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
             for (int i = 0; i < worlds.getWorldCount(); i++) {
                 hosts_array.add(worlds.getWorld(i).getUrl());
             }
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
@@ -118,10 +111,8 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
         spinner.setOnItemSelectedListener(this);
         spinner.setSelection(0);
 
-        accountsettings = findViewById(R.id.account_settings);
-        accountsettings.setOnClickListener(v -> {
-            Toast.makeText(this, "Not implemented yet!", Toast.LENGTH_SHORT).show();
-        });
+        ImageView accountsettings = findViewById(R.id.account_settings);
+        accountsettings.setOnClickListener(v -> Toast.makeText(this, "Not implemented yet!", Toast.LENGTH_SHORT).show());
     }
 
     private void showInvalidCredentialsToast() {
@@ -202,7 +193,7 @@ public class LoginActivity extends AppCompatActivity implements IOnCreateAccount
             // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
             digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
+            byte[] messageDigest = digest.digest();
 
             // Create Hex String
             StringBuilder hexString = new StringBuilder();

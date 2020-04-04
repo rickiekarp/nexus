@@ -10,7 +10,7 @@ android {
         applicationId "${applicationBaseId}"
         minSdkVersion 21
         compileSdkVersion 28
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "${versionBaseName}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

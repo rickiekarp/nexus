@@ -9,8 +9,8 @@ android {
     defaultConfig {
         applicationId "${applicationBaseId}p"
         minSdkVersion 21
-        compileSdkVersion 28
-        targetSdkVersion 28
+        compileSdkVersion 29
+        targetSdkVersion 29
         versionCode 1
         versionName "${versionBaseName}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
