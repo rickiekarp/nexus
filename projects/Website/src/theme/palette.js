@@ -7,19 +7,20 @@ const black = '#000000';
 
 export default {
   black,
+  defaultBackground,
   darkBlue,
   white,
   primary: {
     contrastText: white,
-    dark: colors.indigo[900],
-    main: colors.indigo[500],
-    light: colors.indigo[100]
+    dark: colors.blue[900],
+    main: colors.blue[300],
+    light: colors.blue[100]
   },
   secondary: {
     contrastText: white,
-    dark: colors.blue[900],
-    main: colors.blue['A400'],
-    light: colors.blue['A400']
+    dark: colors.indigo[900],
+    main: colors.indigo['A400'],
+    light: colors.indigo['A400']
   },
   success: {
     contrastText: white,
@@ -46,9 +47,9 @@ export default {
     light: colors.red[400]
   },
   text: {
-    primary: colors.blueGrey[900],
-    secondary: colors.blueGrey[600],
-    link: colors.blue[600]
+    primary: colors.blueGrey[100],
+    secondary: colors.blueGrey[100],
+    link: colors.blueGrey[100]
   },
   background: {
     default: '#F4F6F8',

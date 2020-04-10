@@ -25,7 +25,9 @@ import mockData from './data';
 import { StatusBullet } from 'components';
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    backgroundColor: theme.palette.primary.dark
+  },
   content: {
     padding: 0
   },

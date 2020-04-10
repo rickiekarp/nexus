@@ -12,8 +12,10 @@ import {
   TextField
 } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
-  root: {}
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.primary.dark
+  }
 }));
 
 const Password = props => {

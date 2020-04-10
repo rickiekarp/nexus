@@ -15,8 +15,10 @@ import {
   Button
 } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
-  root: {},
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.primary.dark
+  },
   item: {
     display: 'flex',
     flexDirection: 'column'

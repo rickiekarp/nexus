@@ -15,7 +15,9 @@ import {
 } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    backgroundColor: theme.palette.primary.dark
+  },
   details: {
     display: 'flex'
   },

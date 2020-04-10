@@ -24,7 +24,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1)
   },
   searchInput: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
+    backgroundColor: theme.palette.primary.dark
   }
 }));
 

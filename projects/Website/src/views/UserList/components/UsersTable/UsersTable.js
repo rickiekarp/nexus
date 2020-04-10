@@ -24,7 +24,8 @@ import { getInitials } from 'helpers';
 const useStyles = makeStyles(theme => ({
   root: {},
   content: {
-    padding: 0
+    padding: 0,
+    backgroundColor: theme.palette.primary.dark
   },
   inner: {
     minWidth: 1050
@@ -37,7 +38,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   actions: {
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    backgroundColor: theme.palette.primary.dark
   }
 }));
 

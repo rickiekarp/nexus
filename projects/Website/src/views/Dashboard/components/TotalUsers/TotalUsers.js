@@ -8,7 +8,8 @@ import PeopleIcon from '@material-ui/icons/PeopleOutlined';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '100%'
+    height: '100%',
+    backgroundColor: theme.palette.primary.dark
   },
   content: {
     alignItems: 'center',

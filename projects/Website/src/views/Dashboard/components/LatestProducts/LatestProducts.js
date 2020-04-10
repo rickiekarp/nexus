@@ -20,9 +20,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import mockData from './data';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    height: '100%'
+    height: '100%',
+    backgroundColor: theme.palette.primary.dark
   },
   content: {
     padding: 0

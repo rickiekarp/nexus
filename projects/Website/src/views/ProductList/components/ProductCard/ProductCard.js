@@ -14,7 +14,9 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    backgroundColor: theme.palette.primary.dark
+  },
   imageContainer: {
     height: 64,
     width: 64,

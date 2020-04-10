@@ -16,8 +16,10 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 import { data, options } from './chart';
 
-const useStyles = makeStyles(() => ({
-  root: {},
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.primary.dark
+  },
   chartContainer: {
     height: 400,
     position: 'relative'
