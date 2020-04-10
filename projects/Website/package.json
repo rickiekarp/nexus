@@ -7,7 +7,7 @@
   "private": false,
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && mv build ../module-deployment/service-nginx/html/test",
+    "build": "react-scripts build && mv build/* ../module-deployment/service-nginx/html/test/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
