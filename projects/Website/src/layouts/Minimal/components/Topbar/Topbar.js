@@ -17,47 +17,71 @@ const Topbar = props => {
 
   const classes = useStyles();
 
+  const { history } = props;
+
+  function logout() {
+    props.authenticationService.logout();
+    history.push('/login');
+  }
+
   return (
     <AppBar
       className={classes.root, className}
-      position="fixed"
+      position="sticky"
     >
       <Toolbar>
-        <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-          <div class="container">
+        <nav className="navbar navbar-fixed-top navbar-dark bg-inverse">
+          <div className="container">
             <Link to="/home">
-              <Button renderAs="button" color="primary">
+              <Button color="primary">
                 <span>Home</span>
               </Button>
             </Link>
             <Link to="/projects">
-              <Button renderAs="button" color="primary">
+              <Button color="primary">
                 <span>Projects</span>
               </Button>
             </Link>
             <Link to="/resume">
-              <Button renderAs="button" color="primary">
+              <Button color="primary">
                 <span>Resume</span>
               </Button>
             </Link>
             <Link to="/contact">
-              <Button renderAs="button" color="primary">
+              <Button color="primary">
                 <span>Contact</span>
               </Button>
             </Link>
           </div>
         </nav>
 
-        <Link to="/dashboard">
-          <Button renderAs="button" color="primary">
-            <span>Dashboard</span>
-          </Button>
-        </Link>
-        <Link to="/sign-in">
-          <Button renderAs="button" color="primary">
-            <span>Login</span>
-          </Button>
-        </Link>
+        <div>
+            { props.currentUser &&
+                <nav className="navbar navbar-fixed-top navbar-dark bg-inverse">
+                  <div className="container">
+                    <Link to="/dashboard">
+                      <Button color="primary">
+                        <span>Dashboard</span>
+                      </Button>
+                    </Link>
+                    <Link to="/login">
+                      <Button color="primary" onClick={logout}>
+                        <span>Logout</span>
+                      </Button>
+                    </Link>
+                  </div>
+                </nav>
+            }
+
+            {!props.currentUser &&
+                <Link to="/login">
+                  <Button color="primary">
+                    <span>Login</span>
+                  </Button>
+                </Link>
+            }
+        </div>
+        
       </Toolbar>
     </AppBar>
   );

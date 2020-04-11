@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+import { authenticationService } from '../../_services';
 
 const schema = {
   email: {
@@ -128,6 +128,11 @@ const useStyles = makeStyles(theme => ({
 const SignIn = props => {
   const { history } = props;
 
+  // redirect to home if already logged in
+  if (authenticationService.currentUserValue) { 
+    props.history.push('/');
+  }
+
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
@@ -177,6 +182,21 @@ const SignIn = props => {
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
+
+  function handleClick(e) {
+    e.preventDefault();
+    authenticationService.login("test", "test")
+        .then(
+            user => {
+                const { from } = props.location.state || { from: { pathname: "/" } };
+                props.history.push(from);
+                console.log(user);
+            },
+            error => {
+                console.log(error);
+            }
+        );
+  }
 
   return (
     <div className={classes.root}>
@@ -238,47 +258,12 @@ const SignIn = props => {
                 >
                   Sign in
                 </Typography>
-                <Typography
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  Sign in with social media
-                </Typography>
                 <Grid
                   className={classes.socialButtons}
                   container
                   spacing={2}
                 >
-                  <Grid item>
-                    <Button
-                      color="primary"
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      <FacebookIcon className={classes.socialIcon} />
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      <GoogleIcon className={classes.socialIcon} />
-                      Login with Google
-                    </Button>
-                  </Grid>
                 </Grid>
-                <Typography
-                  align="center"
-                  className={classes.sugestion}
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  or login with email address
-                </Typography>
                 <TextField
                   className={classes.textField}
                   error={hasError('email')}
@@ -307,7 +292,7 @@ const SignIn = props => {
                   value={formState.values.password || ''}
                   variant="outlined"
                 />
-                <Button
+                <Button onClick={handleClick}
                   className={classes.signInButton}
                   color="primary"
                   disabled={!formState.isValid}
@@ -318,19 +303,19 @@ const SignIn = props => {
                 >
                   Sign in now
                 </Button>
-                <Typography
+                {/* <Typography
                   color="textSecondary"
                   variant="body1"
                 >
                   Don't have an account?{' '}
                   <Link
                     component={RouterLink}
-                    to="/sign-up"
+                    to="/register"
                     variant="h6"
                   >
                     Sign up
                   </Link>
-                </Typography>
+                </Typography> */}
               </form>
             </div>
           </div>
