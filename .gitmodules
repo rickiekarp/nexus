@@ -1,5 +1,5 @@
 [submodule "docs/infrastructure"]
-	path = infrastructure
+	path = projects/infrastructure
 	url = git@git.rickiekarp.net:rickie/infrastructure.git
 [submodule "projects/infrastructure-raspberrypi"]
 	path = projects/infrastructure-raspberrypi
