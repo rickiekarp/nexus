@@ -4,7 +4,6 @@ stages:
   - report
 
 include:
-  - 'learning/university/.gitlab-ci.yml'
   - 'projects/gogogo/.gitlab-ci.yml'
   - 'projects/homebackend/.gitlab-ci.yml'
   - 'projects/JavaFXApps/.gitlab-ci.yml'
