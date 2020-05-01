@@ -7,3 +7,9 @@
 [submodule "projects/module-deployment"]
 	path = projects/module-deployment
 	url = git@git.rickiekarp.net:rickie/module-deployment.git
+[submodule "learning/university"]
+	path = learning/university
+	url = git@git.rickiekarp.net:rickie/university.git
+[submodule "learning/school"]
+	path = learning/school
+	url = git@git.rickiekarp.net:rickie/itech.git
