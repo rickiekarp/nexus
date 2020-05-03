@@ -41,7 +41,7 @@ func Post(url string, headers map[string]string, class *RequestData) {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		// handle err
+		log.Fatalln(err)
 	}
 	defer resp.Body.Close()
 }
