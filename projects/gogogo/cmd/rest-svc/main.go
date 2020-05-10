@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/game/snakefx"
-	"rickiekarp.net/rickie/home/projects/gogogo/projects/gogogo/src/rickiekarp.net/parser/yamlparser"
+	"rickiekarp.net/gogogo/src/rickiekarp.net/game/snakefx"
+	"rickiekarp.net/gogogo/src/rickiekarp.net/parser/yamlparser"
 )
 
 const port = 8081

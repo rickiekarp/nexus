@@ -1,6 +1,6 @@
-module rickiekarp.net/rickie/home/projects/gogogo
+module git.rickiekarp.net/rickie/home/projects/gogogo
 
-go 1.12
+go 1.14
 
 require (
 	github.com/go-sql-driver/mysql v1.4.1
