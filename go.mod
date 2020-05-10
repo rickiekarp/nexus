@@ -1,4 +1,4 @@
-module git.rickiekarp.net/rickie/home/projects/gogogo
+module git.rickiekarp.net/rickie/home
 
 go 1.14
 

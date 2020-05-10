@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 
+	"git.rickiekarp.net/rickie/home/projects/gogogo/src/rickiekarp.net/game/snakefx"
+	"git.rickiekarp.net/rickie/home/projects/gogogo/src/rickiekarp.net/parser/yamlparser"
 	"github.com/gorilla/mux"
-	"rickiekarp.net/gogogo/src/rickiekarp.net/game/snakefx"
-	"rickiekarp.net/gogogo/src/rickiekarp.net/parser/yamlparser"
 )
 
 const port = 8081
