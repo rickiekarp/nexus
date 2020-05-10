@@ -3,31 +3,32 @@ package network
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
 type RequestData struct {
-	Recipient      string `json:"to"`
-	Subject        string `json:"subject"`
-	Message        string `json:"message"`
-	AdditionalData struct {
-		Date string `json:"date"`
-		Tags string `json:"tags"`
-		URL  string `json:"url"`
-	} `json:"additionalData"`
+	Recipient string         `json:"to"`
+	Subject   string         `json:"subject"`
+	Message   string         `json:"message"`
+	Data      AdditionalData `json:"additionalData"`
+}
+
+type AdditionalData struct {
+	Date string `json:"date"`
+	Tags string `json:"tags"`
+	URL  string `json:"url"`
 }
 
 // Method on struct type
 func (class RequestData) StructMethod() {
-	fmt.Println(class.Recipient)
+	log.Println(class.Recipient)
 }
 
 // Function that takes struct type as the parameter
 func FuncPassStruct(class RequestData) {
-	fmt.Println(class.Recipient)
+	log.Println(class.Recipient)
 }
 
 func Post(url string, headers map[string]string, class *RequestData) {
@@ -36,11 +37,11 @@ func Post(url string, headers map[string]string, class *RequestData) {
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 
 	for k, v := range headers {
-		fmt.Printf("key[%s] value[%s]\n", k, v)
+		log.Printf("key[%s] value[%s]\n", k, v)
 		req.Header.Set(k, v)
 	}
 
