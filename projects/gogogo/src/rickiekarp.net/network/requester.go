@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"git.rickiekarp.net/rickie/home/projects/gogogo/src/common/utils"
 )
 
 type RequestData struct {
@@ -21,14 +23,19 @@ type AdditionalData struct {
 	URL  string `json:"url"`
 }
 
+var (
+	outfile, err = utils.CheckFile("/var/log/pi/today/requester.log")
+	logger       = log.New(outfile, "", log.LstdFlags|log.Lshortfile)
+)
+
 // Method on struct type
 func (class RequestData) StructMethod() {
-	log.Println(class.Recipient)
+	logger.Println(class.Recipient)
 }
 
 // Function that takes struct type as the parameter
 func FuncPassStruct(class RequestData) {
-	log.Println(class.Recipient)
+	logger.Println(class.Recipient)
 }
 
 func Post(url string, headers map[string]string, class *RequestData) {
@@ -37,17 +44,17 @@ func Post(url string, headers map[string]string, class *RequestData) {
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	if err != nil {
-		log.Println(err)
+		logger.Println(err)
 	}
 
 	for k, v := range headers {
-		log.Printf("key[%s] value[%s]\n", k, v)
+		logger.Printf("key[%s] value[%s]\n", k, v)
 		req.Header.Set(k, v)
 	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Fatalln(err)
+		logger.Fatalln(err)
 	}
 	defer resp.Body.Close()
 }
@@ -55,13 +62,13 @@ func Post(url string, headers map[string]string, class *RequestData) {
 func Get() {
 	resp, err := http.Get("https://rickiekarp.net")
 	if err != nil {
-		log.Fatalln(err)
+		logger.Fatalln(err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		logger.Fatalln(err)
 	}
 
-	log.Println(string(body))
+	logger.Println(string(body))
 }
