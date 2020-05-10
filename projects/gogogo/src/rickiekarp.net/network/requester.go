@@ -10,9 +10,14 @@ import (
 )
 
 type RequestData struct {
-	Recipient string `json:"to"`
-	Subject   string `json:"subject"`
-	Message   string `json:"message"`
+	Recipient      string `json:"to"`
+	Subject        string `json:"subject"`
+	Message        string `json:"message"`
+	AdditionalData struct {
+		Date string `json:"date"`
+		Tags string `json:"tags"`
+		URL  string `json:"url"`
+	} `json:"additionalData"`
 }
 
 // Method on struct type
