@@ -13,3 +13,6 @@
 [submodule "learning/school"]
 	path = learning/school
 	url = git@git.rickiekarp.net:rickie/itech.git
+[submodule "docs"]
+	path = docs
+	url = git@git.rickiekarp.net:rickie/docs.git
