@@ -8,7 +8,7 @@ build-gobackend:
     - make build
   artifacts:
     paths:
-      - projects/module-deployment/service-gobackend/
+      - projects/gogogo/build
     expire_in: 1 week
   only:
     changes:
