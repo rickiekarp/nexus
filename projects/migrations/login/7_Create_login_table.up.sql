@@ -19,8 +19,6 @@ CREATE  INDEX i_usersid ON login(users_id);
 -- Drop and recreate createUser() procedure (again)
 DROP PROCEDURE createUser;
 
-delimiter //
-
 CREATE PROCEDURE createUser(IN $name varchar(50), IN $password varchar(50), IN $role_id int unsigned, IN $enabled boolean)
 BEGIN
     INSERT INTO users (username, password, enabled, dateCreated) values ($name, $password, $enabled, now());
@@ -28,9 +26,7 @@ BEGIN
         SELECT LAST_INSERT_ID(), $role_id;
     INSERT INTO login (users_id)
         SELECT LAST_INSERT_ID();
-END //
-
-delimiter ;
+END ;
 
 -- Add all missing users to login table that have been created before this migration
 INSERT INTO login (users_id) SELECT id FROM users WHERE id NOT IN (SELECT users_id FROM login);
