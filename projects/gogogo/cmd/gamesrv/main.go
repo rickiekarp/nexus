@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"git.rickiekarp.net/rickie/home/projects/gogogo/src/rickiekarp.net/game/snakefx"
-	"git.rickiekarp.net/rickie/home/projects/gogogo/src/rickiekarp.net/parser/yamlparser"
+	"git.rickiekarp.net/rickie/home/projects/gogogo/src/game/snakefx"
+	"git.rickiekarp.net/rickie/home/projects/gogogo/src/parser/yamlparser"
 	"github.com/gorilla/mux"
 )
 
