@@ -5,17 +5,28 @@ GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 BUILD_PATH=build
-BINARY_NAME=gamesrv
-BINARY_UNIX=$(BINARY_NAME)_unix
+BINARY_NAME=app
+BINARY_VERSION=$(shell date +%y.%m)
+DEPLOYMENT_PATH=../module-deployment/service-gobackend
 
 all: clean test build
+
 build: 
-		CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -o ../module-deployment/service-gobackend/app cmd/gamesrv/main.go
+		GOOS=linux GOARCH=amd64 GOARM=5 go build -ldflags="-X main.Version=$(BINARY_VERSION)" -o $(BUILD_PATH)/$(BINARY_NAME) cmd/gamesrv/main.go
+
+buildARM: 
+		CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -ldflags="-X main.Version=$(BINARY_VERSION)" -o $(BUILD_PATH)/$(BINARY_NAME) cmd/gamesrv/main.go
+
 test: 
 		$(GOTEST) -v ./...
+
 clean: 
 		$(GOCLEAN)
 		rm -rf $(BUILD_PATH)
+
 runBuild:
 		$(GOBUILD) -o $(BINARY_NAME) -v ./...
 		./$(BUILD_PATH)/$(BINARY_NAME)
+
+copyBuildFolder:
+		cp $(BUILD_PATH)/* $(DEPLOYMENT_PATH) 

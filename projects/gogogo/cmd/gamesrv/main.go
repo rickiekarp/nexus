@@ -16,9 +16,13 @@ const port = 8081
 
 var db *sql.DB
 
+var Version = "development"
+
 func main() {
 	argsWithProg := os.Args
 	fmt.Println(argsWithProg)
+
+	fmt.Println("Version:\t", Version)
 
 	// read config
 	var config yamlparser.Requestdata
