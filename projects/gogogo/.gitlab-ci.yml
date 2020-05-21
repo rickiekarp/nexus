@@ -3,7 +3,7 @@ build-gobackend:
   image: golang:alpine
   script:
     - cd projects/gogogo
-    - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -o ../module-deployment/service-gobackend/app cmd/gamesrv/main.go
+    - make build
   artifacts:
     paths:
       - projects/module-deployment/service-gobackend/

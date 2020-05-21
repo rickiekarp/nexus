@@ -5,7 +5,7 @@ GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 BUILD_PATH=build
-BINARY_NAME=payment-bot
+BINARY_NAME=gamesrv
 BINARY_UNIX=$(BINARY_NAME)_unix
 
 all: clean test build
