@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,22 +13,32 @@ import (
 	"github.com/gorilla/mux"
 )
 
-const port = 8081
-
 var db *sql.DB
 
+// Version set during go build using ldflags
 var Version = "development"
 
 func main() {
-	argsWithProg := os.Args
-	fmt.Println(argsWithProg)
-
-	fmt.Println("Version:\t", Version)
 
 	// read config
 	var config yamlparser.Requestdata
 	config.GetConf()
+
+	port := flag.Int("port", config.Gamesrv.Port, "application port")
+	flag.Parse()
+
+	args := flag.Args()
+	if len(args) > 0 {
+		switch args[0] {
+		case "version":
+			fmt.Println(Version)
+			os.Exit(0)
+		}
+	}
+
 	fmt.Println(config)
+
+	fmt.Println("tail:", args)
 
 	db = snakefx.InitDB(fmt.Sprintf("%s:%s@tcp(%s:3306)/%s", config.DB.Username, config.DB.Password, config.DB.Url, config.DB.Database))
 
@@ -38,8 +49,8 @@ func main() {
 	router.HandleFunc("/gamedata/ranking/addHighscore", snakefx.CreateEmp).Methods("POST")
 	router.HandleFunc("/gamedata/ranking/highscore/{name}", snakefx.DeleteEmp).Methods("DELETE")
 
-	fmt.Println("Start listening on", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
+	fmt.Println("Start listening on", *port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), router))
 }
 
 // Test:
