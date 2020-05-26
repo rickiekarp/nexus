@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  */
 @Deprecated
 public class MainPresenter {
-	private Pane gridContainer;
+	private final Pane gridContainer;
 	private final Grid grid;
 	private final Consumer<?> newGameFunction;
 
