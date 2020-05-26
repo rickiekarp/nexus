@@ -1,18 +1,15 @@
-package net.rickiekarp.colorpuzzlefx.view;
+package net.rickiekarp.colorpuzzlefx.view
 
-import de.saxsys.mvvmfx.FxmlView;
-import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.fxml.FXML;
+import de.saxsys.mvvmfx.FxmlView
+import de.saxsys.mvvmfx.InjectViewModel
+import javafx.fxml.FXML
 
-public class FinishedView implements FxmlView<FinishedViewModel> {
-
+class FinishedView : FxmlView<FinishedViewModel?> {
     @InjectViewModel
-    private FinishedViewModel viewModel;
+    private val viewModel: FinishedViewModel? = null
 
     @FXML
-    public void newGame(){
-        viewModel.newGame();
+    fun newGame() {
+        viewModel!!.newGame()
     }
-
-
 }

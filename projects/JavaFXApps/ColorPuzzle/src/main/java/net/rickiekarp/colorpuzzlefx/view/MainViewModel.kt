@@ -1,67 +1,49 @@
-package net.rickiekarp.colorpuzzlefx.view;
+package net.rickiekarp.colorpuzzlefx.view
 
-import de.saxsys.mvvmfx.ViewModel;
-import eu.lestard.grid.GridModel;
-import net.rickiekarp.colorpuzzlefx.core.ColorProfile;
-import net.rickiekarp.colorpuzzlefx.core.Colors;
-import net.rickiekarp.colorpuzzlefx.core.GameLogic;
-import net.rickiekarp.colorpuzzlefx.view.ai.solver.SolverViewPopup;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.*;
-import javafx.scene.paint.Color;
+import de.saxsys.mvvmfx.ViewModel
+import eu.lestard.grid.GridModel
+import javafx.beans.binding.Bindings
+import javafx.beans.property.*
+import javafx.scene.paint.Color
+import net.rickiekarp.colorpuzzlefx.core.ColorProfile
+import net.rickiekarp.colorpuzzlefx.core.Colors
+import net.rickiekarp.colorpuzzlefx.core.GameLogic
+import net.rickiekarp.colorpuzzlefx.view.ai.solver.SolverViewPopup
 
-import java.util.Map;
-
-public class MainViewModel implements ViewModel {
-
-    private GameLogic gameLogic;
-
-    private ColorProfile profile = new ColorProfile();
-
-    private StringProperty movesLabelText = new SimpleStringProperty();
-
-    private BooleanProperty gameFinished = new SimpleBooleanProperty();
-
-    public MainViewModel(GameLogic gameLogic){
-        this.gameLogic = gameLogic;
-
-        movesLabelText.bind(Bindings.concat("Moves:", gameLogic.movesCounter()));
-
-        newGameAction();
-
-        gameLogic.onFinished(() -> gameFinished.setValue(true));
+class MainViewModel(val gameLogic: GameLogic) : ViewModel {
+    private val profile = ColorProfile()
+    private val movesLabelText: StringProperty = SimpleStringProperty()
+    private val gameFinished: BooleanProperty = SimpleBooleanProperty()
+    fun newGameAction() {
+        gameLogic.newGame()
+        gameFinished.set(false)
     }
 
-    public void newGameAction(){
-        gameLogic.newGame();
-        gameFinished.set(false);
+    fun selectColorAction(color: Colors?) {
+        gameLogic.selectColor(color)
     }
 
-    public void selectColorAction(Colors color){
-        gameLogic.selectColor(color);
+    val colorMappings: Map<Colors, Color>
+        get() = profile.getProfile()
+
+    fun movesLabelText(): ReadOnlyStringProperty {
+        return movesLabelText
     }
 
-    public Map<Colors, Color> getColorMappings(){
-        return profile.getProfile();
+    fun gameFinished(): ReadOnlyBooleanProperty {
+        return gameFinished
     }
 
-    public ReadOnlyStringProperty movesLabelText(){
-        return movesLabelText;
+    val gridModel: GridModel<Colors>
+        get() = gameLogic.gridModel
+
+    fun openAI() {
+        SolverViewPopup.open()
     }
 
-    public ReadOnlyBooleanProperty gameFinished(){
-        return gameFinished;
-    }
-
-    public GridModel<Colors> getGridModel() {
-        return gameLogic.getGridModel();
-    }
-
-    public GameLogic getGameLogic(){
-        return gameLogic;
-    }
-
-    public void openAI() {
-        SolverViewPopup.open();
+    init {
+        movesLabelText.bind(Bindings.concat("Moves:", gameLogic.movesCounter()))
+        newGameAction()
+        gameLogic.onFinished { gameFinished.value = true }
     }
 }

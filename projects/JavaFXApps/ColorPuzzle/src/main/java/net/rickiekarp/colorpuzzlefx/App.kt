@@ -1,40 +1,32 @@
-package net.rickiekarp.colorpuzzlefx;
+package net.rickiekarp.colorpuzzlefx
 
-import eu.lestard.easydi.EasyDI;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import de.saxsys.mvvmfx.FluentViewLoader
+import de.saxsys.mvvmfx.MvvmFX
+import eu.lestard.easydi.EasyDI
+import javafx.application.Application
+import javafx.scene.Scene
+import javafx.stage.Stage
+import net.rickiekarp.colorpuzzlefx.ai.BogoSolver
+import net.rickiekarp.colorpuzzlefx.ai.Solver
+import net.rickiekarp.colorpuzzlefx.view.MainView
 
-import de.saxsys.mvvmfx.FluentViewLoader;
-import de.saxsys.mvvmfx.MvvmFX;
-import de.saxsys.mvvmfx.ViewTuple;
-import net.rickiekarp.colorpuzzlefx.ai.BogoSolver;
-import net.rickiekarp.colorpuzzlefx.ai.Solver;
-import net.rickiekarp.colorpuzzlefx.view.MainView;
-import net.rickiekarp.colorpuzzlefx.view.MainViewModel;
-
-public class App extends Application {
-
-    public static void main(String...args){
-        App.launch(args);
+class App : Application() {
+    @Throws(Exception::class)
+    override fun start(stage: Stage) {
+        stage.title = "ColorPuzzleFX"
+        val context = EasyDI()
+        context.bindInterface(Solver::class.java, BogoSolver::class.java)
+        MvvmFX.setCustomDependencyInjector { requestedType: Class<*>? -> context.getInstance(requestedType) }
+        val viewTuple = FluentViewLoader.fxmlView(MainView::class.java).load()
+        stage.scene = Scene(viewTuple.view)
+        stage.sizeToScene()
+        stage.show()
     }
 
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        stage.setTitle("ColorPuzzleFX");
-
-        EasyDI context = new EasyDI();
-        context.bindInterface(Solver.class, BogoSolver.class);
-
-        MvvmFX.setCustomDependencyInjector(context::getInstance);
-
-
-        final ViewTuple<MainView, MainViewModel> viewTuple = FluentViewLoader.fxmlView(MainView.class).load();
-
-        stage.setScene(new Scene(viewTuple.getView()));
-        stage.sizeToScene();
-        stage.show();
-
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            launch(*args)
+        }
     }
 }

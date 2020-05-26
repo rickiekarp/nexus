@@ -1,22 +1,17 @@
-package net.rickiekarp.colorpuzzlefx.view;
+package net.rickiekarp.colorpuzzlefx.view
 
+import de.saxsys.mvvmfx.ViewModel
+import java.util.function.Consumer
 
-import de.saxsys.mvvmfx.ViewModel;
-
-import java.util.function.Consumer;
-
-public class FinishedViewModel implements ViewModel {
-
-    private Consumer<Void> onNewGame;
-
-    public void newGame(){
-        if(onNewGame != null){
-            onNewGame.accept(null);
+class FinishedViewModel : ViewModel {
+    private var onNewGame: Consumer<Void?>? = null
+    fun newGame() {
+        if (onNewGame != null) {
+            onNewGame!!.accept(null)
         }
     }
 
-    public void setOnNewGame(Consumer<Void> onNewGame){
-        this.onNewGame = onNewGame;
+    fun setOnNewGame(onNewGame: Consumer<Void?>?) {
+        this.onNewGame = onNewGame
     }
-
 }

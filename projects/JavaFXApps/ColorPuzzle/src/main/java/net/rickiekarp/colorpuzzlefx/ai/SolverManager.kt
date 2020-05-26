@@ -1,29 +1,20 @@
-package net.rickiekarp.colorpuzzlefx.ai;
+package net.rickiekarp.colorpuzzlefx.ai
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
+import java.util.*
+import java.util.stream.Collectors
 
-public class SolverManager {
+class SolverManager {
+    private val solverMap: MutableMap<String, Solver> = TreeMap()
+    val solverNames: List<String>
+        get() = solverMap.keys.stream().collect(Collectors.toList())
 
-    private Map<String, Solver> solverMap = new TreeMap<>();
-
-
-    public SolverManager() {
-        solverMap.put("Bogo Solver", new BogoSolver());
-        solverMap.put("Brute Force Solver", new BruteForceSolver());
-        solverMap.put("Solver 1", new Solver1());
+    fun getSolver(name: String): Optional<Solver> {
+        return Optional.ofNullable(solverMap[name])
     }
 
-
-    public List<String> getSolverNames() {
-        return solverMap.keySet().stream().collect(Collectors.toList());
+    init {
+        solverMap["Bogo Solver"] = BogoSolver()
+        solverMap["Brute Force Solver"] = BruteForceSolver()
+        solverMap["Solver 1"] = Solver1()
     }
-
-    public Optional<Solver> getSolver(String name) {
-        return Optional.ofNullable(solverMap.get(name));
-    }
-
 }
