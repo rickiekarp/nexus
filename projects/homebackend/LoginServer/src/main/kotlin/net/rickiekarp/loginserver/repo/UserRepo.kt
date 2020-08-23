@@ -22,7 +22,7 @@ open class UserRepo : UserDAO {
     private val FIND_BY_TOKEN = "SELECT * FROM users u JOIN user_roles ur ON u.id = ur.users_id JOIN roles r ON r.id = ur.roles_id WHERE token = ?"
     private val FIND_BY_NAME = "SELECT * FROM users u JOIN user_roles ur ON u.id = ur.users_id JOIN roles r ON r.id = ur.roles_id WHERE username = ?"
     private val INSERT = "CALL createUser(?, ?, ?, true)"
-    private val UPDATE = "UPDATE users SET token = ? WHERE id = ?"
+    private val UPDATE = "UPDATE users SET token = ?, lastUpdated = now() WHERE id = ?"
     private val DO_LOGIN = "UPDATE login SET lastLoginDate = now(), lastLoginIP = ? WHERE users_id = ?"
 
     @Autowired
