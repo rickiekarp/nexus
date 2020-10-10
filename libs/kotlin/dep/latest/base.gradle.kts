@@ -2,7 +2,7 @@
 extra.set("kotlinVersion", "1.4.10")
 
 // build system
-extra.set("gradleVersion", "6.3")
+extra.set("gradleVersion", "6.6.1")
 
 // testing
 extra.set("junitVersion", "5.7.0")
