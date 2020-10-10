@@ -6,7 +6,7 @@ package net.rickiekarp.loginserver.domain;
 /**
  * Protobuf type {@code WorldList}
  */
-public  final class WorldList extends
+public final class WorldList extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:WorldList)
     WorldListOrBuilder {
@@ -99,12 +99,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .World world = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<net.rickiekarp.loginserver.domain.World> getWorldList() {
     return world_;
   }
   /**
    * <code>repeated .World world = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends net.rickiekarp.loginserver.domain.WorldOrBuilder> 
       getWorldOrBuilderList() {
     return world_;
@@ -112,18 +114,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .World world = 1;</code>
    */
+  @java.lang.Override
   public int getWorldCount() {
     return world_.size();
   }
   /**
    * <code>repeated .World world = 1;</code>
    */
+  @java.lang.Override
   public net.rickiekarp.loginserver.domain.World getWorld(int index) {
     return world_.get(index);
   }
   /**
    * <code>repeated .World world = 1;</code>
    */
+  @java.lang.Override
   public net.rickiekarp.loginserver.domain.WorldOrBuilder getWorldOrBuilder(
       int index) {
     return world_.get(index);

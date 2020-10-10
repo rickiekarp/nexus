@@ -6,7 +6,7 @@ package net.rickiekarp.loginserver.domain;
 /**
  * Protobuf type {@code World}
  */
-public  final class World extends
+public final class World extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:World)
     WorldOrBuilder {
@@ -110,6 +110,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 id = 1;</code>
    * @return The id.
    */
+  @java.lang.Override
   public int getId() {
     return id_;
   }
@@ -120,6 +121,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 2;</code>
    * @return The name.
    */
+  @java.lang.Override
   public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -136,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>string name = 2;</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -156,6 +159,7 @@ private static final long serialVersionUID = 0L;
    * <code>string url = 3;</code>
    * @return The url.
    */
+  @java.lang.Override
   public java.lang.String getUrl() {
     java.lang.Object ref = url_;
     if (ref instanceof java.lang.String) {
@@ -172,6 +176,7 @@ private static final long serialVersionUID = 0L;
    * <code>string url = 3;</code>
    * @return The bytes for url.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getUrlBytes() {
     java.lang.Object ref = url_;
@@ -192,6 +197,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 worldstatusid = 4;</code>
    * @return The worldstatusid.
    */
+  @java.lang.Override
   public int getWorldstatusid() {
     return worldstatusid_;
   }
@@ -554,6 +560,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 id = 1;</code>
      * @return The id.
      */
+    @java.lang.Override
     public int getId() {
       return id_;
     }
@@ -736,6 +743,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 worldstatusid = 4;</code>
      * @return The worldstatusid.
      */
+    @java.lang.Override
     public int getWorldstatusid() {
       return worldstatusid_;
     }
