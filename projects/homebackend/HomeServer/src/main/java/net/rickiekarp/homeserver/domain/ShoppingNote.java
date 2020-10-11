@@ -6,7 +6,7 @@ package net.rickiekarp.homeserver.domain;
 /**
  * Protobuf type {@code ShoppingNote}
  */
-public  final class ShoppingNote extends
+public final class ShoppingNote extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:ShoppingNote)
     ShoppingNoteOrBuilder {
@@ -152,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 id = 1;</code>
    * @return The id.
    */
+  @java.lang.Override
   public int getId() {
     return id_;
   }
@@ -162,6 +163,7 @@ private static final long serialVersionUID = 0L;
    * <code>string title = 2;</code>
    * @return The title.
    */
+  @java.lang.Override
   public java.lang.String getTitle() {
     java.lang.Object ref = title_;
     if (ref instanceof java.lang.String) {
@@ -178,6 +180,7 @@ private static final long serialVersionUID = 0L;
    * <code>string title = 2;</code>
    * @return The bytes for title.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTitleBytes() {
     java.lang.Object ref = title_;
@@ -198,6 +201,7 @@ private static final long serialVersionUID = 0L;
    * <code>double price = 3;</code>
    * @return The price.
    */
+  @java.lang.Override
   public double getPrice() {
     return price_;
   }
@@ -208,6 +212,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 user_id = 4;</code>
    * @return The userId.
    */
+  @java.lang.Override
   public int getUserId() {
     return userId_;
   }
@@ -218,6 +223,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp dateBought = 5;</code>
    * @return Whether the dateBought field is set.
    */
+  @java.lang.Override
   public boolean hasDateBought() {
     return dateBought_ != null;
   }
@@ -225,12 +231,14 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp dateBought = 5;</code>
    * @return The dateBought.
    */
+  @java.lang.Override
   public com.google.protobuf.Timestamp getDateBought() {
     return dateBought_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : dateBought_;
   }
   /**
    * <code>.google.protobuf.Timestamp dateBought = 5;</code>
    */
+  @java.lang.Override
   public com.google.protobuf.TimestampOrBuilder getDateBoughtOrBuilder() {
     return getDateBought();
   }
@@ -241,6 +249,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 store_id = 6;</code>
    * @return The storeId.
    */
+  @java.lang.Override
   public int getStoreId() {
     return storeId_;
   }
@@ -251,6 +260,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp dateAdded = 7;</code>
    * @return Whether the dateAdded field is set.
    */
+  @java.lang.Override
   public boolean hasDateAdded() {
     return dateAdded_ != null;
   }
@@ -258,12 +268,14 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp dateAdded = 7;</code>
    * @return The dateAdded.
    */
+  @java.lang.Override
   public com.google.protobuf.Timestamp getDateAdded() {
     return dateAdded_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : dateAdded_;
   }
   /**
    * <code>.google.protobuf.Timestamp dateAdded = 7;</code>
    */
+  @java.lang.Override
   public com.google.protobuf.TimestampOrBuilder getDateAddedOrBuilder() {
     return getDateAdded();
   }
@@ -274,6 +286,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp lastUpdated = 8;</code>
    * @return Whether the lastUpdated field is set.
    */
+  @java.lang.Override
   public boolean hasLastUpdated() {
     return lastUpdated_ != null;
   }
@@ -281,12 +294,14 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Timestamp lastUpdated = 8;</code>
    * @return The lastUpdated.
    */
+  @java.lang.Override
   public com.google.protobuf.Timestamp getLastUpdated() {
     return lastUpdated_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : lastUpdated_;
   }
   /**
    * <code>.google.protobuf.Timestamp lastUpdated = 8;</code>
    */
+  @java.lang.Override
   public com.google.protobuf.TimestampOrBuilder getLastUpdatedOrBuilder() {
     return getLastUpdated();
   }
@@ -758,6 +773,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 id = 1;</code>
      * @return The id.
      */
+    @java.lang.Override
     public int getId() {
       return id_;
     }
@@ -864,6 +880,7 @@ private static final long serialVersionUID = 0L;
      * <code>double price = 3;</code>
      * @return The price.
      */
+    @java.lang.Override
     public double getPrice() {
       return price_;
     }
@@ -894,6 +911,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 user_id = 4;</code>
      * @return The userId.
      */
+    @java.lang.Override
     public int getUserId() {
       return userId_;
     }
@@ -1043,6 +1061,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 store_id = 6;</code>
      * @return The storeId.
      */
+    @java.lang.Override
     public int getStoreId() {
       return storeId_;
     }

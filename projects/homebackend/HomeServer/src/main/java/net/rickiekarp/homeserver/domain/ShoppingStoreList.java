@@ -6,7 +6,7 @@ package net.rickiekarp.homeserver.domain;
 /**
  * Protobuf type {@code ShoppingStoreList}
  */
-public  final class ShoppingStoreList extends
+public final class ShoppingStoreList extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:ShoppingStoreList)
     ShoppingStoreListOrBuilder {
@@ -99,12 +99,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .ShoppingStore store = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<net.rickiekarp.homeserver.domain.ShoppingStore> getStoreList() {
     return store_;
   }
   /**
    * <code>repeated .ShoppingStore store = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends net.rickiekarp.homeserver.domain.ShoppingStoreOrBuilder> 
       getStoreOrBuilderList() {
     return store_;
@@ -112,18 +114,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .ShoppingStore store = 1;</code>
    */
+  @java.lang.Override
   public int getStoreCount() {
     return store_.size();
   }
   /**
    * <code>repeated .ShoppingStore store = 1;</code>
    */
+  @java.lang.Override
   public net.rickiekarp.homeserver.domain.ShoppingStore getStore(int index) {
     return store_.get(index);
   }
   /**
    * <code>repeated .ShoppingStore store = 1;</code>
    */
+  @java.lang.Override
   public net.rickiekarp.homeserver.domain.ShoppingStoreOrBuilder getStoreOrBuilder(
       int index) {
     return store_.get(index);
