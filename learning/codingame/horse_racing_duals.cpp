@@ -19,23 +19,21 @@ int main()
     int N;
     cin >> N; cin.ignore();
 
-    std::vector<int> horseVector;
+    std::vector<int> strengthsVector;
 
-    // populate vector
     for (int i = 0; i < N; i++) {
         int Pi;
         cin >> Pi; cin.ignore();
-        horseVector.push_back(Pi);
+        strengthsVector.push_back(Pi);
     }
 
-    sort(horseVector.begin(), horseVector.end(), greater<int>()); 
+    sort(strengthsVector.begin(), strengthsVector.end(), greater<int>()); 
 
     int min = INT32_MAX;
     int diff;
 
-    // calculate diff
-    for (int i = 0; i < horseVector.size(); i++) {
-        diff = horseVector[i] - horseVector[i+1];
+    for (int i = 0; i < strengthsVector.size(); i++) {
+        diff = strengthsVector[i] - strengthsVector[i+1];
         if (diff < min) {
             min = diff;
         }
