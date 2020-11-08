@@ -37,4 +37,3 @@ int main()
 
     cout << lowestTemperature << endl;
 }
-
