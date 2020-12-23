@@ -60,11 +60,6 @@ subprojects {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    dokka {
-        outputFormat = 'html'
-        outputDirectory = "$it.project.buildDir/dokka"
-    }
-
     protobuf {
         protoc {
             // Download from repositories

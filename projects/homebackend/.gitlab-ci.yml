@@ -56,9 +56,9 @@ dokka-homebackend:
   stage: report
   script:
     - cd projects/homebackend
-    - ./gradlew :Foundation:dokka
-    - ./gradlew :LoginServer:dokka
-    - ./gradlew :HomeServer:dokka
+    - ./gradlew :Foundation:dokkaHtml
+    - ./gradlew :LoginServer:dokkaHtml
+    - ./gradlew :HomeServer:dokkaHtml
   artifacts:
     paths:
       - projects/homebackend/Foundation/build/dokka/
