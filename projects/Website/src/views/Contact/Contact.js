@@ -38,7 +38,6 @@ const Contact = () => {
   }, []);
 
   console.log(contactData);
-  
 
   return (
     <div className={classes.root}>

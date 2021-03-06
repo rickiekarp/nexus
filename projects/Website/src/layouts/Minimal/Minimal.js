@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Topbar } from './components';
 import { authenticationService } from '../../_services';
-import './Minimal.css';
 
 export default class App extends Component {
 
@@ -23,9 +22,9 @@ export default class App extends Component {
     const { children } = this.props;
 
     return (
-      <div id="main" className="minimalcontent">
+      <div id="main" >
         <Topbar currentUser={currentUser} authenticationService={authenticationService} />
-        <main className="minimalcontent">{children}</main>
+        <main>{children}</main>
       </div>
     );
   }

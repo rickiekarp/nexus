@@ -1,7 +1,7 @@
 import { colors } from '@material-ui/core';
 
 const white = '#FFFFFF';
-const defaultBackground = '#002650';
+const defaultBackground = '#0f2650';
 const darkBlue = '#001d3f';
 const black = '#000000';
 
