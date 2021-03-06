@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['edit-example.component.scss'],
   template: `
     Your character is: 
-    <u class="editable" [satPopoverAnchorFor]="p" (click)="p.open()">
+    <u class="editable" [satPopoverAnchor]="p" (click)="p.open()">
       {{ name }}
     </u>
 

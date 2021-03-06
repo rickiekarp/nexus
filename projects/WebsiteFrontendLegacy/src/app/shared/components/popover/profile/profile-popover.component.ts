@@ -14,7 +14,7 @@ interface MenuItem {
   selector: 'app-profile-popover',
   styleUrls: ['profile-popover.component.scss'],
   template: `
-    <button class="button-default" [satPopoverAnchorFor]="menu" (click)="menu.toggle()">
+    <button class="button-default" [satPopoverAnchor]="menu" (click)="menu.toggle()">
      <i class="fa fa-user fa-2x" aria-hidden="true"></i>
     </button>
 

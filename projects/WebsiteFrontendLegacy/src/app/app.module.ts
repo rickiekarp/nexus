@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
@@ -46,7 +45,6 @@ import {SlideshowModule} from 'ng-simple-slideshow';
     ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
-    HttpModule,
     HttpClientModule,
     routing,
     SatPopoverModule,

@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { Http } from '@angular/http';
-import { ContactDto } from '../model/contact.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ContactService {
   private contactApiUrl = '/HomeServer/api/contact';
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   getContactInformation() {
     return this.http.get(this.contactApiUrl);

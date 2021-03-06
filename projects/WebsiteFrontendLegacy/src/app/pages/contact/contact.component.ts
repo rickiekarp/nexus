@@ -23,16 +23,15 @@ export class ContactComponent implements OnInit {
 
     this.contactService.getContactInformation().subscribe(
       data => {
-        let body = data.text()
-        let dat = JSON.parse(body)
-        this.contactInfo = <ContactDto> dat;
-              },
+        let bodyJson = JSON.parse(JSON.stringify(data))
+        this.contactInfo = <ContactDto> bodyJson;
+      },
       error=> { 
-                console.log("Error in recieving data"); 
-              },
+        console.log("Error in recieving data"); 
+      },
       ()   => {
-                //console.log( "Test" );
-              }
+        //console.log( "Test" );
+      }
     );
   }
 }

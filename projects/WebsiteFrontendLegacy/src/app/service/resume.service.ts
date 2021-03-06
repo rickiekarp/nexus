@@ -1,4 +1,3 @@
-import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { SkillDto } from '../model/skill.model';
 import { Observable } from 'rxjs';
@@ -14,7 +13,7 @@ export class ResumeService {
   private experienceApiUrl = '/HomeServer/api/resume/experience';
   private educationApiUrl = '/HomeServer/api/resume/education';
 
-  constructor(private http: Http, private  httpClient:HttpClient) { 
+  constructor(private http: HttpClient, private  httpClient:HttpClient) { 
   }
 
   getAllExperience(): Observable<ResumeDto[]> {
