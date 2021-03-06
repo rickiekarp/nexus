@@ -15,7 +15,7 @@ export class ContactComponent implements OnInit {
   constructor(private contactService: ContactService, private titleService: Title) { }
 
   location: string = "Karlsruhe"
-  avatarImage: string = 'assets/images/0.jpg';
+  avatarImage: string = 'assets/images/contact/0.jpg';
   role: string = 'DevOps Engineer';
 
   ngOnInit(): void {

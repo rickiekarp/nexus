@@ -4,7 +4,7 @@
 {
    color: white;
    max-width: 900px;
-   margin: 0 auto;
+   position: relative;
    background-color:@background-dark;
 }
 .card-image-left
@@ -16,11 +16,16 @@
 }
 .card-content-right
 {
-   width: 70%;
-   background-color:@background-dark;
-   float:right;
-   flex: 1 1 auto;
-   padding: 1rem;
+  position: relative;
+  height: 100%;
+  width: 70%;
+  float:right;
+  top: 50%;
+  padding-top: 20px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-bottom: 20px;
+  transform: translate(0%, -50%);
 }
 
 .card {

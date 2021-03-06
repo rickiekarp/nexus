@@ -12,10 +12,11 @@ import { Title } from '@angular/platform-browser';
 export class HomeComponent implements OnInit {
 
   imageUrls: (string | IImage)[] = [
-    { url: 'assets/images/logo-kuf2.png', backgroundSize: 'contain', backgroundPosition: 'center', clickAction: () => this.router.navigate(['/projects/kingdomunderfire2']) },
-    { url: 'assets/images/logo-lk.png', backgroundSize: 'contain', backgroundPosition: 'center', clickAction: () => this.router.navigate(['/projects/lordsandknights']) },
-    { url: 'assets/images/logo-bf.png', backgroundSize: 'contain', backgroundPosition: 'center', clickAction: () => this.router.navigate(['/projects/bigfarm']) },
-    { url: 'assets/images/logo-e4k.png', backgroundSize: 'contain', backgroundPosition: 'center', clickAction: () => this.router.navigate(['/projects/empirefourkingdoms']) }
+    { url: 'assets/images/projects/professional/soulworker/logo-wide.jpg', backgroundSize: 'contain', backgroundPosition: 'center', clickAction: () => this.router.navigate(['/projects/soulworkeranimelegends']) },
+    { url: 'assets/images/projects/professional/kuf2/logo-kuf2-wide.jpg', backgroundSize: 'contain', backgroundPosition: 'center', clickAction: () => this.router.navigate(['/projects/kingdomunderfire2']) },
+    { url: 'assets/images/projects/professional/logo-lk.png', backgroundSize: 'contain', backgroundPosition: 'center', clickAction: () => this.router.navigate(['/projects/lordsandknights']) },
+    { url: 'assets/images/projects/professional/logo-bf.png', backgroundSize: 'contain', backgroundPosition: 'center', clickAction: () => this.router.navigate(['/projects/bigfarm']) },
+    { url: 'assets/images/projects/professional/logo-e4k.png', backgroundSize: 'contain', backgroundPosition: 'center', clickAction: () => this.router.navigate(['/projects/empirefourkingdoms']) }
   ];
   height: string = '300px';
   minHeight: string;
