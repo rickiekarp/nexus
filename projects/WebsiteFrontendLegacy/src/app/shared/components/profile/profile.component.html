@@ -7,7 +7,6 @@
       <span class="user-name">{{contactInfo.name}}</span>
       <span class="user-post">{{role}}</span>
       <span class="map-location">
-        <i class="fa fa-map-marker"></i>
         <span>{{location}}</span>
       </span>
     </div>
@@ -18,8 +17,8 @@
       <br><p align="center">If you would like to meet me in person or have any other questions, feel free to contact me!</p><br>
       <table style="margin: 0 auto;">
           <tr>
-              <td><input class="inputCopy" type="text" value={{contactInfo.email}} id="myInput" readonly></td>
-              <td><button class="btn btn-info" onclick="copy()"><i class="fa fa-clipboard" aria-hidden="true"></i></button></td>
+              <td><input class="inputCopy" type="text" value={{contactInfo.email}} id="myInput" onclick="copy()" readonly></td>
+              <td><button title="Copy" class="btn btn-info" onclick="copy()"><i class="fa fa-clipboard" aria-hidden="true"></i></button></td>
           </tr>
       </table>
       <br><br>
@@ -36,6 +35,8 @@
             <a href="https://twitter.com/rickiekarp" target="_blank" class="info-icon fa fa-twitter"></a>
         </li>
       </ul>
+      <br>
+      <h4>Portfolio</h4>
       <ul class="contact-way-item">
         <li class="contact-way-list">
           <a href="https://git.rickiekarp.net" target="_blank" class="info-icon fa fa-git-square"></a>
@@ -45,6 +46,18 @@
         </li>
         <li class="contact-way-list">
           <a href="https://gitlab.com/rickie.karp" target="_blank" class="info-icon fa fa-gitlab"></a>
+        </li>
+      </ul>
+
+      <ul class="contact-way-item">
+        <li class="contact-way-list">
+          <a href="https://jenkins.rickiekarp.net" target="_blank" class="info-icon fa fa-wrench"></a>
+        </li>
+        <li class="contact-way-list">
+          <a href="https://cloud.rickiekarp.net" target="_blank" class="info-icon fa fa-cloud"></a>
+        </li>
+        <li class="contact-way-list">
+          <a href="https://ocis.rickiekarp.net" target="_blank" class="info-icon fa fa-server"></a>
         </li>
       </ul>
   </div>
