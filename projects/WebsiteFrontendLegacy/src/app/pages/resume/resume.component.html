@@ -2,16 +2,21 @@
     <h2 class="heading">Experience</h2>
 
     <ul class="timeline shadow-large">
-        <li class="event" *ngFor="let exp of experienceInfo" data-date="">
-            <h3>{{exp.name}}</h3>
-            <h4>{{exp.jobTitle}}</h4>
-            <p>{{exp.description.description}}</p>
-            <ul>
-                <li *ngFor="let task of exp.description.tasks">
-                    {{task}}
-                </li>
-            </ul>
-        </li>
+        <div class="experience-block">
+            <li class="event" *ngFor="let exp of experienceInfo" data-date="">
+                <div *ngIf="exp.endDate; then thenBlock else elseBlock"></div>
+                <ng-template #thenBlock><span>{{exp.startDate}} - {{exp.endDate}}</span></ng-template>
+                <ng-template #elseBlock><span>{{exp.startDate}} - Now</span></ng-template>
+                <h3>{{exp.name}}</h3>
+                <h4>{{exp.jobTitle}}</h4>
+                <p>{{exp.description.description}}</p>
+                <ul>
+                    <li *ngFor="let task of exp.description.tasks">
+                        {{task}}
+                    </li>
+                </ul>
+            </li>
+        </div>
     </ul>
 </div>
 <!-- End #experience -->
@@ -20,7 +25,7 @@
     <h2 class="heading">Education</h2>
     <div class="education-block shadow-large">
         <h3>University of Hamburg</h3>
-        <span class="education-date">August 2015 - February 2016</span>
+        <span>August 2015 - February 2016</span>
         <h4>Computer Science</h4>
         <p>
             Attended computer science classes
@@ -30,7 +35,7 @@
 
     <div class="education-block shadow-large">
         <h3>Berufliche Schule Elmshorn</h3>
-        <span class="education-date">August 2011 - June 2012</span>
+        <span>August 2011 - June 2012</span>
         <h4>Berufsoberschule (Field of studies - Economics)</h4>
         <p>
             General qualification for university entrance
@@ -40,7 +45,7 @@
 
     <div class="education-block shadow-large">
         <h3>Berufliche Schule Elmshorn</h3>
-        <span class="education-date">August 2009 - June 2011</span>
+        <span>August 2009 - June 2011</span>
         <h4>Berufsfachschule (Field of studies - Foreign languages)</h4>
         <p>
             University of applied sciences entrance qualification
