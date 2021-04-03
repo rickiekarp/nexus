@@ -63,10 +63,6 @@ export let MENU_ITEM = [
                     {
                         path: 'file-upload',
                         title: 'File Upload'
-                    },
-                    {
-                        path: 'ng2-select',
-                        title: 'Ng2-Select'
                     }
                 ]
             },
