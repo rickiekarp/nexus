@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { ProjectDto } from '../../model/project.model'
 import { Router,ActivatedRoute } from '@angular/router';
-import { IImage } from 'ng-simple-slideshow';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -36,7 +35,7 @@ export class ProjectComponent implements OnInit {
   lazyLoad: boolean = false;
   hideOnNoSlides: boolean = false;
   width: string = '100%';
-  imageUrls: (string | IImage)[] = [];
+  imageUrls = [];
 
   constructor(
     private activatedroute:ActivatedRoute,
@@ -50,8 +49,7 @@ export class ProjectComponent implements OnInit {
     this.project = new ProjectDto();
     switch(this.id) {
 
-// professional projects begin here
-
+      // professional projects begin here
       case 'soulworkeranimelegends': 
         this.project.name = 'Soulworker Anime Legends'
         this.project.description = '💎Enjoy one of the best anime style multiplayer action RPG’s of 2020💎'
@@ -210,8 +208,8 @@ export class ProjectComponent implements OnInit {
         this.project.projectDuration = 'October 2019 - present'
         this.project.text = "Simple Snake implementation using JavaFX"
         this.imageUrls.push(
-          { url: 'assets/images/projects/private/snakefx/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
-          { url: 'assets/images/projects/private/snakefx/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center' }
+          {'image': 'assets/images/projects/private/snakefx/preview_1.png'},
+          {'image': 'assets/images/projects/private/snakefx/preview_2.png'},
         );
         break;
 
@@ -251,9 +249,9 @@ export class ProjectComponent implements OnInit {
           'Application ported to Android'
         ]
         this.imageUrls.push(
-          { url: 'assets/images/projects/private/sha1pass/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
-          { url: 'assets/images/projects/private/sha1pass/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center' },
-          { url: 'assets/images/projects/private/sha1pass/preview_3.png', backgroundSize: 'contain', backgroundPosition: 'center' }
+          {'image': 'assets/images/projects/private/sha1pass/preview_1.png'},
+          {'image': 'assets/images/projects/private/sha1pass/preview_2.png'},
+          {'image': 'assets/images/projects/private/sha1pass/preview_3.png'},
         );
         break;
      
@@ -273,9 +271,9 @@ export class ProjectComponent implements OnInit {
           'Save file list to html / text file'
         ]
         this.imageUrls.push(
-          { url: 'assets/images/projects/private/filelistcreator/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center' },
-          { url: 'assets/images/projects/private/filelistcreator/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center' },
-          { url: 'assets/images/projects/private/filelistcreator/preview_3.png', backgroundSize: 'contain', backgroundPosition: 'center' }
+          {'image': 'assets/images/projects/private/filelistcreator/preview_1.png'},
+          {'image': 'assets/images/projects/private/filelistcreator/preview_2.png'},
+          {'image': 'assets/images/projects/private/filelistcreator/preview_3.png'},
         );
         break;
 
@@ -309,10 +307,9 @@ export class ProjectComponent implements OnInit {
           'Shopping history view'
         ]
         this.imageUrls.push(
-          { url: 'assets/images/projects/private/assistant/preview_1.png', backgroundSize: 'contain', backgroundPosition: 'center', caption: 'Login view' },
-          { url: 'assets/images/projects/private/assistant/preview_2.png', backgroundSize: 'contain', backgroundPosition: 'center', caption: 'Navigation drawer' },
-          { url: 'assets/images/projects/private/assistant/preview_3.png', backgroundSize: 'contain', backgroundPosition: 'center', caption: 'Shopping list' },
-          { url: 'assets/images/projects/private/assistant/preview_4.png', backgroundSize: 'contain', backgroundPosition: 'center', caption: 'Add item dialog' }
+          {'image': 'assets/images/projects/private/assistant/preview_1.png'},
+          {'image': 'assets/images/projects/private/assistant/preview_2.png'},
+          {'image': 'assets/images/projects/private/assistant/preview_3.png'},
         );
         break;
 

@@ -36,7 +36,7 @@ import { MenuExample } from './shared/components/popover/profile/profile-popover
 import { PagesModule } from './pages/pages.module';
 import { SharedModule } from './shared/shared.module';
 
-import {SlideshowModule} from 'ng-simple-slideshow';
+import { MatCarouselModule } from '@ngbmodule/material-carousel';
 
 @NgModule({
   imports: [
@@ -50,7 +50,7 @@ import {SlideshowModule} from 'ng-simple-slideshow';
     SatPopoverModule,
     PagesModule,
     SharedModule,
-    SlideshowModule
+    MatCarouselModule.forRoot()
   ],
   declarations: [
     AppComponent,
