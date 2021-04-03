@@ -5,11 +5,11 @@ import { ResumeService } from '../../service/resume.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.less']
+  selector: 'app-resume',
+  templateUrl: './resume.component.html',
+  styleUrls: ['./resume.component.less']
 })
-export class AboutComponent implements OnInit {
+export class ResumeComponent implements OnInit {
   skillsInfo: SkillDto[] = [];
   experienceInfo: ResumeDto[] = [];
   educationInfo: ResumeDto[] = [];

@@ -10,7 +10,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { ContactService } from './service/contact.service';
 import { SafePipe } from './core/pipe/safepipe.service';
-import { AboutComponent } from './pages/about/about.component';
+import { ResumeComponent } from './pages/resume/resume.component';
 
 import { AppRoutingModule } from './app.routing';
 import { ResumeService } from './service/resume.service';
@@ -59,7 +59,7 @@ import { MatCarouselModule } from '@ngbmodule/material-carousel';
     ProjectComponent,
     ContactComponent,
     SafePipe,
-    AboutComponent,
+    ResumeComponent,
     UserAreaComponent,
     LoginComponent,
     RegisterComponent,
