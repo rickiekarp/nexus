@@ -25,3 +25,16 @@ make migrate HOST=database DATABASE=login DBUSER=root DBPASS=root
 make migrate HOST=database DATABASE=gamedata DBUSER=root DBPASS=root
 make migrate HOST=database DATABASE=data_home DBUSER=root DBPASS=root
 ```
+
+## Set up IDE
+
+### VSCode
+
+If you are using go installed from a snap, you might need to add a `.vscode/settings.json` file to your project to set the correct go tools path.
+```
+{
+    "go.alternateTools": {
+        "go": "/snap/go/current/bin/go"
+    }
+}
+```

@@ -1,7 +1,9 @@
+# Jetbrains configuration
 .idea
 *.iml
 
+# VSCode configuration
 .vscode
 
-# WebsiteFrontendLegacy
+# Node
 node_modules
