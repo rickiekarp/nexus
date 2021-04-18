@@ -7,4 +7,4 @@ include:
   - local: 'projects/gogogo/.gitlab-ci.yml'
   - local: 'projects/homebackend/.gitlab-ci.yml'
   - local: 'projects/JavaFXApps/.gitlab-ci.yml'
-  - local: 'projects/WebsiteFrontendLegacy/.gitlab-ci.yml'
+  - local: 'projects/WebsiteAngular/.gitlab-ci.yml'

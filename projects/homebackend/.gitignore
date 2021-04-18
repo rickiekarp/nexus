@@ -10,7 +10,7 @@ out/
 *.setup
 
 # Front End Dependency Generated
-Website/WebsiteFrontendLegacy/dist/
-Website/WebsiteFrontendLegacy/node/
-Website/WebsiteFrontendLegacy/node_modules/
+Website/WebsiteAngular/dist/
+Website/WebsiteAngular/node/
+Website/WebsiteAngular/node_modules/
 Website/WebsiteBackend/src/main/resources/static
