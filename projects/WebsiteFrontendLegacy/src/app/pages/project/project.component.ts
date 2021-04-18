@@ -50,6 +50,21 @@ export class ProjectComponent implements OnInit {
     switch(this.id) {
 
       // professional projects begin here
+      case 'gujian':
+      this.project.name = 'Swords of Legends Online'
+      this.project.description = 'Swords of Legends Online is an action MMORPG set in a breathtaking fantasy world with sophisticated combat mechanics and a unique storyline based on Chinese mythology.'
+      this.project.projectUrl = 'https://gameforge.com/play/swords_of_legends_online'
+      this.project.projectImage = "images/projects/professional/" + this.id + "/logo-wide.jpg"
+      this.project.company = 'Gameforge'
+      this.project.function = 'DevOps Engineer'
+      this.project.projectDuration = '2020'
+      this.project.text = "Responsibilities in the project:"
+      this.project.tasks = [
+        'Support integration into Gameforge platform',
+        'Prepared and deployed shop for pre-order and release bundles'
+      ]
+      this.project.trailerUrl = 'https://www.youtube.com/embed/ak4Fx1UoWeQ'
+    break;
       case 'soulworkeranimelegends': 
         this.project.name = 'Soulworker Anime Legends'
         this.project.description = '💎Enjoy one of the best anime style multiplayer action RPG’s of 2020💎'
@@ -69,7 +84,7 @@ export class ProjectComponent implements OnInit {
         this.project.name = 'Kingdom Under Fire 2'
         this.project.description = 'Kingdom Under Fire 2 is an action-packed MMORPG/RTS hybrid. Choose one of five heroes, explore a fantasy world and hone your skills until you and your troops are ready for the epic-scale battles of this colossal war!'
         this.project.projectUrl = 'https://gameforge.com/play/kingdom_under_fire_2'
-        this.project.projectImage = 'images/projects/professional/kuf2/logo-kuf2.jpg'
+        this.project.projectImage = 'images/projects/professional/kuf2/logo-kuf2-wide.jpg'
         this.project.company = 'Gameforge'
         this.project.function = 'DevOps Engineer'
         this.project.projectDuration = '2019'
@@ -142,7 +157,7 @@ export class ProjectComponent implements OnInit {
         this.project.name = 'Big Farm'
         this.project.description = 'Live an exciting life in the country with your own farm in Goodgame Big Farm! You are in charge of planting and harvesting your fields and, of course, raising your own pigs and cows! You will also have to prove your business skills by selling your goods on the market.'
         this.project.projectUrl = 'https://bigfarm.goodgamestudios.com'
-        this.project.projectImage = 'images/projects/professional/logo-bf.png'
+        this.project.projectImage = 'images/projects/professional/bigfarm/logo-wide.jpg'
         this.project.projectDuration = 'October 2013 - February 2015'
         this.project.company = 'Goodgame Studios'
         this.project.function = 'Quality Assurance Technician'
@@ -180,7 +195,7 @@ export class ProjectComponent implements OnInit {
         this.project.name = 'Goodgame Empire'
         this.project.description = 'In Goodgame Empire you create your own medieval kingdom! Fight PvP battles against other players or form alliances to become the most powerful ruler.'
         this.project.projectUrl = 'https://www.goodgamestudios.com/games/goodgame-empire/'
-        this.project.projectImage = 'images/projects/professional/logo-ep.png'
+        this.project.projectImage = 'images/projects/professional/empire/logo-wide.jpg'
         this.project.company = 'Goodgame Studios'
         this.project.function = 'Quality Assurance Technician'
         this.project.projectDuration = 'October 2013 - February 2015'

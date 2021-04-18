@@ -11,11 +11,9 @@ import { Title } from '@angular/platform-browser';
 export class HomeComponent implements OnInit {
 
   slides = [
-    {'image': 'assets/images/projects/professional/soulworker/logo-wide.jpg'}, 
+    {'image': 'assets/images/projects/professional/gujian/logo-wide.jpg'},
+    {'image': 'assets/images/projects/professional/soulworker/logo-wide.jpg'},
     {'image': 'assets/images/projects/professional/kuf2/logo-kuf2-wide.jpg'},
-    {'image': 'assets/images/projects/professional/logo-lk.png'},
-    {'image': 'assets/images/projects/professional/logo-bf.png'},
-    {'image': 'assets/images/projects/professional/logo-e4k.png'},
     ];
 
   constructor(private router: Router, private titleService: Title) { }
