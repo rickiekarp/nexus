@@ -1,10 +1,6 @@
 # README #
 
-<<<<<<< HEAD
 Monorepo for all my personal projects
-
-=======
-Repository with all my backend applications
 
 ### Included applictions ###
 * AdminServer
@@ -13,4 +9,3 @@ Repository with all my backend applications
   Simple LoginServer
 * HomeServer
   Simple rest service to use at home
->>>>>>> backend/master

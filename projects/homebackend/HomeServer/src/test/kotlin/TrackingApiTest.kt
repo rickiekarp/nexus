@@ -31,7 +31,7 @@ class TrackingApiTest {
         builder.applicationIdentifier = "identifier"
         BaseConfig.create(builder)
 
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
     }
 
     @Test
