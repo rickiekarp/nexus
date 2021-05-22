@@ -51,7 +51,7 @@ class MaterialDesignButton(text: String) : Button(text) {
                 fadeTransition
         )
 
-        parallelTransition.setOnFinished { event1 ->
+        parallelTransition.setOnFinished {
             circleRipple!!.opacity = 0.0
             circleRipple!!.radius = 0.1
         }

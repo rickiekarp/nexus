@@ -61,7 +61,7 @@ class UpdateCheckerGUI : Stage() {
         optionHBox.children.addAll(btnInstall)
 
         //ActionListener
-        btnInstall!!.setOnAction { event -> textArea!!.appendText("Installing update! Please wait...\n") }
+        btnInstall!!.setOnAction { textArea!!.appendText("Installing update! Please wait...\n") }
 
         // The UI (Client Area) to display
         options.children.addAll(optionHBox)

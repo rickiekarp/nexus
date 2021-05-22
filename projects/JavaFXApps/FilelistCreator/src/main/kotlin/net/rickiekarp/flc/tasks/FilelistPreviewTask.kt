@@ -18,9 +18,9 @@ class FilelistPreviewTask : Task<Void>() {
     }
 
     init {
-        this.setOnRunning { event -> MainLayout.mainLayout.setStatus("neutral", LanguageController.getString("status_build_fileList")) }
+        this.setOnRunning { MainLayout.mainLayout.setStatus("neutral", LanguageController.getString("status_build_fileList")) }
 
-        this.setOnSucceeded { event1 ->
+        this.setOnSucceeded {
             MainLayout.previewTA.text = listStr
             DebugHelper.profile("stop", "FilelistPreviewTask")
             MainLayout.mainLayout.setStatus("neutral", LanguageController.getString("ready"))
@@ -28,7 +28,7 @@ class FilelistPreviewTask : Task<Void>() {
             System.gc()
         }
 
-        this.setOnFailed { event ->
+        this.setOnFailed {
             DebugHelper.profile("stop", "FilelistPreviewTask")
             listStr = null
             System.gc()
@@ -38,17 +38,6 @@ class FilelistPreviewTask : Task<Void>() {
 
         MainLayout.previewTA.clear()
         DebugHelper.profile("start", "FilelistPreviewTask")
-
-        //        System.out.println("availableProcessors" + Runtime.getRuntime().availableProcessors());
-        //        Thread[] threads = new Thread[Runtime.getRuntime().availableProcessors()];
-        //        for (int i = 0; i < threads.length; i++) {
-        //            threads[i] = new Thread(new Runnable() {
-        //                public void run() {
-        //                    // some code to run in parallel
-        //                }
-        //            });
-        //            threads[i].start();
-        //        }
 
         //start the task in a new thread
         val previewThread = Thread(this)

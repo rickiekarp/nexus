@@ -16,22 +16,16 @@ import java.net.URL
 import java.util.HashMap
 
 class NetworkAction internal constructor(builder: Builder) {
-    internal val method: String?
-    internal val parameterMap: Map<String, Any>
-    internal val hostUrl: String?
-    internal val actionUrl: String
+    internal val method: String? = builder.mMethod
+    internal val parameterMap: Map<String, Any> = if (builder.mParameters != null) {
+        builder.mParameters!!.parameters
+    } else HashMap(0)
+    internal val hostUrl: String? = builder.mHostURL
+    internal val actionUrl: String = builder.mDomain + "/" + builder.mAction
 
     @Deprecated("")
     @get:Deprecated("")
-    internal val file: String?
-
-    init {
-        this.hostUrl = builder.mHostURL
-        this.method = builder.mMethod
-        this.actionUrl = builder.mDomain + "/" + builder.mAction
-        this.parameterMap = if (builder.mParameters != null) builder.mParameters!!.parameters else HashMap(0)
-        file = builder.mFile
-    }
+    internal val file: String? = builder.mFile
 
     interface IParameterProvider {
         val parameters: Map<String, Any>

@@ -78,7 +78,7 @@ class ProgressDialog : Stage() {
             controls.style = "-fx-background-color: #444444;"
         }
 
-        abort.setOnAction { event -> ListTask.listTask!!.cancel() }
+        abort.setOnAction { ListTask.listTask.cancel() }
     }
 
     override fun close() {

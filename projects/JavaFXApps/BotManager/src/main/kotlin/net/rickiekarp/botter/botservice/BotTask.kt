@@ -138,7 +138,7 @@ class BotTask(botLauncher: BotLauncher, private val plugin: PluginData) : Task<V
             }
         }
 
-        this.setOnCancelled { event1 ->
+        this.setOnCancelled {
             LogFileHandler.logger.info("Bot stopped!")
             MainLayout.mainLayout!!.setStatus("neutral", "Cancelled")
             MainLayout.mainLayout!!.setLoadBarVisible(false)
@@ -153,7 +153,7 @@ class BotTask(botLauncher: BotLauncher, private val plugin: PluginData) : Task<V
             launcher = null
         }
 
-        this.setOnFailed { event ->
+        this.setOnFailed {
             LogFileHandler.logger.warning("Bot failed!")
             MainLayout.mainLayout!!.setStatus("fail", "Failed")
             MainLayout.mainLayout!!.setLoadBarVisible(false)

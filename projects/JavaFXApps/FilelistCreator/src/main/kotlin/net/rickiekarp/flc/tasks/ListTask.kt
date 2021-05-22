@@ -83,7 +83,7 @@ class ListTask(private var selectedDirectory: File?) : Task<Void>() {
         //create ProgressDialog
         val progressDialog = ProgressDialog()
 
-        this.setOnSucceeded { event1 ->
+        this.setOnSucceeded {
             DebugHelper.profile("stop", "ListTask")
 
             //set items to fileTable
@@ -106,7 +106,7 @@ class ListTask(private var selectedDirectory: File?) : Task<Void>() {
 
         }
 
-        this.setOnCancelled { event1 ->
+        this.setOnCancelled {
             DebugHelper.profile("stop", "ListTask")
 
             //delete already scanned data
@@ -123,7 +123,7 @@ class ListTask(private var selectedDirectory: File?) : Task<Void>() {
             LogFileHandler.logger.info("fileScan.cancelled")
         }
 
-        this.setOnFailed { event ->
+        this.setOnFailed {
             DebugHelper.profile("stop", "ListTask")
             progressDialog.close()
             MessageDialog(0, LanguageController.getString("unknownError"), 450, 220)

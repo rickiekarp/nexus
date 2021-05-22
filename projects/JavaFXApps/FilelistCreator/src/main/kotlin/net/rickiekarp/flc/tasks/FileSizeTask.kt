@@ -30,14 +30,14 @@ class FileSizeTask : Task<Void>() {
 
     init {
 
-        this.setOnRunning { event1 -> MainLayout.mainLayout.setStatus("neutral", LanguageController.getString("status_fileSizeUnitChange")) }
+        this.setOnRunning { MainLayout.mainLayout.setStatus("neutral", LanguageController.getString("status_fileSizeUnitChange")) }
 
-        this.setOnSucceeded { event1 ->
+        this.setOnSucceeded {
             DebugHelper.profile("stop", "FileSizeTask")
             FilelistPreviewTask()
         }
 
-        this.setOnFailed { event ->
+        this.setOnFailed {
             DebugHelper.profile("stop", "FileSizeTask")
             MessageDialog(0, LanguageController.getString("unknownError"), 450, 220)
             LogFileHandler.logger.info("fileSizeTask.failed")

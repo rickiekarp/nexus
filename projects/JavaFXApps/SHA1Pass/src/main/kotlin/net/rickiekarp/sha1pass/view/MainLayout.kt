@@ -5,7 +5,11 @@ import javafx.geometry.HPos
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.*
+import javafx.scene.control.Label
+import javafx.scene.control.TextField
+import javafx.scene.control.Tooltip
+import javafx.scene.control.CheckBox
+import javafx.scene.control.Button
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.layout.BorderPane
@@ -19,7 +23,11 @@ import net.rickiekarp.core.components.textfield.CustomTextField
 import net.rickiekarp.core.components.textfield.CustomTextFieldSkin
 import net.rickiekarp.core.controller.LanguageController
 import net.rickiekarp.core.debug.DebugHelper
-import net.rickiekarp.core.util.crypt.*
+import net.rickiekarp.core.util.crypt.BCryptCoder
+import net.rickiekarp.core.util.crypt.Base64Coder
+import net.rickiekarp.core.util.crypt.ColorCoder
+import net.rickiekarp.core.util.crypt.SHA1Coder
+import net.rickiekarp.core.util.crypt.HexCoder
 import net.rickiekarp.core.view.AboutScene
 import net.rickiekarp.core.view.layout.AppLayout
 
@@ -30,25 +38,14 @@ class MainLayout : AppLayout {
 
     private var wordBox: HBox? = null
     private var color: Rectangle? = null
-    private var sentence_tf_mask: CustomTextField? = null
-    private var sentence_tf: CustomTextField? = null
-    private var word_tf: CustomTextField? = null
-    private var peek_tf: TextField? = null
+    private var sentenceMaskTF: CustomTextField? = null
+    private var sentenceTF: CustomTextField? = null
+    private var wordTF: CustomTextField? = null
+    private var peekTF: TextField? = null
 
     private var colorPos = -1
 
-    private//padding top, right, bottom, left
-    //padding top, right, bottom, left
-    //padding top, right, bottom, left
-    //padding top, right, bottom, left
-    //set Layout
-    //row 1
-    //row 2
-    //peek_tf.setHighlighter(null);
-    //row 3
-    // Bind TextField properties to viewMode CheckBox
-    // Bind TextField and masked TextField text values bidirectionally
-    val mainLayout: Node
+    private val mainLayout: Node
         get() {
             val mainContent = BorderPane()
 
@@ -90,49 +87,51 @@ class MainLayout : AppLayout {
 
             mainGrid.hgap = 5.0
             mainGrid.vgap = 5.0
-            val sentence_label = Label(LanguageController.getString("u_sentence"))
-            sentence_label.style = "-fx-font-size: 9pt;"
-            GridPane.setConstraints(sentence_label, 0, 0)
-            mainGrid.children.add(sentence_label)
-            sentence_label.tooltip = Tooltip(LanguageController.getString("type_sentence_tip"))
+            val sentenceLabel = Label(LanguageController.getString("u_sentence"))
+            sentenceLabel.style = "-fx-font-size: 9pt;"
+            GridPane.setConstraints(sentenceLabel, 0, 0)
+            mainGrid.children.add(sentenceLabel)
+            sentenceLabel.tooltip = Tooltip(LanguageController.getString("type_sentence_tip"))
 
 
-            sentence_tf_mask = CustomTextField()
-            sentence_tf_mask!!.tooltip = Tooltip(LanguageController.getString("type_sentence_tip"))
-            sentence_tf_mask!!.skin = CustomTextFieldSkin(sentence_tf_mask!!)
-            GridPane.setConstraints(sentence_tf_mask, 1, 0)
-            GridPane.setColumnSpan(sentence_tf_mask, 3)
-            mainGrid.children.add(sentence_tf_mask)
+            sentenceMaskTF = CustomTextField()
+            sentenceMaskTF!!.tooltip = Tooltip(LanguageController.getString("type_sentence_tip"))
+            sentenceMaskTF!!.skin = CustomTextFieldSkin(sentenceMaskTF!!)
+            GridPane.setConstraints(sentenceMaskTF, 1, 0)
+            GridPane.setColumnSpan(sentenceMaskTF, 3)
+            mainGrid.children.add(sentenceMaskTF)
 
-            sentence_tf = CustomTextField()
-            sentence_tf!!.tooltip = Tooltip(LanguageController.getString("type_sentence_tip"))
-            GridPane.setConstraints(sentence_tf, 1, 0)
-            GridPane.setColumnSpan(sentence_tf, 3)
-            sentence_tf!!.isManaged = false
-            sentence_tf!!.isVisible = false
-            mainGrid.children.add(sentence_tf)
+            sentenceTF = CustomTextField()
+            sentenceTF!!.tooltip = Tooltip(LanguageController.getString("type_sentence_tip"))
+            GridPane.setConstraints(sentenceTF, 1, 0)
+            GridPane.setColumnSpan(sentenceTF, 3)
+            sentenceTF!!.isManaged = false
+            sentenceTF!!.isVisible = false
+            mainGrid.children.add(sentenceTF)
 
-            val word_label = Label(LanguageController.getString("u_word"))
-            word_label.style = "-fx-font-size: 9pt;"
-            word_label.tooltip = Tooltip(LanguageController.getString("type_word_tip"))
-            word_label.prefWidth = 35.0
-            wordBox!!.children.add(word_label)
+            val wordLabel = Label(LanguageController.getString("u_word"))
+            wordLabel.style = "-fx-font-size: 9pt;"
+            wordLabel.tooltip = Tooltip(LanguageController.getString("type_word_tip"))
+            wordLabel.prefWidth = 35.0
+            wordBox!!.children.add(wordLabel)
 
-            val word_tf_mask = CustomTextField()
-            word_tf_mask.tooltip = Tooltip(LanguageController.getString("type_word_tip"))
-            word_tf_mask.prefWidth = 85.0
-            word_tf_mask.skin = CustomTextFieldSkin(word_tf_mask)
-            wordBox!!.children.add(word_tf_mask)
+            val wordMaskTF = CustomTextField()
+            wordMaskTF.tooltip = Tooltip(LanguageController.getString("type_word_tip"))
+            wordMaskTF.prefWidth = 85.0
+            wordMaskTF.skin = CustomTextFieldSkin(wordMaskTF)
+            wordBox!!.children.add(wordMaskTF)
 
-            word_tf = CustomTextField()
-            word_tf!!.tooltip = Tooltip(LanguageController.getString("type_word_tip"))
-            word_tf!!.prefWidth = 85.0
-            word_tf!!.isManaged = false
-            word_tf!!.isVisible = false
+            wordTF = CustomTextField()
+            wordTF!!.tooltip = Tooltip(LanguageController.getString("type_word_tip"))
+            wordTF!!.prefWidth = 85.0
+            wordTF!!.isManaged = false
+            wordTF!!.isVisible = false
 
             val helpBtn = Button(LanguageController.getString("help_label"))
             helpBtn.style = "-fx-font-size: 9pt;"
-            helpBtn.tooltip = Tooltip(LanguageController.getString("help_tip") + " " + AppContext.context.applicationName)
+            helpBtn.tooltip = Tooltip(
+                LanguageController.getString("help_tip") + " " + AppContext.context.applicationName
+            )
             GridPane.setConstraints(helpBtn, 6, 0)
             GridPane.setHalignment(helpBtn, HPos.CENTER)
             mainGrid.children.add(helpBtn)
@@ -162,13 +161,13 @@ class MainLayout : AppLayout {
             GridPane.setConstraints(complexMode, 4, 1)
             mainGrid.children.add(complexMode)
 
-            peek_tf = TextField(LanguageController.getString("pass_peek"))
-            peek_tf!!.style = "-fx-font-size: 10pt;"
-            peek_tf!!.isEditable = false
-            peek_tf!!.tooltip = Tooltip(LanguageController.getString("pass_peek_tip"))
-            GridPane.setConstraints(peek_tf, 5, 1)
-            peek_tf!!.prefWidth = 30.0
-            mainGrid.children.add(peek_tf)
+            peekTF = TextField(LanguageController.getString("pass_peek"))
+            peekTF!!.style = "-fx-font-size: 10pt;"
+            peekTF!!.isEditable = false
+            peekTF!!.tooltip = Tooltip(LanguageController.getString("pass_peek_tip"))
+            GridPane.setConstraints(peekTF, 5, 1)
+            peekTF!!.prefWidth = 30.0
+            mainGrid.children.add(peekTF)
 
             val colorBtn = Button(LanguageController.getString("color_label"))
             colorBtn.style = "-fx-font-size: 9pt;"
@@ -213,50 +212,50 @@ class MainLayout : AppLayout {
             mainContent.center = mainGrid
             mainContent.bottom = controls
 
-            helpBtn.setOnAction { e -> AboutScene() }
+            helpBtn.setOnAction { AboutScene() }
 
-            colorBtn.setOnAction { actionEvent ->
+            colorBtn.setOnAction {
                 color!!.isVisible = true
                 colorRotate()
             }
 
-            hexBtn.setOnAction { actionEvent ->
+            hexBtn.setOnAction {
                 calcHex()
                 status.text = LanguageController.getString("hex_password_copied")
             }
 
-            b64Btn.setOnAction { actionEvent ->
+            b64Btn.setOnAction {
                 calcBase64()
                 status.text = LanguageController.getString("b64_password_copied")
             }
 
-            bcryptBtn.setOnAction { actionEvent ->
+            bcryptBtn.setOnAction {
                 calcBCrypt()
                 status.text = LanguageController.getString("bcrypt_password_copied")
             }
 
-            viewMode.selectedProperty().addListener { ov, old_val, new_val ->
+            viewMode.selectedProperty().addListener { _, _, new_val ->
                 if (new_val!!) {
-                    wordBox!!.children.remove(word_tf_mask)
-                    wordBox!!.children.add(word_tf)
+                    wordBox!!.children.remove(wordMaskTF)
+                    wordBox!!.children.add(wordTF)
                     status.text = LanguageController.getString("vs_on")
                 } else {
-                    wordBox!!.children.remove(word_tf)
-                    wordBox!!.children.add(word_tf_mask)
+                    wordBox!!.children.remove(wordTF)
+                    wordBox!!.children.add(wordMaskTF)
                     status.text = LanguageController.getString("vs_off")
                 }
             }
-            sentence_tf!!.managedProperty().bind(viewMode.selectedProperty())
-            sentence_tf!!.visibleProperty().bind(viewMode.selectedProperty())
-            word_tf!!.managedProperty().bind(viewMode.selectedProperty())
-            word_tf!!.visibleProperty().bind(viewMode.selectedProperty())
+            sentenceTF!!.managedProperty().bind(viewMode.selectedProperty())
+            sentenceTF!!.visibleProperty().bind(viewMode.selectedProperty())
+            wordTF!!.managedProperty().bind(viewMode.selectedProperty())
+            wordTF!!.visibleProperty().bind(viewMode.selectedProperty())
 
-            sentence_tf_mask!!.managedProperty().bind(viewMode.selectedProperty().not())
-            word_tf_mask.visibleProperty().bind(viewMode.selectedProperty().not())
-            sentence_tf!!.textProperty().bindBidirectional(sentence_tf_mask!!.textProperty())
-            word_tf!!.textProperty().bindBidirectional(word_tf_mask.textProperty())
+            sentenceMaskTF!!.managedProperty().bind(viewMode.selectedProperty().not())
+            wordMaskTF.visibleProperty().bind(viewMode.selectedProperty().not())
+            sentenceTF!!.textProperty().bindBidirectional(sentenceMaskTF!!.textProperty())
+            wordTF!!.textProperty().bindBidirectional(wordMaskTF.textProperty())
 
-            secureMode.selectedProperty().addListener { ov, old_val, new_val ->
+            secureMode.selectedProperty().addListener { _, _, new_val ->
                 if (new_val!!) {
                     isSecure = true
                     viewMode.isDisable = true
@@ -266,16 +265,16 @@ class MainLayout : AppLayout {
                 } else {
                     isSecure = false
                     viewMode.isDisable = false
-                    sentence_tf!!.text = ""
-                    word_tf!!.text = ""
-                    peek_tf!!.text = "Peek"
+                    sentenceTF!!.text = ""
+                    wordTF!!.text = ""
+                    peekTF!!.text = "Peek"
                     colorBtn.isDisable = false
                     setStringToClipboard("")
                     status.text = LanguageController.getString("sm_off")
                 }
             }
 
-            hmacMode.selectedProperty().addListener { ov, old_val, new_val ->
+            hmacMode.selectedProperty().addListener { _, _, new_val ->
                 if (new_val!!) {
                     hmac = true
                     status.text = LanguageController.getString("hmac_on")
@@ -285,7 +284,7 @@ class MainLayout : AppLayout {
                 }
             }
 
-            complexMode.selectedProperty().addListener { ov, old_val, new_val ->
+            complexMode.selectedProperty().addListener { _, _, new_val ->
                 if (new_val!!) {
                     complex = true
                     status.text = LanguageController.getString("comp_on")
@@ -360,10 +359,9 @@ class MainLayout : AppLayout {
      */
     private fun checkInputData(): String {
         return if (color!!.fill == Color.TRANSPARENT) {
-            sentence_tf!!.text + word_tf!!.text
+            sentenceTF!!.text + wordTF!!.text
         } else {
-            //System.out.println(sentence_tf.getText() + word_tf.getText() + ColorCoder.colorArray[colorPos].toString());
-            sentence_tf!!.text + word_tf!!.text + ColorCoder.colorArray[colorPos].toString()
+            sentenceTF!!.text + wordTF!!.text + ColorCoder.colorArray[colorPos].toString()
         }
     }
 
@@ -371,14 +369,14 @@ class MainLayout : AppLayout {
      * Changes the color field
      */
     private fun colorRotate() {
-        try {
-            colorPos++
-            color!!.fill = ColorCoder.colorArray[colorPos]
-        } catch (e: ArrayIndexOutOfBoundsException) {
+        colorPos++
+
+        if (colorPos == ColorCoder.colorArray.size) {
             color!!.fill = Color.TRANSPARENT
             colorPos = -1
+        } else {
+            color!!.fill = ColorCoder.colorArray[colorPos]
         }
-
     }
 
     /**
@@ -387,9 +385,9 @@ class MainLayout : AppLayout {
      */
     private fun peekText(s: String) {
         if (isSecure) {
-            peek_tf!!.text = "Peek"
+            peekTF!!.text = "Peek"
         } else {
-            peek_tf!!.text = s.substring(0, 4)
+            peekTF!!.text = s.substring(0, 4)
         }
     }
 
@@ -407,6 +405,6 @@ class MainLayout : AppLayout {
         get() = mainLayout
 
     override fun postInit() {
-        sentence_tf_mask!!.requestFocus()
+        sentenceMaskTF!!.requestFocus()
     }
 }

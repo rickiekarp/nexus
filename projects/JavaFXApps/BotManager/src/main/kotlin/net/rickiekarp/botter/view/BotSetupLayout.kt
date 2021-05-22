@@ -12,7 +12,6 @@ import net.rickiekarp.core.view.MainScene
 import net.rickiekarp.botlib.BotConfig
 import net.rickiekarp.botlib.PluginConfig
 import net.rickiekarp.botlib.enums.BotType
-import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -25,6 +24,8 @@ import org.json.JSONObject
 
 import java.io.File
 import java.util.logging.Level
+import kotlin.math.max
+import kotlin.math.min
 
 class BotSetupLayout {
     private val supportedBrowsers = arrayOf("chrome", "firefox")
@@ -34,15 +35,11 @@ class BotSetupLayout {
     private var prevButton: Button? = null
     private var nextButton: Button? = null
 
-    private val MIN_TILE_SIZE = 50.0
+    private val minTileSize = 50.0
     private val nColumns = supportedBrowsers.size.toDouble()
     private val nRows = 1.0
-    private val prefTileSize = SimpleDoubleProperty(MIN_TILE_SIZE)
+    private val prefTileSize = SimpleDoubleProperty(minTileSize)
 
-    // create a color swatch.
-    //controls
-    //padding top, left, bottom, right
-    //set layouts
     val layout: Node
         get() {
             val borderpane = BorderPane()
@@ -65,7 +62,7 @@ class BotSetupLayout {
 
             prevButton = Button(LanguageController.getString("back"))
             prevButton!!.isVisible = false
-            prevButton!!.setOnAction { event ->
+            prevButton!!.setOnAction {
                 setupGrid!!.children.clear()
                 browserSetupStep--
                 showSetupStep(browserSetupStep)
@@ -73,7 +70,7 @@ class BotSetupLayout {
             controls.children.add(prevButton)
 
             nextButton = Button(LanguageController.getString("next"))
-            nextButton!!.setOnAction { event ->
+            nextButton!!.setOnAction {
                 setupGrid!!.children.clear()
                 browserSetupStep++
                 if (browserSetupStep == 4 && PluginConfig.botType === BotType.Bot.FIREFOX) {
@@ -87,8 +84,8 @@ class BotSetupLayout {
             borderpane.center = vbox
             borderpane.bottom = controls
 
-            setupGrid!!.layoutBoundsProperty().addListener { observableValue, oldBounds, newBounds ->
-                prefTileSize.set(Math.max(MIN_TILE_SIZE, Math.min(newBounds.width / nColumns, newBounds.height / nRows)))
+            setupGrid!!.layoutBoundsProperty().addListener { _, _, newBounds ->
+                prefTileSize.set(max(minTileSize, min(newBounds.width / nColumns, newBounds.height / nRows)))
                 calculateSizes()
             }
 
@@ -108,16 +105,16 @@ class BotSetupLayout {
                 messageLabel!!.text = LanguageController.getString("desc_setup_1_0")
                 nextButton!!.isDisable = true
 
-                val desc_setup_4_1 = Label(LanguageController.getString("desc_setup_1_1"))
-                desc_setup_4_1.alignment = Pos.CENTER
-                desc_setup_4_1.maxHeight = 100.0
-                desc_setup_4_1.isWrapText = true
-                GridPane.setConstraints(desc_setup_4_1, 0, 0)
+                val descSetup41 = Label(LanguageController.getString("desc_setup_1_1"))
+                descSetup41.alignment = Pos.CENTER
+                descSetup41.maxHeight = 100.0
+                descSetup41.isWrapText = true
+                GridPane.setConstraints(descSetup41, 0, 0)
 
                 val searchNode = Button(LanguageController.getString("search"))
                 searchNode.maxHeight = 100.0
                 searchNode.alignment = Pos.CENTER
-                searchNode.setOnAction { event ->
+                searchNode.setOnAction {
                     val directoryChooser = DirectoryChooser()
                     directoryChooser.initialDirectory = Configuration.config.jarFile.parentFile
                     val selectedDirectory = directoryChooser.showDialog(MainScene.mainScene.windowScene!!.window)
@@ -133,7 +130,7 @@ class BotSetupLayout {
                 }
                 GridPane.setConstraints(searchNode, 0, 1)
 
-                setupGrid!!.children.addAll(desc_setup_4_1, searchNode)
+                setupGrid!!.children.addAll(descSetup41, searchNode)
                 calculateSizes()
             }
 
@@ -155,13 +152,13 @@ class BotSetupLayout {
 
                     // position the button in the grid.
                     GridPane.setConstraints(browserChoice, i, 0)
-                    browserChoice.setMinSize(MIN_TILE_SIZE, MIN_TILE_SIZE)
+                    browserChoice.setMinSize(minTileSize, minTileSize)
                     browserChoice.setMaxSize(java.lang.Double.MAX_VALUE, java.lang.Double.MAX_VALUE)
                     setupGrid!!.children.add(browserChoice)
                     i++
                 }
 
-                group.selectedToggleProperty().addListener { ov, old_toggle, new_toggle ->
+                group.selectedToggleProperty().addListener { _, _, _ ->
                     if (group.selectedToggle != null) {
                         when (group.selectedToggle.userData as Int) {
                             1 -> PluginConfig.botType = BotType.Bot.CHROME

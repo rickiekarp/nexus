@@ -43,16 +43,16 @@ class FoldableListCell(private val list: ListView<*>) : ListCell<BotSetting>() {
                 vbox.children.addAll(labelDescription, settingVBox)
             }
 
-            labelHeader.setOnMouseEntered { me ->
+            labelHeader.setOnMouseEntered {
                 labelHeader.style = "-fx-background-color: derive(-fx-base, 5%);"
                 settingVBox!!.style = "-fx-background-color: derive(-fx-base, 5%);"
             }
-            labelHeader.setOnMouseExited { me ->
+            labelHeader.setOnMouseExited {
                 labelHeader.style = null
                 settingVBox!!.style = null
             }
 
-            labelHeader.setOnMouseClicked { me ->
+            labelHeader.setOnMouseClicked {
                 if (item.isVisible) {
                     labelHeader.graphic = createArrowPath(30, true)
                     for (i in vbox.children.size - 1 downTo 1) {

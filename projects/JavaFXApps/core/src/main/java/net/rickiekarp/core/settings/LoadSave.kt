@@ -16,7 +16,7 @@ annotation class LoadSave {
         @JvmField val themeState = 0
         @JvmField val colorScheme = 0
         @JvmField val animations = true
-        @JvmField val useSystemBorders = true
+        @JvmField val useSystemBorders = false
         @JvmField val logState = false
         @JvmField val showTrayIcon = false
 

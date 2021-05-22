@@ -30,7 +30,7 @@ class AccountManager {
             try {
                 val profileString = FileUtil.readFirstLineFromFile(activeProfile)
                 activeProfile = File(Configuration.config.profileDirFile.toString() + "/" + profileString + "/" + PROFILE_KEY)
-                val profileJson = JsonParser.readJsonFromFile(activeProfile) ?: return null
+                val profileJson = JsonParser.readJsonFromFile(activeProfile)
                 var password: String
                 try {
                     password = Base64Coder.decodeString(profileJson.getString("signinkey"))
@@ -71,7 +71,7 @@ class AccountManager {
 
     fun updateAccessToken(): Boolean {
         val validationAction = NetworkApi.requestAccessToken(account!!)
-        val inputStream = AppContext.context!!.networkApi.runNetworkAction(validationAction)
+        val inputStream = AppContext.context.networkApi.runNetworkAction(validationAction)
         if (inputStream != null) {
             val token = NetResponse.getResponseJson(inputStream)
             if (token != null) {

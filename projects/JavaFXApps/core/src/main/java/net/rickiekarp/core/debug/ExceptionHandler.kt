@@ -37,7 +37,7 @@ class ExceptionHandler(thread: Thread, throwable: Throwable) {
         //modalDialog.getIcons().add(ImageLoaderUtil.app_icon);
         modalDialog.initModality(Modality.APPLICATION_MODAL)
         modalDialog.isResizable = true
-        modalDialog.setOnCloseRequest { event -> modalDialog.close() }
+        modalDialog.setOnCloseRequest { modalDialog.close() }
 
         val borderpane = BorderPane()
         val grid = GridPane()
@@ -79,7 +79,7 @@ class ExceptionHandler(thread: Thread, throwable: Throwable) {
         borderpane.bottom = controls
 
         //action listener
-        copy.setOnAction { event ->
+        copy.setOnAction {
             status.isVisible = true
             setStringToClipboard(exTF.text)
             status.style = "-fx-text-fill: #55c4fe;"
