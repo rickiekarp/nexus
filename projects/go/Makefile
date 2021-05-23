@@ -15,19 +15,19 @@ build:
 		GOOS=linux GOARCH=amd64 \
 		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
 		-o $(BUILD_PATH)/$(BINARY_NAME) \
-		cmd/gamesrv/main.go
+		cmd/snakesrv/main.go
 
 buildARMv5: 
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 \
 		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
 		-o $(BUILD_PATH)/$(BINARY_NAME) \
-		cmd/gamesrv/main.go
+		cmd/snakesrv/main.go
 
 buildARM64v5: 
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=5 \
 		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
 		-o $(BUILD_PATH)/$(BINARY_NAME) \
-		cmd/gamesrv/main.go
+		cmd/snakesrv/main.go
 
 test: 
 		$(GOTEST) -v ./...

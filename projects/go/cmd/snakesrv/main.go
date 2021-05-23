@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"os"
 
-	"git.rickiekarp.net/rickie/home/projects/gogogo/src/game/snakefx"
-	"git.rickiekarp.net/rickie/home/projects/gogogo/src/parser/yamlparser"
+	"git.rickiekarp.net/rickie/home/projects/go/src/game/snakefx"
+	"git.rickiekarp.net/rickie/home/projects/go/src/parser/yamlparser"
 	"github.com/gorilla/mux"
 )
 
@@ -24,7 +24,7 @@ func main() {
 	var config yamlparser.Requestdata
 	config.GetConf()
 
-	port := flag.Int("port", config.Gamesrv.Port, "application port")
+	port := flag.Int("port", config.Snakesrv.Port, "application port")
 	flag.Parse()
 
 	args := flag.Args()

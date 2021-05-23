@@ -4,12 +4,12 @@ build-gobackend:
   before_script:
     - apk update && apk add git make
   script:
-    - cd projects/gogogo
+    - cd projects/go
     - make build
   artifacts:
     paths:
-      - projects/gogogo/build
+      - projects/go/build
     expire_in: 1 week
   only:
     changes:
-      - projects/gogogo/**/*
+      - projects/go/**/*

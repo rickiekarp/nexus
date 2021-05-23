@@ -13,7 +13,7 @@ type Requestdata struct {
 	Xuserid       string `yaml:"xuserid"`
 	Xdays         string `yaml:"xdays"`
 	Recipient     string `yaml:"recipient"`
-	Gamesrv       struct {
+	Snakesrv      struct {
 		Port int `yaml: port`
 	}
 	DB struct {
