@@ -6,6 +6,7 @@ import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
 import java.io.File
+import java.io.FileNotFoundException
 import java.util.*
 
 abstract class AbstractLocalizationManager {
@@ -18,12 +19,11 @@ abstract class AbstractLocalizationManager {
         var nList: NodeList? = null
         val translationFolder = getTranslationFileFolder(locale)
         try {
-
             val translationFileUrl = classLoader.getResource("localization/$translationFolder/ios.xml")
-            val xmlFile = File(translationFileUrl.path)
+            val xmlFile = File(translationFileUrl!!.path)
             nList = parser.parse(xmlFile)!!.getElementsByTagName("string")
             Log.DEBUG.info("Loaded translations for locale: $locale")
-        } catch (e: Exception) {
+        } catch (e: FileNotFoundException) {
             Log.DEBUG.error("Translations could not be loaded for locale: $locale (${e.message})")
         }
 

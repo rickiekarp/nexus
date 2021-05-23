@@ -19,7 +19,11 @@ import java.io.File
 @Order(100)
 class CustomLoggerConfigurationFactory {
 
-    fun createConfiguration(name: String, logLevel: String, builder: ConfigurationBuilder<BuiltConfiguration>): ConfigurationBuilder<BuiltConfiguration> {
+    fun createConfiguration(
+        name: String, logLevel: String,
+        builder: ConfigurationBuilder<BuiltConfiguration>
+    ): ConfigurationBuilder<BuiltConfiguration> {
+
         builder.setConfigurationName(name)
         builder.setStatusLevel(Level.ERROR)
 

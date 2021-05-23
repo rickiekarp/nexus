@@ -14,7 +14,7 @@ import javax.sql.DataSource
 
 @Repository
 open class ApplicationSettingsRepo: ApplicationSettingsDao {
-    private val FIND_BY_IDENTIFIER = "SELECT * FROM applicationsettings WHERE identifier = ?"
+    private val settingByIdentifier = "SELECT * FROM applicationsettings WHERE identifier = ?"
 
     @Autowired
     private val dataSource: DataSource? = null
@@ -23,7 +23,7 @@ open class ApplicationSettingsRepo: ApplicationSettingsDao {
         var userVO: ApplicationSettingDto? = null
         var stmt: PreparedStatement? = null
         try {
-            stmt = dataSource!!.connection.prepareStatement(FIND_BY_IDENTIFIER, Statement.RETURN_GENERATED_KEYS)
+            stmt = dataSource!!.connection.prepareStatement(settingByIdentifier, Statement.RETURN_GENERATED_KEYS)
             stmt!!.setString(1, settingIdentifier)
 
             val rs = stmt.executeQuery()
@@ -48,5 +48,4 @@ open class ApplicationSettingsRepo: ApplicationSettingsDao {
         userVO.lastUpdated = resultSet.getDate("lastUpdated")
         return userVO
     }
-
 }

@@ -44,7 +44,7 @@ open class Application {
             val workingDirectory = System.getProperty("user.dir")
             return "$workingDirectory.setup"
         } else {
-            val directories = File(System.getProperty("user.dir")).listFiles().filter { it.isDirectory }
+            val directories = File(System.getProperty("user.dir")).listFiles()!!.filter { it.isDirectory }
             for (directory in directories) {
                 if (directory.name == "$aSetupDirectoryName.setup") {
                     return "${System.getProperty("user.dir")}/${directory.name}"

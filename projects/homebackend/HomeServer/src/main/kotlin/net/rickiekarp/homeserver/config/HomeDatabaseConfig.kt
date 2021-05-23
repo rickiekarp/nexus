@@ -50,15 +50,10 @@ open class HomeDatabaseConfig {
     @Bean(name = ["entityManager"])
     open fun entityManagerFactory(builder: EntityManagerFactoryBuilder, @Qualifier("dataSource") dataSource: DataSource): LocalContainerEntityManagerFactoryBean {
 
-        //TODO: remove additional property once https://hibernate.atlassian.net/browse/HHH-12368 is resolved
-        val additionalProperties = HashMap<String, Any>()
-        additionalProperties.put("hibernate.jdbc.lob.non_contextual_creation", true)
-
         return builder
                 .dataSource(dataSource)
                 .packages("net.rickiekarp.homeserver.config")
                 .persistenceUnit("applicationPU")
-                .properties(additionalProperties)
                 .build()
     }
 
