@@ -10,7 +10,7 @@ extra.set("mockitoCore", "3.9.0")
 
 // analysis
 extra.set("dokkaVersion", "1.4.30")
-extra.set("detektVersion", "1.16.0")
+extra.set("detektVersion", "1.17.1")
 extra.set("spotbugsPluginVersion", "4.6.0")
 
 // protocols
