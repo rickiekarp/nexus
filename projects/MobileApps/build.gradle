@@ -1,8 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    apply from: '../../libs/kotlin/dep/latest/base.gradle.kts'
-    apply from: '../../libs/kotlin/dep/latest/libs.gradle.kts'
+    apply from: '../../config/kotlin/dependencies/latest/base.gradle.kts'
+    apply from: '../../config/kotlin/dependencies/latest/libs.gradle.kts'
 
     repositories {
         jcenter()

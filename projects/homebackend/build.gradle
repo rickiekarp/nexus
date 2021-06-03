@@ -1,9 +1,9 @@
 //import com.github.spotbugs.SpotBugsTask
 
 buildscript {
-    apply from: '../../libs/kotlin/dep/latest/base.gradle.kts'
-    apply from: '../../libs/kotlin/dep/latest/libs.gradle.kts'
-    apply from: '../../libs/kotlin/dep/latest/logging.gradle.kts'
+    apply from: '../../config/kotlin/dependencies/latest/base.gradle.kts'
+    apply from: '../../config/kotlin/dependencies/latest/libs.gradle.kts'
+    apply from: '../../config/kotlin/dependencies/latest/logging.gradle.kts'
 
     repositories {
         mavenCentral()
@@ -39,7 +39,7 @@ allprojects {
     detekt {
         toolVersion = "$detektVersion"
         input = files("src/main/kotlin")
-        config = files("../../../libs/kotlin/plugins/config/detekt/detekt.yml")
+        config = files("../../../config/kotlin/plugins/detekt/detekt.yml")
     }
 }
 

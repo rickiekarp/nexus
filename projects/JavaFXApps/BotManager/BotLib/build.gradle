@@ -15,5 +15,5 @@ dependencies {
 }
 
 detekt {
-    config = files("../../../../libs/kotlin/plugins/config/detekt/detekt.yml")
+    config = files("../../../../config/kotlin/plugins/detekt/detekt.yml")
 }

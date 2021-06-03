@@ -1,7 +1,7 @@
 buildscript {
-    apply from: '../../../libs/kotlin/dep/latest/base.gradle.kts'
-    apply from: '../../../libs/kotlin/dep/latest/libs.gradle.kts'
-    apply from: '../../../libs/kotlin/dep/latest/logging.gradle.kts'
+    apply from: '../../../config/kotlin/dependencies/latest/base.gradle.kts'
+    apply from: '../../../config/kotlin/dependencies/latest/libs.gradle.kts'
+    apply from: '../../../config/kotlin/dependencies/latest/logging.gradle.kts'
 }
 
 dependencies {

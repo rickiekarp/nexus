@@ -1,7 +1,7 @@
 buildscript {
-    apply from: '../../libs/kotlin/dep/latest/base.gradle.kts'
-    apply from: '../../libs/kotlin/dep/latest/libs.gradle.kts'
-    apply from: '../../libs/kotlin/dep/latest/ui.gradle.kts'
+    apply from: '../../config/kotlin/dependencies/latest/base.gradle.kts'
+    apply from: '../../config/kotlin/dependencies/latest/libs.gradle.kts'
+    apply from: '../../config/kotlin/dependencies/latest/ui.gradle.kts'
 
     repositories {
         mavenCentral()
@@ -66,7 +66,7 @@ allprojects {
     detekt {
         toolVersion = "$detektVersion"
         input = files("src/main/kotlin")
-        config = files("../../../libs/kotlin/plugins/config/detekt/detekt.yml")
+        config = files("../../../config/kotlin/plugins/detekt/detekt.yml")
     }
 }
 
