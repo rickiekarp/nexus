@@ -8,7 +8,7 @@ import (
 func CheckFile(logFile string) (*os.File, error) {
 	f, err := os.OpenFile(logFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
-		log.Println("error opening file: %v", err)
+		log.Println("error opening file:", err)
 		f, err = getFallbackLog()
 	}
 	return f, err

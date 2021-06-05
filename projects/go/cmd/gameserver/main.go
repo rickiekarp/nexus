@@ -1,19 +1,17 @@
 package main
 
 import (
-	"database/sql"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
-	"git.rickiekarp.net/rickie/home/projects/go/src/game/snakefx"
+	"git.rickiekarp.net/rickie/home/projects/go/api"
+	"git.rickiekarp.net/rickie/home/projects/go/src/database"
 	"git.rickiekarp.net/rickie/home/projects/go/src/parser/yamlparser"
 	"github.com/gorilla/mux"
 )
-
-var db *sql.DB
 
 // Version set during go build using ldflags
 var Version = "development"
@@ -24,7 +22,7 @@ func main() {
 	var config yamlparser.Requestdata
 	config.GetConf()
 
-	port := flag.Int("port", config.Snakesrv.Port, "application port")
+	port := flag.Int("port", config.Gamesrv.Port, "application port")
 	flag.Parse()
 
 	args := flag.Args()
@@ -37,17 +35,16 @@ func main() {
 	}
 
 	fmt.Println(config)
-
 	fmt.Println("tail:", args)
 
-	db = snakefx.InitDB(fmt.Sprintf("%s:%s@tcp(%s:3306)/%s", config.DB.Username, config.DB.Password, config.DB.Url, config.DB.Database))
+	database.GetConnection(config.DB.Username, config.DB.Password, config.DB.Url, config.DB.Database)
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/gamedata/ranking/highscore", snakefx.GetEmps).Methods("GET")
-	router.HandleFunc("/gamedata/ranking/highscore/{name}", snakefx.GetEmp).Methods("GET")
-	router.HandleFunc("/gamedata/ranking/addHighscore", snakefx.CreateEmp).Methods("POST")
-	router.HandleFunc("/gamedata/ranking/highscore/{name}", snakefx.DeleteEmp).Methods("DELETE")
+	router.HandleFunc("/gamedata/ranking/highscore", api.GetEmps).Methods("GET")
+	router.HandleFunc("/gamedata/ranking/highscore/{name}", api.GetEmp).Methods("GET")
+	router.HandleFunc("/gamedata/ranking/addHighscore", api.CreateEmp).Methods("POST")
+	router.HandleFunc("/gamedata/ranking/highscore/{name}", api.DeleteEmp).Methods("DELETE")
 
 	fmt.Println("Start listening on", *port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), router))

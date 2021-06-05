@@ -1,10 +1,10 @@
-package snakefx
+package api
 
 import (
-	"database/sql"
 	"log"
 	"time"
 
+	"git.rickiekarp.net/rickie/home/projects/go/src/database"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -18,8 +18,8 @@ type Highscore struct {
 	Date   time.Time `json:"dateAdded"`
 }
 
-func GetRanking(db *sql.DB) *[]Highscore {
-	results, err := db.Query(GET_HIGHSCORES)
+func GetRanking() *[]Highscore {
+	results, err := database.DB.Query(GET_HIGHSCORES)
 	if err != nil {
 		panic(err.Error()) // proper error handling instead of panic in your app
 	}
@@ -41,8 +41,8 @@ func GetRanking(db *sql.DB) *[]Highscore {
 	return &emps
 }
 
-func AddHighscore(db *sql.DB, name string, points int) {
-	statement, err := db.Prepare("INSERT INTO highscore (name, points) VALUES(?,?)")
+func AddHighscore(name string, points int) {
+	statement, err := database.DB.Prepare("INSERT INTO highscore (name, points) VALUES(?,?)")
 	if err != nil {
 		panic(err.Error())
 	}

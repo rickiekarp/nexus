@@ -1,4 +1,4 @@
-package database
+package api
 
 import (
 	"database/sql"
@@ -38,5 +38,4 @@ func GetUsers() {
 		// and then print out the tag's Name attribute
 		log.Printf("%s %d", tag.Name, tag.ID)
 	}
-
 }

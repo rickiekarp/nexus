@@ -1,4 +1,4 @@
-package snakefx
+package api
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 )
 
 func GetEmps(w http.ResponseWriter, r *http.Request) {
-	emps := GetRanking(db)
+	emps := GetRanking()
 	json.NewEncoder(w).Encode(emps)
 }
 
@@ -27,7 +27,7 @@ func CreateEmp(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&emp)
 	json.NewEncoder(w).Encode(emp)
 	log.Println(emp)
-	AddHighscore(db, emp.Name, emp.Points)
+	AddHighscore(emp.Name, emp.Points)
 }
 
 func DeleteEmp(w http.ResponseWriter, r *http.Request) {
