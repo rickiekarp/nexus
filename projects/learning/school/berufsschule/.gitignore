@@ -1,0 +1,14 @@
+.gradle/
+local.properties
+.idea/
+.DS_Store
+build/
+/captures
+
+# AndroidStudio files
+*.iml
+*.apk
+crashlytics-build.properties
+
+# Linux package files
+*.deb

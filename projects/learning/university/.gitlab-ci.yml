@@ -1,0 +1,20 @@
+stages:
+  - test
+  - build
+  - report
+
+test-university:
+  stage: test
+  image: openjdk:11.0.7-jdk
+  script:
+    - ./gradlew clean test
+
+detekt-university:
+  stage: report
+  image: openjdk:11.0.7-jdk
+  script:
+    - ./gradlew detektTest
+  artifacts:
+    paths:
+      - learning/university/build/reports/detekt/
+    expire_in: 1 week

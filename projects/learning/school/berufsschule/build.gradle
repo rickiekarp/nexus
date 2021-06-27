@@ -1,0 +1,66 @@
+group 'com.itech.bs'
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+
+    sourceCompatibility =  JavaVersion.VERSION_1_10
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+}
+
+subprojects {
+//SOURCE SETS
+    sourceSets {
+        main {
+            java {
+                srcDirs = ["Sources"]
+            }
+            resources {
+                srcDirs =  ["Resources"]
+            }
+        }
+        test {
+            java {
+                srcDirs =  ["TestSources"]
+            }
+            resources {
+                srcDirs =  ["TestResources"]
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+//SOURCE SETS
+sourceSets {
+    main {
+        java {
+            srcDirs = []
+        }
+        resources {
+            srcDirs =  []
+        }
+    }
+    test {
+        java {
+            srcDirs =  []
+        }
+        resources {
+            srcDirs =  []
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
+}

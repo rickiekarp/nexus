@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/projects/go/pkg/common/utils"
+	"git.rickiekarp.net/rickie/home/pkg/common/utils"
 )
 
 type RequestData struct {
@@ -24,8 +24,8 @@ type AdditionalData struct {
 }
 
 var (
-	outfile, err = utils.CheckFile("/var/log/pi/today/requester.log")
-	logger       = log.New(outfile, "", log.LstdFlags|log.Lshortfile)
+	outfile, _ = utils.CheckFile("/var/log/pi/today/requester.log")
+	logger     = log.New(outfile, "", log.LstdFlags|log.Lshortfile)
 )
 
 // Method on struct type

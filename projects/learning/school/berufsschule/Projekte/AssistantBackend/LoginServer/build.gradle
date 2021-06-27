@@ -1,0 +1,30 @@
+group 'com.projekt.loginserver'
+
+dependencies {
+    compile project(':Foundation')
+}
+
+webAppDirName = 'webapp'
+
+build {
+    println 'Building ' + project.name
+
+    ext {
+        if (project.hasProperty('privateBuildDate')) {
+            privateBuildDate = project.property('privateBuildDate')
+        } else {
+            privateBuildDate = new Date().format('yyMMddHHmm')
+        }
+    }
+
+    war {
+        libsDirName = new File(rootProject.projectDir, "build")
+
+        manifest {
+            attributes 'Build-Time': build.ext.privateBuildDate
+        }
+
+        archiveName 'LoginServer.war'
+        from 'Foundation/build/libs'
+    }
+}
