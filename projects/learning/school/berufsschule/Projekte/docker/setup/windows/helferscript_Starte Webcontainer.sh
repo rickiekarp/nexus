@@ -1,1 +1,0 @@
-"C:\Program Files\Docker Toolbox\start.sh" docker-compose -f "C:/Share/setup-docker/setup/opencart/docker-compose.yml" up

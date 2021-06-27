@@ -1,6 +1,0 @@
-rootProject.name = 'AssistantBackend'
-
-include 'AppServer'
-include 'Deployment'
-include 'Foundation'
-include 'LoginServer'

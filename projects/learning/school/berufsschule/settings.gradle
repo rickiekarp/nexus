@@ -1,4 +1,0 @@
-rootProject.name = 'berufsschule'
-
-include 'Anwendungsentwicklung'
-include 'IT-Systeme'

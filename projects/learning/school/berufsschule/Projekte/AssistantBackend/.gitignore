@@ -1,9 +1,0 @@
-.gradle/
-.idea/
-.DS_Store
-build/
-out/
-
-# Project files
-*.iml
-*.war
