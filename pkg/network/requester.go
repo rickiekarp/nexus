@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/projects/go/src/common/utils"
+	"git.rickiekarp.net/rickie/home/projects/go/pkg/common/utils"
 )
 
 type RequestData struct {

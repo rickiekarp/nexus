@@ -8,8 +8,8 @@ import (
 	"syscall"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/projects/go/src/config"
-	"git.rickiekarp.net/rickie/home/projects/go/src/util"
+	"git.rickiekarp.net/rickie/home/pkg/config"
+	"git.rickiekarp.net/rickie/home/pkg/util"
 	"github.com/sirupsen/logrus"
 )
 
@@ -51,7 +51,7 @@ func main() {
 		sig := <-signals
 		logrus.Info("Signal received: ", sig)
 
-		// indicate that the lineChannel can be closed and no further heartbeats should be send
+		// indicate that the sysmonChannel can be closed and no further heartbeats should be send
 		sysmonChannel <- true
 
 		// indicate to quit the application
@@ -64,7 +64,7 @@ func main() {
 		for {
 			// blocks until one of its cases can run
 			select {
-			// exit goroutine if lineChannel is closed
+			// exit goroutine if sysmonChannel is closed
 			case <-sysmonChannel:
 				return
 			// make sure this case is executed every 10 seconds

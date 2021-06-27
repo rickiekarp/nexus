@@ -1,8 +1,0 @@
-bin
-pkg
-
-# contains secrets
-conf
-
-# build output directory
-build

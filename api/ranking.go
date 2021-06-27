@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/projects/go/src/database"
+	"git.rickiekarp.net/rickie/home/pkg/database"
 	_ "github.com/go-sql-driver/mysql"
 )
 

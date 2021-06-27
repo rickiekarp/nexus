@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 
-	"git.rickiekarp.net/rickie/home/projects/go/api"
-	"git.rickiekarp.net/rickie/home/projects/go/src/database"
-	"git.rickiekarp.net/rickie/home/projects/go/src/parser/yamlparser"
+	"git.rickiekarp.net/rickie/home/api"
+	"git.rickiekarp.net/rickie/home/pkg/database"
+	"git.rickiekarp.net/rickie/home/pkg/parser/yamlparser"
 	"github.com/gorilla/mux"
 )
 
