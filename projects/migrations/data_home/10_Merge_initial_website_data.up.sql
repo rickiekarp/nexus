@@ -1,4 +1,4 @@
-insert into company (name, type) values ('Berufliche Schule Elmshorn', 'education');
+insert into company (name, type) values ('Vocational School Elmshorn', 'education');
 insert into company (name, type) values ('University of Hamburg', 'education');
 insert into company (name, type) values ('Goodgame Studios', 'experience');
 insert into company (name, type) values ('XYRALITY GmbH', 'experience');

@@ -23,36 +23,17 @@
 
 <div id="education" *ngIf="educationInfo.length > 0">
     <h2 class="heading">Education</h2>
-    <div class="education-block shadow-large">
-        <h3>University of Hamburg</h3>
-        <span>August 2015 - February 2016</span>
-        <h4>Computer Science</h4>
+    <div class="education-block shadow-large" *ngFor="let edu of educationInfo" data-date="">
+        <div *ngIf="edu.endDate; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock><span>{{edu.startDate}} - {{edu.endDate}}</span></ng-template>
+        <ng-template #elseBlock><span>{{edu.startDate}} - Now</span></ng-template>
+        <h3>{{edu.name}}</h3>
+        <h4>{{edu.jobTitle}}</h4>
         <p>
-            Attended computer science classes
+            {{edu.description.description}}
         </p>
     </div>
     <!-- End .education-block -->
-
-    <div class="education-block shadow-large">
-        <h3>Berufliche Schule Elmshorn</h3>
-        <span>August 2011 - June 2012</span>
-        <h4>Berufsoberschule (Field of studies - Economics)</h4>
-        <p>
-            General qualification for university entrance
-        </p>
-    </div>
-    <!-- End .education-block -->
-
-    <div class="education-block shadow-large">
-        <h3>Berufliche Schule Elmshorn</h3>
-        <span>August 2009 - June 2011</span>
-        <h4>Berufsfachschule (Field of studies - Foreign languages)</h4>
-        <p>
-            University of applied sciences entrance qualification
-        </p>
-    </div>
-    <!-- End .education-block -->
-
 </div>
 <!-- End #education -->
 
