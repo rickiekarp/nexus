@@ -115,10 +115,6 @@ func ExecuteCmdSilent(command string, args ...string) int {
 	return 0
 }
 
-func ExecuteCmdAndGetOutput(command string, args ...string) string {
-	out, err := exec.Command(command, args...).Output()
-	if err != nil {
-		log.Error(err)
-	}
-	return string(out)
+func ExecuteCmdAndGetOutput(command string, args ...string) ([]byte, error) {
+	return exec.Command(command, args...).Output()
 }
