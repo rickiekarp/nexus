@@ -26,7 +26,7 @@ type Requestdata struct {
 
 func (c *Requestdata) GetConf() *Requestdata {
 
-	yamlFile, err := ioutil.ReadFile("conf/conf.yaml")
+	yamlFile, err := ioutil.ReadFile("config/gobackend/conf.yaml")
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)
 	}

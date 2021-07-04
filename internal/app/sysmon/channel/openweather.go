@@ -18,7 +18,7 @@ var (
 	WeatherChannel chan bool
 )
 
-type WeatherApiData struct {
+type weatherApiData struct {
 	Coord struct {
 		Lon float64 `json:"lon"`
 		Lat float64 `json:"lat"`
@@ -115,7 +115,7 @@ func ScheduleWeatherUpdate() {
 					continue
 				}
 
-				res := WeatherApiData{}
+				res := weatherApiData{}
 				err = json.Unmarshal([]byte(body), &res)
 				if err != nil {
 					logrus.Error("Could not unmarshal weather data! ", err)

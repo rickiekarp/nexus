@@ -4,7 +4,6 @@ import (
 	"log"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/pkg/database"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -19,7 +18,7 @@ type Highscore struct {
 }
 
 func GetRanking() *[]Highscore {
-	results, err := database.DB.Query(GET_HIGHSCORES)
+	results, err := DB.Query(GET_HIGHSCORES)
 	if err != nil {
 		panic(err.Error()) // proper error handling instead of panic in your app
 	}
@@ -42,7 +41,7 @@ func GetRanking() *[]Highscore {
 }
 
 func AddHighscore(name string, points int) {
-	statement, err := database.DB.Prepare("INSERT INTO highscore (name, points) VALUES(?,?)")
+	statement, err := DB.Prepare("INSERT INTO highscore (name, points) VALUES(?,?)")
 	if err != nil {
 		panic(err.Error())
 	}

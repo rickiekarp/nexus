@@ -13,6 +13,7 @@ node_modules
 
 # configs
 config/sysmon
+config/gobackend
 
 # build output directory
 build/output

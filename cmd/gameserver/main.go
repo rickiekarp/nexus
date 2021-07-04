@@ -7,14 +7,13 @@ import (
 	"net/http"
 	"os"
 
-	"git.rickiekarp.net/rickie/home/api"
+	"git.rickiekarp.net/rickie/home/internal/app/gameserver/api"
 	"git.rickiekarp.net/rickie/home/pkg/database"
 	"git.rickiekarp.net/rickie/home/pkg/parser/yamlparser"
 	"github.com/gorilla/mux"
 )
 
-// Version set during go build using ldflags
-var Version = "development"
+var Version = "development" // Version set during go build using ldflags
 
 func main() {
 
@@ -34,10 +33,14 @@ func main() {
 		}
 	}
 
-	fmt.Println(config)
-	fmt.Println("tail:", args)
+	log.Println(config)
+	log.Println("tail:", args)
 
-	database.GetConnection(config.DB.Username, config.DB.Password, config.DB.Url, config.DB.Database)
+	DB, err := database.GetConnection(config.DB.Username, config.DB.Password, config.DB.Url, config.DB.Database)
+	if err != nil {
+		log.Println(err)
+	}
+	api.DB = DB
 
 	router := mux.NewRouter()
 
@@ -46,7 +49,7 @@ func main() {
 	router.HandleFunc("/gamedata/ranking/addHighscore", api.CreateEmp).Methods("POST")
 	router.HandleFunc("/gamedata/ranking/highscore/{name}", api.DeleteEmp).Methods("DELETE")
 
-	fmt.Println("Start listening on", *port)
+	log.Println("Start listening on", *port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), router))
 }
 
