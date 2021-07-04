@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+   graphite:
+     image: graphiteapp/graphite-statsd:latest
+     expose: 
+        - 8125
+        - 2003
+        - 42022
+        - 8080
+     ports:
+       - "9000:80"
+       - "8125:8125"
+       - "2003:2003"

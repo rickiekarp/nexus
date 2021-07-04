@@ -51,19 +51,22 @@ func main() {
 		logrus.Info("Signal received: ", sig)
 
 		// indicate that the sysmonChannel can be closed and no further heartbeats should be send
-		if utils.IsChannelOpen(channel.SysmonChannel) {
-			channel.SysmonChannel <- true
+		// if utils.IsChannelOpen(channel.SysmonChannel) {
+		// 	channel.SysmonChannel <- true
+		// }
+
+		// indicate that the WeatherChannel can be closed and no further weather data should be collected
+		if utils.IsChannelOpen(channel.WeatherChannel) {
+			channel.WeatherChannel <- true
 		}
 
 		// indicate to quit the application
 		applicationChannel <- true
 	}()
 
-	// start goroutine for anonymous function call
-	// to keep the line up until SIGINT / SIGTERM
-	go channel.Schedule()
+	go channel.ScheduleWeatherUpdate()
 
-	apiServer := api.GetServer(":8080")
+	apiServer := api.GetServer(":10000")
 	go api.StartApiServer(apiServer)
 
 	// The program will wait here until it gets the expected signal

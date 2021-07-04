@@ -12,9 +12,9 @@ import (
 
 // defineApiEndpoints defines all routes the Router can handle
 func defineApiEndpoints(r *mux.Router) {
-	r.HandleFunc("/stop", channel.RestartLineEndpoint).Methods("GET")
-	r.HandleFunc("/start", channel.StartEndpoint).Methods("GET")
-	r.HandleFunc("/status", channel.StatusEndpoint).Methods("GET")
+	r.HandleFunc("/weather/stop", channel.StopWeatherMonitorEndpoint).Methods("GET")
+	r.HandleFunc("/weather/start", channel.StartWeatherMonitorEndpoint).Methods("GET")
+	r.HandleFunc("/weather/status", channel.WeatherMonitorStatusEndpoint).Methods("GET")
 }
 
 // GetServer returns a http server that listens on the given addr

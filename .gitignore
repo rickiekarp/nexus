@@ -10,3 +10,9 @@ conf
 
 # Node
 node_modules
+
+# configs
+config/sysmon
+
+# build output directory
+build/output

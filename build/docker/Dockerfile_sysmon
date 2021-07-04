@@ -1,0 +1,10 @@
+FROM scratch
+
+ENV GOPATH=/app
+
+COPY sysmon /app/sysmon
+COPY /config /app/config
+
+WORKDIR /app
+
+ENTRYPOINT ["/app/sysmon"]

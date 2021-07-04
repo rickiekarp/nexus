@@ -11,6 +11,22 @@ DEPLOYMENT_PATH=../module-deployment/service-gobackend
 
 all: clean test build
 
+buildSysmonAmd64: 
+		CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
+		-o $(BUILD_PATH)/output/sysmon \
+		cmd/sysmon/main.go
+		cp -r projects/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/
+		cp build/docker/Dockerfile_sysmon build/output/Dockerfile
+
+buildSysmonARM64v5: 
+		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
+		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
+		-o $(BUILD_PATH)/output/sysmon \
+		cmd/sysmon/main.go
+		cp -r projects/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/
+		cp build/docker/Dockerfile_sysmon build/output/Dockerfile
+
 build: 
 		GOOS=linux GOARCH=amd64 \
 		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
