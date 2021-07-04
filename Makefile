@@ -19,7 +19,7 @@ buildSysmonAmd64:
 		cp -r projects/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/
 		cp build/docker/Dockerfile_sysmon build/output/Dockerfile
 
-buildSysmonARM64v5: 
+buildSysmonARM64v7: 
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
 		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
 		-o $(BUILD_PATH)/output/sysmon \

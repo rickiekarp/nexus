@@ -9,6 +9,7 @@ import (
 
 	"git.rickiekarp.net/rickie/home/internal/app/sysmon/api"
 	"git.rickiekarp.net/rickie/home/internal/app/sysmon/channel"
+	sysmoncfg "git.rickiekarp.net/rickie/home/internal/app/sysmon/config"
 	"git.rickiekarp.net/rickie/home/internal/app/sysmon/utils"
 	"git.rickiekarp.net/rickie/home/pkg/config"
 	"github.com/sirupsen/logrus"
@@ -31,9 +32,19 @@ func init() {
 		fmt.Println(Version)
 		os.Exit(0)
 	}
+
+	logrus.Info("Starting sysmon (" + Version + ")")
 }
 
 func main() {
+
+	logrus.Info("Load sysmon config")
+	err := sysmoncfg.ReadSysmonConfig()
+	if err != nil {
+		logrus.Error("Could not load sysmon config!")
+		os.Exit(1)
+	}
+	logrus.Info(sysmoncfg.SysmonConf)
 
 	// Create channel for os.Signal notifications
 	signals := make(chan os.Signal)

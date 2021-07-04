@@ -7,15 +7,15 @@ import (
 	"net/http"
 	"time"
 
+	"git.rickiekarp.net/rickie/home/internal/app/sysmon/config"
 	"git.rickiekarp.net/rickie/home/internal/app/sysmon/utils"
 	"git.rickiekarp.net/rickie/home/pkg/apm"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v2"
 )
 
 var (
-	WeatherChannel chan bool = make(chan bool)
+	WeatherChannel chan bool
 )
 
 type WeatherApiData struct {
@@ -63,45 +63,45 @@ type WeatherApiData struct {
 	Cod      int    `json:"cod"`
 }
 
-type WeatherApi struct {
-	GraphiteHost   string   `json:"graphitehost"`
-	GraphitePort   int      `json:"graphiteport"`
-	GraphitePrefix string   `json:"graphiteprefix"`
-	ApiKey         string   `json:"apikey"`
-	CityIds        []string `json:"cityids"`
-	Interval       int      `json:"interval"`
-}
-
-var WeatherConf WeatherApi
-
 func ScheduleWeatherUpdate() {
 
-	err := readConfig("config/sysmon/weather.yaml")
+	logrus.Info("Loading weather monitoring config")
+	err := config.ReadWeatherConfig()
 	if err != nil {
 		logrus.Error("There was an error reading the weather config")
 		return
 	}
-	logrus.Info(WeatherConf)
+	logrus.Info(config.WeatherConf)
+
+	if !config.WeatherConf.Enabled {
+		logrus.Info("Weather monitoring is disabled!")
+		return
+	}
 
 	var apiUrls []string
-
-	for _, value := range WeatherConf.CityIds {
-		apiUrls = append(apiUrls, "http://api.openweathermap.org/data/2.5/weather?id="+value+"&appid="+WeatherConf.ApiKey+"&units=metric")
+	for _, value := range config.WeatherConf.CityIds {
+		apiUrls = append(apiUrls, "http://api.openweathermap.org/data/2.5/weather?id="+value+"&appid="+config.WeatherConf.ApiKey+"&units=metric")
 	}
+
+	if len(apiUrls) == 0 {
+		logrus.Warn("Could not find any apis to call! Exiting ScheduleWeatherUpdate!")
+		return
+	}
+
+	WeatherChannel = make(chan bool)
 
 	for {
 		// blocks until one of its cases can run
 		select {
 		// exit goroutine if sysmonChannel is closed
 		case <-WeatherChannel:
-			fmt.Println("stopping ScheduleWeatherUpdate")
+			logrus.Info("stopping ScheduleWeatherUpdate")
 			return
 		// make sure this case is executed every 10 seconds
 		// do not use a time.Sleep here since it causes a SIGKILL if the SIGTERM takes too long
-		case <-time.After(time.Duration(WeatherConf.Interval) * time.Minute):
+		case <-time.After(time.Duration(config.WeatherConf.Interval) * time.Minute):
 			logrus.Info("Calling weather api")
-			for idx, apiUrl := range apiUrls {
-				fmt.Println(idx, apiUrl)
+			for _, apiUrl := range apiUrls {
 
 				resp, err := http.Get(apiUrl)
 				if err != nil {
@@ -140,7 +140,7 @@ func ScheduleWeatherUpdate() {
 					"clouds.all":      float64(res.Clouds.All),
 				}
 
-				prefix := WeatherConf.GraphitePrefix + "." + res.Name
+				prefix := config.WeatherConf.GraphitePrefix + "." + res.Name
 				SendMetric(metric, prefix)
 			}
 
@@ -149,31 +149,10 @@ func ScheduleWeatherUpdate() {
 	}
 }
 
-// readConfig reads the given config file
-func readConfig(configFile string) error {
-
-	// read configfile
-	yamlFile, err := ioutil.ReadFile(configFile)
-	if err != nil {
-		logrus.Error("yamlFile.Get err: ", err)
-		return err
-	}
-
-	// unmarshal config file depending on given configStruct
-	err = yaml.Unmarshal(yamlFile, &WeatherConf)
-
-	if err != nil {
-		logrus.Error("Unmarshal failed: ", err)
-		return err
-	}
-
-	return nil
-}
-
 // SendMetric sends a metric to graphite
 func SendMetric(metric map[string]float64, prefix string) {
 
-	graphiteClient := graphite.NewClient(WeatherConf.GraphiteHost, WeatherConf.GraphitePort, prefix, "tcp")
+	graphiteClient := graphite.NewClient(config.SysmonConf.Graphite.Host, config.SysmonConf.Graphite.Port, prefix, "tcp")
 
 	// sends the given metric map to the configured graphite
 	if err := graphiteClient.SendData(metric); err != nil {
