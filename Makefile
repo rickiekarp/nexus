@@ -6,14 +6,10 @@ GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 BUILD_PATH=build
 BINARY_NAME=app
-BINARY_VERSION=$(shell date +%y.%m)
-DEPLOYMENT_PATH=../module-deployment/service-gobackend
-
-all: clean test build
 
 buildSysmonAmd64: 
 		CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
+		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD)" \
 		-o $(BUILD_PATH)/output/sysmon \
 		cmd/sysmon/main.go
 		cp -r projects/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/
@@ -21,7 +17,7 @@ buildSysmonAmd64:
 
 buildSysmonARM64v7: 
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
-		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
+		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD)" \
 		-o $(BUILD_PATH)/output/sysmon \
 		cmd/sysmon/main.go
 		cp -r projects/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/
@@ -29,19 +25,19 @@ buildSysmonARM64v7:
 
 build: 
 		GOOS=linux GOARCH=amd64 \
-		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
+		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD)" \
 		-o $(BUILD_PATH)/$(BINARY_NAME) \
 		cmd/snakesrv/main.go
 
 buildARMv5: 
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 \
-		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
+		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD)" \
 		-o $(BUILD_PATH)/$(BINARY_NAME) \
 		cmd/snakesrv/main.go
 
 buildARM64v5: 
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=5 \
-		go build -ldflags="-X main.Version=$(BINARY_VERSION)" \
+		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD)" \
 		-o $(BUILD_PATH)/$(BINARY_NAME) \
 		cmd/snakesrv/main.go
 
@@ -57,4 +53,4 @@ runBuild:
 		./$(BUILD_PATH)/$(BINARY_NAME)
 
 copyBuildFolder:
-		cp $(BUILD_PATH)/* $(DEPLOYMENT_PATH) 
+		cp $(BUILD_PATH)/* ../module-deployment/service-gobackend 

@@ -163,10 +163,9 @@ func SendMetric(metric map[string]float64, prefix string) {
 func StopWeatherMonitorEndpoint(w http.ResponseWriter, r *http.Request) {
 	logrus.Print("called StopWeatherMonitorEndpoint")
 	w.WriteHeader(200)
-	w.Write([]byte("RestartLineEndpoint Response"))
 
 	if !utils.IsChannelOpen(WeatherChannel) {
-		logrus.Info("channel is already closed, ignoring")
+		logrus.Info("channel is closed, ignoring")
 		return
 	}
 
@@ -175,16 +174,22 @@ func StopWeatherMonitorEndpoint(w http.ResponseWriter, r *http.Request) {
 
 func StartWeatherMonitorEndpoint(w http.ResponseWriter, r *http.Request) {
 	logrus.Print("called StartWeatherMonitorEndpoint")
-	w.WriteHeader(200)
-	w.Write([]byte("StartWeatherMonitorEndpoint Response"))
 
 	if utils.IsChannelOpen(WeatherChannel) {
-		logrus.Info("channel open already")
+		logrus.Info("channel open, ignoring")
 		return
 	}
 
-	WeatherChannel = make(chan bool)
-	go ScheduleWeatherUpdate()
+	if config.WeatherConf.Enabled {
+		WeatherChannel = make(chan bool)
+		go ScheduleWeatherUpdate()
+		w.WriteHeader(200)
+		w.Write([]byte("started"))
+	} else {
+		w.WriteHeader(202)
+		w.Write([]byte("feature disabled"))
+	}
+
 }
 
 func WeatherMonitorStatusEndpoint(w http.ResponseWriter, r *http.Request) {
