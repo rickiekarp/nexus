@@ -2,6 +2,7 @@ package config
 
 import (
 	"io/ioutil"
+	"os"
 
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
@@ -16,8 +17,19 @@ type SysmonConfig struct {
 
 var SysmonConf SysmonConfig
 
+var Hostname string
+
 // ReadSysmonConfig reads the given config file and tries to unmarshal it into the given configStruct
 func ReadSysmonConfig() error {
+
+	// get hostname (used for sending graphite metric)
+	hostname, err := os.Hostname()
+	if err != nil {
+		logrus.Error("Could not determine hostname! ", err)
+		return err
+	}
+
+	Hostname = hostname
 
 	// read configfile
 	yamlFile, err := ioutil.ReadFile("config/sysmon/config.yaml")

@@ -8,12 +8,12 @@ Monorepo for all my personal projects
 echo '127.0.0.1 database' | sudo tee -a /etc/hosts
 ```
 
-## Set up database
+## Set up docker-compose
 
+Start required services locally (needs module-deployment to be present)
 ```
-cd projects/module-deployment
-make mariadb-build
-make mariadb-run
+docker-compose -f deployments/docker-compose.yml build
+docker-compose -f deployments/docker-compose.yml up
 ```
 
 ## Migrate databse

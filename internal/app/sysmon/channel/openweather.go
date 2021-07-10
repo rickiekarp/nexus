@@ -2,15 +2,14 @@ package channel
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
 
 	"git.rickiekarp.net/rickie/home/internal/app/sysmon/config"
 	"git.rickiekarp.net/rickie/home/internal/app/sysmon/utils"
-	"git.rickiekarp.net/rickie/home/pkg/apm"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
+	"git.rickiekarp.net/rickie/home/pkg/profiler"
 	"github.com/sirupsen/logrus"
 )
 
@@ -71,12 +70,13 @@ func ScheduleWeatherUpdate() {
 		logrus.Error("There was an error reading the weather config")
 		return
 	}
-	logrus.Info(config.WeatherConf)
 
 	if !config.WeatherConf.Enabled {
 		logrus.Info("Weather monitoring is disabled!")
 		return
 	}
+
+	logrus.Info(config.WeatherConf)
 
 	var apiUrls []string
 	for _, value := range config.WeatherConf.CityIds {
@@ -141,22 +141,11 @@ func ScheduleWeatherUpdate() {
 				}
 
 				prefix := config.WeatherConf.GraphitePrefix + "." + res.Name
-				SendMetric(metric, prefix)
+				graphite.SendMetric(metric, prefix)
 			}
 
-			apm.PrintMemUsage()
+			profiler.PrintMemUsage()
 		}
-	}
-}
-
-// SendMetric sends a metric to graphite
-func SendMetric(metric map[string]float64, prefix string) {
-
-	graphiteClient := graphite.NewClient(config.SysmonConf.Graphite.Host, config.SysmonConf.Graphite.Port, prefix, "tcp")
-
-	// sends the given metric map to the configured graphite
-	if err := graphiteClient.SendData(metric); err != nil {
-		logrus.Error(fmt.Sprintf("Error sending metrics: %v", err))
 	}
 }
 

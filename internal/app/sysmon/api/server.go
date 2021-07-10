@@ -15,6 +15,7 @@ func defineApiEndpoints(r *mux.Router) {
 	r.HandleFunc("/weather/stop", channel.StopWeatherMonitorEndpoint).Methods("GET")
 	r.HandleFunc("/weather/start", channel.StartWeatherMonitorEndpoint).Methods("GET")
 	r.HandleFunc("/weather/status", channel.WeatherMonitorStatusEndpoint).Methods("GET")
+	r.HandleFunc("/monitoring/notifyTemperature", NotifyTemperatureEndpoint).Methods("POST")
 }
 
 // GetServer returns a http server that listens on the given addr

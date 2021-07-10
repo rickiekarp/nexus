@@ -2,12 +2,16 @@ version: "3.5"
 services:
    graphite:
      image: graphiteapp/graphite-statsd:latest
-     expose: 
-        - 8125
-        - 2003
-        - 42022
-        - 8080
+     container_name: graphite
      ports:
        - "9000:80"
        - "8125:8125"
        - "2003:2003"
+   mysql:
+      build:
+         context: ../projects/module-deployment/service-database/
+      container_name: database
+      environment:
+         MYSQL_ROOT_PASSWORD: root
+      ports:
+         - "3306:3306"

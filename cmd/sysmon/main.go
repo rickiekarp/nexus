@@ -46,6 +46,13 @@ func main() {
 	}
 	logrus.Info(sysmoncfg.SysmonConf)
 
+	err = sysmoncfg.ReadSysTempConfig()
+	if err != nil {
+		logrus.Error("Could not load systemp config!")
+		os.Exit(1)
+	}
+	logrus.Info(sysmoncfg.SysTemperatureConf)
+
 	// Create channel for os.Signal notifications
 	signals := make(chan os.Signal)
 

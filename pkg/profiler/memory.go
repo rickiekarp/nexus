@@ -1,4 +1,4 @@
-package apm
+package profiler
 
 import (
 	"fmt"
