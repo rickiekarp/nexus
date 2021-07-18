@@ -10,9 +10,10 @@ import (
 var SysTemperatureConf SysTempConf
 
 type SysTempConf struct {
-	Enabled        bool   `json:"enabled"`
-	GraphitePrefix string `json:"graphiteprefix"`
-	NotifyApiUrl   string `json:"notifyapiurl"`
+	Enabled        bool    `json:"enabled"`
+	GraphitePrefix string  `json:"graphiteprefix"`
+	NotifyApiUrl   string  `json:"notifyapiurl"`
+	AlertThreshold float64 `json:"alertthreshold"`
 }
 
 // ReadWeatherConfig reads the given config file

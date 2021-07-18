@@ -33,8 +33,17 @@ func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.WriteHeader(200)
+
+	// create metric to send to graphite
+	metric := map[string]float64{
+		"temperature": notifyData.Temperature,
+	}
+	prefix := config.SysTemperatureConf.GraphitePrefix + "." + config.Hostname
+	graphite.SendMetric(metric, prefix)
+
 	// If temperature >= 60 -> send mail
-	if notifyData.Temperature >= 60 {
+	if notifyData.Temperature >= config.SysTemperatureConf.AlertThreshold {
 		logrus.Info("Temperature reached ", notifyData.Temperature, " degrees, sending notify!")
 		data := mailmodel.MailData{
 			To:      "rickie.karp@gmail.com",
@@ -46,14 +55,4 @@ func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
 			logrus.Error("Could not send request to ", config.SysTemperatureConf.NotifyApiUrl)
 		}
 	}
-
-	w.WriteHeader(200)
-
-	// create metric to send to graphite
-	metric := map[string]float64{
-		"temperature": notifyData.Temperature,
-	}
-
-	prefix := config.SysTemperatureConf.GraphitePrefix + "." + config.Hostname
-	graphite.SendMetric(metric, prefix)
 }
