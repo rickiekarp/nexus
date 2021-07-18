@@ -15,8 +15,8 @@ import (
 )
 
 var (
-	Version       = "development"                                             // Version set during go build using ldflags
-	ConfigBaseDir = "projects/module-deployment/values/services/mailsvc/dev/" // ConfigBaseDir set during go build using ldflags
+	Version       = "development"                                                    // Version set during go build using ldflags
+	ConfigBaseDir = "projects/module-deployment/values/services/mailsvc/dev/config/" // ConfigBaseDir set during go build using ldflags
 )
 
 func init() {
@@ -41,7 +41,7 @@ func main() {
 	logrus.Info("Load mail config")
 	err := mailconfig.ReadMailConfig(ConfigBaseDir)
 	if err != nil {
-		logrus.Error("Could not load sysmon config!")
+		logrus.Error("Could not load mail config!")
 		os.Exit(1)
 	}
 
