@@ -3,72 +3,49 @@ package network
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/pkg/common/utils"
+	"github.com/sirupsen/logrus"
 )
 
-type RequestData struct {
-	Recipient string         `json:"to"`
-	Subject   string         `json:"subject"`
-	Message   string         `json:"message"`
-	Data      AdditionalData `json:"additionalData"`
-}
-
-type AdditionalData struct {
-	Date string `json:"date"`
-	Tags string `json:"tags"`
-	URL  string `json:"url"`
-}
-
-var (
-	outfile, _ = utils.CheckFile("/var/log/pi/today/requester.log")
-	logger     = log.New(outfile, "", log.LstdFlags|log.Lshortfile)
-)
-
-// Method on struct type
-func (class RequestData) StructMethod() {
-	logger.Println(class.Recipient)
-}
-
-// Function that takes struct type as the parameter
-func FuncPassStruct(class RequestData) {
-	logger.Println(class.Recipient)
-}
-
-func Post(url string, headers map[string]string, class *RequestData) {
+func Post(url string, headers map[string]string, class interface{}) error {
 
 	data, _ := json.Marshal(&class)
 
+	fmt.Println(url)
+
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	if err != nil {
-		logger.Println(err)
+		logrus.Error(err)
+		return err
 	}
 
 	for k, v := range headers {
-		logger.Printf("key[%s] value[%s]\n", k, v)
+		logrus.Printf("key[%s] value[%s]\n", k, v)
 		req.Header.Set(k, v)
 	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		logger.Fatalln(err)
+		logrus.Error(err)
+		return err
 	}
 	defer resp.Body.Close()
+	return nil
 }
 
-func Get() {
-	resp, err := http.Get("https://rickiekarp.net")
+func Get(url string) {
+	resp, err := http.Get(url)
 	if err != nil {
-		logger.Fatalln(err)
+		logrus.Error(err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Fatalln(err)
+		logrus.Error(err)
 	}
 
-	logger.Println(string(body))
+	logrus.Println(string(body))
 }

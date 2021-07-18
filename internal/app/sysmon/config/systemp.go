@@ -12,13 +12,14 @@ var SysTemperatureConf SysTempConf
 type SysTempConf struct {
 	Enabled        bool   `json:"enabled"`
 	GraphitePrefix string `json:"graphiteprefix"`
+	NotifyApiUrl   string `json:"notifyapiurl"`
 }
 
 // ReadWeatherConfig reads the given config file
 func ReadSysTempConfig() error {
 
 	// read configfile
-	yamlFile, err := ioutil.ReadFile("config/sysmon/systemp.yaml")
+	yamlFile, err := ioutil.ReadFile(ConfigBaseDir + "systemp.yaml")
 	if err != nil {
 		logrus.Error("yamlFile.Get err: ", err)
 		return err

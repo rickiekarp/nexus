@@ -5,7 +5,9 @@ import (
 	"net/http"
 
 	"git.rickiekarp.net/rickie/home/internal/app/sysmon/config"
+	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
+	"git.rickiekarp.net/rickie/home/pkg/network"
 	"github.com/sirupsen/logrus"
 )
 
@@ -31,7 +33,19 @@ func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: If temperature > 60 -> send mail
+	// If temperature >= 60 -> send mail
+	if notifyData.Temperature >= 60 {
+		logrus.Info("Temperature reached ", notifyData.Temperature, " degrees, sending notify!")
+		data := mailmodel.MailData{
+			To:      "rickie.karp@gmail.com",
+			Subject: "[Warning] " + config.Hostname + " temperature too high!",
+			Message: "Please check the machine status!",
+		}
+		err := network.Post(config.SysTemperatureConf.NotifyApiUrl, nil, data)
+		if err != nil {
+			logrus.Error("Could not send request to ", config.SysTemperatureConf.NotifyApiUrl)
+		}
+	}
 
 	w.WriteHeader(200)
 

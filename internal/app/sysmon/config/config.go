@@ -15,6 +15,8 @@ type SysmonConfig struct {
 	}
 }
 
+var ConfigBaseDir string
+
 var SysmonConf SysmonConfig
 
 var Hostname string
@@ -32,7 +34,7 @@ func ReadSysmonConfig() error {
 	Hostname = hostname
 
 	// read configfile
-	yamlFile, err := ioutil.ReadFile("config/sysmon/config.yaml")
+	yamlFile, err := ioutil.ReadFile(ConfigBaseDir + "config.yaml")
 	if err != nil {
 		logrus.Error("yamlFile.Get err: ", err)
 		return err

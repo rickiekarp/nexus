@@ -5,21 +5,11 @@ import (
 	"net/http"
 
 	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/mail"
+	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
 	"github.com/sirupsen/logrus"
 )
 
-type MailData struct {
-	To             string             `json:"to"`
-	Subject        string             `json:"subject"`
-	Message        string             `json:"message"`
-	AdditionalData MailAdditionalData `json:"additionalData"`
-}
-
-type MailAdditionalData struct {
-	Data string `json:"data"`
-}
-
-var mailData MailData
+var mailData mailmodel.MailData
 
 func NotifyEndpoint(w http.ResponseWriter, r *http.Request) {
 	logrus.Print("called NotifyEndpoint")

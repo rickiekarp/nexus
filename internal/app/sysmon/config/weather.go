@@ -21,7 +21,7 @@ type WeatherApiConf struct {
 func ReadWeatherConfig() error {
 
 	// read configfile
-	yamlFile, err := ioutil.ReadFile("config/sysmon/weather.yaml")
+	yamlFile, err := ioutil.ReadFile(ConfigBaseDir + "weather.yaml")
 	if err != nil {
 		logrus.Error("yamlFile.Get err: ", err)
 		return err
