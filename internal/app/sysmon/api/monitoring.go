@@ -31,6 +31,8 @@ func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// TODO: If temperature > 60 -> send mail
+
 	w.WriteHeader(200)
 
 	// create metric to send to graphite

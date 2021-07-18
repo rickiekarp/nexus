@@ -4,7 +4,7 @@ stages:
   - report
 
 include:
-  - local: 'build/ci/.gitlab-ci.yml'
+  - local: 'deployments/ci/.gitlab-ci.yml'
   - local: 'projects/homebackend/.gitlab-ci.yml'
   - local: 'projects/JavaFXApps/.gitlab-ci.yml'
   - local: 'projects/WebsiteAngular/.gitlab-ci.yml'

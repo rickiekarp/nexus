@@ -1,0 +1,12 @@
+FROM golang:1.16-alpine3.14 as builder
+WORKDIR /app
+RUN apk update && apk upgrade && apk add --no-cache ca-certificates
+RUN update-ca-certificates
+
+FROM scratch
+ENV GOPATH=/app
+COPY app /app/app
+COPY /config /app/config
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+WORKDIR /app
+ENTRYPOINT ["/app/app"]

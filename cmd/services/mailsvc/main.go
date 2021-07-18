@@ -7,17 +7,16 @@ import (
 	"os/signal"
 	"syscall"
 
-	"git.rickiekarp.net/rickie/home/internal/app/sysmon/api"
-	"git.rickiekarp.net/rickie/home/internal/app/sysmon/channel"
-	sysmoncfg "git.rickiekarp.net/rickie/home/internal/app/sysmon/config"
-	"git.rickiekarp.net/rickie/home/internal/app/sysmon/utils"
+	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/api"
+	mailconfig "git.rickiekarp.net/rickie/home/internal/app/mailsvc/config"
 	"git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/http"
 	"github.com/sirupsen/logrus"
 )
 
 var (
-	Version = "development" // Version set during go build using ldflags
+	Version       = "development"                                             // Version set during go build using ldflags
+	ConfigBaseDir = "projects/module-deployment/values/services/mailsvc/dev/" // ConfigBaseDir set during go build using ldflags
 )
 
 func init() {
@@ -34,25 +33,17 @@ func init() {
 		os.Exit(0)
 	}
 
-	logrus.Info("Starting sysmon (" + Version + ")")
+	logrus.Info("Starting mail service (" + Version + ")")
 }
 
 func main() {
 
-	logrus.Info("Load sysmon config")
-	err := sysmoncfg.ReadSysmonConfig()
+	logrus.Info("Load mail config")
+	err := mailconfig.ReadMailConfig(ConfigBaseDir)
 	if err != nil {
 		logrus.Error("Could not load sysmon config!")
 		os.Exit(1)
 	}
-	logrus.Info(sysmoncfg.SysmonConf)
-
-	err = sysmoncfg.ReadSysTempConfig()
-	if err != nil {
-		logrus.Error("Could not load systemp config!")
-		os.Exit(1)
-	}
-	logrus.Info(sysmoncfg.SysTemperatureConf)
 
 	// Create channel for os.Signal notifications
 	signals := make(chan os.Signal)
@@ -69,23 +60,11 @@ func main() {
 		sig := <-signals
 		logrus.Info("Signal received: ", sig)
 
-		// indicate that the sysmonChannel can be closed and no further heartbeats should be send
-		// if utils.IsChannelOpen(channel.SysmonChannel) {
-		// 	channel.SysmonChannel <- true
-		// }
-
-		// indicate that the WeatherChannel can be closed and no further weather data should be collected
-		if utils.IsChannelOpen(channel.WeatherChannel) {
-			channel.WeatherChannel <- true
-		}
-
 		// indicate to quit the application
 		applicationChannel <- true
 	}()
 
-	go channel.ScheduleWeatherUpdate()
-
-	apiServer := api.GetServer(":10000")
+	apiServer := api.GetMailServer(":60000")
 	go http.StartApiServer(apiServer)
 
 	// The program will wait here until it gets the expected signal
