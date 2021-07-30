@@ -18,7 +18,6 @@ type TemperatureNotifyData struct {
 var notifyData TemperatureNotifyData
 
 func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
-	logrus.Print("called NotifyTemperatureEndpoint")
 
 	if !config.SysTemperatureConf.Enabled {
 		logrus.Info("Temperature monitoring is disabled!")
