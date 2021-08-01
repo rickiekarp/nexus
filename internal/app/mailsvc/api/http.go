@@ -2,9 +2,9 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
+	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/datasource"
 	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/mail"
 	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
 	"github.com/sirupsen/logrus"
@@ -26,13 +26,15 @@ func NotifyEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(r.Header)
-
 	val, ok := r.Header["X-Notification-Token"]
 	if ok {
-		fmt.Printf("X-Notification-Token key header is present with value %s\n", val[0])
+		logrus.Info("X-Notification-Token key header is present with value %s\n", val[0])
 
 		// check if token is present in the database
+		tokenData := datasource.GetApplicationSettingsNotificationTokenContent()
+		if tokenData != nil {
+			logrus.Info(*tokenData)
+		}
 	}
 
 	if len(mailData.To) == 0 || len(mailData.Subject) == 0 || len(mailData.Message) == 0 {

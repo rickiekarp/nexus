@@ -10,7 +10,6 @@ import (
 
 // StartApiServer starts the given server and listens for requests
 func StartApiServer(srv *http.Server) {
-	logrus.Println("Starting API server")
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		logrus.Error("listen: ", err)
 	}

@@ -9,6 +9,7 @@ import (
 
 	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/api"
 	mailconfig "git.rickiekarp.net/rickie/home/internal/app/mailsvc/config"
+	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/datasource"
 	"git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/http"
 	"github.com/sirupsen/logrus"
@@ -38,17 +39,12 @@ func init() {
 
 func main() {
 
-	logrus.Info("Load mail config")
+	logrus.Info("Loading mail config")
 	err := mailconfig.ReadMailConfig(ConfigBaseDir)
 	if err != nil {
 		logrus.Error("Could not load mail config!")
 		os.Exit(1)
 	}
-
-	// logrus.Info(mailconfig.MailConfig)
-	// datasource.ConnectDataHome(*mailconfig.GetConfigByDatabaseName("data_home"))
-	// tokenData := datasource.GetApplicationSettingsNotificationTokenContent()
-	// fmt.Println(*tokenData)
 
 	// Create channel for os.Signal notifications
 	signals := make(chan os.Signal)
@@ -69,7 +65,11 @@ func main() {
 		applicationChannel <- true
 	}()
 
-	apiServer := api.GetMailServer(":60000")
+	// open connection to data_home database
+	datasource.ConnectDataHome()
+
+	apiServer := api.GetMailServer(mailconfig.MailConfig.ServerAddr)
+	logrus.Info("Starting API server on ", mailconfig.MailConfig.ServerAddr)
 	go http.StartApiServer(apiServer)
 
 	// The program will wait here until it gets the expected signal
@@ -77,5 +77,5 @@ func main() {
 
 	<-applicationChannel
 
-	logrus.Info("Stopping")
+	logrus.Info("Stopping mail service")
 }

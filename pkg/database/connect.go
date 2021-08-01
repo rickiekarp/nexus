@@ -8,7 +8,7 @@ import (
 )
 
 func GetConnection(username, password, url, database string) (*sql.DB, error) {
-	DB, err := sql.Open("mysql", fmt.Sprintf(
+	con, err := sql.Open("mysql", fmt.Sprintf(
 		"%s:%s@tcp(%s)/%s",
 		username,
 		password,
@@ -19,9 +19,9 @@ func GetConnection(username, password, url, database string) (*sql.DB, error) {
 		return nil, err
 	}
 
-	if err = DB.Ping(); err != nil {
+	if err = con.Ping(); err != nil {
 		return nil, err
 	}
 
-	return DB, err
+	return con, err
 }

@@ -20,7 +20,8 @@ type NotificationToken struct {
 
 const GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT = "SELECT content FROM applicationsettings where identifier = 'notificationtoken'"
 
-func ConnectDataHome(databaseConfig config.Database) {
+func ConnectDataHome() {
+	databaseConfig := config.GetConfigByDatabaseName("data_home")
 	connection, err := database.GetConnection(databaseConfig.User, databaseConfig.Password, databaseConfig.Host, databaseConfig.Name)
 	if err != nil {
 		log.Println(err)
@@ -29,6 +30,11 @@ func ConnectDataHome(databaseConfig config.Database) {
 }
 
 func GetApplicationSettingsNotificationTokenContent() *[]NotificationToken {
+	// connection not available
+	if ConDataHome == nil {
+		return nil
+	}
+
 	rows, err := ConDataHome.Query(GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT)
 	if err != nil {
 		logrus.Error(err)

@@ -8,7 +8,8 @@ import (
 )
 
 type MailConf struct {
-	Mail struct {
+	ServerAddr string `yaml:"serverAddr"`
+	Mail       struct {
 		Host     string `yaml:"host"`
 		Port     int    `yaml:"port"`
 		Username string `yaml:"username"`
