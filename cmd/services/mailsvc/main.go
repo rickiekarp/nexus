@@ -45,6 +45,11 @@ func main() {
 		os.Exit(1)
 	}
 
+	// logrus.Info(mailconfig.MailConfig)
+	// datasource.ConnectDataHome(*mailconfig.GetConfigByDatabaseName("data_home"))
+	// tokenData := datasource.GetApplicationSettingsNotificationTokenContent()
+	// fmt.Println(*tokenData)
+
 	// Create channel for os.Signal notifications
 	signals := make(chan os.Signal)
 

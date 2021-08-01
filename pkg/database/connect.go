@@ -3,11 +3,13 @@ package database
 import (
 	"database/sql"
 	"fmt"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func GetConnection(username, password, url, database string) (*sql.DB, error) {
 	DB, err := sql.Open("mysql", fmt.Sprintf(
-		"%s:%s@tcp(%s:3306)/%s",
+		"%s:%s@tcp(%s)/%s",
 		username,
 		password,
 		url,

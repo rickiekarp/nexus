@@ -14,6 +14,14 @@ type MailConf struct {
 		Username string `yaml:"username"`
 		Password string `yaml:"password"`
 	} `yaml:"mail"`
+	Databases []Database `yaml:"databases"`
+}
+type Database struct {
+	Name             string `yaml:"name"`
+	User             string `yaml:"user"`
+	Password         string `yaml:"password"`
+	Host             string `yaml:"host"`
+	AdditionalParams string `yaml:"additionalParams"`
 }
 
 var MailConfig MailConf
@@ -36,5 +44,16 @@ func ReadMailConfig(configDir string) error {
 		return err
 	}
 
+	return nil
+}
+
+// GetConfigByDatabaseName iterates over all databases in the config and returns a
+// pointer to the config entry for the given databaseName string
+func GetConfigByDatabaseName(databaseName string) *Database {
+	for _, databaseCfg := range MailConfig.Databases {
+		if databaseCfg.Name == databaseName {
+			return &databaseCfg
+		}
+	}
 	return nil
 }

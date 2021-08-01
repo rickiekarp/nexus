@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/mail"
@@ -23,6 +24,15 @@ func NotifyEndpoint(w http.ResponseWriter, r *http.Request) {
 		logrus.Error(err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
+	}
+
+	fmt.Println(r.Header)
+
+	val, ok := r.Header["X-Notification-Token"]
+	if ok {
+		fmt.Printf("X-Notification-Token key header is present with value %s\n", val[0])
+
+		// check if token is present in the database
 	}
 
 	if len(mailData.To) == 0 || len(mailData.Subject) == 0 || len(mailData.Message) == 0 {
