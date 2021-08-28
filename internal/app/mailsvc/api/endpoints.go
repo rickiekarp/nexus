@@ -15,12 +15,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var mailData mailmodel.MailData
-
 func NotifyEndpoint(w http.ResponseWriter, r *http.Request) {
 	logrus.Print("called NotifyEndpoint")
 
-	// TODO: Add check for notification token
+	var mailData mailmodel.MailData
 
 	// Try to decode the request body into the struct. If there is an error,
 	// respond to the client with the error message and a 400 status code.
@@ -31,18 +29,8 @@ func NotifyEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	val, ok := r.Header["X-Notification-Token"]
-	if ok {
-		logrus.Info("X-Notification-Token key header is present with value %s\n", val[0])
-
-		// check if token is present in the database
-		tokenData := datasource.GetApplicationSettingsNotificationTokenContent()
-		if tokenData != nil {
-			logrus.Info(*tokenData)
-		}
-	} else {
-		logrus.Info("X-Notification-Token missing!")
-		w.WriteHeader(401)
+	isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
+	if !isValidToken {
 		return
 	}
 
@@ -64,8 +52,6 @@ func NotifyEndpoint(w http.ResponseWriter, r *http.Request) {
 
 func NotifyFitnessReminderEndpoint(w http.ResponseWriter, r *http.Request) {
 	logrus.Print("called NotifyFitnessReminderEndpoint")
-
-	// TODO: Add check for notification token
 
 	t, err := template.ParseFiles(config.ConfigBaseDir + "templates/fitnessReminder.html")
 	if err != nil {
@@ -94,18 +80,8 @@ func NotifyFitnessReminderEndpoint(w http.ResponseWriter, r *http.Request) {
 		Message: result,
 	}
 
-	val, ok := r.Header["X-Notification-Token"]
-	if ok {
-		logrus.Info("X-Notification-Token key header is present with value ", val[0])
-
-		// check if token is present in the database
-		tokenData := datasource.GetApplicationSettingsNotificationTokenContent()
-		if tokenData != nil {
-			logrus.Info(*tokenData)
-		}
-	} else {
-		logrus.Info("X-Notification-Token missing!")
-		w.WriteHeader(401)
+	isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
+	if !isValidToken {
 		return
 	}
 
@@ -116,6 +92,55 @@ func NotifyFitnessReminderEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = mail.SendMail(data)
+
+	if err != nil {
+		logrus.Error(err)
+		w.WriteHeader(500)
+	} else {
+		w.WriteHeader(200)
+	}
+}
+
+func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
+	logrus.Print("called NotifyRemindersEndpoint")
+
+	curDate := time.Now().Format("01-2006")
+
+	data := mailmodel.MailData{
+		To:      "rickie.karp@gmail.com",
+		Subject: fmt.Sprintf("Reminders - %s", curDate),
+		Message: "Here are your reminders:<br>",
+	}
+
+	isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
+	if !isValidToken {
+		return
+	}
+
+	isValidUserId, userId := checkUserIdHeader(w, r)
+	if !isValidUserId {
+		return
+	}
+
+	reminderData := datasource.GetActiveRemindersForUser(userId)
+
+	if len(*reminderData) == 0 {
+		logrus.Info("No reminder data found for userId ", userId)
+		return
+	}
+
+	for _, elem := range *reminderData {
+		fmt.Println(elem.Description)
+		data.Message += elem.Description + "<br>"
+	}
+
+	if len(data.To) == 0 || len(data.Subject) == 0 || len(data.Message) == 0 {
+		logrus.Error("MailData incomplete, can't send mail!")
+		w.WriteHeader(500)
+		return
+	}
+
+	err := mail.SendMail(data)
 
 	if err != nil {
 		logrus.Error(err)
