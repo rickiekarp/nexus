@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -15,25 +16,33 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func NotifyEndpoint(w http.ResponseWriter, r *http.Request) {
+func Notify(w http.ResponseWriter, r *http.Request) {
 	logrus.Print("called NotifyEndpoint")
-
-	var mailData mailmodel.MailData
-
-	// Try to decode the request body into the struct. If there is an error,
-	// respond to the client with the error message and a 400 status code.
-	err := json.NewDecoder(r.Body).Decode(&mailData)
-	if err != nil {
-		logrus.Error(err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
 
 	isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
 	if !isValidToken {
 		return
 	}
 
+	var mailData mailmodel.MailData
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		logrus.Error(err)
+		w.WriteHeader(500)
+		return
+	}
+	bodyString := string(body)
+
+	// Try to decode the request body into the struct. If there is an error,
+	// respond to the client with the error message and a 400 status code.
+	err = json.Unmarshal([]byte(bodyString), &mailData)
+	if err != nil {
+		logrus.Error(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	// validate data
 	if len(mailData.To) == 0 || len(mailData.Subject) == 0 || len(mailData.Message) == 0 {
 		logrus.Error("MailData incomplete, can't send mail!")
 		w.WriteHeader(500)
@@ -41,7 +50,6 @@ func NotifyEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = mail.SendMail(mailData)
-
 	if err != nil {
 		logrus.Error(err)
 		w.WriteHeader(500)
