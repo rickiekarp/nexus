@@ -138,7 +138,6 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, elem := range *reminderData {
-		fmt.Println(elem.Description)
 		data.Message += elem.Description + "<br>"
 	}
 
@@ -154,6 +153,13 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 		logrus.Error(err)
 		w.WriteHeader(500)
 	} else {
+		// update the reminder send date in the database
+		for _, reminder := range *reminderData {
+			err = datasource.SetReminderSendDateForReminderId(reminder.Id)
+			if err != nil {
+				logrus.Error(err)
+			}
+		}
 		w.WriteHeader(200)
 	}
 }
