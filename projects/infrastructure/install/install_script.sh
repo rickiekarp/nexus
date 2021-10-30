@@ -1,5 +1,5 @@
 #! /bin/bash
-echo "Software Install Script for Ubuntu 20.04"
+echo "Software Install Script for Ubuntu 22.04"
 echo "Author: Rickie Karp (contact@rickiekarp.net)"
 
 idx=0
@@ -51,8 +51,6 @@ uninstall_software()
 # installs software from default repository
 install_software()
 {
-	echo "Installing gnome shell package..."
-	sudo apt install -y gnome-tweak-tool chrome-gnome-shell gnome-panel
 	echo "Installing software..."
 	snap install telegram-desktop
     sudo apt install -y chromium-browser steam keepassxc guake bleachbit vlc gimp easytag synaptic vim curl
@@ -72,8 +70,6 @@ install_dev_software()
 
 	# Install Visual Studio Code
 	snap install --classic code
-
-	snap install --classic go
 
 	check_process_exit
 }
