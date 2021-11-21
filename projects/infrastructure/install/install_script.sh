@@ -53,7 +53,9 @@ install_software()
 {
 	echo "Installing software..."
 	snap install telegram-desktop
-    sudo apt install -y chromium-browser steam keepassxc guake bleachbit vlc gimp easytag synaptic vim curl
+    sudo apt install -y chromium-browser steam keepassxc guake bleachbit vlc gimp easytag synaptic vim curl ffmpeg
+	# virtual camera support
+	sudo apt install -y v4l2loopback-dkms
 
 	check_process_exit
 }
@@ -91,13 +93,11 @@ install_extra_software()
 	case $response in 
 	   [yY][eE][sS]|[yY]) 
 		echo "Adding additional ppa..."
-		sudo add-apt-repository ppa:rolfbensch/sane-git #Install Canon LiDE 300 / 400 on Ubuntu 18.04
+		sudo add-apt-repository ppa:obsproject/obs-studio # OBS
 		sudo apt-get update
 
-		echo "Installing scanner tools..."
-		sudo apt install libsane-common
-		sudo apt install sane-utils
-		sudo apt install xsane
+		echo "Installing OBS"
+		sudo apt install -y obs-studio
 
 		echo "All done..."
 	        ;;
