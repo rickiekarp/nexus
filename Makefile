@@ -12,7 +12,7 @@ buildSysmonAmd64:
 		-o $(BUILD_PATH)/output/sysmon \
 		cmd/sysmon/main.go
 		cp -r projects/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/
-		cp deployments/docker/Dockerfile_sysmon build/output/Dockerfile
+		cp deployments/docker/Dockerfile_goscratch build/output/Dockerfile
 
 buildSysmonARM64v7: 
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
