@@ -1,10 +1,6 @@
 //import com.github.spotbugs.SpotBugsTask
 
 buildscript {
-    apply from: '../../config/kotlin/dependencies/latest/base.gradle.kts'
-    apply from: '../../config/kotlin/dependencies/latest/libs.gradle.kts'
-    apply from: '../../config/kotlin/dependencies/latest/logging.gradle.kts'
-
     repositories {
         mavenCentral()
         maven {
@@ -12,10 +8,10 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion" as Object
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion" as Object
-        classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufGradlePlugin"
-        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10" as Object
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.30" as Object
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.15"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1"
     }
 }
 
@@ -37,21 +33,21 @@ allprojects {
     }
 
     detekt {
-        toolVersion = "$detektVersion"
+        toolVersion = "1.17.1"
         input = files("src/main/kotlin")
-        config = files("../../../config/kotlin/plugins/detekt/detekt.yml")
+        config = files("../config/detekt/detekt.yml")
     }
 }
 
 subprojects {
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" as Object
-        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion" as Object
-        compile "com.google.protobuf:protobuf-java:$protobufJava"
-        compile "com.googlecode.protobuf-java-format:protobuf-java-format:$protobufJavaFormat"
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion" as Object
-        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
-        testCompile "org.mockito:mockito-core:$mockitoCore"
+        compile "org.jetbrains.kotlin:kotlin-stdlib:1.6.10" as Object
+        compile "org.jetbrains.kotlin:kotlin-reflect:1.6.10" as Object
+        compile "com.google.protobuf:protobuf-java:3.15.8"
+        compile "com.googlecode.protobuf-java-format:protobuf-java-format:1.4"
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:1.6.10" as Object
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "5.7.1"
+        testCompile "org.mockito:mockito-core:3.9.0"
     }
 
     sourceSets {
@@ -62,7 +58,7 @@ subprojects {
     protobuf {
         protoc {
             // Download from repositories
-            artifact = "com.google.protobuf:protoc:$protobufJava"
+            artifact = "com.google.protobuf:protoc:3.15.8"
             generatedFilesBaseDir = "$projectDir/src"
         }
     }
@@ -95,5 +91,5 @@ subprojects {
 }
 
 wrapper {
-    gradleVersion = project.ext.gradleVersion
+    gradleVersion = "6.7.1"
 }
