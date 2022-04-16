@@ -1,6 +1,6 @@
 # README #
 
-Monorepo for all my personal projects
+Monorepo for all my home server projects
 
 
 ## Set up hosts
