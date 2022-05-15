@@ -1,8 +1,8 @@
 #!/bin/bash
-echo "Raspberry Pi Backup Script v1.3"
+echo "Raspberry Pi Backup Script v1.4"
 
 backupdate=$(date +%Y%m%d)
-outputfile="backup_$backupdate.img"
+outputfile="backup.img"
 device="/dev/mmcblk0"
 bootpartition="/dev/mmcblk0p1"
 rootpartition="/dev/mmcblk0p2"
@@ -24,8 +24,9 @@ fi
 
 echo "Backup created! You can remove the sdcard now!"
 
+mkdir -p $backupdate
 echo "Compressing backup, please wait!"
-tar -czvf $outputfile.tar.gz $outputfile
+tar -czvf $backupdate/$outputfile.tar.gz $outputfile
 
 echo "Removing $outputfile"
 rm $outputfile
