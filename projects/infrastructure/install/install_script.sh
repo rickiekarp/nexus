@@ -123,6 +123,7 @@ do_all()
 		install_software
 		install_dev_software
 		install_games
+		install_extra_software
 		echo "DONE!"
 	        ;;
 	   *)
