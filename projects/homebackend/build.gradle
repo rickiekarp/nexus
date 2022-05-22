@@ -8,7 +8,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10" as Object
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21" as Object
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.30" as Object
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.15"
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1"
@@ -41,11 +41,11 @@ allprojects {
 
 subprojects {
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib:1.6.10" as Object
-        compile "org.jetbrains.kotlin:kotlin-reflect:1.6.10" as Object
+        compile "org.jetbrains.kotlin:kotlin-stdlib:1.6.21" as Object
+        compile "org.jetbrains.kotlin:kotlin-reflect:1.6.21" as Object
         compile "com.google.protobuf:protobuf-java:3.15.8"
         compile "com.googlecode.protobuf-java-format:protobuf-java-format:1.4"
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:1.6.10" as Object
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:1.6.21" as Object
         testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "5.7.1"
         testCompile "org.mockito:mockito-core:3.9.0"
     }

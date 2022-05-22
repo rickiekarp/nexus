@@ -5,7 +5,6 @@ import net.rickiekarp.foundation.model.NotificationTokenData
 import net.rickiekarp.foundation.data.dto.EmailDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
@@ -24,14 +23,6 @@ class EmailService {
     @Autowired
     private val freemarkerConfig: Configuration? = null
 
-    fun sendMail(email: EmailDto) {
-        val message = SimpleMailMessage()
-        message.setTo(email.to)
-        message.subject = email.subject
-        message.text = email.message
-        sender!!.send(message)
-    }
-
     @Throws(Exception::class)
     fun sendInfoMail(mail: EmailDto, notificationTokenData: NotificationTokenData) {
         val message = sender!!.createMimeMessage()
@@ -44,9 +35,6 @@ class EmailService {
 
         val template = freemarkerConfig.getTemplate("${notificationTokenData.template}.ftl")
         val templateContentText = FreeMarkerTemplateUtils.processTemplateIntoString(template, model)
-
-        //Add notification job name to subject
-        //mail.subject = "(${notificationTokenData.name}) ${mail.subject}"
 
         helper.setFrom(smtpEmail!!)
         helper.setTo(mail.to)
@@ -85,5 +73,4 @@ class EmailService {
         }
         return null
     }
-
 }
