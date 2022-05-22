@@ -1,11 +1,12 @@
 package net.rickiekarp.homeserver.rest.api
 
+import com.google.protobuf.Timestamp
 import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO
+import net.rickiekarp.homeserver.domain.ShoppingNote
 import net.rickiekarp.homeserver.domain.ShoppingNoteList
 import net.rickiekarp.homeserver.domain.ShoppingStoreList
-import net.rickiekarp.homeserver.dto.ShoppingNoteDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,34 +20,64 @@ class ShoppingApi {
     var repo: ShoppingNoteDAO? = null
 
     @GetMapping(value = ["get"])
-    fun getList(): ResponseEntity<List<ShoppingNoteDto>> {
+    fun getList(): ResponseEntity<List<ShoppingNote>> {
         val noteList = repo!!.getNotesFromUserId(BaseConfig.get().getUserId())
         return ResponseEntity(noteList, HttpStatus.OK)
     }
 
     @PostMapping(value = ["add"])
-    fun insertNote(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ShoppingNoteDto?> {
-        noteDto.user_id = BaseConfig.get().getUserId()
-        val note = repo!!.insertShoppingNote(noteDto)
+    fun insertNote(@RequestBody noteDto: ShoppingNote): ResponseEntity<ShoppingNote?> {
+        val noteDtoToInsert = ShoppingNote
+            .newBuilder()
+            .setId(noteDto.id)
+            .setTitle(noteDto.title)
+            .setPrice(noteDto.price)
+            .setDateAdded(noteDto.dateAdded)
+            .setDateBought(noteDto.dateBought)
+            .setStoreId(noteDto.storeId)
+            .setLastUpdated(noteDto.lastUpdated)
+            .setUserId(BaseConfig.get().getUserId())
+            .build()
+        val note = repo!!.insertShoppingNote(noteDtoToInsert)
         return ResponseEntity(note, HttpStatus.OK)
     }
 
     @PostMapping(value = ["update"])
-    fun updateItem(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
-        noteDto.user_id = BaseConfig.get().getUserId()
-        val noteDeleted = repo!!.updateShoppingNote(noteDto)
+    fun updateItem(@RequestBody noteDto: ShoppingNote): ResponseEntity<ResultDTO?> {
+        val noteDtoToDelete = ShoppingNote
+            .newBuilder()
+            .setId(noteDto.id)
+            .setTitle(noteDto.title)
+            .setPrice(noteDto.price)
+            .setDateAdded(noteDto.dateAdded)
+            .setDateBought(noteDto.dateBought)
+            .setStoreId(noteDto.storeId)
+            .setLastUpdated(noteDto.lastUpdated)
+            .setUserId(BaseConfig.get().getUserId())
+            .build()
+        val noteDeleted = repo!!.updateShoppingNote(noteDtoToDelete)
         return ResponseEntity(noteDeleted, HttpStatus.OK)
     }
 
     @PostMapping(value = ["markAsBought"])
-    fun markAsBought(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
-        noteDto.user_id = BaseConfig.get().getUserId()
-        val noteDeleted = repo!!.markAsBought(noteDto)
+    fun markAsBought(@RequestBody noteDto: ShoppingNote): ResponseEntity<ResultDTO?> {
+        val noteDtoToUpdate = ShoppingNote
+            .newBuilder()
+            .setId(noteDto.id)
+            .setTitle(noteDto.title)
+            .setPrice(noteDto.price)
+            .setDateAdded(noteDto.dateAdded)
+            .setDateBought(noteDto.dateBought)
+            .setStoreId(noteDto.storeId)
+            .setLastUpdated(noteDto.lastUpdated)
+            .setUserId(BaseConfig.get().getUserId())
+            .build()
+        val noteDeleted = repo!!.markAsBought(noteDtoToUpdate)
         return ResponseEntity(noteDeleted, HttpStatus.OK)
     }
 
     @PostMapping(value = ["remove"])
-    fun remove(@RequestBody noteDto: ShoppingNoteDto): ResponseEntity<ResultDTO?> {
+    fun remove(@RequestBody noteDto: ShoppingNote): ResponseEntity<ResultDTO?> {
         val noteDeleted = repo!!.removeItem(noteDto.id)
         return ResponseEntity(noteDeleted, HttpStatus.OK)
     }
