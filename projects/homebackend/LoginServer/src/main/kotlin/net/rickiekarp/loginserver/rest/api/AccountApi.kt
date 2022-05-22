@@ -9,7 +9,6 @@ import net.rickiekarp.foundation.model.User
 import net.rickiekarp.loginserver.dao.UserDAO
 import net.rickiekarp.loginserver.dto.AppObjectDTO
 import net.rickiekarp.loginserver.dto.TokenDTO
-import net.rickiekarp.loginserver.factory.AppObjectBuilder
 import net.rickiekarp.loginserver.utils.HashingUtil
 import org.apache.commons.lang3.RandomStringUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -79,7 +78,7 @@ class AccountApi {
     @PostMapping(value = ["/login"])
     fun login(): ResponseEntity<AppObjectDTO> {
         return if (repo!!.doLogin(BaseConfig.get().getUserId())) {
-            val dto = AppObjectDTO(AppObjectBuilder())
+            val dto = AppObjectDTO()
             dto.serverVersion = ServerContext.serverVersion
             dto.setFeatureSettings(BaseConfig.get().application())
             ResponseEntity(dto, HttpStatus.OK)
