@@ -1,15 +1,14 @@
 package net.rickiekarp.foundation.core.services.mail
 
 import freemarker.template.Configuration
-import net.rickiekarp.foundation.model.NotificationTokenData
 import net.rickiekarp.foundation.data.dto.EmailDto
+import net.rickiekarp.foundation.model.NotificationTokenData
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils
-import java.util.HashMap
 
 @Component
 class EmailService {

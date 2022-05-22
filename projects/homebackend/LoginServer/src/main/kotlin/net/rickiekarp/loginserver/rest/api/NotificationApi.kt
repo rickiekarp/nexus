@@ -2,19 +2,17 @@ package net.rickiekarp.loginserver.rest.api
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import net.rickiekarp.foundation.core.services.mail.EmailService
 import net.rickiekarp.foundation.data.dao.ApplicationSettingsDao
+import net.rickiekarp.foundation.data.dto.EmailDto
 import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.model.NotificationTokenData
-import net.rickiekarp.foundation.core.services.mail.EmailService
-import net.rickiekarp.foundation.data.dto.EmailDto
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.PostMapping
 
 @RestController
 @RequestMapping("notify")

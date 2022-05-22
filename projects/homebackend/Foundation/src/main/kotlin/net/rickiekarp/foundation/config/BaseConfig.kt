@@ -5,9 +5,7 @@ import net.rickiekarp.foundation.logger.Log
 import net.rickiekarp.foundation.parser.properties.PropertiesFileParser
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-
-import java.util.HashMap
-import java.util.Properties
+import java.util.*
 
 /**
  * Main baseConfig class

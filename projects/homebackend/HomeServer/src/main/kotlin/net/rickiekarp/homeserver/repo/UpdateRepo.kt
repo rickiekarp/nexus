@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository
 import java.sql.PreparedStatement
 import java.sql.SQLException
 import java.sql.Statement
-import java.util.*
 import javax.sql.DataSource
 
 @Repository

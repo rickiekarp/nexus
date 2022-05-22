@@ -1,6 +1,6 @@
 package net.rickiekarp.homeserver.dto
 
-import java.util.Date
+import java.util.*
 
 class WeightDto {
     var id: Int = 0

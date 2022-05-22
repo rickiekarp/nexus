@@ -1,9 +1,8 @@
 package net.rickiekarp.foundation.model
 
 import org.springframework.data.redis.core.RedisHash
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import java.util.ArrayList
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 @RedisHash("token")
 class User : Credentials {

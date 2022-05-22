@@ -1,10 +1,9 @@
 package net.rickiekarp.loginserver.dto
 
-import net.rickiekarp.loginserver.factory.AppObjectBuilder
 import java.io.Serializable
 import java.util.*
 
-class AppObjectDTO(builder: AppObjectBuilder) : Serializable {
+class AppObjectDTO : Serializable {
     var serverVersion: String? = null
     var features: Properties? = null
         private set // the setter is private and has the default implementation
