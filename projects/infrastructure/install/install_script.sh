@@ -54,6 +54,7 @@ install_software()
 	echo "Installing software..."
 	snap install telegram-desktop
 	sudo apt install -y chromium-browser steam keepassxc guake bleachbit vlc gimp easytag synaptic vim curl ffmpeg timeshift darktable rawtherapee
+	snap install discord
 	echo "Installing libs..."
 	sudo apt install -y libfuse2
 	# virtual camera support
