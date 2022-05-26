@@ -10,7 +10,7 @@ import (
 func PrintMemUsage() {
 	var memStats runtime.MemStats
 	runtime.ReadMemStats(&memStats)
-	// For info on each, see: https://golang.org/pkg/runtime/#MemStats
+	// For info on each, see: https://golang.org/internal/runtime/#MemStats
 	fmt.Printf("Alloc = %v", memStats.Alloc)
 	fmt.Printf("\tTotalAlloc = %v", memStats.TotalAlloc)
 	fmt.Printf("\tSys = %v", memStats.Sys)

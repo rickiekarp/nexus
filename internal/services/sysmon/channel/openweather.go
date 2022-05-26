@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/app/sysmon/config"
-	"git.rickiekarp.net/rickie/home/internal/app/sysmon/utils"
-	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
-	"git.rickiekarp.net/rickie/home/pkg/profiler"
+	"git.rickiekarp.net/rickie/home/internal/monitoring/graphite"
+	"git.rickiekarp.net/rickie/home/internal/profiler"
+	"git.rickiekarp.net/rickie/home/internal/services/sysmon/config"
+	"git.rickiekarp.net/rickie/home/internal/services/sysmon/utils"
 	"github.com/sirupsen/logrus"
 )
 

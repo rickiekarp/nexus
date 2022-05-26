@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/app/sysmon/channel"
+	"git.rickiekarp.net/rickie/home/internal/services/sysmon/channel"
 	"github.com/gorilla/mux"
 )
 

@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/app/sysmon/config"
-	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
-	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
-	"git.rickiekarp.net/rickie/home/pkg/network"
+	"git.rickiekarp.net/rickie/home/internal/models/mailmodel"
+	"git.rickiekarp.net/rickie/home/internal/monitoring/graphite"
+	"git.rickiekarp.net/rickie/home/internal/network"
+	"git.rickiekarp.net/rickie/home/internal/services/sysmon/config"
 	"github.com/sirupsen/logrus"
 )
 

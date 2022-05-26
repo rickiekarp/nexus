@@ -9,10 +9,10 @@ import (
 	"net/http"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/config"
-	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/datasource"
-	"git.rickiekarp.net/rickie/home/internal/app/mailsvc/mail"
-	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
+	"git.rickiekarp.net/rickie/home/internal/models/mailmodel"
+	"git.rickiekarp.net/rickie/home/internal/services/mailsvc/config"
+	"git.rickiekarp.net/rickie/home/internal/services/mailsvc/datasource"
+	"git.rickiekarp.net/rickie/home/internal/services/mailsvc/mail"
 	"github.com/sirupsen/logrus"
 )
 
