@@ -9,9 +9,9 @@ import (
 
 	"git.rickiekarp.net/rickie/home/internal/config"
 	"git.rickiekarp.net/rickie/home/internal/http"
-	"git.rickiekarp.net/rickie/home/internal/services/mailsvc/api"
-	mailconfig "git.rickiekarp.net/rickie/home/internal/services/mailsvc/config"
-	"git.rickiekarp.net/rickie/home/internal/services/mailsvc/datasource"
+	"git.rickiekarp.net/rickie/home/services/mailsvc/api"
+	mailconfig "git.rickiekarp.net/rickie/home/services/mailsvc/config"
+	"git.rickiekarp.net/rickie/home/services/mailsvc/datasource"
 	"github.com/sirupsen/logrus"
 )
 

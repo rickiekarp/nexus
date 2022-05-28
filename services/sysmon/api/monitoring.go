@@ -7,7 +7,7 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/models/mailmodel"
 	"git.rickiekarp.net/rickie/home/internal/monitoring/graphite"
 	"git.rickiekarp.net/rickie/home/internal/network"
-	"git.rickiekarp.net/rickie/home/internal/services/sysmon/config"
+	"git.rickiekarp.net/rickie/home/services/sysmon/config"
 	"github.com/sirupsen/logrus"
 )
 

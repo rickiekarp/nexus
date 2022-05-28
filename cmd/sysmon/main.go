@@ -9,10 +9,10 @@ import (
 
 	"git.rickiekarp.net/rickie/home/internal/config"
 	"git.rickiekarp.net/rickie/home/internal/http"
-	"git.rickiekarp.net/rickie/home/internal/services/sysmon/api"
-	"git.rickiekarp.net/rickie/home/internal/services/sysmon/channel"
-	sysmoncfg "git.rickiekarp.net/rickie/home/internal/services/sysmon/config"
-	"git.rickiekarp.net/rickie/home/internal/services/sysmon/utils"
+	"git.rickiekarp.net/rickie/home/services/sysmon/api"
+	"git.rickiekarp.net/rickie/home/services/sysmon/channel"
+	sysmoncfg "git.rickiekarp.net/rickie/home/services/sysmon/config"
+	"git.rickiekarp.net/rickie/home/services/sysmon/utils"
 	"github.com/sirupsen/logrus"
 )
 

@@ -2,7 +2,7 @@ package datasource
 
 import (
 	"git.rickiekarp.net/rickie/home/internal/database"
-	"git.rickiekarp.net/rickie/home/internal/services/mailsvc/config"
+	"git.rickiekarp.net/rickie/home/services/mailsvc/config"
 	"github.com/sirupsen/logrus"
 )
 

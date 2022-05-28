@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"git.rickiekarp.net/rickie/home/internal/models/mailmodel"
-	"git.rickiekarp.net/rickie/home/internal/services/mailsvc/config"
+	"git.rickiekarp.net/rickie/home/services/mailsvc/config"
 	"github.com/sirupsen/logrus"
 )
 

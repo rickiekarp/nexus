@@ -8,8 +8,8 @@ import (
 
 	"git.rickiekarp.net/rickie/home/internal/monitoring/graphite"
 	"git.rickiekarp.net/rickie/home/internal/profiler"
-	"git.rickiekarp.net/rickie/home/internal/services/sysmon/config"
-	"git.rickiekarp.net/rickie/home/internal/services/sysmon/utils"
+	"git.rickiekarp.net/rickie/home/services/sysmon/config"
+	"git.rickiekarp.net/rickie/home/services/sysmon/utils"
 	"github.com/sirupsen/logrus"
 )
 

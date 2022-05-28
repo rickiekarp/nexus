@@ -9,7 +9,7 @@ import (
 
 	"git.rickiekarp.net/rickie/home/internal/database"
 	"git.rickiekarp.net/rickie/home/internal/parser/yamlparser"
-	"git.rickiekarp.net/rickie/home/internal/services/gameserver/api"
+	"git.rickiekarp.net/rickie/home/services/gameserver/api"
 	"github.com/gorilla/mux"
 )
 
