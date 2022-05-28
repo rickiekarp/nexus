@@ -11,7 +11,7 @@ buildSysmonAmd64:
 		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD) -X main.ConfigBaseDir=config/" \
 		-o $(BUILD_PATH)/output/sysmon/$(BINARY_NAME) \
 		cmd/sysmon/main.go
-		cp -r projects/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/sysmon/
+		cp -r deployments/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/sysmon/
 		cp deployments/docker/Dockerfile_goscratch build/output/sysmon/Dockerfile
 
 buildSysmonARM64v7:
@@ -19,7 +19,7 @@ buildSysmonARM64v7:
 		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD) -X main.ConfigBaseDir=config/" \
 		-o $(BUILD_PATH)/output/sysmon/$(BINARY_NAME) \
 		cmd/sysmon/main.go
-		cp -r projects/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/sysmon/
+		cp -r deployments/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/sysmon/
 		cp deployments/docker/Dockerfile_goscratch build/output/sysmon/Dockerfile
 
 deploySysmon:
@@ -30,7 +30,7 @@ buildMailServiceARM64v7:
 		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD) -X git.rickiekarp.net/rickie/home/services/mailsvc/config.ConfigBaseDir=config/" \
 		-o $(BUILD_PATH)/output/mailsvc/$(BINARY_NAME) \
 		cmd/mailsvc/main.go
-		cp -r projects/module-deployment/values/services/mailsvc/prod/* $(BUILD_PATH)/output/mailsvc/
+		cp -r deployments/module-deployment/values/services/mailsvc/prod/* $(BUILD_PATH)/output/mailsvc/
 		cp deployments/docker/Dockerfile_goscratch build/output/mailsvc/Dockerfile
 
 deployMailService:
@@ -42,6 +42,3 @@ test:
 clean:
 		$(GOCLEAN)
 		rm -rf $(BUILD_PATH)
-
-copyBuildFolder:
-		cp $(BUILD_PATH)/* ../module-deployment/service-gobackend 

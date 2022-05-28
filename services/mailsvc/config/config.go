@@ -7,7 +7,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var ConfigBaseDir = "projects/module-deployment/values/services/mailsvc/dev/config/" // ConfigBaseDir set during go build using ldflags
+var ConfigBaseDir = "deployments/module-deployment/values/services/mailsvc/dev/config/" // ConfigBaseDir set during go build using ldflags
 
 type MailConf struct {
 	ServerAddr string `yaml:"serverAddr"`

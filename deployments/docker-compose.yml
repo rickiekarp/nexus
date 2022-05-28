@@ -9,7 +9,7 @@ services:
        - "2003:2003"
    mysql:
       build:
-         context: ../projects/module-deployment/service-database/
+         context: ../deployments/module-deployment/service-database/
       container_name: database
       environment:
          MYSQL_ROOT_PASSWORD: root
