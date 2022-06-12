@@ -1,5 +1,5 @@
 #! /bin/bash
-echo "Software Install Script for Ubuntu 22.04"
+echo "Software Install Script for Ubuntu 22.10"
 echo "Author: Rickie Karp (contact@rickiekarp.net)"
 
 idx=0
@@ -12,9 +12,8 @@ print_options()
 	echo "3: Install software"
 	echo "4: Install development software"
 	echo "5: Install games"
-	echo "6: Install extra software (PPA)"
-	echo "7: Check for software updates"
-	echo "8: Exit"
+	echo "6: Check for software updates"
+	echo "7: Exit"
 }
 
 # main option selection
@@ -29,9 +28,8 @@ select_option()
 		3) install_software ;;
 		4) install_dev_software ;;
 		5) install_games ;;
-		6) install_extra_software ;;
-		7) check_for_updates ;;
-		8) exit ;;
+		6) check_for_updates ;;
+		7) exit ;;
 
 		*) echo "INVALID NUMBER!" ;;
 	esac
@@ -51,14 +49,14 @@ uninstall_software()
 # installs software from default repository
 install_software()
 {
-	echo "Installing software..."
-	snap install telegram-desktop
-	sudo apt install -y chromium-browser steam keepassxc guake bleachbit vlc gimp easytag synaptic vim curl ffmpeg timeshift darktable rawtherapee
-	snap install discord
-	echo "Installing libs..."
+	echo "Installing libraries..."
 	sudo apt install -y libfuse2
 	# virtual camera support
 	sudo apt install -y v4l2loopback-dkms
+	echo "Installing software..."
+	sudo apt install -y chromium-browser steam keepassxc guake bleachbit vlc gimp easytag synaptic vim curl ffmpeg timeshift darktable rawtherapee obs-studio
+	snap install telegram-desktop
+	snap install discord
 
 	check_process_exit
 }
@@ -88,30 +86,6 @@ install_games()
 	check_process_exit
 }
 
-# installs software from additional repositories
-install_extra_software()
-{
-	echo "Installing extra software..."
-	read -r -p "This option will add additional PPA's to the system. Continue? [y/n]" response
-	case $response in 
-	   [yY][eE][sS]|[yY]) 
-		echo "Adding additional ppa..."
-		sudo add-apt-repository ppa:obsproject/obs-studio # OBS
-		sudo apt-get update
-
-		echo "Installing OBS"
-		sudo apt install -y obs-studio
-
-		echo "All done..."
-	        ;;
-	   *)
-		echo "Exiting..."
- 	       ;;
-	esac
-	check_process_exit
-}
-
-
 # easy install function
 do_all()
 {
@@ -124,7 +98,6 @@ do_all()
 		install_software
 		install_dev_software
 		install_games
-		install_extra_software
 		echo "DONE!"
 	        ;;
 	   *)

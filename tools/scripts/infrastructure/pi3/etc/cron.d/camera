@@ -1,5 +1,0 @@
-SHELL=/bin/sh
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-
-# camera
-*/5 * * * *   root    bash /home/pi/projects/infrastructure-raspberrypi/monitoring/security-cam.sh
