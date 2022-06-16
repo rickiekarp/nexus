@@ -54,7 +54,8 @@ install_software()
 	# virtual camera support
 	sudo apt install -y v4l2loopback-dkms
 	echo "Installing software..."
-	sudo apt install -y chromium-browser steam keepassxc guake bleachbit vlc gimp easytag synaptic vim curl ffmpeg timeshift darktable rawtherapee obs-studio
+	sudo apt install -y chromium-browser steam keepassxc guake bleachbit vlc gimp \
+		easytag synaptic vim curl ffmpeg timeshift darktable rawtherapee obs-studio gnome-shell-extension-manager
 	snap install telegram-desktop
 	snap install discord
 
