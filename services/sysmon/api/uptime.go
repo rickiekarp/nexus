@@ -36,8 +36,6 @@ func NotifyUptimeEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logrus.Info(uptimeNotifyData)
-
 	w.WriteHeader(200)
 
 	// create metric to send to graphite
