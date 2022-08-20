@@ -15,7 +15,7 @@ type TemperatureNotifyData struct {
 	Temperature float64
 }
 
-var notifyData TemperatureNotifyData
+var temperatureNotifyData TemperatureNotifyData
 
 func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
 
@@ -26,7 +26,7 @@ func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	// Try to decode the request body into the struct. If there is an error,
 	// respond to the client with the error message and a 400 status code.
-	err := json.NewDecoder(r.Body).Decode(&notifyData)
+	err := json.NewDecoder(r.Body).Decode(&temperatureNotifyData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -36,14 +36,14 @@ func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	// create metric to send to graphite
 	metric := map[string]float64{
-		"temperature": notifyData.Temperature,
+		"temperature": temperatureNotifyData.Temperature,
 	}
 	prefix := config.SysTemperatureConf.GraphitePrefix + "." + config.Hostname
 	graphite.SendMetric(metric, prefix)
 
 	// If temperature >= 60 -> send mail
-	if notifyData.Temperature >= config.SysTemperatureConf.AlertThreshold {
-		logrus.Info("Temperature reached ", notifyData.Temperature, " degrees, sending notify!")
+	if temperatureNotifyData.Temperature >= config.SysTemperatureConf.AlertThreshold {
+		logrus.Info("Temperature reached ", temperatureNotifyData.Temperature, " degrees, sending notify!")
 		data := mailmodel.MailData{
 			To:      "rickie.karp@gmail.com",
 			Subject: "[Warning] " + config.Hostname + " temperature too high!",

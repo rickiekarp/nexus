@@ -50,12 +50,8 @@ func main() {
 	}
 	logrus.Info(sysmoncfg.SysmonConf)
 
-	err = sysmoncfg.ReadSysTempConfig()
-	if err != nil {
-		logrus.Error("Could not load systemp config!")
-		os.Exit(1)
-	}
-	logrus.Info(sysmoncfg.SysTemperatureConf)
+	readSysTempConf()
+	readUptimeMonitoringConfig()
 
 	// Create channel for os.Signal notifications
 	signals := make(chan os.Signal)
@@ -97,4 +93,22 @@ func main() {
 	<-applicationChannel
 
 	logrus.Info("Stopping")
+}
+
+func readSysTempConf() {
+	var err = sysmoncfg.ReadSysTempConfig()
+	if err != nil {
+		logrus.Error("Could not load systemp config!")
+		os.Exit(1)
+	}
+	logrus.Info("Loaded SysTemperatureConf: ", sysmoncfg.SysTemperatureConf)
+}
+
+func readUptimeMonitoringConfig() {
+	var err = sysmoncfg.ReadUptimeMonitoringConfig()
+	if err != nil {
+		logrus.Error("Could not load uptime monitoring config!")
+		os.Exit(1)
+	}
+	logrus.Info("Loaded UptimeMonitoringConf: ", sysmoncfg.UptimeMonitoringConf)
 }
