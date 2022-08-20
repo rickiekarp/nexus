@@ -3,7 +3,6 @@ package network
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -13,8 +12,6 @@ import (
 func Post(url string, headers map[string]string, class interface{}) error {
 
 	data, _ := json.Marshal(&class)
-
-	fmt.Println(url)
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	if err != nil {
