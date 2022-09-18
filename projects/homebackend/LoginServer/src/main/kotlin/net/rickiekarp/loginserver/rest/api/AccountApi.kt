@@ -77,13 +77,13 @@ class AccountApi {
 
     @PostMapping(value = ["/login"])
     fun login(): ResponseEntity<AppObjectDTO> {
+        val dto = AppObjectDTO()
         return if (repo!!.doLogin(BaseConfig.get().getUserId())) {
-            val dto = AppObjectDTO()
             dto.serverVersion = ServerContext.serverVersion
             dto.setFeatureSettings(BaseConfig.get().application())
             ResponseEntity(dto, HttpStatus.OK)
         } else {
-            ResponseEntity(null, HttpStatus.UNAUTHORIZED)
+            ResponseEntity(dto, HttpStatus.UNAUTHORIZED)
         }
     }
 
@@ -115,6 +115,7 @@ class AccountApi {
 
     @PostMapping(value = ["/recover"])
     fun recoverAccount(@RequestBody credentials: Credentials): ResponseEntity<Any> {
+        Log.DEBUG.error(credentials.username)
         return ResponseEntity(ResultDTO("not_implemented_yet"), HttpStatus.OK)
     }
 }
