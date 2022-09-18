@@ -13,8 +13,13 @@ import javax.sql.DataSource
 @Repository
 open class InformationRepo : InformationDAO {
 
-    // TODO: implement location table
-    private val FIND_FIRST_CONTACT = "SELECT c.name, c.email, j.title, \"Karlsruhe\" AS location FROM contact c join experience e join job j on e.jobid = j.job_id where c.contact_id = 1 ORDER BY e.experience_id desc limit 1;"
+    private val FIND_FIRST_CONTACT =   """SELECT c.name, c.email, j.title, lc.city AS location 
+                                        FROM contact c 
+                                        join experience e 
+                                        join job j on e.jobid = j.job_id 
+                                        join location_junction lj on e.location_id = lj.id
+                                        join location_city lc on lj.city_id = lc.id
+                                        where c.contact_id = 1 ORDER BY e.experience_id desc limit 1;"""
 
     @Autowired
     private val dataSource: DataSource? = null
