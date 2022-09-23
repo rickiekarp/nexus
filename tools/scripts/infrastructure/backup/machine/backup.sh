@@ -85,6 +85,8 @@ function compressArchive() {
       exit 1
     fi
     
+    oldDir=$(pwd)
+    
     backupTarget=$backupSource/../backup_final
     mkdir -p $backupTarget
 
@@ -93,44 +95,63 @@ function compressArchive() {
     #
     if [ -f "$compressArchiveDotFiles" ]; then
         echo "Archiving .files"
+        oldDir=$(pwd)
         while IFS= read -r line
         do
+            cd $backupSource
             tar -zcvf $backupTarget/files.$compressionFormat $line
+            cd $oldDir
         done < "$compressArchiveDotFiles"
+    else
+    	echo "File not found $compressArchiveDotFiles"
     fi
 
     #
     # CODE REPOS
     #
+    vcsTypes=( git svn )
+    
     if [ -f "$compressArchiveCode" ]; then
         echo "Archiving code repositories"
         while IFS= read -r line
         do
+            cd $backupSource
             if [ ! -d "$line" ]; then
-                exit 1
+            	echo "Directory $line not found"
+            	cd $oldDir
+                continue
             fi
-
-            oldDir=$(pwd)
 
             # go into base code repository folder
             cd $line
+            
             mkdir -p $backupTarget/$line
             echo "Compressing $line"
 
-            for files in $(find * -type d -name "*.$line"); do
-                dir=$(dirname $files)
-                if [[ "$dir" == *"/"* ]]; then
-                    mkdir -p $backupTarget/$line/$(dirname $dir)
+	    for vcsType in "${vcsTypes[@]}"
+	    do
+	        for files in $(find * -type d -name "*.$vcsType"); do
+		        dir=$(dirname $files)
+		        echo $dir
+		        if [[ "$dir" == *"/"* ]]; then
+		            mkdir -p $backupTarget/$line/$(dirname $dir)
+		            tar -zcvf $backupTarget/$line/$dir.$compressionFormat $(dirname $files); 
                     tar -zcvf $backupTarget/$line/$dir.$compressionFormat $(dirname $files); 
-                else
+		            tar -zcvf $backupTarget/$line/$dir.$compressionFormat $(dirname $files); 
+		        else
+		            tar -zcvf $backupTarget/$line/$(dirname $files).$compressionFormat $(dirname $files); 
                     tar -zcvf $backupTarget/$line/$(dirname $files).$compressionFormat $(dirname $files); 
-                fi
-            done
+		            tar -zcvf $backupTarget/$line/$(dirname $files).$compressionFormat $(dirname $files); 
+		        fi
+		    done
+	    done
 
             # go back to previously saved directory
             cd $oldDir
 
         done < "$compressArchiveCode"
+    else
+    	echo "File not found $compressArchiveCode"
     fi
 }
 
