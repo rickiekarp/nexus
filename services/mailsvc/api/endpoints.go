@@ -69,12 +69,12 @@ func NotifyFitnessReminderEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	curDate := time.Now().Format("01-2006")
-	config := map[string]string{
+	confData := map[string]string{
 		"currentDate": curDate,
 	}
 
 	var tpl bytes.Buffer
-	if err := t.Execute(&tpl, config); err != nil {
+	if err := t.Execute(&tpl, confData); err != nil {
 		logrus.Error(err)
 		w.WriteHeader(500)
 		return
@@ -83,7 +83,7 @@ func NotifyFitnessReminderEndpoint(w http.ResponseWriter, r *http.Request) {
 	result := tpl.String()
 
 	data := mailmodel.MailData{
-		To:      "rickie.karp@gmail.com",
+		To:      config.MailConfig.Notify.Recipient,
 		Subject: fmt.Sprintf("Fitness Tracking Reminder - %s", curDate),
 		Message: result,
 	}
@@ -115,7 +115,7 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 	curDate := time.Now().Format("01-2006")
 
 	data := mailmodel.MailData{
-		To:      "rickie.karp@gmail.com",
+		To:      config.MailConfig.Notify.Recipient,
 		Subject: fmt.Sprintf("Reminders - %s", curDate),
 		Message: "Here are your reminders:<br>",
 	}

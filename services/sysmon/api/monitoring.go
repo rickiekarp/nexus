@@ -50,7 +50,7 @@ func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
 		}
 
 		data := mailmodel.MailData{
-			To:      "rickie.karp@gmail.com",
+			To:      config.SysTemperatureConf.NotifyEmailRecipient,
 			Subject: "[Warning] " + config.Hostname + " temperature too high!",
 			Message: "Please check the machine status! (Temperature: " + fmt.Sprintf("%f", temperatureNotifyData.Temperature) + ")",
 		}

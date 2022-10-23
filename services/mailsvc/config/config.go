@@ -18,7 +18,11 @@ type MailConf struct {
 		Password string `yaml:"password"`
 	} `yaml:"mail"`
 	Databases []Database `yaml:"databases"`
+	Notify    struct {
+		Recipient string `yaml:"recipient"`
+	} `yaml:"notify"`
 }
+
 type Database struct {
 	Name             string `yaml:"name"`
 	User             string `yaml:"user"`
