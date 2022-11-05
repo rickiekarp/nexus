@@ -91,13 +91,17 @@ func (m *Message) toBytes() []byte {
 		buf.WriteString("Content-Type: text/html; charset=utf-8\n")
 	}
 
-	buf.WriteString(m.Body)
+	buf.WriteString(fmt.Sprintf("\n%s\n", m.Body))
+
 	if withAttachments {
+		// write boundary of body content in case there is an attachment
+		buf.WriteString(fmt.Sprintf("--%s\n", boundary))
+
 		for k, v := range m.Attachments {
-			buf.WriteString(fmt.Sprintf("\n\n--%s\n", boundary))
+			buf.WriteString(fmt.Sprintf("\n--%s\n", boundary))
 			buf.WriteString(fmt.Sprintf("Content-Type: %s\n", http.DetectContentType(v)))
 			buf.WriteString("Content-Transfer-Encoding: base64\n")
-			buf.WriteString(fmt.Sprintf("Content-Disposition: attachment; filename=%s\n", k))
+			buf.WriteString(fmt.Sprintf("Content-Disposition: attachment; filename=\"%s\"\n\n", k))
 
 			b := make([]byte, base64.StdEncoding.EncodedLen(len(v)))
 			base64.StdEncoding.Encode(b, v)
