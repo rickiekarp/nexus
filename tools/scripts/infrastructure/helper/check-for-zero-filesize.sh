@@ -12,9 +12,9 @@ if [ ! -d "$path" ]; then
   exit 1
 fi
 
-for file in $(find $path -name $extension);
+find "$path" -type f -name "$extension" -print0 | while read -d '' file
 do
-	if [ $(ls -la $file | awk '{print $5}') -eq "0" ]; then
-	  echo "FOUND: $file";
-	fi
+  if [ $(printf "%q" "$file" | xargs ls -l | awk '{print $5}') -eq "0" ]; then
+	echo "FOUND: $file";
+  fi
 done
