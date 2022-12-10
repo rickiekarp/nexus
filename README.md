@@ -19,7 +19,7 @@ docker-compose -f deployments/docker-compose.yml up
 ## Migrate databse
 
 ```
-cd projects/migrations
+cd deployments/migrations
 make getimage
 make migrate HOST=database DATABASE=login DBUSER=root DBPASS=root
 make migrate HOST=database DATABASE=gamedata DBUSER=root DBPASS=root

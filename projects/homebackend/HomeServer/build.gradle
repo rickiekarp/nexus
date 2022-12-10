@@ -1,7 +1,7 @@
 group 'net.rickiekarp.homeserver'
 
 dependencies {
-    compile project(':Foundation')
+    implementation project(':Foundation')
 }
 
 apply plugin: 'war'
