@@ -67,7 +67,7 @@ install_software()
 install_dev_software()
 {
 	echo "Installing development software..."
-	sudo apt install -y git openjdk-11-jre-headless default-jdk virtualbox virtualbox-qt adb jmeter jmeter-http
+	sudo apt install -y git openjdk-17-jdk virtualbox virtualbox-qt adb jmeter jmeter-http
 
 	# Install Docker
 	sudo apt install -y docker docker.io docker-compose
