@@ -17,6 +17,7 @@ config/gobackend
 
 # build output directory
 build/output
+tools/build
 
 # monitoring data dir 
 data/monitoring
