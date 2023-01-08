@@ -9,17 +9,19 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"time"
+	"sort"
 
 	"gopkg.in/yaml.v2"
 )
+
+var Version = "development" // Version set during go build using ldflags
 
 var rootDir string
 var flagCalcMd5 *bool
 
 func main() {
 
-	flagCalcMd5 = flag.Bool("calcmd5", false, "calculate md5 sum of each file")
+	flagCalcMd5 = flag.Bool("calcMd5", false, "calculate md5 sum of each file")
 	flag.Parse()
 
 	if flag.Args()[0] == "" {
@@ -41,9 +43,9 @@ func main() {
 }
 
 type FileTree struct {
-	RootDir      string    `yaml:"directory"`
-	CreationDate time.Time `yaml:"created"`
-	Tree         *Folder
+	RootDir       string `yaml:"directory"`
+	ParserVersion string `yaml:"parserVersion"`
+	Tree          *Folder
 }
 
 type Folder struct {
@@ -62,6 +64,13 @@ func (f *Folder) String() string {
 	j, _ := yaml.Marshal(f)
 	return string(j)
 }
+
+// ByName implements sort.Interface based on the Name field.
+type ByName []*File
+
+func (a ByName) Len() int           { return len(a) }
+func (a ByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
+func (a ByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 
 func BuildTree(dir string) *FileTree {
 	dir = path.Clean(dir)
@@ -87,6 +96,7 @@ func BuildTree(dir string) *FileTree {
 				Md5:  md5,
 			}
 		}
+
 		return nil
 	}
 
@@ -110,10 +120,12 @@ func BuildTree(dir string) *FileTree {
 		case *Folder:
 			parentFolder.Folders[v.Name] = v
 		}
+
+		sort.Sort(ByName(parentFolder.Files))
 	}
 
 	filetree.RootDir = rootDir
-	filetree.CreationDate = time.Now()
+	filetree.ParserVersion = Version
 	filetree.Tree = tree
 
 	return filetree
