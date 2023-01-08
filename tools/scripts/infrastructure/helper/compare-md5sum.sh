@@ -1,7 +1,7 @@
 #!/bin/bash
 # Compares the md5sum of local files ($1) with files on a remote file server ($2)
 # USAGE:
-# bash git/homesrv/tools/scripts/infrastructure/helper/comare-md5sum.sh /home/rickie/cloud/archive/ /mnt/raid1/applications/cloud/data/archive/files/ *.tar.xz
+# bash git/homesrv/tools/scripts/infrastructure/helper/compare-md5sum.sh /home/rickie/cloud/archive/ /mnt/raid1/applications/cloud/data/archive/files/ *.tar.xz
 
 localBasePath="$1"
 remoteBasePath="$2"
