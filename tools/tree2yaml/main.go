@@ -32,14 +32,14 @@ func main() {
 
 	tree := BuildTree(rootDir)
 
-	yamlData, err := yaml.Marshal(&tree)
+	data, err := yaml.Marshal(&tree)
 
 	if err != nil {
 		fmt.Printf("Error while Marshaling. %v", err)
 		os.Exit(1)
 	}
 
-	fmt.Println(string(yamlData))
+	fmt.Println(string(data))
 }
 
 type FileTree struct {
@@ -49,9 +49,9 @@ type FileTree struct {
 }
 
 type Folder struct {
-	Name    string             `yaml:"-"`
-	Files   []*File            `yaml:"files,omitempty"`
-	Folders map[string]*Folder `yaml:"folders,omitempty"`
+	Name    string
+	Files   []*File   `yaml:"files,omitempty"`
+	Folders []*Folder `yaml:"folders,omitempty"`
 }
 
 type File struct {
@@ -72,6 +72,13 @@ func (a ByName) Len() int           { return len(a) }
 func (a ByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 func (a ByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 
+// ByFolderName implements sort.Interface based on the Name field.
+type ByFolderName []*Folder
+
+func (a ByFolderName) Len() int           { return len(a) }
+func (a ByFolderName) Less(i, j int) bool { return a[i].Name < a[j].Name }
+func (a ByFolderName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+
 func BuildTree(dir string) *FileTree {
 	dir = path.Clean(dir)
 
@@ -83,7 +90,7 @@ func BuildTree(dir string) *FileTree {
 			nodes[p] = &Folder{
 				path.Base(p),
 				[]*File{},
-				map[string]*Folder{},
+				[]*Folder{},
 			}
 		} else {
 			var md5 = ""
@@ -117,11 +124,11 @@ func BuildTree(dir string) *FileTree {
 		switch v := value.(type) {
 		case *File:
 			parentFolder.Files = append(parentFolder.Files, v)
+			sort.Sort(ByName(parentFolder.Files))
 		case *Folder:
-			parentFolder.Folders[v.Name] = v
+			parentFolder.Folders = append(parentFolder.Folders, v)
+			sort.Sort(ByFolderName(parentFolder.Folders))
 		}
-
-		sort.Sort(ByName(parentFolder.Files))
 	}
 
 	filetree.RootDir = rootDir
