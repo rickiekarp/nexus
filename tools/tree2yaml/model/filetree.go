@@ -1,6 +1,10 @@
 package model
 
-import "gopkg.in/yaml.v2"
+import (
+	"time"
+
+	"gopkg.in/yaml.v2"
+)
 
 type FileTree struct {
 	RootDir       string `yaml:"directory"`
@@ -16,9 +20,10 @@ type Folder struct {
 }
 
 type File struct {
-	Name string
-	Size int64
-	Md5  string `yaml:"md5,omitempty"`
+	Name         string
+	Size         int64
+	LastModified time.Time
+	Md5          string `yaml:"md5,omitempty"`
 }
 
 func (f *Folder) String() string {

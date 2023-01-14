@@ -61,11 +61,14 @@ func BuildTree(dir string) *model.FileTree {
 			if *flagCalcMd5 {
 				md5 = hash.CalcMd5(p)
 			}
+
 			filetree.Size += info.Size()
+
 			nodes[p] = &model.File{
-				Name: path.Base(p),
-				Size: info.Size(),
-				Md5:  md5,
+				Name:         path.Base(p),
+				Size:         info.Size(),
+				LastModified: info.ModTime(),
+				Md5:          md5,
 			}
 		}
 
