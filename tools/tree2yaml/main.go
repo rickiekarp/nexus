@@ -1,16 +1,17 @@
 package main
 
 import (
-	"crypto/md5"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"path"
 	"path/filepath"
 	"sort"
 
+	"git.rickiekarp.net/rickie/home/tools/tree2yaml/hash"
+	"git.rickiekarp.net/rickie/home/tools/tree2yaml/model"
+	"git.rickiekarp.net/rickie/home/tools/tree2yaml/sorting"
 	"gopkg.in/yaml.v2"
 )
 
@@ -42,62 +43,26 @@ func main() {
 	fmt.Println(string(data))
 }
 
-type FileTree struct {
-	RootDir       string `yaml:"directory"`
-	ParserVersion string `yaml:"parserVersion"`
-	Tree          *Folder
-}
-
-type Folder struct {
-	Name    string
-	Files   []*File   `yaml:"files,omitempty"`
-	Folders []*Folder `yaml:"folders,omitempty"`
-}
-
-type File struct {
-	Name string
-	Size int64
-	Md5  string `yaml:"md5,omitempty"`
-}
-
-func (f *Folder) String() string {
-	j, _ := yaml.Marshal(f)
-	return string(j)
-}
-
-// ByName implements sort.Interface based on the Name field.
-type ByName []*File
-
-func (a ByName) Len() int           { return len(a) }
-func (a ByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
-func (a ByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-
-// ByFolderName implements sort.Interface based on the Name field.
-type ByFolderName []*Folder
-
-func (a ByFolderName) Len() int           { return len(a) }
-func (a ByFolderName) Less(i, j int) bool { return a[i].Name < a[j].Name }
-func (a ByFolderName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-
-func BuildTree(dir string) *FileTree {
+func BuildTree(dir string) *model.FileTree {
 	dir = path.Clean(dir)
 
-	var filetree *FileTree = &FileTree{}
-	var tree *Folder
+	var filetree *model.FileTree = &model.FileTree{}
+	var tree *model.Folder
 	var nodes = map[string]interface{}{}
 	var walkFunc filepath.WalkFunc = func(p string, info os.FileInfo, err error) error {
 		if info.IsDir() {
-			nodes[p] = &Folder{
-				path.Base(p),
-				[]*File{},
-				[]*Folder{},
+			nodes[p] = &model.Folder{
+				Name:    path.Base(p),
+				Files:   []*model.File{},
+				Folders: []*model.Folder{},
 			}
 		} else {
 			var md5 = ""
 			if *flagCalcMd5 {
-				md5 = calcMd5(p)
+				md5 = hash.CalcMd5(p)
 			}
-			nodes[p] = &File{
+			filetree.Size += info.Size()
+			nodes[p] = &model.File{
 				Name: path.Base(p),
 				Size: info.Size(),
 				Md5:  md5,
@@ -113,21 +78,21 @@ func BuildTree(dir string) *FileTree {
 	}
 
 	for key, value := range nodes {
-		var parentFolder *Folder
+		var parentFolder *model.Folder
 		if key == dir {
-			tree = value.(*Folder)
+			tree = value.(*model.Folder)
 			continue
 		} else {
-			parentFolder = nodes[path.Dir(key)].(*Folder)
+			parentFolder = nodes[path.Dir(key)].(*model.Folder)
 		}
 
 		switch v := value.(type) {
-		case *File:
+		case *model.File:
 			parentFolder.Files = append(parentFolder.Files, v)
-			sort.Sort(ByName(parentFolder.Files))
-		case *Folder:
+			sort.Sort(sorting.ByName(parentFolder.Files))
+		case *model.Folder:
 			parentFolder.Folders = append(parentFolder.Folders, v)
-			sort.Sort(ByFolderName(parentFolder.Folders))
+			sort.Sort(sorting.ByFolderName(parentFolder.Folders))
 		}
 	}
 
@@ -136,23 +101,4 @@ func BuildTree(dir string) *FileTree {
 	filetree.Tree = tree
 
 	return filetree
-}
-
-func calcMd5(filePath string) string {
-	file, err := os.Open(filePath)
-
-	if err != nil {
-		panic(err)
-	}
-
-	defer file.Close()
-
-	hash := md5.New()
-	_, err = io.Copy(hash, file)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return fmt.Sprintf("%x", hash.Sum(nil))
 }
