@@ -21,8 +21,8 @@ func main() {
 	var flagLoadList = flag.Bool("load", false, "loads an existing filelist")
 	var flagFindFiles = flag.String("findFilesIn", "", "finds files by a given search path, e.g. tree2yaml --load --findFilesIn=foo/bar /foo/bar")
 	var flagFindFolders = flag.String("findFoldersIn", "", "finds folders by a given search path, e.g. tree2yaml --load --findFoldersIn=foo/bar /foo/bar")
-	var flagFilterByDate = flag.String("filterByDate", "", "desc")
-	var flagFilterByDateDirection = flag.String("filterByDateDirection", "new", "desc")
+	var flagFilterByDate = flag.String("filterByDate", "", "filters files by given date, e.g. --filterByDate=2022-12-24")
+	var flagFilterByDateDirection = flag.String("filterByDateDirection", "new", "direction of files to be filtered, e.g. 'old', 'new'")
 
 	flag.Parse()
 
