@@ -21,6 +21,8 @@ func main() {
 	var flagLoadList = flag.Bool("load", false, "loads an existing filelist")
 	var flagFindFiles = flag.String("findFilesIn", "", "finds files by a given search path, e.g. tree2yaml --load --findFilesIn=foo/bar /foo/bar")
 	var flagFindFolders = flag.String("findFoldersIn", "", "finds folders by a given search path, e.g. tree2yaml --load --findFoldersIn=foo/bar /foo/bar")
+	var flagFilterByDate = flag.String("filterByDate", "", "desc")
+	var flagFilterByDateDirection = flag.String("filterByDateDirection", "new", "desc")
 
 	flag.Parse()
 
@@ -57,6 +59,9 @@ func main() {
 			if folder == nil {
 				os.Exit(0)
 			}
+
+			folder = extractor.FilterByModDate(folder, *flagFilterByDate, *flagFilterByDateDirection)
+
 			for _, file := range folder.Files {
 				fmt.Println(file.Name)
 			}
