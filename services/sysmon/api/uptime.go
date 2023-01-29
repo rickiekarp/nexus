@@ -10,8 +10,9 @@ import (
 )
 
 type UptimeNotifyData struct {
-	Agent  string
-	Uptime float64
+	Agent string
+	Key   string
+	Value float64
 }
 
 var uptimeNotifyData UptimeNotifyData
@@ -40,7 +41,7 @@ func NotifyUptimeEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	// create metric to send to graphite
 	metric := map[string]float64{
-		"uptime": uptimeNotifyData.Uptime,
+		uptimeNotifyData.Key: uptimeNotifyData.Value,
 	}
 	prefix := config.UptimeMonitoringConf.GraphitePrefix + "." + uptimeNotifyData.Agent
 	graphite.SendMetric(metric, prefix)
