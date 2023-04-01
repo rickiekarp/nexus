@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"io/ioutil"
 	"net/http"
+	"text/template"
 	"time"
 
 	"git.rickiekarp.net/rickie/home/internal/models/mailmodel"
