@@ -9,8 +9,7 @@ import (
 // defineApiEndpoints defines all routes the Router can handle
 func defineApiEndpoints(r *mux.Router) {
 	r.HandleFunc("/v2/notify", Notify).Methods("POST")
-	r.HandleFunc("/v1/fitness/remind", NotifyFitnessReminderEndpoint).Methods("POST")
-	r.HandleFunc("/v1/sendReminders", NotifyRemindersEndpoint).Methods("POST")
+	r.HandleFunc("/v1/notify/reminders", NotifyRemindersEndpoint).Methods("POST")
 }
 
 // GetServer returns a http server that listens on the given addr
