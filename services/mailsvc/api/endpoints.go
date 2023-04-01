@@ -98,12 +98,11 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result := templateBuffer.String()
-
+	messageContent := templateBuffer.String()
 	data := mailmodel.MailData{
 		To:      config.MailConfig.Notify.Recipient,
 		Subject: fmt.Sprintf("Reminders - %s", time.Now().Format("01-2006")),
-		Message: result,
+		Message: messageContent,
 	}
 
 	if len(data.To) == 0 || len(data.Subject) == 0 || len(data.Message) == 0 {
@@ -113,7 +112,6 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = mail.SendMail(data)
-
 	if err != nil {
 		logrus.Error(err)
 		w.WriteHeader(500)
