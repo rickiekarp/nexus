@@ -1,6 +1,6 @@
 module git.rickiekarp.net/rickie/home
 
-go 1.18
+go 1.20
 
 require (
 	github.com/go-sql-driver/mysql v1.4.1
