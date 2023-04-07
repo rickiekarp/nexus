@@ -49,17 +49,15 @@ uninstall_software()
 # installs software from default repository
 install_software()
 {
-	echo "Installing libraries..."
+	echo "Installing software..."
+	snap install opera telegram-desktop discord
+	sudo apt install -y keepassxc guake vlc bleachbit gimp vim curl ffmpeg timeshift obs-studio gnome-shell-extension-manager easytag darktable rawtherapee
+
+	# install FUSE to export a virtual filesystem to linux kernel (for e.g. AppImage)
 	sudo apt install -y libfuse2
 	# virtual camera support
 	sudo apt install -y v4l2loopback-dkms
-	echo "Installing software..."
-	snap install opera
-	sudo apt install -y keepassxc guake vlc steam bleachbit gimp \
-		vim curl ffmpeg timeshift obs-studio gnome-shell-extension-manager easytag darktable rawtherapee
-	snap install telegram-desktop
-	snap install discord
-
+	
 	check_process_exit
 }
 
