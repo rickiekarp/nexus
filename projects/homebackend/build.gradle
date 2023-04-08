@@ -1,5 +1,3 @@
-//import com.github.spotbugs.SpotBugsTask
-
 buildscript {
     repositories {
         mavenCentral()
@@ -8,9 +6,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.30"
-        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.15"
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.9.2"
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1"
     }
 }
@@ -41,11 +39,11 @@ allprojects {
 
 subprojects {
     dependencies {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.20" as Object
-        implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.20" as Object
-        implementation "com.google.protobuf:protobuf-java:3.15.8"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20"
+        implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.20"
+        implementation "com.google.protobuf:protobuf-java:3.16.3"
         implementation "com.googlecode.protobuf-java-format:protobuf-java-format:1.4"
-        testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.7.20" as Object
+        testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.8.20"
         testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "5.7.1"
         testImplementation "org.mockito:mockito-core:3.9.0"
     }
@@ -57,37 +55,10 @@ subprojects {
 
     protobuf {
         protoc {
-            // Download from repositories
-            artifact = "com.google.protobuf:protoc:3.15.8"
+            artifact = "com.google.protobuf:protoc:3.22.2"
             generatedFilesBaseDir = "$projectDir/src"
         }
     }
-
-//    project.apply plugin: "com.github.spotbugs"
-//    project.spotbugs {
-//        it.sourceSets = [sourceSets.main]
-//        ignoreFailures = true
-//        toolVersion = '3.1.3'
-//        effort = 'max'
-//        reportLevel = "high"
-//        reportsDir = file("$project.rootDir.absolutePath/Reports/spotbugs/$project.name")
-//    }
-//
-//    // filter out any class that does not live in the rkarp package
-//    project.tasks.withType(SpotBugsTask) {
-//        description = 'Run spotbugs'
-//        group = 'verification'
-//
-//        dependsOn 'classes'
-//        classes = fileTree('build/classes/')
-//
-//        doFirst {
-//            classes = classes.filter {
-//                it.path.contains('/com/rkarp/')
-//            }
-//            pluginClasspath = project.configurations.spotbugsPlugins
-//        }
-//    }
 }
 
 wrapper {

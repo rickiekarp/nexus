@@ -17,13 +17,10 @@ open class HomeServerSecurityConfig : WebSecurityConfigurerAdapter() {
 
     companion object {
         private val NOT_SECURED = arrayOf(
-                "/app/changelog",
-                "/app/update",
                 "/contact",
                 "/resume/experience",
                 "/resume/education",
                 "/resume/skills",
-                "/file/get",
                 "/info/ip",
                 "/info/version",
                 "/statistics/shoppingValue")
