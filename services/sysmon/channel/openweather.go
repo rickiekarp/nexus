@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"git.rickiekarp.net/rickie/home/internal/monitoring/graphite"
@@ -140,7 +141,7 @@ func ScheduleWeatherUpdate() {
 					"clouds.all":      float64(res.Clouds.All),
 				}
 
-				prefix := config.WeatherConf.GraphitePrefix + "." + res.Name
+				prefix := config.WeatherConf.GraphitePrefix + "." + strings.ReplaceAll(res.Name, " ", "_")
 				graphite.SendMetric(metric, prefix)
 			}
 
