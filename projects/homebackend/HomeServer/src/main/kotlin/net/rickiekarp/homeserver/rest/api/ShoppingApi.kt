@@ -1,6 +1,5 @@
 package net.rickiekarp.homeserver.rest.api
 
-import com.google.protobuf.Timestamp
 import net.rickiekarp.foundation.config.BaseConfig
 import net.rickiekarp.foundation.data.dto.ResultDTO
 import net.rickiekarp.homeserver.dao.ShoppingNoteDAO

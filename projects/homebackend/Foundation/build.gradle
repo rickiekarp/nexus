@@ -1,23 +1,23 @@
 dependencies {
-    api group: 'org.apache.logging.log4j', name: 'log4j-core', version: "2.17.1"
+    api group: 'org.apache.logging.log4j', name: 'log4j-core', version: "2.20.0"
 
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "2.7.10"
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "2.7.10"
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "2.7.10"
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "2.7.11"
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "2.7.11"
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "2.7.11"
 
     //mail
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: "2.7.10"
-    api group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: "2.7.10"
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: "2.7.11"
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: "2.7.11"
 
     //redis
-    api group: 'org.springframework.data', name: 'spring-data-redis', version: "2.7.10"
-    api group: 'io.lettuce', name: 'lettuce-core', version: '6.2.3.RELEASE'
+    api group: 'org.springframework.data', name: 'spring-data-redis', version: "2.7.11"
+    api group: 'io.lettuce', name: 'lettuce-core', version: '6.2.4.RELEASE'
 
     implementation group: 'com.google.code.gson', name: 'gson', version: "2.10.1"
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "2.14.2"
-    api group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "2.12.3"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "2.15.1"
+    api group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "2.15.1"
 
-    implementation 'com.mysql:mysql-connector-j:8.0.32'
+    implementation 'com.mysql:mysql-connector-j:8.0.33'
 
     api group: 'org.apache.commons', name: 'commons-text', version: "1.10.0"
 
