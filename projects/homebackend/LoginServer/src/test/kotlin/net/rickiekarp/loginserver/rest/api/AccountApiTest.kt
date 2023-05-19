@@ -28,7 +28,7 @@ class AccountApiTest {
 
     @Before
     fun initMocks() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
     }
 
     @Test

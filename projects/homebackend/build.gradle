@@ -45,7 +45,7 @@ subprojects {
         implementation "com.googlecode.protobuf-java-format:protobuf-java-format:1.4"
         testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.8.21"
         testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "5.7.1"
-        testImplementation "org.mockito:mockito-core:3.9.0"
+        testImplementation "org.mockito:mockito-core:5.3.1"
     }
 
     sourceSets {
