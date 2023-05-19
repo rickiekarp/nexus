@@ -7,9 +7,9 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.30"
-        classpath "com.google.protobuf:protobuf-gradle-plugin:0.9.2"
-        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.8.10"
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.9.3"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.18.1"
     }
 }
 
@@ -23,15 +23,15 @@ allprojects {
     apply plugin: 'com.google.protobuf'
     apply plugin: "io.gitlab.arturbosch.detekt"
 
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 
     repositories {
         mavenCentral()
     }
 
     detekt {
-        toolVersion = "1.17.1"
+        toolVersion = "1.18.1"
         input = files("src/main/kotlin")
         config = files("../config/detekt/detekt.yml")
     }
@@ -55,12 +55,12 @@ subprojects {
 
     protobuf {
         protoc {
-            artifact = "com.google.protobuf:protoc:3.22.2"
+            artifact = "com.google.protobuf:protoc:3.23.1"
             generatedFilesBaseDir = "$projectDir/src"
         }
     }
 }
 
 wrapper {
-    gradleVersion = "7.3.3"
+    gradleVersion = "8.1.1"
 }
