@@ -2,11 +2,12 @@ package net.rickiekarp.loginserver
 
 import net.rickiekarp.foundation.config.Application
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan
 
-@SpringBootApplication
+@SpringBootApplication(exclude = [SecurityAutoConfiguration::class])
 @ComponentScan(value = ["net.rickiekarp"])
 open class LoginServerApplication: SpringBootServletInitializer() {
 
