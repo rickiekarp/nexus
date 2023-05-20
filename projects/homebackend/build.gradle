@@ -32,7 +32,6 @@ allprojects {
 
     detekt {
         toolVersion = "1.18.1"
-        input = files("src/main/kotlin")
         config = files("../config/detekt/detekt.yml")
     }
 }
@@ -49,14 +48,12 @@ subprojects {
     }
 
     sourceSets {
-        main.kotlin.srcDirs += 'src/main/kotlin'
         main.java.srcDirs += 'src/main/kotlin'
     }
 
     protobuf {
         protoc {
             artifact = "com.google.protobuf:protoc:3.23.1"
-            generatedFilesBaseDir = "$projectDir/src"
         }
     }
 }
