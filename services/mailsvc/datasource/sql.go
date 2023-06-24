@@ -24,7 +24,7 @@ type ReminderData struct {
 
 const GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT = "SELECT content FROM applicationsettings where identifier = 'notificationtoken'"
 
-const SELECT_REMINDER_LIST = "select * from tracking_todo where users_id = ? AND (reminder_senddate IS NULL OR date(now()) = date(reminder_senddate) + interval reminder_interval day) AND reminder_enddate > now() AND isDeleted = false"
+const SELECT_REMINDER_LIST = "select * from tracking_todo where users_id >= ? AND (reminder_senddate IS NULL OR date(now()) = date(reminder_senddate) + interval reminder_interval day) AND reminder_enddate > now() AND isDeleted = false"
 
 const UPDATE_REMINDER_SENDDATE = "update tracking_todo set reminder_senddate = now(), lastUpdated = now() where id = ?"
 
