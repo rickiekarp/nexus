@@ -17,14 +17,19 @@ type NotificationToken struct {
 }
 
 type ReminderData struct {
-	Id                                                                          int
-	users_id, dateAdded, Description, reminder_interval, isDeleted, lastUpdated string
-	reminder_startdate, reminder_senddate, reminder_enddate                     sql.NullString
+	Id                                                                                        int
+	users_id, dateAdded, Description, reminder_interval, reminder_day, isDeleted, lastUpdated string
+	reminder_startdate, reminder_senddate, reminder_enddate                                   sql.NullString
 }
 
 const GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT = "SELECT content FROM applicationsettings where identifier = 'notificationtoken'"
 
-const SELECT_REMINDER_LIST = "select * from tracking_todo where users_id = ? AND (reminder_senddate IS NULL OR date(now()) >= date(reminder_senddate) + interval reminder_interval day) AND reminder_enddate > now() AND isDeleted = false"
+const SELECT_REMINDER_LIST = `select * from tracking_todo 
+where users_id = ? 
+AND dayofweek(curdate())-1 = reminder_day 
+OR (reminder_senddate IS NULL OR date(now()) >= date(reminder_senddate) + interval reminder_interval day) 
+AND reminder_enddate > now() 
+AND isDeleted = false`
 
 const UPDATE_REMINDER_SENDDATE = "update tracking_todo set reminder_senddate = now(), lastUpdated = now() where id = ?"
 
@@ -50,6 +55,7 @@ func GetActiveRemindersForUser(userId int) *[]ReminderData {
 			&data.dateAdded,
 			&data.Description,
 			&data.reminder_interval,
+			&data.reminder_day,
 			&data.reminder_startdate,
 			&data.reminder_senddate,
 			&data.reminder_enddate,
