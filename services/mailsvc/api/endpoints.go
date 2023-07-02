@@ -101,7 +101,7 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 	messageContent := templateBuffer.String()
 	data := mailmodel.MailData{
 		To:      config.MailConfig.Notify.Recipient,
-		Subject: fmt.Sprintf("Reminders - %s", time.Now().Format("01-2006")),
+		Subject: fmt.Sprintf("ToDo - %s", time.Now().Format("2006-01-02")),
 		Message: messageContent,
 	}
 
