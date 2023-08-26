@@ -5,6 +5,7 @@ GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 BUILD_PATH=build
 BINARY_NAME=app
+DEPLOY_DIR=/mnt/raid2/applications/apps/
 
 buildSysmonAmd64:
 		CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
@@ -23,7 +24,7 @@ buildSysmonARM64v7:
 		cp deployments/docker/Dockerfile_goscratch build/output/sysmon/Dockerfile
 
 deploySysmon:
-		rsync -rlvpt --delete build/output/sysmon pi:~/apps/
+		rsync -rlvpt --delete build/output/sysmon pi:$(DEPLOY_DIR)
 
 buildMailServiceARM64v7:
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
@@ -34,7 +35,7 @@ buildMailServiceARM64v7:
 		cp deployments/docker/Dockerfile_goscratch build/output/mailsvc/Dockerfile
 
 deployMailService:
-		rsync -rlvpt --delete build/output/mailsvc pi:~/apps/
+		rsync -rlvpt --delete build/output/mailsvc pi:$(DEPLOY_DIR)
 
 test:
 		$(GOTEST) -v ./...
