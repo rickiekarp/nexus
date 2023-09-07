@@ -13,7 +13,7 @@ func defineApiEndpoints(r *mux.Router) {
 }
 
 // GetServer returns a http server that listens on the given addr
-func GetMailServer(addr string) *http.Server {
+func GetServer(addr string) *http.Server {
 	router := mux.NewRouter()
 	defineApiEndpoints(router)
 

@@ -3,6 +3,7 @@ package config
 import (
 	"io/ioutil"
 
+	"git.rickiekarp.net/rickie/home/internal/models"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
@@ -17,18 +18,10 @@ type MailConf struct {
 		Username string `yaml:"username"`
 		Password string `yaml:"password"`
 	} `yaml:"mail"`
-	Databases []Database `yaml:"databases"`
+	Databases []models.Database `yaml:"databases"`
 	Notify    struct {
 		Recipient string `yaml:"recipient"`
 	} `yaml:"notify"`
-}
-
-type Database struct {
-	Name             string `yaml:"name"`
-	User             string `yaml:"user"`
-	Password         string `yaml:"password"`
-	Host             string `yaml:"host"`
-	AdditionalParams string `yaml:"additionalParams"`
 }
 
 var MailConfig MailConf
@@ -56,7 +49,7 @@ func ReadMailConfig(configDir string) error {
 
 // GetConfigByDatabaseName iterates over all databases in the config and returns a
 // pointer to the config entry for the given databaseName string
-func GetConfigByDatabaseName(databaseName string) *Database {
+func GetConfigByDatabaseName(databaseName string) *models.Database {
 	for _, databaseCfg := range MailConfig.Databases {
 		if databaseCfg.Name == databaseName {
 			return &databaseCfg

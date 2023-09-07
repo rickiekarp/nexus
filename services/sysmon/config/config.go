@@ -4,15 +4,18 @@ import (
 	"io/ioutil"
 	"os"
 
+	"git.rickiekarp.net/rickie/home/internal/models"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
 
 type SysmonConfig struct {
-	Graphite struct {
+	ServerAddr string `yaml:"serverAddr"`
+	Graphite   struct {
 		Host string `json:"host"`
 		Port int    `json:"port"`
 	}
+	Databases []models.Database `yaml:"databases"`
 }
 
 var ConfigBaseDir string

@@ -84,7 +84,11 @@ func main() {
 
 	go channel.ScheduleWeatherUpdate()
 
-	apiServer := api.GetServer(":10000")
+	// open connection to data_home database
+	//datasource.ConnectDataHome()
+
+	apiServer := api.GetServer(sysmoncfg.SysmonConf.ServerAddr)
+	logrus.Info("Starting API server on ", sysmoncfg.SysmonConf.ServerAddr)
 	go http.StartApiServer(apiServer)
 
 	// The program will wait here until it gets the expected signal
