@@ -5,10 +5,9 @@ import (
 	"encoding/json"
 	"log"
 
+	"git.rickiekarp.net/rickie/home/internal/database"
 	"github.com/sirupsen/logrus"
 )
-
-var ConDataHome *sql.DB
 
 type NotificationToken struct {
 	Name     string `json:"name"`
@@ -35,11 +34,11 @@ const UPDATE_REMINDER_SENDDATE = "update tracking_todo set reminder_senddate = n
 
 func GetActiveRemindersForUser(userId int) *[]ReminderData {
 	// check if the database is available
-	if !checkDatabaseConnection() {
+	if !database.CheckDatabaseConnection() {
 		return nil
 	}
 
-	rows, err := ConDataHome.Query(SELECT_REMINDER_LIST, userId)
+	rows, err := database.ConDataHome.Query(SELECT_REMINDER_LIST, userId)
 	if err != nil {
 		logrus.Error(err)
 		return nil
@@ -77,11 +76,11 @@ func GetActiveRemindersForUser(userId int) *[]ReminderData {
 
 func SetReminderSendDateForReminderId(reminderId int) error {
 	// check if the database is available
-	if !checkDatabaseConnection() {
+	if !database.CheckDatabaseConnection() {
 		return nil
 	}
 
-	_, err := ConDataHome.Exec(UPDATE_REMINDER_SENDDATE, reminderId)
+	_, err := database.ConDataHome.Exec(UPDATE_REMINDER_SENDDATE, reminderId)
 	if err != nil {
 		logrus.Error(err)
 		return err
@@ -91,11 +90,11 @@ func SetReminderSendDateForReminderId(reminderId int) error {
 
 func getApplicationSettingsNotificationTokenContent() *[]NotificationToken {
 	// check if the database is available
-	if !checkDatabaseConnection() {
+	if !database.CheckDatabaseConnection() {
 		return nil
 	}
 
-	rows, err := ConDataHome.Query(GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT)
+	rows, err := database.ConDataHome.Query(GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT)
 	if err != nil {
 		logrus.Error(err)
 		return nil

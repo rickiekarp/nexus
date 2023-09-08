@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 
+	"git.rickiekarp.net/rickie/home/internal/database"
 	"git.rickiekarp.net/rickie/home/internal/models"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
@@ -19,9 +20,7 @@ type SysmonConfig struct {
 }
 
 var ConfigBaseDir string
-
 var SysmonConf SysmonConfig
-
 var Hostname string
 
 // ReadSysmonConfig reads the given config file and tries to unmarshal it into the given configStruct
@@ -45,11 +44,12 @@ func ReadSysmonConfig() error {
 
 	// unmarshal config file depending on given configStruct
 	err = yaml.Unmarshal(yamlFile, &SysmonConf)
-
 	if err != nil {
 		logrus.Error("Unmarshal failed: ", err)
 		return err
 	}
+
+	database.Databases = SysmonConf.Databases
 
 	return nil
 }

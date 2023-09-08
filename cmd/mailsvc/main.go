@@ -8,10 +8,10 @@ import (
 	"syscall"
 
 	"git.rickiekarp.net/rickie/home/internal/config"
+	"git.rickiekarp.net/rickie/home/internal/database"
 	"git.rickiekarp.net/rickie/home/internal/http"
 	"git.rickiekarp.net/rickie/home/services/mailsvc/api"
 	mailconfig "git.rickiekarp.net/rickie/home/services/mailsvc/config"
-	"git.rickiekarp.net/rickie/home/services/mailsvc/datasource"
 	"github.com/sirupsen/logrus"
 )
 
@@ -65,7 +65,7 @@ func main() {
 	}()
 
 	// open connection to data_home database
-	datasource.ConnectDataHome()
+	database.ConnectDataHome()
 
 	apiServer := api.GetServer(mailconfig.MailConfig.ServerAddr)
 	logrus.Info("Starting API server on ", mailconfig.MailConfig.ServerAddr)

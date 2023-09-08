@@ -3,6 +3,7 @@ package config
 import (
 	"io/ioutil"
 
+	"git.rickiekarp.net/rickie/home/internal/database"
 	"git.rickiekarp.net/rickie/home/internal/models"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
@@ -38,22 +39,12 @@ func ReadMailConfig(configDir string) error {
 
 	// unmarshal config file depending on given configStruct
 	err = yaml.Unmarshal(yamlFile, &MailConfig)
-
 	if err != nil {
 		logrus.Error("Unmarshal failed: ", err)
 		return err
 	}
 
-	return nil
-}
+	database.Databases = MailConfig.Databases
 
-// GetConfigByDatabaseName iterates over all databases in the config and returns a
-// pointer to the config entry for the given databaseName string
-func GetConfigByDatabaseName(databaseName string) *models.Database {
-	for _, databaseCfg := range MailConfig.Databases {
-		if databaseCfg.Name == databaseName {
-			return &databaseCfg
-		}
-	}
 	return nil
 }

@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"git.rickiekarp.net/rickie/home/internal/config"
+	"git.rickiekarp.net/rickie/home/internal/database"
 	"git.rickiekarp.net/rickie/home/internal/http"
 	"git.rickiekarp.net/rickie/home/services/sysmon/api"
 	"git.rickiekarp.net/rickie/home/services/sysmon/channel"
@@ -85,7 +86,7 @@ func main() {
 	go channel.ScheduleWeatherUpdate()
 
 	// open connection to data_home database
-	//datasource.ConnectDataHome()
+	database.ConnectDataHome()
 
 	apiServer := api.GetServer(sysmoncfg.SysmonConf.ServerAddr)
 	logrus.Info("Starting API server on ", sysmoncfg.SysmonConf.ServerAddr)
