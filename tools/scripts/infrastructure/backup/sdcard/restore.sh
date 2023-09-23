@@ -1,9 +1,9 @@
 #!/bin/bash
 echo "Raspberry Pi Install Script v1.1"
 
-device="/dev/mmcblk0"
-bootpartition="/dev/mmcblk0p1"
-rootpartition="/dev/mmcblk0p2"
+device="/dev/sdb"
+bootpartition="/dev/sdb1"
+rootpartition="/dev/sdb2"
 
 # exit if backup file was not given
 if [[ -z $1 ]]

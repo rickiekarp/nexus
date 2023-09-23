@@ -28,5 +28,14 @@ mkdir -p $backupdate
 echo "Compressing backup, please wait!"
 tar -czvf $backupdate/$outputfile.tar.gz $outputfile
 
+gpg --output $backupdate/$outputfile.tar.gz.gpg \
+    --encrypt \
+    --recipient contact@rickiekarp.net \
+    --recipient rickie.karp@yandex.com  \
+    $backupdate/$outputfile.tar.gz
+
 echo "Removing $outputfile"
 rm $outputfile
+
+echo "Removing unencrypted backup $backupdate/$outputfile.tar.gz"
+rm $backupdate/$outputfile.tar.gz
