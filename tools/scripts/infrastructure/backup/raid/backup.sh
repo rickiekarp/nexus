@@ -13,7 +13,7 @@ if [ -d "$driveA" ]; then
     --exclude 'applications/cloud/data/media' \
     --exclude 'applications/gogs' \
     --exclude 'applications/jenkins' \
-    root@pi:/mnt/raid1/archive :/mnt/raid1/applications \
+    root@pi:/mnt/raid2/archive :/mnt/raid2/applications \
     $driveA 
 else
   echo "---------------------------------------------------"
@@ -25,7 +25,7 @@ driveB="/media/rickie/backup2/"
 if [ -d "$driveB" ]; then
   echo "Starting backup to $driveB!"
   rsync -rlvpt --delete \
-    root@pi:/mnt/raid1/applications/cloud/data/media \
+    root@pi:/mnt/raid2/applications/cloud/data/media \
     $driveB 
 else
   echo "---------------------------------------------------"
