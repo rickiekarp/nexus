@@ -10,4 +10,7 @@ require (
 	gopkg.in/yaml.v2 v2.2.4
 )
 
-require golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 // indirect
+require (
+	github.com/gorilla/websocket v1.5.0 // indirect
+	golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 // indirect
+)

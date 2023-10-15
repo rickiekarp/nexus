@@ -28,6 +28,7 @@ mkdir -p $backupdate
 echo "Compressing backup, please wait!"
 tar -czvf $backupdate/$outputfile.tar.gz $outputfile
 
+echo "Encrypting backup..."
 gpg --output $backupdate/$outputfile.tar.gz.gpg \
     --encrypt \
     --recipient contact@rickiekarp.net \
