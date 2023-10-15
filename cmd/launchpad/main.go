@@ -116,8 +116,12 @@ func (c *Client) read() {
 			_ = c.socket.Close()
 			break
 		}
+
 		//If there is no error message, put the information in Broadcast
 		jsonMessage, _ := json.Marshal(&Message{Sender: c.id, Content: string(message), ServerIP: LocalIp(), SenderIP: c.socket.RemoteAddr().String()})
+
+		fmt.Println("recv: ", string(jsonMessage))
+
 		manager.broadcast <- jsonMessage
 	}
 }
