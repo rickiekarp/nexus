@@ -9,6 +9,12 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+var (
+	Version          = "development"                                                // Version set during go build using ldflags
+	ConfigBaseDir    = "deployments/module-deployment/values/launchpad/dev/config/" // ConfigBaseDir set during go build using ldflags
+	ResourcesBaseDir = "web/launchpad/"
+)
+
 // Client management
 type ClientManager struct {
 	//The client map stores and manages all long connection clients, online is TRUE, and those who are not there are FALSE
@@ -147,7 +153,7 @@ func main() {
 
 	//Register chat.html on /chat route
 	http.HandleFunc("/chat", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/launchpad/static/chat.html")
+		http.ServeFile(w, r, ResourcesBaseDir+"static/chat.html")
 	})
 
 	fmt.Println("chat server start.....")
