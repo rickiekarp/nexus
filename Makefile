@@ -28,10 +28,10 @@ deploySysmon:
 
 buildMailServiceARM64v7:
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
-		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD) -X git.rickiekarp.net/rickie/home/services/mailsvc/config.ConfigBaseDir=config/" \
+		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD) -X git.rickiekarp.net/rickie/home/mailsvc/config.ConfigBaseDir=config/" \
 		-o $(BUILD_PATH)/output/mailsvc/$(BINARY_NAME) \
 		cmd/mailsvc/main.go
-		cp -r deployments/module-deployment/values/services/mailsvc/prod/* $(BUILD_PATH)/output/mailsvc/
+		cp -r deployments/module-deployment/values/mailsvc/prod/* $(BUILD_PATH)/output/mailsvc/
 		cp deployments/docker/Dockerfile_goscratch build/output/mailsvc/Dockerfile
 
 deployMailService:
