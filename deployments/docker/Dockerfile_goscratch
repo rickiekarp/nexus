@@ -6,7 +6,7 @@ RUN update-ca-certificates
 FROM scratch
 ENV GOPATH=/app
 COPY app /app/app
-COPY /config /app/config
+COPY /data /app/data
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 WORKDIR /app
 ENTRYPOINT ["/app/app"]

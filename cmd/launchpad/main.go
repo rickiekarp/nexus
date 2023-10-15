@@ -152,12 +152,13 @@ func main() {
 	http.HandleFunc("/health", healthHandler)
 
 	//Register chat.html on /chat route
+	fmt.Println(ResourcesBaseDir + "static/chat.html")
 	http.HandleFunc("/chat", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, ResourcesBaseDir+"static/chat.html")
 	})
 
 	fmt.Println("chat server start.....")
-	_ = http.ListenAndServe("0.0.0.0:8448", nil)
+	_ = http.ListenAndServe("0.0.0.0:12000", nil)
 }
 
 var upgrader = websocket.Upgrader{
