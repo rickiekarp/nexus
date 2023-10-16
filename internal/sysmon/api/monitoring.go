@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"git.rickiekarp.net/rickie/home/internal/sysmon/config"
 	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"git.rickiekarp.net/rickie/home/pkg/network"
-	"git.rickiekarp.net/rickie/home/services/sysmon/config"
 	"github.com/sirupsen/logrus"
 )
 

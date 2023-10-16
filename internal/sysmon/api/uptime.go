@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"git.rickiekarp.net/rickie/home/internal/sysmon/config"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
-	"git.rickiekarp.net/rickie/home/services/sysmon/config"
 	"github.com/sirupsen/logrus"
 )
 

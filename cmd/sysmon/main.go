@@ -7,13 +7,13 @@ import (
 	"os/signal"
 	"syscall"
 
+	"git.rickiekarp.net/rickie/home/internal/sysmon/api"
+	"git.rickiekarp.net/rickie/home/internal/sysmon/channel"
+	sysmoncfg "git.rickiekarp.net/rickie/home/internal/sysmon/config"
+	"git.rickiekarp.net/rickie/home/internal/sysmon/utils"
 	"git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/database"
 	"git.rickiekarp.net/rickie/home/pkg/http"
-	"git.rickiekarp.net/rickie/home/services/sysmon/api"
-	"git.rickiekarp.net/rickie/home/services/sysmon/channel"
-	sysmoncfg "git.rickiekarp.net/rickie/home/services/sysmon/config"
-	"git.rickiekarp.net/rickie/home/services/sysmon/utils"
 	"github.com/sirupsen/logrus"
 )
 

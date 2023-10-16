@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"strings"
 
+	"git.rickiekarp.net/rickie/home/internal/mailsvc/config"
 	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
-	"git.rickiekarp.net/rickie/home/services/mailsvc/config"
 	"github.com/sirupsen/logrus"
 )
 

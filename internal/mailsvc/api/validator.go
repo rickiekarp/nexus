@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"git.rickiekarp.net/rickie/home/services/mailsvc/datasource"
+	"git.rickiekarp.net/rickie/home/internal/mailsvc/datasource"
 	"github.com/sirupsen/logrus"
 )
 

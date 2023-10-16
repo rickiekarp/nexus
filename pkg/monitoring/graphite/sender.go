@@ -3,7 +3,7 @@ package graphite
 import (
 	"fmt"
 
-	"git.rickiekarp.net/rickie/home/services/sysmon/config"
+	"git.rickiekarp.net/rickie/home/internal/sysmon/config"
 	"github.com/sirupsen/logrus"
 )
 
