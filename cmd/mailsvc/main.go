@@ -7,9 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"git.rickiekarp.net/rickie/home/internal/config"
-	"git.rickiekarp.net/rickie/home/internal/database"
-	"git.rickiekarp.net/rickie/home/internal/http"
+	"git.rickiekarp.net/rickie/home/pkg/config"
+	"git.rickiekarp.net/rickie/home/pkg/database"
+	"git.rickiekarp.net/rickie/home/pkg/http"
 	"git.rickiekarp.net/rickie/home/services/mailsvc/api"
 	mailconfig "git.rickiekarp.net/rickie/home/services/mailsvc/config"
 	"github.com/sirupsen/logrus"

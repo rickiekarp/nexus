@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"git.rickiekarp.net/rickie/home/internal/database"
+	"git.rickiekarp.net/rickie/home/pkg/database"
 	"github.com/sirupsen/logrus"
 )
 

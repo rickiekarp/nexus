@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"git.rickiekarp.net/rickie/home/internal/models"
+	"git.rickiekarp.net/rickie/home/pkg/models"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sirupsen/logrus"
 )

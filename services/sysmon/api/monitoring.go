@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/models/mailmodel"
-	"git.rickiekarp.net/rickie/home/internal/monitoring/graphite"
-	"git.rickiekarp.net/rickie/home/internal/network"
+	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
+	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
+	"git.rickiekarp.net/rickie/home/pkg/network"
 	"git.rickiekarp.net/rickie/home/services/sysmon/config"
 	"github.com/sirupsen/logrus"
 )

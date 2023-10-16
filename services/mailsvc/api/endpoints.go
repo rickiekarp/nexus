@@ -9,7 +9,7 @@ import (
 	"text/template"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/models/mailmodel"
+	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
 	"git.rickiekarp.net/rickie/home/services/mailsvc/config"
 	"git.rickiekarp.net/rickie/home/services/mailsvc/datasource"
 	"git.rickiekarp.net/rickie/home/services/mailsvc/mail"

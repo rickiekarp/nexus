@@ -7,9 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"git.rickiekarp.net/rickie/home/internal/config"
-	"git.rickiekarp.net/rickie/home/internal/database"
-	"git.rickiekarp.net/rickie/home/internal/http"
+	"git.rickiekarp.net/rickie/home/pkg/config"
+	"git.rickiekarp.net/rickie/home/pkg/database"
+	"git.rickiekarp.net/rickie/home/pkg/http"
 	"git.rickiekarp.net/rickie/home/services/sysmon/api"
 	"git.rickiekarp.net/rickie/home/services/sysmon/channel"
 	sysmoncfg "git.rickiekarp.net/rickie/home/services/sysmon/config"

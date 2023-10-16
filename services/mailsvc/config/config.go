@@ -3,8 +3,8 @@ package config
 import (
 	"io/ioutil"
 
-	"git.rickiekarp.net/rickie/home/internal/database"
-	"git.rickiekarp.net/rickie/home/internal/models"
+	"git.rickiekarp.net/rickie/home/pkg/database"
+	"git.rickiekarp.net/rickie/home/pkg/models"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )

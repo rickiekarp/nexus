@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"git.rickiekarp.net/rickie/home/internal/database"
-	"git.rickiekarp.net/rickie/home/internal/parser/yamlparser"
+	"git.rickiekarp.net/rickie/home/pkg/database"
+	"git.rickiekarp.net/rickie/home/pkg/parser/yamlparser"
 	"git.rickiekarp.net/rickie/home/services/gameserver/api"
 	"github.com/gorilla/mux"
 )
