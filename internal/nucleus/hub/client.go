@@ -3,7 +3,6 @@ package hub
 import (
 	"bytes"
 	"encoding/json"
-	"net"
 	"net/http"
 	"time"
 
@@ -146,7 +145,7 @@ func (c *Client) writePump() {
 }
 
 // serveWs handles websocket requests from the peer.
-func (h *Hub) ServeWs(w http.ResponseWriter, r *http.Request) {
+func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		logrus.Println(err)
@@ -163,17 +162,4 @@ func (h *Hub) ServeWs(w http.ResponseWriter, r *http.Request) {
 	// new goroutines.
 	go client.writePump()
 	go client.readPump()
-}
-
-func LocalIp() string {
-	address, _ := net.InterfaceAddrs()
-	var ip = "localhost"
-	for _, address := range address {
-		if ipAddress, ok := address.(*net.IPNet); ok && !ipAddress.IP.IsLoopback() {
-			if ipAddress.IP.To4() != nil {
-				ip = ipAddress.IP.String()
-			}
-		}
-	}
-	return ip
 }

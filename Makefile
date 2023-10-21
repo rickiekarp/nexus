@@ -37,22 +37,22 @@ buildMailServiceARM64v7:
 deployMailService:
 		rsync -rlvpt --delete build/output/mailsvc pi:$(DEPLOY_DIR)
 
-# Launchpad
+# Nucleus
 
-buildLaunchpadARM64v7:
+buildNucleusARM64v7:
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
 		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD) \
 		-X main.ConfigBaseDir=data/config/ \
 		-X main.ResourcesBaseDir=data/assets/web/" \
-		-o $(BUILD_PATH)/output/launchpad/$(BINARY_NAME) \
-		cmd/launchpad/main.go
-		mkdir -p $(BUILD_PATH)/output/launchpad/data/assets/web
-		cp -r web/launchpad/* $(BUILD_PATH)/output/launchpad/data/assets/web
-		cp -r deployments/module-deployment/values/launchpad/prod/* $(BUILD_PATH)/output/launchpad/data/
-		cp deployments/docker/Dockerfile_goscratch build/output/launchpad/Dockerfile
+		-o $(BUILD_PATH)/output/nucleus/$(BINARY_NAME) \
+		cmd/nucleus/main.go
+		mkdir -p $(BUILD_PATH)/output/nucleus/data/assets/web
+		cp -r web/nucleus/* $(BUILD_PATH)/output/nucleus/data/assets/web
+		cp -r deployments/module-deployment/values/nucleus/prod/* $(BUILD_PATH)/output/nucleus/data/
+		cp deployments/docker/Dockerfile_goscratch build/output/nucleus/Dockerfile
 
-deployLaunchpad:
-		rsync -rlvpt --delete build/output/launchpad pi:$(DEPLOY_DIR)
+deployNucleus:
+		rsync -rlvpt --delete build/output/nucleus pi:$(DEPLOY_DIR)
 
 # Other
 
