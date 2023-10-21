@@ -62,6 +62,8 @@ func collectStats() {
 			break
 		}
 
+		sequence += 1
+
 		clientCount := len(nucleus.Clients)
 
 		if config.NucleusConf.Graphite.Enabled {
