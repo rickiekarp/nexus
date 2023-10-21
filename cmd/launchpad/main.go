@@ -1,13 +1,19 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
-	"log"
-	"net"
+	"fmt"
 	"net/http"
+	"time"
+
+	"git.rickiekarp.net/rickie/home/internal/launchpad/hub"
+	"github.com/sirupsen/logrus"
 )
 
-var addr = flag.String("addr", ":8080", "http service address")
+var addr = flag.String("addr", ":12000", "http service address")
+
+var launchPad *hub.Hub
 
 var (
 	Version          = "development"                                                // Version set during go build using ldflags
@@ -15,20 +21,8 @@ var (
 	ResourcesBaseDir = "web/launchpad/"
 )
 
-// Will formatting Message into JSON
-type Message struct {
-	//Message Struct
-	Sender    string `json:"sender,omitempty"`
-	Recipient string `json:"recipient,omitempty"`
-	Content   string `json:"content,omitempty"`
-	ServerIP  string `json:"serverIp,omitempty"`
-	SenderIP  string `json:"senderIp,omitempty"`
-}
-
-// jsonMessage, _ := json.Marshal(&Message{Content: "/A new socket has connected. ", ServerIP: LocalIp(), SenderIP: conn.socket.RemoteAddr().String()})
-
 func serveHome(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL)
+	logrus.Println(r.URL)
 	if r.URL.Path != "/" {
 		http.Error(w, "Not found", 404)
 		return
@@ -37,40 +31,49 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", 405)
 		return
 	}
-	http.ServeFile(w, r, "home.html")
+	http.ServeFile(w, r, ResourcesBaseDir+"static/home.html")
 }
 
 func main() {
-	log.Println("loading config...")
+	logrus.Info("Starting Launchpad (" + Version + ")")
+
 	flag.Parse()
 
-	log.Println("creating hub...")
-	hub := NewHub()
-
-	log.Println("starting hub...")
-	go hub.Run()
+	launchPad = hub.NewHub()
+	go launchPad.Run()
 
 	http.HandleFunc("/", serveHome)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		ServeWs(hub, w, r)
+		launchPad.ServeWs(w, r)
 	})
 
-	log.Println("hub started")
+	go printStats()
+
+	logrus.Info("Started Launchpad, awaiting SIGINT or SIGTERM")
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
+		logrus.Fatal("ListenAndServe: ", err)
 	}
 }
 
-func LocalIp() string {
-	address, _ := net.InterfaceAddrs()
-	var ip = "localhost"
-	for _, address := range address {
-		if ipAddress, ok := address.(*net.IPNet); ok && !ipAddress.IP.IsLoopback() {
-			if ipAddress.IP.To4() != nil {
-				ip = ipAddress.IP.String()
-			}
+func printStats() {
+	ticker := time.NewTicker(1 * time.Hour)
+	defer ticker.Stop()
+
+	var sequence int64 = 0
+
+	for {
+		select {
+		case <-ticker.C:
+			sequence += 1
+
+			jsonMessage, _ := json.Marshal(&hub.Message{
+				Seq:     sequence,
+				Event:   "stats",
+				Content: fmt.Sprintf("CONNECTED_CLIENTS: %d", len(launchPad.Clients)),
+			})
+
+			logrus.Println(string(jsonMessage))
 		}
 	}
-	return ip
 }

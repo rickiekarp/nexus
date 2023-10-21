@@ -1,12 +1,14 @@
-package main
+package hub
 
 import (
 	"bytes"
-	"log"
+	"encoding/json"
+	"net"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -44,6 +46,20 @@ type Client struct {
 	send chan []byte
 
 	id string
+
+	seq int64
+}
+
+// Will formatting Message into JSON
+type Message struct {
+	//Message Struct
+	Seq       int64  `json:"seq,omitempty"`
+	Event     string `json:"event,omitempty"`
+	Sender    string `json:"sender,omitempty"`
+	Recipient string `json:"recipient,omitempty"`
+	Content   string `json:"content,omitempty"`
+	ServerIP  string `json:"serverIp,omitempty"`
+	SenderIP  string `json:"senderIp,omitempty"`
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -63,7 +79,7 @@ func (c *Client) readPump() {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-				log.Printf("error: %v", err)
+				logrus.Printf("error: %v", err)
 			}
 			break
 		}
@@ -97,7 +113,17 @@ func (c *Client) writePump() {
 			if err != nil {
 				return
 			}
-			w.Write(message)
+
+			c.seq += 1
+
+			jsonMessage, _ := json.Marshal(&Message{
+				Seq:      c.seq,
+				Event:    "message",
+				Content:  string(message),
+				SenderIP: c.conn.RemoteAddr().String(),
+			})
+			logrus.Println(string(jsonMessage))
+			w.Write(jsonMessage)
 
 			// Add queued chat messages to the current websocket message.
 			n := len(c.send)
@@ -109,6 +135,7 @@ func (c *Client) writePump() {
 			if err := w.Close(); err != nil {
 				return
 			}
+
 		case <-ticker.C:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
@@ -119,17 +146,34 @@ func (c *Client) writePump() {
 }
 
 // serveWs handles websocket requests from the peer.
-func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
+func (h *Hub) ServeWs(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println(err)
+		logrus.Println(err)
 		return
 	}
-	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256), id: time.Now().String()}
+
+	client := &Client{hub: h, conn: conn, send: make(chan []byte, 256), id: r.RemoteAddr}
 	client.hub.register <- client
+
+	// broadcast message when client is registered
+	client.hub.broadcast <- []byte("joined: " + client.id)
 
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.
 	go client.writePump()
 	go client.readPump()
+}
+
+func LocalIp() string {
+	address, _ := net.InterfaceAddrs()
+	var ip = "localhost"
+	for _, address := range address {
+		if ipAddress, ok := address.(*net.IPNet); ok && !ipAddress.IP.IsLoopback() {
+			if ipAddress.IP.To4() != nil {
+				ip = ipAddress.IP.String()
+			}
+		}
+	}
+	return ip
 }

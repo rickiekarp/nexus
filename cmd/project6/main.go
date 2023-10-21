@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-var addr = flag.String("addr", "localhost:8080", "http service address")
+var addr = flag.String("addr", "localhost:12000", "http service address")
 
 func main() {
 	flag.Parse()
@@ -53,8 +53,10 @@ func main() {
 		case t := <-ticker.C:
 			err := c.WriteMessage(websocket.TextMessage, []byte(t.String()))
 			if err != nil {
-				log.Println("write:", err)
+				log.Println("writeError:", err)
 				return
+			} else {
+				log.Println("send:", t.String())
 			}
 		case <-interrupt:
 			log.Println("interrupt")

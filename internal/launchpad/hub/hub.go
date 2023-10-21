@@ -1,12 +1,12 @@
-package main
+package hub
 
-import "log"
+import "github.com/sirupsen/logrus"
 
 // hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
 	// Registered clients.
-	clients map[*Client]bool
+	Clients map[*Client]bool
 
 	// Inbound messages from the clients.
 	broadcast chan []byte
@@ -23,7 +23,7 @@ func NewHub() *Hub {
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
-		clients:    make(map[*Client]bool),
+		Clients:    make(map[*Client]bool),
 	}
 }
 
@@ -31,23 +31,22 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.register:
-			h.clients[client] = true
-			log.Println("connected: " + client.id)
+			h.Clients[client] = true
+			logrus.Println("CLIENT_CONNECTED: " + client.id)
 		case client := <-h.unregister:
-			if _, ok := h.clients[client]; ok {
-				delete(h.clients, client)
+			if _, ok := h.Clients[client]; ok {
+				delete(h.Clients, client)
 				close(client.send)
-				log.Println("unregister: " + client.id)
-
+				logrus.Println("CLIENT_DISCONNECTED: " + client.id)
 			}
 		case message := <-h.broadcast:
-			for client := range h.clients {
+			for client := range h.Clients {
 				select {
 				case client.send <- message:
 				default:
 					close(client.send)
-					delete(h.clients, client)
-					log.Println("broadcast: " + client.id)
+					delete(h.Clients, client)
+					logrus.Println("BROADCAST: " + client.id)
 				}
 			}
 		}
