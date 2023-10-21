@@ -41,9 +41,9 @@ deployMailService:
 
 buildNucleusARM64v7:
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
-		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD) \
-		-X main.ConfigBaseDir=data/config/ \
-		-X main.ResourcesBaseDir=data/assets/web/" \
+		go build -ldflags="-X git.rickiekarp.net/rickie/home/internal/nucleus/config.Version=$(shell git rev-parse HEAD) \
+		-X git.rickiekarp.net/rickie/home/internal/nucleus/config.ConfigBaseDir=data/config/ \
+		-X git.rickiekarp.net/rickie/home/internal/nucleus/config.ResourcesBaseDir=data/assets/web/" \
 		-o $(BUILD_PATH)/output/nucleus/$(BINARY_NAME) \
 		cmd/nucleus/main.go
 		mkdir -p $(BUILD_PATH)/output/nucleus/data/assets/web

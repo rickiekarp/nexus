@@ -7,40 +7,22 @@ import (
 	"net/http"
 	"time"
 
+	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/hub"
 	"github.com/sirupsen/logrus"
 )
 
 var nucleus *hub.Hub
 
-var (
-	Version          = "development"                                              // Version set during go build using ldflags
-	ConfigBaseDir    = "deployments/module-deployment/values/nucleus/dev/config/" // ConfigBaseDir set during go build using ldflags
-	ResourcesBaseDir = "web/nucleus/"
-)
-
-func serveHome(w http.ResponseWriter, r *http.Request) {
-	logrus.Println(r.URL)
-	if r.URL.Path != "/" {
-		http.Error(w, "Not found", http.StatusNotFound)
-		return
-	}
-	if r.Method != "GET" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	http.ServeFile(w, r, ResourcesBaseDir+"static/home.html")
-}
-
 func main() {
-	logrus.Info("Starting Nucleus (" + Version + ")")
+	logrus.Info("Starting Nucleus (" + config.Version + ")")
 
 	flag.Parse()
 
 	nucleus = hub.NewHub()
 	go nucleus.Run()
 
-	http.HandleFunc("/", serveHome)
+	http.HandleFunc("/", hub.ServeHome)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		nucleus.ServeWebSocket(w, r)
 	})
