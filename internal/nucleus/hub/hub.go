@@ -4,6 +4,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var Nucleus *Hub
+
 // hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {

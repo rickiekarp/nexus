@@ -1,26 +1,41 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
-	"net/http"
 	"os"
-	"time"
+	"os/signal"
+	"syscall"
 
+	"git.rickiekarp.net/rickie/home/internal/nucleus/api"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/hub"
-	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
+	"git.rickiekarp.net/rickie/home/internal/sysmon/channel"
+	"git.rickiekarp.net/rickie/home/internal/sysmon/utils"
+	globalConfig "git.rickiekarp.net/rickie/home/pkg/config"
+	"git.rickiekarp.net/rickie/home/pkg/http"
 	"github.com/sirupsen/logrus"
 )
 
-var nucleus *hub.Hub
+func init() {
+	// set up program flags
+	printHelp := flag.Bool("h", false, "print help")
+	printVersion := flag.Bool("v", false, "print version")
+	flag.Parse()
+
+	if *printHelp {
+		globalConfig.PrintUsage()
+	}
+
+	if *printVersion {
+		fmt.Println(config.Version)
+		os.Exit(0)
+	}
+
+	logrus.Info("Starting Nucleus (" + config.Version + ")")
+}
 
 func main() {
-	logrus.Info("Starting Nucleus (" + config.Version + ")")
-
-	// set up program flags
-	flag.Parse()
 
 	// load config files
 	cfgError := config.ReadNucleusConfig()
@@ -29,57 +44,50 @@ func main() {
 		os.Exit(1)
 	}
 
-	// set up nucleus
-	nucleus = hub.NewHub()
-	go nucleus.Run()
+	// Create channel for os.Signal notifications
+	signals := make(chan os.Signal, 1)
 
-	// set up server routes
-	http.HandleFunc("/", hub.ServeHome)
-	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		nucleus.ServeWebSocket(w, r)
-	})
+	// signal.Notify registers the given channel to receive notifications of the specified signals.
+	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+
+	// Create a channel to receive these notifications (we’ll also make one to notify us when the program can exit).
+	applicationChannel := make(chan bool)
+
+	// This goroutine executes a blocking receive for signals.
+	// When it gets one it’ll print it out and then notify the program that it can finish.
+	go func() {
+		sig := <-signals
+		logrus.Info("Signal received: ", sig)
+
+		// indicate that the sysmonChannel can be closed and no further heartbeats should be send
+		// if utils.IsChannelOpen(channel.SysmonChannel) {
+		// 	channel.SysmonChannel <- true
+		// }
+
+		// indicate that the WeatherChannel can be closed and no further weather data should be collected
+		if utils.IsChannelOpen(channel.WeatherChannel) {
+			channel.WeatherChannel <- true
+		}
+
+		// indicate to quit the application
+		applicationChannel <- true
+	}()
+
+	// set up nucleus
+	hub.Nucleus = hub.NewHub()
+	go hub.Nucleus.Run()
+
+	apiServer := api.GetServer(config.NucleusConf.ServerAddr)
+	logrus.Info("Starting API server on ", config.NucleusConf.ServerAddr)
+	go http.StartApiServer(apiServer)
 
 	// start monitoring
-	go collectStats()
+	go hub.CollectStats()
 
-	// start application
+	// The program will wait here until it gets the expected signal
 	logrus.Info("Started Nucleus, awaiting SIGINT or SIGTERM")
-	err := http.ListenAndServe(":12000", nil)
-	if err != nil {
-		logrus.Fatal("ListenAndServe: ", err)
-	}
-}
 
-func collectStats() {
-	ticker := time.NewTicker(1 * time.Minute)
-	defer ticker.Stop()
+	<-applicationChannel
 
-	var sequence int64 = 0
-
-	for {
-		_, ok := <-ticker.C
-		if !ok {
-			break
-		}
-
-		sequence += 1
-
-		clientCount := len(nucleus.Clients)
-
-		if config.NucleusConf.Graphite.Enabled {
-			graphite.SendMetric(
-				map[string]float64{
-					"seq":               float64(sequence),
-					"clientConnections": float64(clientCount),
-				},
-				"nucleus.stats")
-		} else {
-			jsonMessage, _ := json.Marshal(&hub.Message{
-				Seq:     sequence,
-				Event:   "stats",
-				Content: fmt.Sprintf("CONNECTED_CLIENTS: %d", len(nucleus.Clients)),
-			})
-			logrus.Println(string(jsonMessage))
-		}
-	}
+	logrus.Info("Stopping")
 }

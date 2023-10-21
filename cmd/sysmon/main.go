@@ -55,7 +55,7 @@ func main() {
 	readUptimeMonitoringConfig()
 
 	// Create channel for os.Signal notifications
-	signals := make(chan os.Signal)
+	signals := make(chan os.Signal, 1)
 
 	// signal.Notify registers the given channel to receive notifications of the specified signals.
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)

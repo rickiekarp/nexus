@@ -1,4 +1,4 @@
-package hub
+package api
 
 import (
 	"net/http"

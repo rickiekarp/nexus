@@ -10,25 +10,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const (
-	// Time allowed to write a message to the peer.
-	writeWait = 10 * time.Second
-
-	// Time allowed to read the next pong message from the peer.
-	pongWait = 60 * time.Second
-
-	// Send pings to peer with this period. Must be less than pongWait.
-	pingPeriod = (pongWait * 9) / 10
-
-	// Maximum message size allowed from peer.
-	maxMessageSize = 512
-)
-
-var (
-	newline = []byte{'\n'}
-	space   = []byte{' '}
-)
-
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
@@ -47,21 +28,6 @@ type Client struct {
 	id string
 
 	seq int64
-}
-
-// Will formatting Message into JSON
-type Message struct {
-	//Message Struct
-	Seq       int64  `json:"seq,omitempty"`
-	SeqReply  int64  `json:"seq_reply,omitempty"`
-	Status    string `json:"status,omitempty"`
-	Event     string `json:"event,omitempty"`
-	Sender    string `json:"sender,omitempty"`
-	Recipient string `json:"recipient,omitempty"`
-	Action    string `json:"action,omitempty"`
-	Content   string `json:"content,omitempty"`
-	ServerIP  string `json:"serverIp,omitempty"`
-	SenderIP  string `json:"senderIp,omitempty"`
 }
 
 // readPump pumps messages from the websocket connection to the hub.
