@@ -1,6 +1,8 @@
 package hub
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/sirupsen/logrus"
+)
 
 // hub maintains the set of active clients and broadcasts messages to the
 // clients.
@@ -46,7 +48,6 @@ func (h *Hub) Run() {
 				default:
 					close(client.send)
 					delete(h.Clients, client)
-					logrus.Println("BROADCAST: " + client.id)
 				}
 			}
 		}

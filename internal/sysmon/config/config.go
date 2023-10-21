@@ -6,6 +6,7 @@ import (
 
 	"git.rickiekarp.net/rickie/home/pkg/database"
 	"git.rickiekarp.net/rickie/home/pkg/models"
+	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
@@ -32,7 +33,6 @@ func ReadSysmonConfig() error {
 		logrus.Error("Could not determine hostname! ", err)
 		return err
 	}
-
 	Hostname = hostname
 
 	// read configfile
@@ -50,6 +50,10 @@ func ReadSysmonConfig() error {
 	}
 
 	database.Databases = SysmonConf.Databases
+
+	// set graphite target config
+	graphite.Host = SysmonConf.Graphite.Host
+	graphite.Port = SysmonConf.Graphite.Port
 
 	return nil
 }
