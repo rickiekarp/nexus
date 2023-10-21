@@ -3,12 +3,14 @@ package main
 import (
 	"flag"
 	"log"
+	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/sirupsen/logrus"
 )
 
 var addr = flag.String("addr", "localhost:12000", "http service address")
@@ -20,10 +22,19 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 
+	hostname, err := os.Hostname()
+	if err != nil {
+		logrus.Error("Could not determine hostname! ", err)
+		os.Exit(1)
+	}
+
+	header := http.Header{}
+	header.Set("nucleusClientId", hostname)
+
 	u := url.URL{Scheme: "ws", Host: *addr, Path: "/ws"}
 	log.Printf("connecting to %s", u.String())
 
-	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	c, _, err := websocket.DefaultDialer.Dial(u.String(), header)
 	if err != nil {
 		log.Fatal("dial:", err)
 	}

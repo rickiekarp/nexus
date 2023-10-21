@@ -121,7 +121,12 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	client := &Client{hub: h, conn: conn, send: make(chan []byte, 256), id: r.RemoteAddr}
+	nucleusClientId := r.Header.Get("nucleusClientId")
+	if nucleusClientId == "" {
+		nucleusClientId = r.RemoteAddr
+	}
+
+	client := &Client{hub: h, conn: conn, send: make(chan []byte, 256), id: nucleusClientId}
 	client.hub.register <- client
 
 	// broadcast message when client is registered

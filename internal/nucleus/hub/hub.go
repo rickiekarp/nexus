@@ -50,6 +50,7 @@ func (h *Hub) Run() {
 				default:
 					close(client.send)
 					delete(h.Clients, client)
+					logrus.Println("BROADCASTED: " + client.id)
 				}
 			}
 		}
