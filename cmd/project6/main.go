@@ -10,10 +10,9 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/sirupsen/logrus"
 )
 
-var addr = flag.String("addr", "localhost:12000", "http service address")
+var clientId = flag.String("clientId", "project6", "unique identifier")
 
 func main() {
 	flag.Parse()
@@ -22,16 +21,10 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 
-	hostname, err := os.Hostname()
-	if err != nil {
-		logrus.Error("Could not determine hostname! ", err)
-		os.Exit(1)
-	}
-
 	header := http.Header{}
-	header.Set("nucleusClientId", hostname)
+	header.Set("nucleusClientId", *clientId)
 
-	u := url.URL{Scheme: "ws", Host: *addr, Path: "/ws"}
+	u := url.URL{Scheme: "ws", Host: "localhost:12000", Path: "/ws"}
 	log.Printf("connecting to %s", u.String())
 
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), header)
@@ -54,7 +47,7 @@ func main() {
 		}
 	}()
 
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(10 * time.Second)
 	defer ticker.Stop()
 
 	for {

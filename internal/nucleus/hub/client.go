@@ -23,9 +23,9 @@ type Client struct {
 	conn *websocket.Conn
 
 	// Buffered channel of outbound messages.
-	send chan []byte
+	Send chan []byte
 
-	id string
+	Id string
 
 	seq int64
 }
@@ -69,40 +69,8 @@ func (c *Client) writePump() {
 	}()
 	for {
 		select {
-		case message, ok := <-c.send:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
-			if !ok {
-				// The hub closed the channel.
-				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
-				return
-			}
-
-			w, err := c.conn.NextWriter(websocket.TextMessage)
-			if err != nil {
-				return
-			}
-
-			c.seq += 1
-
-			jsonMessage, _ := json.Marshal(&Message{
-				Seq:      c.seq,
-				Event:    "message",
-				Content:  string(message),
-				SenderIP: c.conn.RemoteAddr().String(),
-			})
-			logrus.Println(string(jsonMessage))
-			w.Write(jsonMessage)
-
-			// Add queued chat messages to the current websocket message.
-			n := len(c.send)
-			for i := 0; i < n; i++ {
-				w.Write(newline)
-				w.Write(<-c.send)
-			}
-
-			if err := w.Close(); err != nil {
-				return
-			}
+		case message, ok := <-c.Send:
+			c.SendMessage(message, ok)
 
 		case <-ticker.C:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
@@ -110,6 +78,42 @@ func (c *Client) writePump() {
 				return
 			}
 		}
+	}
+}
+
+func (c *Client) SendMessage(message []byte, ok bool) {
+	c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+	if !ok {
+		// The hub closed the channel.
+		c.conn.WriteMessage(websocket.CloseMessage, []byte{})
+		return
+	}
+
+	w, err := c.conn.NextWriter(websocket.TextMessage)
+	if err != nil {
+		return
+	}
+
+	c.seq += 1
+
+	jsonMessage, _ := json.Marshal(&Message{
+		Seq:      c.seq,
+		Event:    "message",
+		Content:  string(message),
+		SenderIP: c.conn.RemoteAddr().String(),
+	})
+	logrus.Println(string(jsonMessage))
+	w.Write(jsonMessage)
+
+	// Add queued chat messages to the current websocket message.
+	n := len(c.Send)
+	for i := 0; i < n; i++ {
+		w.Write(newline)
+		w.Write(<-c.Send)
+	}
+
+	if err := w.Close(); err != nil {
+		return
 	}
 }
 
@@ -126,11 +130,11 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		nucleusClientId = r.RemoteAddr
 	}
 
-	client := &Client{hub: h, conn: conn, send: make(chan []byte, 256), id: nucleusClientId}
+	client := &Client{hub: h, conn: conn, Send: make(chan []byte, 256), Id: nucleusClientId}
 	client.hub.register <- client
 
 	// broadcast message when client is registered
-	client.hub.broadcast <- []byte("joined: " + client.id)
+	client.hub.broadcast <- []byte("joined: " + client.Id)
 
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.

@@ -10,8 +10,6 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/nucleus/api"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/hub"
-	"git.rickiekarp.net/rickie/home/internal/sysmon/channel"
-	"git.rickiekarp.net/rickie/home/internal/sysmon/utils"
 	globalConfig "git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/http"
 	"github.com/sirupsen/logrus"
@@ -58,16 +56,6 @@ func main() {
 	go func() {
 		sig := <-signals
 		logrus.Info("Signal received: ", sig)
-
-		// indicate that the sysmonChannel can be closed and no further heartbeats should be send
-		// if utils.IsChannelOpen(channel.SysmonChannel) {
-		// 	channel.SysmonChannel <- true
-		// }
-
-		// indicate that the WeatherChannel can be closed and no further weather data should be collected
-		if utils.IsChannelOpen(channel.WeatherChannel) {
-			channel.WeatherChannel <- true
-		}
 
 		// indicate to quit the application
 		applicationChannel <- true

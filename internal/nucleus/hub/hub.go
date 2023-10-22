@@ -36,21 +36,21 @@ func (h *Hub) Run() {
 		select {
 		case client := <-h.register:
 			h.Clients[client] = true
-			logrus.Println("CLIENT_CONNECTED: " + client.id)
+			logrus.Println("CLIENT_CONNECTED: " + client.Id)
 		case client := <-h.unregister:
 			if _, ok := h.Clients[client]; ok {
 				delete(h.Clients, client)
-				close(client.send)
-				logrus.Println("CLIENT_DISCONNECTED: " + client.id)
+				close(client.Send)
+				logrus.Println("CLIENT_DISCONNECTED: " + client.Id)
 			}
 		case message := <-h.broadcast:
 			for client := range h.Clients {
 				select {
-				case client.send <- message:
+				case client.Send <- message:
 				default:
-					close(client.send)
+					close(client.Send)
 					delete(h.Clients, client)
-					logrus.Println("BROADCASTED: " + client.id)
+					logrus.Println("BROADCASTED: " + client.Id)
 				}
 			}
 		}
