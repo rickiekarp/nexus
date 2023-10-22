@@ -49,7 +49,6 @@ func main() {
 		logrus.Error("Could not load sysmon config!")
 		os.Exit(1)
 	}
-	logrus.Info(sysmoncfg.SysmonConf)
 
 	readSysTempConf()
 	readUptimeMonitoringConfig()
