@@ -54,6 +54,18 @@ buildNucleusARM64v7:
 deployNucleus:
 		rsync -rlvpt --delete build/output/nucleus pi:$(DEPLOY_DIR)
 
+# Project6
+
+buildProject6AMD64:
+		CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+		go build -ldflags="-X git.rickiekarp.net/rickie/home/internal/project6/config.Version=$(shell git rev-parse HEAD) \
+		-X git.rickiekarp.net/rickie/home/internal/project6/config.ConfigBaseDir=data/config/" \
+		-o $(BUILD_PATH)/output/project6/$(BINARY_NAME) \
+		cmd/project6/main.go
+
+deployProject6:
+		rsync -rlvpt --delete build/output/project6 rickie:192.168.178.151:/home/rickie/Programs
+
 # Other
 
 test:
