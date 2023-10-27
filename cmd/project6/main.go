@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
@@ -27,13 +26,13 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 
-	header := http.Header{}
-	header.Set("nucleusClientId", *clientId)
+	url := url.URL{Scheme: "ws", Host: *host, Path: "/ws"}
+	logrus.Printf("connecting to %s (protocol: %s)", url.String(), *clientId)
 
-	u := url.URL{Scheme: "ws", Host: *host, Path: "/ws"}
-	logrus.Printf("connecting to %s", u.String())
+	webSockerDialer := websocket.DefaultDialer
+	webSockerDialer.Subprotocols = []string{*clientId}
 
-	c, _, err := websocket.DefaultDialer.Dial(u.String(), header)
+	c, _, err := webSockerDialer.Dial(url.String(), nil)
 	if err != nil {
 		logrus.Fatal("dial:", err)
 	}

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -13,6 +14,7 @@ import (
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+	Subprotocols:    []string{"webinterface", "project6"},
 }
 
 // Client is a middleman between the websocket connection and the hub.
@@ -21,6 +23,11 @@ type Client struct {
 
 	// The websocket connection.
 	conn *websocket.Conn
+
+	// The port of the client connection
+	ip string
+	// The port of the client connection
+	port string
 
 	// Buffered channel of outbound messages.
 	Send chan []byte
@@ -125,12 +132,23 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	nucleusClientId := r.Header.Get("nucleusClientId")
+	nucleusClientId := r.Header.Get("Sec-WebSocket-Protocol")
 	if nucleusClientId == "" {
-		nucleusClientId = r.RemoteAddr
+		w.WriteHeader(400)
+		return
 	}
 
-	client := &Client{hub: h, conn: conn, Send: make(chan []byte, 256), Id: nucleusClientId}
+	clientAddress := strings.Split(conn.RemoteAddr().String(), ":")
+
+	client := &Client{
+		hub:  h,
+		conn: conn,
+		ip:   clientAddress[0],
+		port: clientAddress[1],
+		Send: make(chan []byte, 256),
+		Id:   nucleusClientId,
+	}
+
 	client.hub.register <- client
 
 	// broadcast message when client is registered
