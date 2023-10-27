@@ -30,7 +30,7 @@ func init() {
 		os.Exit(0)
 	}
 
-	logrus.Info("Starting Nucleus (" + config.Version + ")")
+	logrus.Info("Starting Nucleus (" + config.Build + ")")
 }
 
 func main() {

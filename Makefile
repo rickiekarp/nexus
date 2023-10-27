@@ -41,7 +41,8 @@ deployMailService:
 
 buildNucleusARM64v7:
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
-		go build -ldflags="-X git.rickiekarp.net/rickie/home/internal/nucleus/config.Version=$(shell git rev-parse HEAD) \
+		go build -ldflags="-X git.rickiekarp.net/rickie/home/internal/nucleus/config.Version=$(shell date +%Y%j%H%m) \
+		-X git.rickiekarp.net/rickie/home/internal/nucleus/config.Build=$(shell git rev-parse HEAD) \
 		-X git.rickiekarp.net/rickie/home/internal/nucleus/config.ConfigBaseDir=data/config/ \
 		-X git.rickiekarp.net/rickie/home/internal/nucleus/config.ResourcesBaseDir=data/assets/web/" \
 		-o $(BUILD_PATH)/output/nucleus/$(BINARY_NAME) \
@@ -56,15 +57,31 @@ deployNucleus:
 
 # Project6
 
+## AMD64
+
 buildProject6AMD64:
 		CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-		go build -ldflags="-X git.rickiekarp.net/rickie/home/internal/project6/config.Version=$(shell git rev-parse HEAD) \
+		go build -ldflags="-X git.rickiekarp.net/rickie/home/internal/project6/config.Version=$(shell date +%Y%j%H%m) \
+		-X git.rickiekarp.net/rickie/home/internal/project6/config.Build=$(shell git rev-parse HEAD) \
 		-X git.rickiekarp.net/rickie/home/internal/project6/config.ConfigBaseDir=data/config/" \
 		-o $(BUILD_PATH)/output/project6/$(BINARY_NAME) \
 		cmd/project6/main.go
 
-deployProject6:
-		rsync -rlvpt --delete build/output/project6 rickie:192.168.178.151:/home/rickie/Programs
+deployProject6AMD64:
+		rsync -rlvpt --delete build/output/project6 rickie:192.168.178.151:/home/rickie/Programs/
+
+## ARM64
+
+buildProject6ARM64:
+		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 \
+		go build -ldflags="-X git.rickiekarp.net/rickie/home/internal/project6/config.Version=$(shell date +%Y%j%H%m) \
+		-X git.rickiekarp.net/rickie/home/internal/project6/config.Build=$(shell git rev-parse HEAD) \
+		-X git.rickiekarp.net/rickie/home/internal/project6/config.ConfigBaseDir=data/config/" \
+		-o $(BUILD_PATH)/output/project6/$(BINARY_NAME) \
+		cmd/project6/main.go
+
+deployProject6ARM64:
+		rsync -rlvpt --delete build/output/project6/app pi@rickiekarp.net:/home/pi/operation/project6/project6svc_update
 
 # Other
 

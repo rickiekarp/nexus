@@ -9,6 +9,7 @@ import (
 
 type Version struct {
 	Version          string `json:"version"`
+	Build            string `json:"build"`
 	MinClientVersion string `json:"minClientVersion"`
 }
 
@@ -19,6 +20,7 @@ func ServeVersion(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&version)
 
 	version.Version = config.Version
+	version.Build = config.Build
 	version.MinClientVersion = config.NucleusConf.Project6.MinClientVersion
 
 	json.NewEncoder(w).Encode(version)
