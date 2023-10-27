@@ -17,9 +17,12 @@ var (
 type NucleusConfig struct {
 	ServerAddr string `yaml:"serverAddr"`
 	Graphite   struct {
-		Enabled bool   `json:"enabled"`
-		Host    string `json:"host"`
-		Port    int    `json:"port"`
+		Enabled bool   `yaml:"enabled"`
+		Host    string `yaml:"host"`
+		Port    int    `yaml:"port"`
+	}
+	Project6 struct {
+		MinClientVersion string `yaml:"minClientVersion"`
 	}
 }
 

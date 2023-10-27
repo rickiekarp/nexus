@@ -1,17 +1,18 @@
-package api
+package hub
 
 import (
 	"io/ioutil"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub"
 	"github.com/sirupsen/logrus"
 )
+
+const recipientHeader string = "X-Recipient-Client"
 
 func SendMessage(w http.ResponseWriter, r *http.Request) {
 	val, ok := r.Header[recipientHeader]
 	if ok {
-		for client := range hub.Nucleus.Clients {
+		for client := range Nucleus.Clients {
 			if client.Id == val[0] {
 				client.SendMessage([]byte("send to: "+client.Id), true)
 			}
@@ -36,7 +37,7 @@ func BroadcastMessage(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(400)
 	}
 
-	for client := range hub.Nucleus.Clients {
+	for client := range Nucleus.Clients {
 		client.SendMessage(body, true)
 	}
 	w.WriteHeader(200)
