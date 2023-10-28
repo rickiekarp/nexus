@@ -29,7 +29,6 @@ func CollectStats() {
 		if config.NucleusConf.Graphite.Enabled {
 			graphite.SendMetric(
 				map[string]float64{
-					"seq":               float64(sequence),
 					"clientConnections": float64(clientCount),
 				},
 				"nucleus.stats")

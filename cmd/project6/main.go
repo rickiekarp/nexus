@@ -18,7 +18,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var clientId = flag.String("clientId", "project6", "unique identifier")
 var host = flag.String("host", "localhost:12000", "target host")
 var lockFile = flag.String("lock", "/tmp/project6svc.lock", "set the lock file to use")
 var logFile = flag.String("log", "", "set the log file to use")
@@ -51,11 +50,17 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 
+	hostname, err := os.Hostname()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	url := url.URL{Scheme: "ws", Host: *host, Path: "/ws"}
-	logrus.Printf("connecting to %s (protocol: %s)", url.String(), *clientId)
+	logrus.Printf("connecting to %s (protocol: %s)", url.String(), hostname)
 
 	webSockerDialer := websocket.DefaultDialer
-	webSockerDialer.Subprotocols = []string{*clientId}
+	webSockerDialer.Subprotocols = []string{hostname}
 
 	c, _, err := webSockerDialer.Dial(url.String(), nil)
 	if err != nil {
