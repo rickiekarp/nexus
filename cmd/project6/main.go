@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"git.rickiekarp.net/rickie/home/internal/project6/config"
+	"git.rickiekarp.net/rickie/home/pkg/logger"
 	"git.rickiekarp.net/rickie/home/pkg/network"
 	"git.rickiekarp.net/rickie/home/pkg/sys"
 	"git.rickiekarp.net/rickie/home/pkg/util"
@@ -20,6 +21,7 @@ import (
 var clientId = flag.String("clientId", "project6", "unique identifier")
 var host = flag.String("host", "localhost:12000", "target host")
 var lockFile = flag.String("lock", "/tmp/project6svc.lock", "set the lock file to use")
+var logFile = flag.String("log", "", "set the log file to use")
 
 func init() {
 	flag.Parse()
@@ -38,6 +40,8 @@ func init() {
 		logrus.Error("Can not get pid from lock file ", lockFile)
 		os.Exit(1)
 	}
+
+	logger.SetupDefaultLogger(logFile)
 
 	logrus.Info("Starting Project6 (Build: " + config.Build + ", PID: " + fmt.Sprint(pid) + ")")
 }

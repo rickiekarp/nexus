@@ -68,7 +68,7 @@ buildProject6AMD64:
 		cmd/project6/main.go
 
 deployProject6AMD64:
-		rsync -rlvpt --delete build/output/project6 rickie:192.168.178.151:/home/rickie/Programs/
+		rsync -rlvpt --delete build/output/project6/app rickie@192.168.178.151:/home/rickie/Programs/project6/project6svc_update
 
 ## ARM64
 
