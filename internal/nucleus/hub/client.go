@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
 	"github.com/gorilla/websocket"
@@ -171,6 +172,7 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 
 	msg := messages.Message{
 		Seq:      client.seq,
+		Data:     messages.MessageData{ServerVersion: config.Version, MinClientVersion: config.NucleusConf.Project6.MinClientVersion},
 		Event:    events.Hello,
 		Content:  client.Id,
 		SenderIP: client.conn.RemoteAddr().String(),
