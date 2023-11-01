@@ -4,6 +4,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
 	"github.com/sirupsen/logrus"
 )
 
@@ -14,7 +16,13 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	if ok {
 		for client := range Nucleus.Clients {
 			if client.Id == val[0] {
-				client.SendMessage([]byte("send to: "+client.Id), true)
+				msg := messages.Message{
+					Seq:      client.seq,
+					Event:    events.Message,
+					Content:  string("send to: " + client.Id),
+					SenderIP: client.conn.RemoteAddr().String(),
+				}
+				client.SendMessage(msg, true)
 			}
 		}
 		w.WriteHeader(200)
@@ -38,7 +46,13 @@ func BroadcastMessage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for client := range Nucleus.Clients {
-		client.SendMessage(body, true)
+		msg := messages.Message{
+			Seq:      client.seq,
+			Event:    events.Message,
+			Content:  string(body),
+			SenderIP: client.conn.RemoteAddr().String(),
+		}
+		client.SendMessage(msg, true)
 	}
 	w.WriteHeader(200)
 }

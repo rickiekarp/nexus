@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 )
@@ -30,7 +32,7 @@ type Client struct {
 	port string
 
 	// Buffered channel of outbound messages.
-	Send chan []byte
+	Send chan messages.Message
 
 	Id string
 
@@ -42,16 +44,30 @@ type Client struct {
 // The application runs readPump in a per-connection goroutine. The application
 // ensures that there is at most one reader on a connection by executing all
 // reads from this goroutine.
-func (c *Client) readPump() {
+func (client *Client) readPump() {
 	defer func() {
-		c.hub.unregister <- c
-		c.conn.Close()
+		client.hub.unregister <- client
+
+		msg := messages.Message{
+			Seq:      client.seq,
+			Event:    events.Bye,
+			Content:  client.Id,
+			SenderIP: client.conn.RemoteAddr().String(),
+		}
+
+		// broadcast message when a client is un-registered
+		client.hub.broadcast <- msg
+
+		// close the client connection
+		client.conn.Close()
 	}()
-	c.conn.SetReadLimit(maxMessageSize)
-	c.conn.SetReadDeadline(time.Now().Add(pongWait))
-	c.conn.SetPongHandler(func(string) error { c.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
+
+	client.conn.SetReadLimit(maxMessageSize)
+	client.conn.SetReadDeadline(time.Now().Add(pongWait))
+	client.conn.SetPongHandler(func(string) error { client.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
+
 	for {
-		_, message, err := c.conn.ReadMessage()
+		_, message, err := client.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
 				logrus.Printf("error: %v", err)
@@ -59,7 +75,15 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		c.hub.broadcast <- message
+
+		var nucleusMessage messages.Message
+
+		err = json.Unmarshal([]byte(message), &nucleusMessage)
+		if err != nil {
+			logrus.Error(err)
+		}
+
+		client.hub.broadcast <- nucleusMessage
 	}
 }
 
@@ -88,7 +112,7 @@ func (c *Client) writePump() {
 	}
 }
 
-func (c *Client) SendMessage(message []byte, ok bool) {
+func (c *Client) SendMessage(message messages.Message, ok bool) {
 	c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 	if !ok {
 		// The hub closed the channel.
@@ -103,21 +127,14 @@ func (c *Client) SendMessage(message []byte, ok bool) {
 
 	c.seq += 1
 
-	jsonMessage, _ := json.Marshal(&Message{
-		Seq:      c.seq,
-		Event:    "message",
-		Content:  string(message),
-		SenderIP: c.conn.RemoteAddr().String(),
-	})
-	logrus.Println(string(jsonMessage))
-	w.Write(jsonMessage)
-
-	// Add queued chat messages to the current websocket message.
-	n := len(c.Send)
-	for i := 0; i < n; i++ {
-		w.Write(newline)
-		w.Write(<-c.Send)
+	jsonMessage, err := json.Marshal(&message)
+	if err != nil {
+		logrus.Error(err)
+		return
 	}
+	logrus.Println("out: " + string(jsonMessage))
+
+	w.Write(jsonMessage)
 
 	if err := w.Close(); err != nil {
 		return
@@ -141,18 +158,26 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 	clientAddress := strings.Split(conn.RemoteAddr().String(), ":")
 
 	client := &Client{
+		seq:  1,
 		hub:  h,
 		conn: conn,
 		ip:   clientAddress[0],
 		port: clientAddress[1],
-		Send: make(chan []byte, 256),
+		Send: make(chan messages.Message, 256),
 		Id:   nucleusClientId,
 	}
 
 	client.hub.register <- client
 
+	msg := messages.Message{
+		Seq:      client.seq,
+		Event:    events.Hello,
+		Content:  client.Id,
+		SenderIP: client.conn.RemoteAddr().String(),
+	}
+
 	// broadcast message when client is registered
-	client.hub.broadcast <- []byte("joined: " + client.Id)
+	client.hub.broadcast <- msg
 
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.

@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"github.com/sirupsen/logrus"
 )
@@ -33,9 +35,9 @@ func CollectStats() {
 				},
 				"nucleus.stats")
 		} else {
-			jsonMessage, _ := json.Marshal(&Message{
+			jsonMessage, _ := json.Marshal(&messages.Message{
 				Seq:     sequence,
-				Event:   "stats",
+				Event:   events.Stats,
 				Content: fmt.Sprintf("CONNECTED_CLIENTS: %d", len(Nucleus.Clients)),
 			})
 			logrus.Println(string(jsonMessage))

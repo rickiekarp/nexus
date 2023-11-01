@@ -33,17 +33,16 @@ func Shell(command string) {
 		fmt.Println("--- stderr ---")
 		fmt.Println(stderr.String())
 	}
-
 }
 
-func Shellout(command string) (error, string, string) {
+func Shellout(command string) (string, string, error) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	cmd := exec.Command(ShellToUse, "-c", command)
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	err := cmd.Run()
-	return err, stdout.String(), stderr.String()
+	return stdout.String(), stderr.String(), err
 }
 
 // ExecuteCmd executes a given system command
@@ -84,26 +83,6 @@ func ExecuteCmd(command string, args ...string) (string, string, int) {
 	return stdout.String(), stderr.String(), 0
 }
 
-// ExecuteCommandAndGetExitCode is deprecated! Use Shell() instead
-func ExecuteCommandAndGetExitCode() int {
-	cmd := exec.Command("ls", "/foo/bar")
-	var waitStatus syscall.WaitStatus
-	if err := cmd.Run(); err != nil {
-		if err != nil {
-			os.Stderr.WriteString(fmt.Sprintf("Error: %s\n", err.Error()))
-		}
-		if exitError, ok := err.(*exec.ExitError); ok {
-			waitStatus = exitError.Sys().(syscall.WaitStatus)
-			//fmt.Printf("Output: %s\n", []byte(fmt.Sprintf("%d", waitStatus.ExitStatus())))
-		}
-	} else {
-		// Success
-		waitStatus = cmd.ProcessState.Sys().(syscall.WaitStatus)
-		//fmt.Printf("Output: %s\n", []byte(fmt.Sprintf("%d", waitStatus.ExitStatus())))
-	}
-	return waitStatus.ExitStatus()
-}
-
 // ExecuteCommandAndPrintResult is deprecated! Use Shell() instead
 func ExecuteCommandAndPrintResult(command string, arguments string) {
 	cmd := exec.Command(command, arguments)
@@ -113,7 +92,7 @@ func ExecuteCommandAndPrintResult(command string, arguments string) {
 	if err != nil {
 		os.Stderr.WriteString(err.Error())
 	}
-	fmt.Print(string(cmdOutput.Bytes()))
+	fmt.Print(cmdOutput.String())
 }
 
 func ExecuteCmdAndGetOutput(command string, args ...string) string {

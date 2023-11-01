@@ -14,7 +14,7 @@ func SetupDefaultLogger(logFile *string) {
 
 	logrus.StandardLogger().Out = os.Stdout
 
-	if logFile != nil {
+	if len(*logFile) > 0 {
 		file, err := os.OpenFile(*logFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 		if err == nil {
 			logrus.StandardLogger().Out = file
