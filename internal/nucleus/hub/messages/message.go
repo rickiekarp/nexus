@@ -7,7 +7,7 @@ type Message struct {
 	Seq       int64            `json:"seq,omitempty"`
 	SeqReply  int64            `json:"seq_reply,omitempty"`
 	Event     events.EventType `json:"event,omitempty"`
-	Data      MessageData      `json:"data,omitempty"`
+	Data      *MessageData     `json:"data,omitempty"`
 	Action    string           `json:"action,omitempty"`
 	Content   string           `json:"content,omitempty"`
 	Sender    string           `json:"sender,omitempty"`

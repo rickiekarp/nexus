@@ -171,8 +171,10 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 	client.hub.register <- client
 
 	msg := messages.Message{
-		Seq:      client.seq,
-		Data:     messages.MessageData{ServerVersion: config.Version, MinClientVersion: config.NucleusConf.Project6.MinClientVersion},
+		Seq: client.seq,
+		Data: &messages.MessageData{
+			ServerVersion:    config.Version,
+			MinClientVersion: config.NucleusConf.Project6.MinClientVersion},
 		Event:    events.Hello,
 		Content:  client.Id,
 		SenderIP: client.conn.RemoteAddr().String(),

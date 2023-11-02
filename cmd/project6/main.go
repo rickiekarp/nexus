@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"git.rickiekarp.net/rickie/home/internal/project6/config"
+	"git.rickiekarp.net/rickie/home/internal/project6/eventmanager"
 	"git.rickiekarp.net/rickie/home/pkg/logger"
 	"git.rickiekarp.net/rickie/home/pkg/network"
 	"git.rickiekarp.net/rickie/home/pkg/sys"
@@ -42,7 +43,7 @@ func init() {
 
 	logger.SetupDefaultLogger(logFile)
 
-	logrus.Info("Starting Project6 (Build: " + config.Build + ", PID: " + fmt.Sprint(pid) + ")")
+	logrus.Info("Starting Project6 (Version: " + config.Version + ", Build: " + config.Build + ", PID: " + fmt.Sprint(pid) + ")")
 }
 
 func main() {
@@ -62,23 +63,24 @@ func main() {
 	webSockerDialer := websocket.DefaultDialer
 	webSockerDialer.Subprotocols = []string{hostname}
 
-	c, _, err := webSockerDialer.Dial(url.String(), nil)
+	wsConn, _, err := webSockerDialer.Dial(url.String(), nil)
 	if err != nil {
 		logrus.Fatal("dial:", err)
 	}
-	defer c.Close()
+	defer wsConn.Close()
 
 	done := make(chan struct{})
 
 	go func() {
 		defer close(done)
 		for {
-			_, message, err := c.ReadMessage()
+			_, message, err := wsConn.ReadMessage()
 			if err != nil {
-				logrus.Println("read:", err)
+				logrus.Println("ReadMessageErr:", err)
 				return
 			}
-			logrus.Printf("recv: %s", message)
+
+			eventmanager.ProcessMessage(message)
 		}
 	}()
 
@@ -92,7 +94,7 @@ func main() {
 		case <-ticker.C:
 			if util.Exists("project6svc_update") {
 				logrus.Info("Update file found! Stopping service")
-				network.CloseWebSocket(c)
+				network.CloseWebSocket(wsConn)
 				// waiting (with timeout) for the server to close the connection
 				select {
 				case <-done:
@@ -103,7 +105,7 @@ func main() {
 
 		case <-interrupt:
 			logrus.Println("signal received: interrupt")
-			network.CloseWebSocket(c)
+			network.CloseWebSocket(wsConn)
 			// waiting (with timeout) for the server to close the connection
 			select {
 			case <-done:
