@@ -11,6 +11,8 @@ import (
 
 	"git.rickiekarp.net/rickie/home/internal/project6/config"
 	"git.rickiekarp.net/rickie/home/internal/project6/eventmanager"
+	"git.rickiekarp.net/rickie/home/internal/project6/stats"
+	pkgconfig "git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/logger"
 	"git.rickiekarp.net/rickie/home/pkg/network"
 	"git.rickiekarp.net/rickie/home/pkg/sys"
@@ -51,17 +53,13 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 
-	hostname, err := os.Hostname()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+	stats.SetUptime()
 
 	url := url.URL{Scheme: "ws", Host: *host, Path: "/ws"}
-	logrus.Printf("connecting to %s (protocol: %s)", url.String(), hostname)
+	logrus.Printf("connecting to %s (protocol: %s)", url.String(), pkgconfig.HostName)
 
 	webSockerDialer := websocket.DefaultDialer
-	webSockerDialer.Subprotocols = []string{hostname}
+	webSockerDialer.Subprotocols = []string{pkgconfig.HostName}
 
 	wsConn, _, err := webSockerDialer.Dial(url.String(), nil)
 	if err != nil {
@@ -92,6 +90,9 @@ func main() {
 		case <-done:
 			return
 		case <-ticker.C:
+
+			stats.SendUptimeMetric()
+
 			if util.Exists("project6svc_update") {
 				logrus.Info("Update file found! Stopping service")
 				network.CloseWebSocket(wsConn)

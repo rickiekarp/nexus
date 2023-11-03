@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	Host = "localhost"
-	Port = 9000
+	Host = "rickiekarp.net"
+	Port = 2003
 )
 
 // SendMetric sends a metric to graphite

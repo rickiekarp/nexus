@@ -2,51 +2,14 @@ package command
 
 import (
 	"bytes"
-	"fmt"
 	"log"
-	"os"
 	"os/exec"
+	"strings"
 	"syscall"
-
-	"github.com/sirupsen/logrus"
 )
 
-const ShellToUse = "bash"
-
-func Shell(command string) {
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-	cmd := exec.Command(ShellToUse, "-c", command)
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	if err != nil {
-		log.Printf("error: %v\n", err)
-	}
-
-	if stdout.String() != "" {
-		fmt.Println("--- stdout ---")
-		fmt.Println(stdout.String())
-	}
-
-	if stderr.String() != "" {
-		fmt.Println("--- stderr ---")
-		fmt.Println(stderr.String())
-	}
-}
-
-func Shellout(command string) (string, string, error) {
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-	cmd := exec.Command(ShellToUse, "-c", command)
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	return stdout.String(), stderr.String(), err
-}
-
 // ExecuteCmd executes a given system command
-// It returns the exitCode of the executed command and the Stdout AND Stderr buffer as a string
+// It returns the Stdout AND Stderr buffer as a string and the exit code
 func ExecuteCmd(command string, args ...string) (string, string, int) {
 
 	var stdout bytes.Buffer
@@ -75,30 +38,14 @@ func ExecuteCmd(command string, args ...string) (string, string, int) {
 			// an ExitStatus() method with the same signature.
 			if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
 				log.Printf("Exit Status: %d", status.ExitStatus())
-				return stdout.String(), stderr.String(), status.ExitStatus()
+				return strings.TrimSuffix(string(stdout.String()), "\n"),
+					strings.TrimSuffix(string(stderr.String()), "\n"),
+					status.ExitStatus()
 			}
 		}
 	}
 
-	return stdout.String(), stderr.String(), 0
-}
-
-// ExecuteCommandAndPrintResult is deprecated! Use Shell() instead
-func ExecuteCommandAndPrintResult(command string, arguments string) {
-	cmd := exec.Command(command, arguments)
-	cmdOutput := &bytes.Buffer{}
-	cmd.Stdout = cmdOutput
-	err := cmd.Run()
-	if err != nil {
-		os.Stderr.WriteString(err.Error())
-	}
-	fmt.Print(cmdOutput.String())
-}
-
-func ExecuteCmdAndGetOutput(command string, args ...string) string {
-	out, err := exec.Command(command, args...).Output()
-	if err != nil {
-		logrus.Error(err)
-	}
-	return string(out)
+	return strings.TrimSuffix(string(stdout.String()), "\n"),
+		strings.TrimSuffix(string(stderr.String()), "\n"),
+		0
 }
