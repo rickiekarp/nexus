@@ -30,9 +30,8 @@ func processEvent(message messages.Message) {
 				logrus.Error(err)
 			}
 		}
-		// TODO
-	case events.ConfigChange:
-		logrus.Info("checking config: ", message.Event)
+	case events.PreferencesChanged:
+		logrus.Info("received preferences_changed: ", message)
 		// TODO
 	}
 }

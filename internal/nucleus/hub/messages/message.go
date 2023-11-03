@@ -3,7 +3,6 @@ package messages
 import "git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
 
 type Message struct {
-	//Message Struct
 	Seq       int64            `json:"seq,omitempty"`
 	SeqReply  int64            `json:"seq_reply,omitempty"`
 	Event     events.EventType `json:"event,omitempty"`
