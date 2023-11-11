@@ -19,7 +19,7 @@ then
   echo "Device $device was not unmounted correctly"
 else
   echo "Backing up! Please wait..."
-  sudo dd if=$device of=$outputfile bs=1M
+  sudo dd if=$device of=$outputfile bs=1M status=progress
 fi
 
 echo "Backup created! You can remove the sdcard now!"
