@@ -8,9 +8,3 @@ out/
 *.war
 *.war.original
 *.setup
-
-# Front End Dependency Generated
-Website/WebsiteAngular/dist/
-Website/WebsiteAngular/node/
-Website/WebsiteAngular/node_modules/
-Website/WebsiteBackend/src/main/resources/static

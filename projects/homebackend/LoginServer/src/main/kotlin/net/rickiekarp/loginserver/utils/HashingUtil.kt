@@ -3,11 +3,9 @@ package net.rickiekarp.loginserver.utils
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 import java.security.NoSuchAlgorithmException
-import java.security.SecureRandom
 import java.security.spec.InvalidKeySpecException
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
-import kotlin.system.measureTimeMillis
 
 @Component
 class HashingUtil {
@@ -24,13 +22,6 @@ class HashingUtil {
         return toHex(hash)
     }
 
-    private fun getSalt(): ByteArray {
-        val sr = SecureRandom.getInstance("SHA1PRNG")
-        val salt = ByteArray(16)
-        sr.nextBytes(salt)
-        return salt
-    }
-
     @Throws(NoSuchAlgorithmException::class)
     private fun toHex(array: ByteArray): String {
         val bi = BigInteger(1, array)
@@ -41,13 +32,5 @@ class HashingUtil {
         } else {
             hex
         }
-    }
-
-    private fun measureTime() {
-        val password = "password"
-        val time = measureTimeMillis {
-            generateStrongPasswordHash(password)
-        }
-        println("$time ms")
     }
 }

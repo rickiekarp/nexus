@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<versions>
-<module id="App" version="1.0.1608.1" file="filelist-creator.jar" updateEnable="true"></module>
-<updater id="Updater" version="1.0.1608.1" file="updater.jar" updateEnable="true"></updater>
-</versions>

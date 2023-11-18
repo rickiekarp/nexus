@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<plugins>
-<plugin id="PluginOne" version="1.170318.1" file="PluginOne.jar" type="WEB" updateEnable="true" ></plugin>
-<plugin id="PluginTwo" version="1.170318.1" file="PluginTwo.jar" type="ANDROID" updateEnable="true" ></plugin>
-</plugins>
