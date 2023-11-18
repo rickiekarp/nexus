@@ -3,6 +3,8 @@ package config
 import (
 	"io/ioutil"
 
+	"git.rickiekarp.net/rickie/home/pkg/database"
+	"git.rickiekarp.net/rickie/home/pkg/models"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
@@ -22,7 +24,8 @@ type NucleusConfig struct {
 		Host    string `yaml:"host"`
 		Port    int    `yaml:"port"`
 	}
-	Project6 struct {
+	Databases []models.Database `yaml:"databases"`
+	Project6  struct {
 		MinClientVersion string `yaml:"minClientVersion"`
 	}
 }
@@ -49,6 +52,8 @@ func ReadNucleusConfig() error {
 	// set graphite target config
 	graphite.Host = NucleusConf.Graphite.Host
 	graphite.Port = NucleusConf.Graphite.Port
+
+	database.Databases = NucleusConf.Databases
 
 	return nil
 }

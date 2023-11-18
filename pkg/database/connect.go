@@ -43,21 +43,26 @@ func GetConfigByDatabaseName(databaseName string) *models.Database {
 	return nil
 }
 
-func ConnectDataHome() {
+func ConnectDataHome() bool {
 	databaseConfig := GetConfigByDatabaseName("data_home")
+	if databaseConfig == nil {
+		logrus.Error("No database connection config found, is it missing from your config?")
+		return false
+	}
 	connection, err := GetConnection(databaseConfig.User, databaseConfig.Password, databaseConfig.Host, databaseConfig.Name)
 	if err != nil {
-		logrus.Warn(err)
+		logrus.Error(err)
+		return false
 	}
 	ConDataHome = connection
+	return true
 }
 
 func CheckDatabaseConnection() bool {
 	if ConDataHome == nil {
 		logrus.Warn("No connection to data_home exists, trying to connect again!")
-		ConnectDataHome()
-		if ConDataHome == nil {
-			logrus.Warn("Can not open database connection! Is the database down?")
+		if !ConnectDataHome() {
+			logrus.Error("Can not open database connection! Is the database down?")
 			return false
 		}
 	}

@@ -29,3 +29,7 @@ insert into location_junction (city_id, country_id) VALUES (3, 1);
 -- ADD location to experience table
 ALTER TABLE experience
 ADD COLUMN location_id INT NOT NULL AFTER jobid;
+
+update experience set location_id = 1 where experience_id in (1,2);
+update experience set location_id = 2 where experience_id in (3,4,5,6);
+update experience set location_id = 3 where experience_id in (7);
