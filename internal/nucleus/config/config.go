@@ -24,6 +24,15 @@ type NucleusConfig struct {
 		Host    string `yaml:"host"`
 		Port    int    `yaml:"port"`
 	}
+	Mail struct {
+		Host     string `yaml:"host"`
+		Port     int    `yaml:"port"`
+		Username string `yaml:"username"`
+		Password string `yaml:"password"`
+		Notify   struct {
+			Recipient string `yaml:"recipient"`
+		} `yaml:"notify"`
+	} `yaml:"mail"`
 	Databases []models.Database `yaml:"databases"`
 	Project6  struct {
 		MinClientVersion string `yaml:"minClientVersion"`

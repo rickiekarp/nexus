@@ -1,17 +1,15 @@
-package api
+package mail
 
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"net/http"
-	"text/template"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/mailsvc/config"
-	"git.rickiekarp.net/rickie/home/internal/mailsvc/datasource"
-	"git.rickiekarp.net/rickie/home/internal/mailsvc/mail"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
 	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
 	"github.com/sirupsen/logrus"
 )
@@ -49,7 +47,7 @@ func Notify(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = mail.SendMail(mailData)
+	err = SendMail(mailData)
 	if err != nil {
 		logrus.Error(err)
 		w.WriteHeader(500)
@@ -70,7 +68,7 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	reminderData := datasource.GetActiveRemindersForUser(userId)
+	reminderData := GetActiveRemindersForUser(userId)
 	if len(*reminderData) == 0 {
 		logrus.Info("No reminder data found for userId ", userId)
 		return
@@ -100,7 +98,7 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	messageContent := templateBuffer.String()
 	data := mailmodel.MailData{
-		To:      config.MailConfig.Notify.Recipient,
+		To:      config.NucleusConf.Mail.Notify.Recipient,
 		Subject: fmt.Sprintf("ToDo - %s", time.Now().Format("2006-01-02")),
 		Message: messageContent,
 	}
@@ -111,14 +109,14 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = mail.SendMail(data)
+	err = SendMail(data)
 	if err != nil {
 		logrus.Error(err)
 		w.WriteHeader(500)
 	} else {
 		// update the reminder send date in the database
 		for _, reminder := range *reminderData {
-			err = datasource.SetReminderSendDateForReminderId(reminder.Id)
+			err = SetReminderSendDateForReminderId(reminder.Id)
 			if err != nil {
 				logrus.Error(err)
 			}

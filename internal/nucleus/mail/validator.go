@@ -1,10 +1,9 @@
-package api
+package mail
 
 import (
 	"net/http"
 	"strconv"
 
-	"git.rickiekarp.net/rickie/home/internal/mailsvc/datasource"
 	"github.com/sirupsen/logrus"
 )
 
@@ -12,7 +11,7 @@ func checkNotificationToken(w http.ResponseWriter, r *http.Request, tokenToValid
 	val, ok := r.Header["X-Notification-Token"]
 	if ok {
 		// check if token is present in the database
-		isTokenInSystem := datasource.CheckNotificationTokenExistence(val[0])
+		isTokenInSystem := CheckNotificationTokenExistence(val[0])
 		if !isTokenInSystem {
 			logrus.Info("X-Notification-Token key header is present with value ", val[0], ", but not found in the system!")
 			w.WriteHeader(401)

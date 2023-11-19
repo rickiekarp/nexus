@@ -22,21 +22,6 @@ buildSysmonARM64v7:
 deploySysmon:
 		rsync -rlvpt --delete build/output/sysmon pi:$(DEPLOY_DIR)
 
-# MailSvc
-
-buildMailServiceARM64v7:
-		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
-		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD) \
-		-X git.rickiekarp.net/rickie/home/internal/mailsvc/config.ConfigBaseDir=data/config/" \
-		-o $(BUILD_PATH)/output/mailsvc/$(BINARY_NAME) \
-		cmd/mailsvc/main.go
-		mkdir -p $(BUILD_PATH)/output/mailsvc/data
-		cp -r deployments/module-deployment/values/mailsvc/prod/* $(BUILD_PATH)/output/mailsvc/data/
-		cp deployments/docker/Dockerfile_goscratch build/output/mailsvc/Dockerfile
-
-deployMailService:
-		rsync -rlvpt --delete build/output/mailsvc pi:$(DEPLOY_DIR)
-
 # Nucleus
 
 buildNucleusARM64v7:

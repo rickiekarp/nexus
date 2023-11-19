@@ -1,4 +1,4 @@
-package datasource
+package mail
 
 import (
 	"database/sql"
@@ -71,7 +71,6 @@ func GetActiveRemindersForUser(userId int) *[]ReminderData {
 	}
 
 	return &reminders
-
 }
 
 func SetReminderSendDateForReminderId(reminderId int) error {

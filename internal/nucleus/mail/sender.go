@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	"git.rickiekarp.net/rickie/home/internal/mailsvc/config"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
 	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
 	"github.com/sirupsen/logrus"
 )
@@ -44,12 +44,12 @@ func SendMail(mailData mailmodel.MailData) error {
 }
 
 func new() *Sender {
-	auth := smtp.PlainAuth("", config.MailConfig.Mail.Username, config.MailConfig.Mail.Password, config.MailConfig.Mail.Host)
+	auth := smtp.PlainAuth("", config.NucleusConf.Mail.Username, config.NucleusConf.Mail.Password, config.NucleusConf.Mail.Host)
 	return &Sender{auth}
 }
 
 func (s *Sender) send(m *Message) error {
-	return smtp.SendMail(config.MailConfig.Mail.Host+":"+strconv.Itoa(config.MailConfig.Mail.Port), s.auth, config.MailConfig.Mail.Username, m.To, m.toBytes())
+	return smtp.SendMail(config.NucleusConf.Mail.Host+":"+strconv.Itoa(config.NucleusConf.Mail.Port), s.auth, config.NucleusConf.Mail.Username, m.To, m.toBytes())
 }
 
 func newMessage(s, b string) *Message {
