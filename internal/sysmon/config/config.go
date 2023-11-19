@@ -50,6 +50,7 @@ func ReadSysmonConfig() error {
 	}
 
 	database.Databases = SysmonConf.Databases
+	database.ConDataHome = models.DatabaseConnection{Name: "data_home"}
 
 	// set graphite target config
 	graphite.Host = SysmonConf.Graphite.Host

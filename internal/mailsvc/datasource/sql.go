@@ -34,11 +34,11 @@ const UPDATE_REMINDER_SENDDATE = "update tracking_todo set reminder_senddate = n
 
 func GetActiveRemindersForUser(userId int) *[]ReminderData {
 	// check if the database is available
-	if !database.CheckDatabaseConnection() {
+	if !database.CheckDatabaseConnection(database.ConDataHome) {
 		return nil
 	}
 
-	rows, err := database.ConDataHome.Query(SELECT_REMINDER_LIST, userId)
+	rows, err := database.ConDataHome.Connection.Query(SELECT_REMINDER_LIST, userId)
 	if err != nil {
 		logrus.Error(err)
 		return nil
@@ -76,11 +76,11 @@ func GetActiveRemindersForUser(userId int) *[]ReminderData {
 
 func SetReminderSendDateForReminderId(reminderId int) error {
 	// check if the database is available
-	if !database.CheckDatabaseConnection() {
+	if !database.CheckDatabaseConnection(database.ConDataHome) {
 		return nil
 	}
 
-	_, err := database.ConDataHome.Exec(UPDATE_REMINDER_SENDDATE, reminderId)
+	_, err := database.ConDataHome.Connection.Exec(UPDATE_REMINDER_SENDDATE, reminderId)
 	if err != nil {
 		logrus.Error(err)
 		return err
@@ -90,11 +90,11 @@ func SetReminderSendDateForReminderId(reminderId int) error {
 
 func getApplicationSettingsNotificationTokenContent() *[]NotificationToken {
 	// check if the database is available
-	if !database.CheckDatabaseConnection() {
+	if !database.CheckDatabaseConnection(database.ConDataHome) {
 		return nil
 	}
 
-	rows, err := database.ConDataHome.Query(GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT)
+	rows, err := database.ConDataHome.Connection.Query(GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT)
 	if err != nil {
 		logrus.Error(err)
 		return nil

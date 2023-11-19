@@ -65,7 +65,7 @@ func main() {
 	}()
 
 	// open connection to data_home database
-	database.ConnectDataHome()
+	database.ConnectDatabase(database.ConDataHome)
 
 	apiServer := api.GetServer(mailconfig.MailConfig.ServerAddr)
 	logrus.Info("Starting API server on ", mailconfig.MailConfig.ServerAddr)

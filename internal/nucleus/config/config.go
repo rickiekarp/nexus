@@ -54,6 +54,8 @@ func ReadNucleusConfig() error {
 	graphite.Port = NucleusConf.Graphite.Port
 
 	database.Databases = NucleusConf.Databases
+	database.ConLogin = models.DatabaseConnection{Name: "login"}
+	database.ConDataHome = models.DatabaseConnection{Name: "data_home"}
 
 	return nil
 }

@@ -11,7 +11,8 @@ import (
 
 var Databases []models.Database
 
-var ConDataHome *sql.DB
+var ConLogin models.DatabaseConnection
+var ConDataHome models.DatabaseConnection
 
 func GetConnection(username, password, url, database string) (*sql.DB, error) {
 	con, err := sql.Open("mysql", fmt.Sprintf(
@@ -43,8 +44,8 @@ func GetConfigByDatabaseName(databaseName string) *models.Database {
 	return nil
 }
 
-func ConnectDataHome() bool {
-	databaseConfig := GetConfigByDatabaseName("data_home")
+func ConnectDatabase(database models.DatabaseConnection) bool {
+	databaseConfig := GetConfigByDatabaseName(database.Name)
 	if databaseConfig == nil {
 		logrus.Error("No database connection config found, is it missing from your config?")
 		return false
@@ -54,14 +55,20 @@ func ConnectDataHome() bool {
 		logrus.Error(err)
 		return false
 	}
-	ConDataHome = connection
+
+	switch database.Name {
+	case "data_home":
+		ConDataHome.Connection = connection
+	case "login":
+		ConLogin.Connection = connection
+	}
 	return true
 }
 
-func CheckDatabaseConnection() bool {
-	if ConDataHome == nil {
-		logrus.Warn("No connection to data_home exists, trying to connect again!")
-		if !ConnectDataHome() {
+func CheckDatabaseConnection(databaseConnection models.DatabaseConnection) bool {
+	if databaseConnection.Connection == nil {
+		logrus.Warn("No connection to " + databaseConnection.Name + " exists, trying to connect again!")
+		if !ConnectDatabase(databaseConnection) {
 			logrus.Error("Can not open database connection! Is the database down?")
 			return false
 		}

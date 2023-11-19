@@ -45,6 +45,7 @@ func ReadMailConfig(configDir string) error {
 	}
 
 	database.Databases = MailConfig.Databases
+	database.ConDataHome = models.DatabaseConnection{Name: "data_home"}
 
 	return nil
 }
