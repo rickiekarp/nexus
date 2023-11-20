@@ -21,7 +21,10 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 	Subprotocols:    []string{"webinterface"},
 	CheckOrigin: func(r *http.Request) bool {
-		logrus.Info("IN_REQ: ", r)
+		origin := r.Header["Origin"]
+		if len(origin) == 0 {
+			return true
+		}
 		for i := 0; i < len(allowedOrigins); i++ {
 			if r.Header["Origin"][0] == allowedOrigins[i] {
 				return true
