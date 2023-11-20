@@ -14,10 +14,21 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var allowedOrigins = [1]string{"http://localhost:4200"}
+
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 	Subprotocols:    []string{"webinterface"},
+	CheckOrigin: func(r *http.Request) bool {
+		logrus.Info("IN_REQ: ", r)
+		for i := 0; i < len(allowedOrigins); i++ {
+			if r.Header["Origin"][0] == allowedOrigins[i] {
+				return true
+			}
+		}
+		return false
+	},
 }
 
 // Client is a middleman between the websocket connection and the hub.
