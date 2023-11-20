@@ -14,7 +14,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var allowedOrigins = [1]string{"http://localhost:4200"}
+var allowedOrigins = [2]string{"https://rickiekarp.net", "http://localhost:4200"}
 
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
