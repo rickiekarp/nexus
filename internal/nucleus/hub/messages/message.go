@@ -17,6 +17,6 @@ type Message struct {
 }
 
 type MessageData struct {
-	ServerVersion    string `json:"serverVersion,omitempty"`
-	MinClientVersion string `json:"minClientVersion,omitempty"`
+	ServerVersion    string  `json:"serverVersion,omitempty"`
+	MinClientVersion *string `json:"minClientVersion,omitempty"`
 }

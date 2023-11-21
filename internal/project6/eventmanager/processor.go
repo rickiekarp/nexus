@@ -20,7 +20,7 @@ func ProcessMessage(receivedMessageBytes []byte) {
 func processEvent(message messages.Message) {
 	switch message.Event {
 	case events.Hello:
-		if config.Version < message.Data.MinClientVersion {
+		if config.Version < *message.Data.MinClientVersion {
 			logrus.Println("Update available! Downloading...")
 			err := network.DownloadFile(
 				fmt.Sprintf("software/dev/project6/%s/project6", runtime.GOARCH),
