@@ -2,6 +2,7 @@ package config
 
 import (
 	"io/ioutil"
+	"os"
 
 	"git.rickiekarp.net/rickie/home/pkg/database"
 	"git.rickiekarp.net/rickie/home/pkg/models"
@@ -15,6 +16,7 @@ var (
 	Build            = "development"                                              // Build set during go build using ldflags
 	ConfigBaseDir    = "deployments/module-deployment/values/nucleus/dev/config/" // ConfigBaseDir set during go build using ldflags
 	ResourcesBaseDir = "web/nucleus/"
+	Hostname         string
 )
 
 type NucleusConfig struct {
@@ -43,6 +45,14 @@ var NucleusConf NucleusConfig
 
 // ReadNucleusConfig reads the given config file and tries to unmarshal it into the given configStruct
 func ReadNucleusConfig() error {
+
+	// get hostname (used for sending graphite metric)
+	hostname, err := os.Hostname()
+	if err != nil {
+		logrus.Error("Could not determine hostname! ", err)
+		return err
+	}
+	Hostname = hostname
 
 	// read configfile
 	yamlFile, err := ioutil.ReadFile(ConfigBaseDir + "config.yaml")

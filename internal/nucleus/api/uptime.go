@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/sysmon/config"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"github.com/sirupsen/logrus"
 )

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/sysmon/config"
-	"git.rickiekarp.net/rickie/home/internal/sysmon/utils"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/utils"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"git.rickiekarp.net/rickie/home/pkg/profiler"
 	"github.com/sirupsen/logrus"

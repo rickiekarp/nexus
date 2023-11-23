@@ -7,21 +7,6 @@ BUILD_PATH=build
 BINARY_NAME=app
 DEPLOY_DIR=/mnt/raid2/applications/apps/
 
-# Sysmon
-
-buildSysmonARM64v7:
-		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
-		go build -ldflags="-X main.Version=$(shell git rev-parse HEAD) \
-		-X main.ConfigBaseDir=data/config/" \
-		-o $(BUILD_PATH)/output/sysmon/$(BINARY_NAME) \
-		cmd/sysmon/main.go
-		mkdir -p $(BUILD_PATH)/output/sysmon/data
-		cp -r deployments/module-deployment/values/sysmon/prod/* $(BUILD_PATH)/output/sysmon/data/
-		cp deployments/docker/Dockerfile_goscratch build/output/sysmon/Dockerfile
-
-deploySysmon:
-		rsync -rlvpt --delete build/output/sysmon pi:$(DEPLOY_DIR)
-
 # Nucleus
 
 buildNucleusARM64v7:

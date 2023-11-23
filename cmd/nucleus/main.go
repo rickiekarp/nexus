@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"git.rickiekarp.net/rickie/home/internal/nucleus/api"
+	"git.rickiekarp.net/rickie/home/internal/nucleus/channel"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/hub"
 	globalConfig "git.rickiekarp.net/rickie/home/pkg/config"
@@ -42,6 +43,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	config.ReadSysTempConfig()
+	config.ReadUptimeMonitoringConfig()
+
 	// Create channel for os.Signal notifications
 	signals := make(chan os.Signal, 1)
 
@@ -68,6 +72,8 @@ func main() {
 	apiServer := api.GetServer(config.NucleusConf.ServerAddr)
 	logrus.Info("Starting API server on ", config.NucleusConf.ServerAddr)
 	go http.StartApiServer(apiServer)
+
+	go channel.ScheduleWeatherUpdate()
 
 	// start monitoring
 	go hub.CollectStats()

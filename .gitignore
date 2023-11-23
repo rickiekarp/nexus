@@ -8,15 +8,8 @@
 # configs
 conf
 
-# Node
-node_modules
-
-# configs
-config/sysmon
-config/gobackend
-
 # build output directory
-build/output
+build
 tools/build
 
 # monitoring data dir 
