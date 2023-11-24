@@ -77,8 +77,6 @@ func ScheduleWeatherUpdate() {
 		return
 	}
 
-	logrus.Info(config.WeatherConf)
-
 	var apiUrls []string
 	for _, value := range config.WeatherConf.CityIds {
 		apiUrls = append(apiUrls, "http://api.openweathermap.org/data/2.5/weather?id="+value+"&appid="+config.WeatherConf.ApiKey+"&units=metric")
@@ -101,7 +99,7 @@ func ScheduleWeatherUpdate() {
 		// make sure this case is executed every 10 seconds
 		// do not use a time.Sleep here since it causes a SIGKILL if the SIGTERM takes too long
 		case <-time.After(time.Duration(config.WeatherConf.Interval) * time.Minute):
-			logrus.Info("Calling weather api")
+			//logrus.Info("Calling weather api")
 			for _, apiUrl := range apiUrls {
 
 				resp, err := http.Get(apiUrl)
@@ -123,7 +121,7 @@ func ScheduleWeatherUpdate() {
 					continue
 				}
 
-				logrus.Info(res)
+				//logrus.Info(res)
 
 				metric := map[string]float64{
 					"main.temp":       res.Main.Temp,
