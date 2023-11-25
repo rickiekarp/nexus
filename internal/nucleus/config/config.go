@@ -46,7 +46,6 @@ var NucleusConf NucleusConfig
 // ReadNucleusConfig reads the given config file and tries to unmarshal it into the given configStruct
 func ReadNucleusConfig() error {
 
-	// get hostname (used for sending graphite metric)
 	hostname, err := os.Hostname()
 	if err != nil {
 		logrus.Error("Could not determine hostname! ", err)

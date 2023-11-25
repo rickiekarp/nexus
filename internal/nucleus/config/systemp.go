@@ -11,7 +11,6 @@ var SysTemperatureConf SysTempConf
 
 type SysTempConf struct {
 	Enabled              bool    `json:"enabled"`
-	GraphitePrefix       string  `json:"graphiteprefix"`
 	NotifyEmailRecipient string  `json:"notifyemailrecipient"`
 	NotifyApiUrl         string  `json:"notifyapiurl"`
 	AlertThreshold       float64 `json:"alertthreshold"`

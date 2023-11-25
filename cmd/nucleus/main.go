@@ -44,7 +44,6 @@ func main() {
 	}
 
 	config.ReadSysTempConfig()
-	config.ReadUptimeMonitoringConfig()
 
 	// Create channel for os.Signal notifications
 	signals := make(chan os.Signal, 1)

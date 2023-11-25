@@ -34,9 +34,10 @@ func defineApiEndpoints(r *mux.Router) {
 	r.HandleFunc("/mail/v2/notify", mail.Notify).Methods("POST")
 	r.HandleFunc("/mail/v1/notify/reminders", mail.NotifyRemindersEndpoint).Methods("POST")
 
-	r.HandleFunc("/weather/stop", channel.StopWeatherMonitorEndpoint).Methods("GET")
-	r.HandleFunc("/weather/start", channel.StartWeatherMonitorEndpoint).Methods("GET")
-	r.HandleFunc("/weather/status", channel.WeatherMonitorStatusEndpoint).Methods("GET")
+	r.HandleFunc("/modules/weather/stop", channel.StopWeatherMonitorEndpoint).Methods("GET")
+	r.HandleFunc("/modules/weather/start", channel.StartWeatherMonitorEndpoint).Methods("GET")
+	r.HandleFunc("/modules/weather/status", channel.WeatherMonitorStatusEndpoint).Methods("GET")
+
 	r.HandleFunc("/monitoring/notifyUptime", NotifyUptimeEndpoint).Methods("POST")
 	r.HandleFunc("/monitoring/notifyTemperature", NotifyTemperatureEndpoint).Methods("POST")
 }

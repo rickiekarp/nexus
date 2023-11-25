@@ -10,7 +10,6 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
 	"git.rickiekarp.net/rickie/home/internal/nucleus/utils"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
-	"git.rickiekarp.net/rickie/home/pkg/profiler"
 	"github.com/sirupsen/logrus"
 )
 
@@ -142,8 +141,6 @@ func ScheduleWeatherUpdate() {
 				prefix := config.WeatherConf.GraphitePrefix + "." + strings.ReplaceAll(res.Name, " ", "_")
 				graphite.SendMetric(metric, prefix)
 			}
-
-			profiler.PrintMemUsage()
 		}
 	}
 }
@@ -177,7 +174,6 @@ func StartWeatherMonitorEndpoint(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(202)
 		w.Write([]byte("feature disabled"))
 	}
-
 }
 
 func WeatherMonitorStatusEndpoint(w http.ResponseWriter, r *http.Request) {

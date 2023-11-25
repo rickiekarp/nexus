@@ -39,7 +39,7 @@ func NotifyTemperatureEndpoint(w http.ResponseWriter, r *http.Request) {
 	metric := map[string]float64{
 		"temperature": temperatureNotifyData.Temperature,
 	}
-	prefix := config.SysTemperatureConf.GraphitePrefix + "." + config.Hostname
+	prefix := "project6.agents." + config.Hostname
 	graphite.SendMetric(metric, prefix)
 
 	// If temperature >= 60 -> send mail
