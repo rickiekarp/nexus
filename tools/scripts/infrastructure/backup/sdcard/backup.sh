@@ -20,6 +20,7 @@ then
 else
   echo "Backing up! Please wait..."
   sudo dd if=$device of=$outputfile bs=1M status=progress
+  date -ud "@$SECONDS" "+Time elapsed: %H:%M:%S"
 fi
 
 echo "Backup created! You can remove the sdcard now!"
