@@ -76,7 +76,7 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	var contentString string
 	for _, elem := range *reminderData {
-		contentString += elem.Description + "<br>"
+		contentString += elem.Description + `<br>`
 	}
 	mailContent := map[string]string{
 		"content": contentString,

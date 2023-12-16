@@ -15,7 +15,7 @@ func defineApiEndpoints(r *mux.Router) {
 	r.HandleFunc("/", routes.ServeHome)
 	r.HandleFunc("/ws", routes.ServeWebSocket)
 	r.HandleFunc("/version", routes.ServeVersion).Methods("GET")
-	r.HandleFunc("/preferences", routes.PatchPreferencesChanged).Methods("PATCH")
+	r.HandleFunc("/hub/v1/preferences", routes.PatchPreferencesChanged).Methods("PATCH")
 	r.HandleFunc("/hub/v1/send", hub.SendMessage).Methods("POST")
 	r.HandleFunc("/hub/v1/broadcast", hub.BroadcastMessage).Methods("POST")
 

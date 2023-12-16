@@ -25,7 +25,7 @@ func PatchPreferencesChanged(w http.ResponseWriter, r *http.Request) {
 
 	// process message
 	if message.Data.MinClientVersion != nil {
-		logrus.Info("Chaning minClientVersion: ", config.NucleusConf.Project6.MinClientVersion, " -> ", *message.Data.MinClientVersion)
+		logrus.Info("PreferencesChanged-MinClientVersion: ", config.NucleusConf.Project6.MinClientVersion, " -> ", *message.Data.MinClientVersion)
 		config.NucleusConf.Project6.MinClientVersion = *message.Data.MinClientVersion
 	}
 
