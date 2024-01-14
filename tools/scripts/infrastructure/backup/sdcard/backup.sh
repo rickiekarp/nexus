@@ -4,8 +4,8 @@ echo "Raspberry Pi Backup Script v1.4"
 backupdate=$(date +%Y%m%d)
 outputfile="backup.img"
 device="/dev/sdb"
-bootpartition="/dev/sdb1"
-rootpartition="/dev/sdb2"
+bootpartition=$device"1"
+rootpartition=$device"2"
 echo "Backing up partitions: $bootpartition, $rootpartition"
 
 echo "Unmounting boot partition..."
