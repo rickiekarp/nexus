@@ -1,6 +1,6 @@
 #! /bin/bash
-echo "Software Install Script for Ubuntu 22.10"
-echo "Author: Rickie Karp (contact@rickiekarp.net)"
+echo "Software Install Script for Ubuntu 23.10"
+echo "Author: Rickie Karp"
 
 idx=0
 
@@ -50,8 +50,15 @@ uninstall_software()
 install_software()
 {
 	echo "Installing software..."
-	snap install opera telegram-desktop discord
-	sudo apt install -y keepassxc guake vlc bleachbit gimp vim curl ffmpeg timeshift obs-studio gnome-shell-extension-manager easytag darktable rawtherapee
+	# install browser
+	echo deb [arch=amd64 signed-by=/usr/share/keyrings/yandex.gpg] http://repo.yandex.ru/yandex-browser/deb stable main | sudo tee /etc/apt/sources.list.d/yandex-stable.list
+	sudo wget -O- https://repo.yandex.ru/yandex-browser/YANDEX-BROWSER-KEY.GPG | gpg --dearmor | sudo tee /usr/share/keyrings/yandex.gpg
+	sudo apt update
+	sudo apt install yandex-browser-stable
+	
+	snap install keepassxc telegram-desktop discord steam
+	snap install --classic sublime-text
+	sudo apt install -y guake vlc bleachbit gimp vim curl ffmpeg timeshift obs-studio gnome-shell-extension-manager easytag remmina darktable rawtherapee
 
 	# install FUSE to export a virtual filesystem to linux kernel (for e.g. AppImage)
 	sudo apt install -y libfuse2
@@ -68,7 +75,7 @@ install_dev_software()
 	sudo apt install -y git openjdk-17-jdk virtualbox virtualbox-qt adb jmeter jmeter-http
 
 	# Install Docker
-	sudo apt install -y docker docker.io docker-compose
+	sudo apt install -y docker.io docker-compose
 	sudo usermod -a -G docker $USER
 
 	# Install Visual Studio Code
