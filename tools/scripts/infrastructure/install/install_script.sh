@@ -58,7 +58,7 @@ install_software()
 	
 	snap install keepassxc telegram-desktop discord steam
 	snap install --classic sublime-text
-	sudo apt install -y guake vlc bleachbit gimp vim curl ffmpeg timeshift obs-studio gnome-shell-extension-manager easytag remmina darktable rawtherapee
+	sudo apt install -y guake vlc bleachbit gimp vim curl ffmpeg timeshift obs-studio gnome-shell-extension-manager easytag remmina darktable rawtherapee simple-scan
 
 	# install FUSE to export a virtual filesystem to linux kernel (for e.g. AppImage)
 	sudo apt install -y libfuse2
