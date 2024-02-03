@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Raspberry Pi Backup Script v1.4"
+echo "Raspberry Pi Backup Script v1.5"
 
 backupdate=$(date +%Y%m%d)
 outputfile="backup.img"
@@ -27,17 +27,16 @@ echo "Backup created! You can remove the sdcard now!"
 
 mkdir -p $backupdate
 echo "Compressing backup, please wait!"
-tar -czvf $backupdate/$outputfile.tar.gz $outputfile
+tar -cJvf $backupdate/$outputfile.tar.xz $outputfile
 
 echo "Encrypting backup..."
-gpg --output $backupdate/$outputfile.tar.gz.gpg \
+gpg --output $backupdate/$outputfile.tar.xz.gpg \
     --encrypt \
-    --recipient contact@rickiekarp.net \
     --recipient rickie.karp@yandex.com  \
-    $backupdate/$outputfile.tar.gz
+    $backupdate/$outputfile.tar.xz
 
 echo "Removing $outputfile"
 rm $outputfile
 
-echo "Removing unencrypted backup $backupdate/$outputfile.tar.gz"
-rm $backupdate/$outputfile.tar.gz
+echo "Removing unencrypted backup $backupdate/$outputfile.tar.xz"
+rm $backupdate/$outputfile.tar.xz
