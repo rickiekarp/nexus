@@ -17,11 +17,11 @@ import (
 func Notify(w http.ResponseWriter, r *http.Request) {
 	logrus.Print("called NotifyEndpoint")
 
-	// isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
-	// if !isValidToken {
-	// 	logrus.Error("Token invalid: X-Notification-Token")
-	// 	return
-	// }
+	isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
+	if !isValidToken {
+		logrus.Error("Token invalid: X-Notification-Token")
+		return
+	}
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
