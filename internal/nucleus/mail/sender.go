@@ -22,6 +22,7 @@ type Sender struct {
 }
 
 type Message struct {
+	FromName    string
 	To          []string
 	CC          []string
 	BCC         []string
@@ -33,6 +34,7 @@ type Message struct {
 func SendMail(mailData mailmodel.MailData) error {
 	sender := new()
 	m := newMessage(mailData.Subject, mailData.Message)
+	m.FromName = mailData.FromName
 	m.To = []string{mailData.To}
 
 	for _, attachment := range mailData.Attachments {
@@ -73,6 +75,13 @@ func (m *Message) toBytes() []byte {
 	withAttachments := len(m.Attachments) > 0
 	buf.WriteString(fmt.Sprintf("Subject: %s\n", m.Subject))
 	buf.WriteString(fmt.Sprintf("To: %s\n", strings.Join(m.To, ",")))
+
+	if len(m.FromName) > 0 {
+		buf.WriteString(fmt.Sprintf("From: %s <%s>\n", m.FromName, config.NucleusConf.Mail.Username))
+	} else {
+		buf.WriteString(fmt.Sprintf("From: <%s>\n", config.NucleusConf.Mail.Username))
+	}
+
 	if len(m.CC) > 0 {
 		buf.WriteString(fmt.Sprintf("Cc: %s\n", strings.Join(m.CC, ",")))
 	}
