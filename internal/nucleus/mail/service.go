@@ -99,9 +99,10 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	messageContent := templateBuffer.String()
 	data := mailmodel.MailData{
-		To:      config.NucleusConf.Mail.Notify.Recipient,
-		Subject: fmt.Sprintf("ToDo - %s", time.Now().Format("2006-01-02")),
-		Message: messageContent,
+		FromName: "RaspberryPi",
+		To:       config.NucleusConf.Mail.Notify.Recipient,
+		Subject:  fmt.Sprintf("ToDo - %s", time.Now().Format("2006-01-02")),
+		Message:  messageContent,
 	}
 
 	if len(data.To) == 0 || len(data.Subject) == 0 || len(data.Message) == 0 {
