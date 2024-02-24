@@ -5,7 +5,7 @@ GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 BUILD_PATH=build
 BINARY_NAME=app
-DEPLOY_DIR=/mnt/raid2/applications/apps/
+DEPLOY_DIR=/mnt/raid2/nodes/raspberrypi/deployment/
 
 # Nucleus
 

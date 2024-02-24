@@ -10,14 +10,13 @@ driveA="/media/rickie/archive1/"
 if [ -d "$driveA" ]; then
   echo "Starting backup to $driveA!"
   rsync -rlvpt --delete \
-    --exclude 'applications/apps' \
     --exclude 'applications/cloud/data/player' \
     --exclude 'applications/gogs' \
     --exclude 'applications/graphite' \
     --exclude 'applications/logs' \
     --exclude 'applications/mysql' \
     --exclude 'applications/nginx' \
-    --exclude 'credentials' \
+    --exclude 'nodes' \
     --exclude 'projects' \
     root@pi:/mnt/raid2/* \
     $driveA 
