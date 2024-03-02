@@ -13,7 +13,6 @@ if [ -d "$driveA" ]; then
     --exclude 'applications/cloud/data/player' \
     --exclude 'applications/gogs' \
     --exclude 'applications/graphite' \
-    --exclude 'applications/logs' \
     --exclude 'applications/mysql' \
     --exclude 'applications/nginx' \
     --exclude 'nodes' \
