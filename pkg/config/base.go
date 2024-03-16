@@ -7,7 +7,7 @@ import (
 
 const (
 	// Time allowed to write a message to the peer.
-	FileStorageBaseUrl = "https://files.rickiekarp.net"
+	FileStorageBaseUrl = "http://files.rickiekarp.net"
 )
 
 var (
