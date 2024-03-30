@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 	"git.rickiekarp.net/rickie/home/internal/project6/config"
 	"git.rickiekarp.net/rickie/home/pkg/network"
 	"github.com/sirupsen/logrus"

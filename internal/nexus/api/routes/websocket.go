@@ -3,9 +3,9 @@ package routes
 import (
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
 )
 
 func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
-	hub.Nucleus.ServeWebSocket(w, r)
+	hub.Nexus.ServeWebSocket(w, r)
 }

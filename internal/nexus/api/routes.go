@@ -1,12 +1,12 @@
 package api
 
 import (
-	"git.rickiekarp.net/rickie/home/internal/nucleus/api/routes"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/channel"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/mail"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/users"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/webpage"
+	"git.rickiekarp.net/rickie/home/internal/nexus/api/routes"
+	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
+	"git.rickiekarp.net/rickie/home/internal/nexus/mail"
+	"git.rickiekarp.net/rickie/home/internal/nexus/users"
+	"git.rickiekarp.net/rickie/home/internal/nexus/webpage"
 	"github.com/gorilla/mux"
 )
 

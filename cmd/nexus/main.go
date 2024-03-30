@@ -7,10 +7,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/api"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/channel"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub"
+	"git.rickiekarp.net/rickie/home/internal/nexus/api"
+	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
 	globalConfig "git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/http"
 	"github.com/sirupsen/logrus"
@@ -31,13 +31,13 @@ func init() {
 		os.Exit(0)
 	}
 
-	logrus.Info("Starting Nucleus (Version: " + config.Version + ", Build: " + config.Build + ")")
+	logrus.Info("Starting Nexus (Version: " + config.Version + ", Build: " + config.Build + ")")
 }
 
 func main() {
 
 	// load config files
-	cfgError := config.ReadNucleusConfig()
+	cfgError := config.ReadNexusConfig()
 	if cfgError != nil {
 		logrus.Error("Could not load config!")
 		os.Exit(1)
@@ -64,12 +64,12 @@ func main() {
 		applicationChannel <- true
 	}()
 
-	// set up nucleus
-	hub.Nucleus = hub.NewHub()
-	go hub.Nucleus.Run()
+	// set up nexus
+	hub.Nexus = hub.NewHub()
+	go hub.Nexus.Run()
 
-	apiServer := api.GetServer(config.NucleusConf.ServerAddr)
-	logrus.Info("Starting API server on ", config.NucleusConf.ServerAddr)
+	apiServer := api.GetServer(config.NexusConf.ServerAddr)
+	logrus.Info("Starting API server on ", config.NexusConf.ServerAddr)
 	go http.StartApiServer(apiServer)
 
 	go channel.ScheduleWeatherUpdate()
@@ -78,7 +78,7 @@ func main() {
 	go hub.CollectStats()
 
 	// The program will wait here until it gets the expected signal
-	logrus.Info("Started Nucleus, awaiting SIGINT or SIGTERM")
+	logrus.Info("Started Nexus, awaiting SIGINT or SIGTERM")
 
 	<-applicationChannel
 

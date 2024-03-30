@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"github.com/sirupsen/logrus"
 )
@@ -26,19 +26,19 @@ func CollectStats() {
 
 		sequence += 1
 
-		clientCount := len(Nucleus.Clients)
+		clientCount := len(Nexus.Clients)
 
-		if config.NucleusConf.Graphite.Enabled {
+		if config.NexusConf.Graphite.Enabled {
 			graphite.SendMetric(
 				map[string]float64{
 					"clientConnections": float64(clientCount),
 				},
-				"nucleus.stats")
+				"nexus.stats")
 		} else {
 			jsonMessage, _ := json.Marshal(&messages.Message{
 				Seq:     sequence,
 				Event:   events.Stats,
-				Content: fmt.Sprintf("CONNECTED_CLIENTS: %d", len(Nucleus.Clients)),
+				Content: fmt.Sprintf("CONNECTED_CLIENTS: %d", len(Nexus.Clients)),
 			})
 			logrus.Println(string(jsonMessage))
 		}

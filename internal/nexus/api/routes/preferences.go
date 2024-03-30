@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 	"github.com/sirupsen/logrus"
 )
 
@@ -25,17 +25,17 @@ func PatchPreferencesChanged(w http.ResponseWriter, r *http.Request) {
 
 	// process message
 	if message.Data.MinClientVersion != nil {
-		logrus.Info("PreferencesChanged-MinClientVersion: ", config.NucleusConf.Project6.MinClientVersion, " -> ", *message.Data.MinClientVersion)
-		config.NucleusConf.Project6.MinClientVersion = *message.Data.MinClientVersion
+		logrus.Info("PreferencesChanged-MinClientVersion: ", config.NexusConf.Project6.MinClientVersion, " -> ", *message.Data.MinClientVersion)
+		config.NexusConf.Project6.MinClientVersion = *message.Data.MinClientVersion
 	}
 
 	// broadcast preferences_changed event
-	for client := range hub.Nucleus.Clients {
+	for client := range hub.Nexus.Clients {
 		msg := messages.Message{
 			Event: events.PreferencesChanged,
 			Data: &messages.MessageData{
 				ServerVersion:    config.Version,
-				MinClientVersion: &config.NucleusConf.Project6.MinClientVersion},
+				MinClientVersion: &config.NexusConf.Project6.MinClientVersion},
 		}
 		client.SendMessage(msg, true)
 	}

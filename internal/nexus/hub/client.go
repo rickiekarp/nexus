@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 )
@@ -91,14 +91,14 @@ func (client *Client) readPump() {
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 
-		var nucleusMessage messages.Message
+		var nexusMessage messages.Message
 
-		err = json.Unmarshal([]byte(message), &nucleusMessage)
+		err = json.Unmarshal([]byte(message), &nexusMessage)
 		if err != nil {
 			logrus.Error(err)
 		}
 
-		client.hub.broadcast <- nucleusMessage
+		client.hub.broadcast <- nexusMessage
 	}
 }
 
@@ -166,8 +166,8 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	nucleusClientId := r.Header.Get("Sec-WebSocket-Protocol")
-	if nucleusClientId == "" {
+	nexusClientId := r.Header.Get("Sec-WebSocket-Protocol")
+	if nexusClientId == "" {
 		w.WriteHeader(400)
 		return
 	}
@@ -181,7 +181,7 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		ip:   clientAddress[0],
 		port: clientAddress[1],
 		Send: make(chan messages.Message, 256),
-		Id:   nucleusClientId,
+		Id:   nexusClientId,
 	}
 
 	client.hub.register <- client
@@ -190,7 +190,7 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		Seq: client.seq,
 		Data: &messages.MessageData{
 			ServerVersion:    config.Version,
-			MinClientVersion: &config.NucleusConf.Project6.MinClientVersion},
+			MinClientVersion: &config.NexusConf.Project6.MinClientVersion},
 		Event:    events.Hello,
 		Content:  client.Id,
 		SenderIP: client.conn.RemoteAddr().String(),

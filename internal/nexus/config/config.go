@@ -12,14 +12,14 @@ import (
 )
 
 var (
-	Version          = "1"                                                        // Version set during go build using ldflags
-	Build            = "development"                                              // Build set during go build using ldflags
-	ConfigBaseDir    = "deployments/module-deployment/values/nucleus/dev/config/" // ConfigBaseDir set during go build using ldflags
-	ResourcesBaseDir = "web/nucleus/"
+	Version          = "1"                                                      // Version set during go build using ldflags
+	Build            = "development"                                            // Build set during go build using ldflags
+	ConfigBaseDir    = "deployments/module-deployment/values/nexus/dev/config/" // ConfigBaseDir set during go build using ldflags
+	ResourcesBaseDir = "web/nexus/"
 	Hostname         string
 )
 
-type NucleusConfig struct {
+type NexusConfig struct {
 	ServerAddr string `yaml:"serverAddr"`
 	Graphite   struct {
 		Enabled bool   `yaml:"enabled"`
@@ -41,10 +41,10 @@ type NucleusConfig struct {
 	}
 }
 
-var NucleusConf NucleusConfig
+var NexusConf NexusConfig
 
-// ReadNucleusConfig reads the given config file and tries to unmarshal it into the given configStruct
-func ReadNucleusConfig() error {
+// ReadNexusConfig reads the given config file and tries to unmarshal it into the given configStruct
+func ReadNexusConfig() error {
 
 	hostname, err := os.Hostname()
 	if err != nil {
@@ -61,17 +61,17 @@ func ReadNucleusConfig() error {
 	}
 
 	// unmarshal config file depending on given configStruct
-	err = yaml.Unmarshal(yamlFile, &NucleusConf)
+	err = yaml.Unmarshal(yamlFile, &NexusConf)
 	if err != nil {
 		logrus.Error("Unmarshal failed: ", err)
 		return err
 	}
 
 	// set graphite target config
-	graphite.Host = NucleusConf.Graphite.Host
-	graphite.Port = NucleusConf.Graphite.Port
+	graphite.Host = NexusConf.Graphite.Host
+	graphite.Port = NexusConf.Graphite.Port
 
-	database.Databases = NucleusConf.Databases
+	database.Databases = NexusConf.Databases
 	database.ConLogin = models.DatabaseConnection{Name: "login"}
 	database.ConDataHome = models.DatabaseConnection{Name: "data_home"}
 

@@ -4,8 +4,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 	"github.com/sirupsen/logrus"
 )
 
@@ -14,7 +14,7 @@ const recipientHeader string = "X-Recipient-Client"
 func SendMessage(w http.ResponseWriter, r *http.Request) {
 	val, ok := r.Header[recipientHeader]
 	if ok {
-		for client := range Nucleus.Clients {
+		for client := range Nexus.Clients {
 			if client.Id == val[0] {
 				msg := messages.Message{
 					Seq:      client.seq,
@@ -45,7 +45,7 @@ func BroadcastMessage(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(400)
 	}
 
-	for client := range Nucleus.Clients {
+	for client := range Nexus.Clients {
 		msg := messages.Message{
 			Seq:      client.seq,
 			Event:    events.Message,

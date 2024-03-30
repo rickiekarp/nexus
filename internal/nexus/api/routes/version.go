@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 )
 
 type Version struct {
@@ -21,7 +21,7 @@ func ServeVersion(w http.ResponseWriter, r *http.Request) {
 
 	version.Version = config.Version
 	version.Build = config.Build
-	version.MinClientVersion = config.NucleusConf.Project6.MinClientVersion
+	version.MinClientVersion = config.NexusConf.Project6.MinClientVersion
 
 	json.NewEncoder(w).Encode(version)
 }

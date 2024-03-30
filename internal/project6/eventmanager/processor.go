@@ -1,15 +1,15 @@
 package eventmanager
 
 import (
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 	"github.com/sirupsen/logrus"
 )
 
 func ProcessMessage(receivedMessageBytes []byte) {
 	logrus.Printf("recv: %s", receivedMessageBytes)
-	nucleusMessage := convertToMessage(receivedMessageBytes)
-	processEvent(*nucleusMessage)
+	nexusMessage := convertToMessage(receivedMessageBytes)
+	processEvent(*nexusMessage)
 }
 
 func processEvent(message messages.Message) {

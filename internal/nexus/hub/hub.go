@@ -1,8 +1,8 @@
 package hub
 
-import "git.rickiekarp.net/rickie/home/internal/nucleus/hub/messages"
+import "git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 
-var Nucleus *Hub
+var Nexus *Hub
 
 // Hub maintains the set of active clients and broadcasts messages to the clients
 type Hub struct {

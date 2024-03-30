@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
-	"git.rickiekarp.net/rickie/home/internal/nucleus/utils"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/utils"
 	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"github.com/sirupsen/logrus"
 )

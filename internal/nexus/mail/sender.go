@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
 	"github.com/sirupsen/logrus"
 )
@@ -46,12 +46,12 @@ func SendMail(mailData mailmodel.MailData) error {
 }
 
 func new() *Sender {
-	auth := smtp.PlainAuth("", config.NucleusConf.Mail.Username, config.NucleusConf.Mail.Password, config.NucleusConf.Mail.Host)
+	auth := smtp.PlainAuth("", config.NexusConf.Mail.Username, config.NexusConf.Mail.Password, config.NexusConf.Mail.Host)
 	return &Sender{auth}
 }
 
 func (s *Sender) send(m *Message) error {
-	return smtp.SendMail(config.NucleusConf.Mail.Host+":"+strconv.Itoa(config.NucleusConf.Mail.Port), s.auth, config.NucleusConf.Mail.Username, m.To, m.toBytes())
+	return smtp.SendMail(config.NexusConf.Mail.Host+":"+strconv.Itoa(config.NexusConf.Mail.Port), s.auth, config.NexusConf.Mail.Username, m.To, m.toBytes())
 }
 
 func newMessage(s, b string) *Message {
@@ -77,9 +77,9 @@ func (m *Message) toBytes() []byte {
 	buf.WriteString(fmt.Sprintf("To: %s\n", strings.Join(m.To, ",")))
 
 	if len(m.FromName) > 0 {
-		buf.WriteString(fmt.Sprintf("From: %s <%s>\n", m.FromName, config.NucleusConf.Mail.Username))
+		buf.WriteString(fmt.Sprintf("From: %s <%s>\n", m.FromName, config.NexusConf.Mail.Username))
 	} else {
-		buf.WriteString(fmt.Sprintf("From: <%s>\n", config.NucleusConf.Mail.Username))
+		buf.WriteString(fmt.Sprintf("From: <%s>\n", config.NexusConf.Mail.Username))
 	}
 
 	if len(m.CC) > 0 {

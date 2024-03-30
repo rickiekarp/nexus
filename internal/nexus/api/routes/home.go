@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"github.com/sirupsen/logrus"
 )
 

@@ -7,23 +7,23 @@ BUILD_PATH=build
 BINARY_NAME=app
 DEPLOY_DIR=/mnt/raid2/nodes/raspberrypi/deployment/
 
-# Nucleus
+# Nexus
 
-buildNucleusARM64v7:
+buildNexusARM64v7:
 		CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM=7 \
-		go build -ldflags="-X git.rickiekarp.net/rickie/home/internal/nucleus/config.Version=$(shell date +%Y%j%H%m) \
-		-X git.rickiekarp.net/rickie/home/internal/nucleus/config.Build=$(shell git rev-parse HEAD) \
-		-X git.rickiekarp.net/rickie/home/internal/nucleus/config.ConfigBaseDir=data/config/ \
-		-X git.rickiekarp.net/rickie/home/internal/nucleus/config.ResourcesBaseDir=data/assets/web/" \
-		-o $(BUILD_PATH)/output/nucleus/$(BINARY_NAME) \
-		cmd/nucleus/main.go
-		mkdir -p $(BUILD_PATH)/output/nucleus/data/assets/web
-		cp -r web/nucleus/* $(BUILD_PATH)/output/nucleus/data/assets/web
-		cp -r deployments/module-deployment/values/nucleus/prod/* $(BUILD_PATH)/output/nucleus/data/
-		cp deployments/docker/Dockerfile_goscratch build/output/nucleus/Dockerfile
+		go build -ldflags="-X git.rickiekarp.net/rickie/home/internal/nexus/config.Version=$(shell date +%Y%j%H%m) \
+		-X git.rickiekarp.net/rickie/home/internal/nexus/config.Build=$(shell git rev-parse HEAD) \
+		-X git.rickiekarp.net/rickie/home/internal/nexus/config.ConfigBaseDir=data/config/ \
+		-X git.rickiekarp.net/rickie/home/internal/nexus/config.ResourcesBaseDir=data/assets/web/" \
+		-o $(BUILD_PATH)/output/nexus/$(BINARY_NAME) \
+		cmd/nexus/main.go
+		mkdir -p $(BUILD_PATH)/output/nexus/data/assets/web
+		cp -r web/nexus/* $(BUILD_PATH)/output/nexus/data/assets/web
+		cp -r deployments/module-deployment/values/nexus/prod/* $(BUILD_PATH)/output/nexus/data/
+		cp deployments/docker/Dockerfile_goscratch build/output/nexus/Dockerfile
 
-deployNucleus:
-		rsync -rlvpt --delete build/output/nucleus pi:$(DEPLOY_DIR)
+deployNexus:
+		rsync -rlvpt --delete build/output/nexus pi:$(DEPLOY_DIR)
 
 # Project6
 

@@ -1,6 +1,6 @@
 package messages
 
-import "git.rickiekarp.net/rickie/home/internal/nucleus/hub/events"
+import "git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
 
 type Message struct {
 	Seq       int64            `json:"seq,omitempty"`

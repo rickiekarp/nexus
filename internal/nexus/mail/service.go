@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/nucleus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
 	"github.com/sirupsen/logrus"
 )
@@ -100,7 +100,7 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 	messageContent := templateBuffer.String()
 	data := mailmodel.MailData{
 		FromName: "RaspberryPi",
-		To:       config.NucleusConf.Mail.Notify.Recipient,
+		To:       config.NexusConf.Mail.Notify.Recipient,
 		Subject:  fmt.Sprintf("ToDo - %s", time.Now().Format("2006-01-02")),
 		Message:  messageContent,
 	}
