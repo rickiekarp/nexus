@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
+	"git.rickiekarp.net/rickie/home/pkg/integrations/graphite"
 	"git.rickiekarp.net/rickie/home/pkg/models/mailmodel"
-	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"git.rickiekarp.net/rickie/home/pkg/network"
 	"github.com/sirupsen/logrus"
 )

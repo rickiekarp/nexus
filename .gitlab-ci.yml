@@ -1,8 +1,0 @@
-stages:
-  - test
-  - build
-  - report
-
-include:
-  - local: 'deployments/ci/.gitlab-ci.yml'
-  - local: 'projects/homebackend/.gitlab-ci.yml'

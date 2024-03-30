@@ -9,7 +9,7 @@ import (
 
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/utils"
-	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
+	"git.rickiekarp.net/rickie/home/pkg/integrations/graphite"
 	"github.com/sirupsen/logrus"
 )
 

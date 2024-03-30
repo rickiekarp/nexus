@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
+	"git.rickiekarp.net/rickie/home/pkg/integrations/graphite"
 )
 
 type UptimeNotifyData struct {

@@ -1,12 +1,11 @@
 package config
 
 import (
-	"io/ioutil"
 	"os"
 
 	"git.rickiekarp.net/rickie/home/pkg/database"
+	"git.rickiekarp.net/rickie/home/pkg/integrations/graphite"
 	"git.rickiekarp.net/rickie/home/pkg/models"
-	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
@@ -54,7 +53,7 @@ func ReadNexusConfig() error {
 	Hostname = hostname
 
 	// read configfile
-	yamlFile, err := ioutil.ReadFile(ConfigBaseDir + "config.yaml")
+	yamlFile, err := os.ReadFile(ConfigBaseDir + "config.yaml")
 	if err != nil {
 		logrus.Error("yamlFile.Get err: ", err)
 		return err

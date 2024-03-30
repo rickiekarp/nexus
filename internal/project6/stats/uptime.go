@@ -5,7 +5,7 @@ import (
 
 	"git.rickiekarp.net/rickie/home/pkg/command"
 	"git.rickiekarp.net/rickie/home/pkg/config"
-	"git.rickiekarp.net/rickie/home/pkg/monitoring/graphite"
+	"git.rickiekarp.net/rickie/home/pkg/integrations/graphite"
 	"github.com/sirupsen/logrus"
 )
 
