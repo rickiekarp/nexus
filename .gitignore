@@ -14,3 +14,6 @@ tools/build
 
 # monitoring data dir 
 data/monitoring
+
+#blockchain data
+nexusdata
