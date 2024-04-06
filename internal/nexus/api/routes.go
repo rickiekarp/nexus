@@ -3,10 +3,12 @@ package api
 import (
 	"git.rickiekarp.net/rickie/home/internal/nexus/api/routes"
 	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
 	"git.rickiekarp.net/rickie/home/internal/nexus/mail"
 	"git.rickiekarp.net/rickie/home/internal/nexus/users"
 	"git.rickiekarp.net/rickie/home/internal/nexus/webpage"
+	"git.rickiekarp.net/rickie/home/internal/nexuschain/blockchain"
 	"github.com/gorilla/mux"
 )
 
@@ -18,6 +20,13 @@ func defineApiEndpoints(r *mux.Router) {
 	r.HandleFunc("/hub/v1/preferences", routes.PatchPreferencesChanged).Methods("PATCH")
 	r.HandleFunc("/hub/v1/send", hub.SendMessage).Methods("POST")
 	r.HandleFunc("/hub/v1/broadcast", hub.BroadcastMessage).Methods("POST")
+
+	// blockchain
+	if config.NexusConf.NexusChain.Enabled {
+		r.HandleFunc("/blockchain/get", blockchain.HandleGetBlockchain).Methods("GET")
+		r.HandleFunc("/blockchain/addNode", blockchain.AddNewNodeToChain).Methods("GET")
+		r.HandleFunc("/blockchain/addBlock", blockchain.AddNewBlock).Methods("GET")
+	}
 
 	// login service
 	r.HandleFunc("/users/v1/authorize", users.Authorize).Methods("POST")

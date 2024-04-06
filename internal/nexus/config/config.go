@@ -38,6 +38,16 @@ type NexusConfig struct {
 	Project6  struct {
 		MinClientVersion string `yaml:"minClientVersion"`
 	}
+	NexusChain struct {
+		Enabled  bool `yaml:"enabled"`
+		Defaults struct {
+			StakeReward int64 `yaml:"stakeReward"`
+		}
+		Storage struct {
+			Type string `yaml:"type"`
+			Path string `yaml:"path"`
+		}
+	}
 }
 
 var NexusConf NexusConfig

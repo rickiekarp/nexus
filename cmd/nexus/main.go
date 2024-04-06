@@ -11,6 +11,7 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
+	"git.rickiekarp.net/rickie/home/internal/nexuschain/blockchain"
 	globalConfig "git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/http"
 	"github.com/sirupsen/logrus"
@@ -67,6 +68,11 @@ func main() {
 	// set up nexus
 	hub.Nexus = hub.NewHub()
 	go hub.Nexus.Run()
+
+	if config.NexusConf.NexusChain.Enabled {
+		blockchain.ValidateStorage()
+		blockchain.InitNetwork()
+	}
 
 	apiServer := api.GetServer(config.NexusConf.ServerAddr)
 	logrus.Info("Starting API server on ", config.NexusConf.ServerAddr)

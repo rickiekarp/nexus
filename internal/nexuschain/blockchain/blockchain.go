@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/pkg/util"
 	"github.com/sirupsen/logrus"
 )
@@ -27,8 +28,8 @@ func InitNetwork() {
 		nil,
 	}
 
-	if util.Exists(ChainConfig.Storage.Path + "/node") {
-		content, err := ioutil.ReadFile(ChainConfig.Storage.Path + "/node")
+	if util.Exists(config.NexusConf.NexusChain.Storage.Path + "/node") {
+		content, err := ioutil.ReadFile(config.NexusConf.NexusChain.Storage.Path + "/node")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -43,11 +44,11 @@ func InitNetwork() {
 		// init master validator
 		Network.AddNewNode(100)
 		MasterValidator = Network.Validators[0]
-		err := util.WriteToFile([]byte(MasterValidator.Address), ChainConfig.Storage.Path+"/node")
+		err := util.WriteToFile([]byte(MasterValidator.Address), config.NexusConf.NexusChain.Storage.Path+"/node")
 		if err != nil {
 			logrus.Error(err)
 		}
-		util.WriteStructToFile(MasterValidator, ChainConfig.Storage.Path+"/nodes/"+MasterValidator.Address)
+		util.WriteStructToFile(MasterValidator, config.NexusConf.NexusChain.Storage.Path+"/nodes/"+MasterValidator.Address)
 	}
 
 	logrus.Info("Initializing chain")
@@ -68,7 +69,7 @@ func InitNetwork() {
 		},
 	}
 
-	switch ChainConfig.Storage.Type {
+	switch config.NexusConf.NexusChain.Storage.Type {
 	case "offchain":
 		err := WriteBlockToLocalFile(blockChain[0])
 		if err != nil {
@@ -113,15 +114,15 @@ func (n *PoSNetwork) AddNewNode(stake int64) {
 		Stake:   stake,
 	}
 
-	switch ChainConfig.Storage.Type {
+	switch config.NexusConf.NexusChain.Storage.Type {
 	case "offchain":
-		util.WriteStructToFile(newNode, ChainConfig.Storage.Path+"/nodes/"+newNode.Address)
+		util.WriteStructToFile(newNode, config.NexusConf.NexusChain.Storage.Path+"/nodes/"+newNode.Address)
 	}
 	n.Validators = append(n.Validators, newNode)
 }
 
 func (n *PoSNetwork) AddNodeByAddress(address string) error {
-	content, err := ioutil.ReadFile(ChainConfig.Storage.Path + "/node")
+	content, err := ioutil.ReadFile(config.NexusConf.NexusChain.Storage.Path + "/node")
 	if err != nil {
 		return err
 	}
@@ -137,7 +138,7 @@ func (n *PoSNetwork) AddNodeByAddress(address string) error {
 func GenerateNewBlock(Validator *Node) ([]*Block, *Block, error) {
 	if err := Network.ValidateBlockchain(); err != nil {
 		logrus.Error(err)
-		Validator.Stake -= ChainConfig.Defaults.StakeReward
+		Validator.Stake -= config.NexusConf.NexusChain.Defaults.StakeReward
 		return Network.Blockchain, Network.BlockchainHead, err
 	}
 
@@ -145,7 +146,7 @@ func GenerateNewBlock(Validator *Node) ([]*Block, *Block, error) {
 
 	if err := ValidateBlockCandidate(newBlock); err != nil {
 		logrus.Error(err)
-		Validator.Stake -= ChainConfig.Defaults.StakeReward
+		Validator.Stake -= config.NexusConf.NexusChain.Defaults.StakeReward
 		return Network.Blockchain, Network.BlockchainHead, err
 	} else {
 		logrus.Info("Add new block to chain with id: ", newBlock.Id)
@@ -222,14 +223,14 @@ func (n PoSNetwork) SelectWinner() (*Node, error) {
 }
 
 func ValidateStorage() {
-	if !util.Exists(ChainConfig.Storage.Path) {
-		logrus.Info("Creating storage location: " + ChainConfig.Storage.Path)
-		util.CreateFolder(ChainConfig.Storage.Path)
+	if !util.Exists(config.NexusConf.NexusChain.Storage.Path) {
+		logrus.Info("Creating storage location: " + config.NexusConf.NexusChain.Storage.Path)
+		util.CreateFolder(config.NexusConf.NexusChain.Storage.Path)
 	}
 }
 
 func WriteBlockToLocalFile(block *Block) error {
-	blockPath := ChainConfig.Storage.Path + "/chain/blocks/"
+	blockPath := config.NexusConf.NexusChain.Storage.Path + "/chain/blocks/"
 
 	if !util.Exists(blockPath) {
 		if err := os.MkdirAll(filepath.Dir(blockPath), 0770); err != nil {

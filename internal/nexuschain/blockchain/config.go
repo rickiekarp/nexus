@@ -1,9 +1,9 @@
 package blockchain
 
 import (
-	"io/ioutil"
-	"log"
+	"os"
 
+	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
@@ -25,34 +25,16 @@ var (
 	Hostname      string
 )
 
-var ChainConfig blockChainConfig
-
-func LoadConfig() error {
-
-	yamlFile, err := ioutil.ReadFile(ConfigBaseDir + "config.yaml")
-	if err != nil {
-		log.Printf("yamlFile.Get err   #%v ", err)
-		return err
-	}
-	err = yaml.Unmarshal(yamlFile, &ChainConfig)
-	if err != nil {
-		log.Fatalf("Unmarshal: %v", err)
-		return err
-	}
-
-	return nil
-}
-
 func ReadNodeByAddress(address string) (*Node, error) {
 	var node *Node
-	yamlFile, err := ioutil.ReadFile(ChainConfig.Storage.Path + "/nodes/" + address)
+	yamlFile, err := os.ReadFile(config.NexusConf.NexusChain.Storage.Path + "/nodes/" + address)
 	if err != nil {
-		logrus.Error("yamlFile.Get err   #%v ", err)
+		logrus.Printf("yamlFile.Get err   #%v ", err)
 		return nil, err
 	}
 	err = yaml.Unmarshal(yamlFile, &node)
 	if err != nil {
-		logrus.Error("Unmarshal: %v", err)
+		logrus.Printf("Unmarshal: %v", err)
 		return nil, err
 	}
 
