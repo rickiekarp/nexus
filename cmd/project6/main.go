@@ -22,7 +22,7 @@ import (
 )
 
 var host = flag.String("host", "localhost:12000", "target host")
-var lockFile = flag.String("lock", "/tmp/project6svc.lock", "set the lock file to use")
+var lockFile = flag.String("lock", "/tmp/"+config.DefaultLockFile, "set the lock file to use")
 var logFile = flag.String("log", "", "set the log file to use")
 
 func init() {

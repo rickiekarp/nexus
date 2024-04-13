@@ -2,13 +2,13 @@ package api
 
 import (
 	"git.rickiekarp.net/rickie/home/internal/nexus/api/routes"
+	"git.rickiekarp.net/rickie/home/internal/nexus/blockchain"
 	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
 	"git.rickiekarp.net/rickie/home/internal/nexus/mail"
 	"git.rickiekarp.net/rickie/home/internal/nexus/users"
 	"git.rickiekarp.net/rickie/home/internal/nexus/webpage"
-	"git.rickiekarp.net/rickie/home/internal/nexuschain/blockchain"
 	"github.com/gorilla/mux"
 )
 
