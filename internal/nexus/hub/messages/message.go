@@ -1,6 +1,9 @@
 package messages
 
-import "git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
+import (
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
+	"git.rickiekarp.net/rickie/home/pkg/models/nexusmodel"
+)
 
 type Message struct {
 	Seq       int64            `json:"seq,omitempty"`
@@ -17,6 +20,7 @@ type Message struct {
 }
 
 type MessageData struct {
-	ServerVersion    string  `json:"serverVersion,omitempty"`
-	MinClientVersion *string `json:"minClientVersion,omitempty"`
+	ServerVersion    string                `json:"serverVersion,omitempty"`
+	MinClientVersion *string               `json:"minClientVersion,omitempty"`
+	P6Module         []nexusmodel.P6Module `json:"modules,omitempty"`
 }

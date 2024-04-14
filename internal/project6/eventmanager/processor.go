@@ -15,6 +15,7 @@ func ProcessMessage(receivedMessageBytes []byte) {
 func processEvent(message messages.Message) {
 	switch message.Event {
 	case events.Hello:
+		ProcessModules(message)
 		CheckForUpdate(message)
 	case events.PreferencesChanged:
 		logrus.Info("received preferences_changed: ", message.Data.MinClientVersion)

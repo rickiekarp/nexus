@@ -190,7 +190,8 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		Seq: client.seq,
 		Data: &messages.MessageData{
 			ServerVersion:    config.Version,
-			MinClientVersion: &config.NexusConf.Project6.MinClientVersion},
+			MinClientVersion: &config.NexusConf.Project6.MinClientVersion,
+			P6Module:         config.NexusConf.GetModulesForClient(client.Id)},
 		Event:    events.Hello,
 		Content:  client.Id,
 		SenderIP: client.conn.RemoteAddr().String(),

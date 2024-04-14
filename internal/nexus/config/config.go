@@ -6,6 +6,7 @@ import (
 	"git.rickiekarp.net/rickie/home/pkg/database"
 	"git.rickiekarp.net/rickie/home/pkg/integrations/graphite"
 	"git.rickiekarp.net/rickie/home/pkg/models"
+	"git.rickiekarp.net/rickie/home/pkg/models/nexusmodel"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
@@ -36,7 +37,8 @@ type NexusConfig struct {
 	} `yaml:"mail"`
 	Databases []models.Database `yaml:"databases"`
 	Project6  struct {
-		MinClientVersion string `yaml:"minClientVersion"`
+		MinClientVersion string                `yaml:"minClientVersion"`
+		Modules          []nexusmodel.P6Module `yaml:"modules"`
 	}
 	NexusChain struct {
 		Enabled  bool `yaml:"enabled"`
@@ -85,4 +87,14 @@ func ReadNexusConfig() error {
 	database.ConDataHome = models.DatabaseConnection{Name: "data_home"}
 
 	return nil
+}
+
+func (n *NexusConfig) GetModulesForClient(clientId string) []nexusmodel.P6Module {
+	var clientModules = []nexusmodel.P6Module{}
+	for _, module := range n.Project6.Modules {
+		if module.Target == clientId {
+			clientModules = append(clientModules, module)
+		}
+	}
+	return clientModules
 }

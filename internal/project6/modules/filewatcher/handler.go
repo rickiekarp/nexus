@@ -2,6 +2,7 @@ package filewatcher
 
 import (
 	"bufio"
+	"encoding/csv"
 	"errors"
 	"fmt"
 	"io"
@@ -11,15 +12,52 @@ import (
 	"syscall"
 
 	"github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
 )
 
-func Start(directory string) {
-	execute("inotifywait -e open -m -r " + directory + " --csv")
+var eventMap map[string]float64
+var outputFile = "log.yaml"
+
+func Start(directory string, outfile string, event string) {
+	outputFile = outfile
+	load()
+	execute("inotifywait -e " + event + " -m -r " + directory + " --csv")
+}
+
+func save() {
+	yamlFile, err := yaml.Marshal(&eventMap)
+	if err != nil {
+		logrus.Error(err)
+	}
+
+	f, err := os.Create(outputFile)
+	if err != nil {
+		logrus.Error(err)
+	}
+	defer f.Close()
+
+	_, err = io.WriteString(f, string(yamlFile))
+	if err != nil {
+		logrus.Error(err)
+	}
+}
+
+func load() {
+	yamlFile, err := os.ReadFile(outputFile)
+	if err != nil {
+		logrus.Error(err)
+		eventMap = make(map[string]float64)
+		return
+	}
+
+	err = yaml.Unmarshal(yamlFile, &eventMap)
+	if err != nil {
+		logrus.Error(err)
+		eventMap = make(map[string]float64)
+	}
 }
 
 func handle(reader *bufio.Reader) error {
-	eventMap := make(map[string]float64)
-
 	for {
 		str, err := reader.ReadString('\n')
 		if len(str) == 0 && err != nil {
@@ -30,19 +68,37 @@ func handle(reader *bufio.Reader) error {
 		}
 
 		str = strings.TrimSuffix(str, "\n")
-		eventArr := strings.Split(str, ",")
-		if len(eventArr) != 3 {
+
+		// Use strings.NewReader.
+		// ... This creates a new Reader for passing to csv.NewReader.
+		r := csv.NewReader(strings.NewReader(str))
+		// Read all records.
+		result, _ := r.ReadAll()
+
+		// make sure we only look at events that have a folder/event/filename
+		if len(result[0]) != 3 {
 			continue
 		}
 
-		fileName := eventArr[2]
+		// ignore empty filenames
+		if len(result[0][2]) == 0 {
+			continue
+		}
+
+		// filter directories
+		if strings.Contains(result[0][1], "ISDIR") {
+			continue
+		}
+
+		fileName := result[0][2]
 
 		if strings.HasPrefix(fileName, ".") {
 			continue
 		}
 
 		eventMap[fileName] += 1
-		fmt.Print(fileName + " - " + fmt.Sprintln(eventMap[fileName]))
+		//fmt.Print(fileName + " - " + fmt.Sprintln(eventMap[fileName]))
+		save()
 
 		if err != nil {
 			if err == io.EOF {

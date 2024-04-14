@@ -82,8 +82,6 @@ func main() {
 		}
 	}()
 
-	//go filewatcher.Start("/home/rickie/cloud/")
-
 	ticker := time.NewTicker(1 * time.Minute)
 	defer ticker.Stop()
 
