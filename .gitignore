@@ -17,3 +17,6 @@ data/monitoring
 
 #blockchain data
 nexusdata
+
+# test data
+*.dat

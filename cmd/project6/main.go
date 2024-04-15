@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"net/url"
 	"os"
 	"os/signal"
@@ -12,9 +13,9 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/project6/config"
 	"git.rickiekarp.net/rickie/home/internal/project6/eventmanager"
 	"git.rickiekarp.net/rickie/home/internal/project6/stats"
-	pkgconfig "git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/logger"
 	"git.rickiekarp.net/rickie/home/pkg/network"
+	"git.rickiekarp.net/rickie/home/pkg/nexuslib/account"
 	"git.rickiekarp.net/rickie/home/pkg/sys"
 	"git.rickiekarp.net/rickie/home/pkg/util"
 	"github.com/gorilla/websocket"
@@ -53,13 +54,21 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 
+	loadedAccount, err := account.Load()
+	if err != nil {
+		loadedAccount, err = account.Generate()
+		if err != nil {
+			log.Fatal("Could not load profile")
+		}
+	}
+
 	stats.SetUptime()
 
 	url := url.URL{Scheme: "ws", Host: *host, Path: "/ws"}
-	logrus.Printf("connecting to %s (protocol: %s)", url.String(), pkgconfig.HostName)
+	logrus.Printf("connecting to %s (protocol: %s)", url.String(), loadedAccount.Id)
 
 	webSockerDialer := websocket.DefaultDialer
-	webSockerDialer.Subprotocols = []string{pkgconfig.HostName}
+	webSockerDialer.Subprotocols = []string{loadedAccount.Id}
 
 	wsConn, _, err := webSockerDialer.Dial(url.String(), nil)
 	if err != nil {
