@@ -1,6 +1,7 @@
 package network
 
 import (
+	"crypto/tls"
 	"io"
 	"net/http"
 	"os"
@@ -23,7 +24,12 @@ func DownloadFile(fileUrl string, targetFileName string) error {
 	}
 	defer file.Close()
 
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
 	client := http.Client{
+		Transport: tr,
 		CheckRedirect: func(r *http.Request, via []*http.Request) error {
 			r.URL.Opaque = r.URL.Path
 			return nil
