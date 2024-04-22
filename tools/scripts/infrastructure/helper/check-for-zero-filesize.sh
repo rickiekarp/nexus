@@ -12,6 +12,10 @@ if [ ! -d "$path" ]; then
   exit 1
 fi
 
+if [ "$extension" = "" ]; then
+  extension=*
+fi
+
 find "$path" -type f -name "$extension" -print0 | while read -d '' file
 do
   if [ $(printf "%q" "$file" | xargs ls -l | awk '{print $5}') -eq "0" ]; then
