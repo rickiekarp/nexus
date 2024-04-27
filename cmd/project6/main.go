@@ -3,14 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
-	"net/url"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
 	"git.rickiekarp.net/rickie/home/internal/project6/config"
+	"git.rickiekarp.net/rickie/home/internal/project6/connectionmanager"
 	"git.rickiekarp.net/rickie/home/internal/project6/eventmanager"
 	"git.rickiekarp.net/rickie/home/internal/project6/stats"
 	"git.rickiekarp.net/rickie/home/pkg/logger"
@@ -18,11 +17,9 @@ import (
 	"git.rickiekarp.net/rickie/home/pkg/nexuslib/account"
 	"git.rickiekarp.net/rickie/home/pkg/sys"
 	"git.rickiekarp.net/rickie/home/pkg/util"
-	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 )
 
-var host = flag.String("host", "localhost:12000", "target host")
 var lockFile = flag.String("lock", "/tmp/"+config.DefaultLockFile, "set the lock file to use")
 var logFile = flag.String("log", "", "set the log file to use")
 
@@ -54,34 +51,22 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 
-	loadedAccount, err := account.Load()
-	if err != nil {
-		loadedAccount, err = account.Generate()
-		if err != nil {
-			log.Fatal("Could not load profile")
-		}
-	}
-
 	stats.SetUptime()
 
-	url := url.URL{Scheme: "ws", Host: *host, Path: "/ws"}
-	logrus.Printf("connecting to %s (protocol: %s)", url.String(), loadedAccount.Id)
-
-	webSockerDialer := websocket.DefaultDialer
-	webSockerDialer.Subprotocols = []string{loadedAccount.Id}
-
-	wsConn, _, err := webSockerDialer.Dial(url.String(), nil)
+	loadedAccount, err := account.Load()
 	if err != nil {
-		logrus.Fatal("dial:", err)
+		connectionmanager.Connect(nil)
+	} else {
+		connectionmanager.Connect(loadedAccount)
 	}
-	defer wsConn.Close()
 
 	done := make(chan struct{})
 
 	go func() {
+		defer connectionmanager.Connection.Close()
 		defer close(done)
 		for {
-			_, message, err := wsConn.ReadMessage()
+			_, message, err := connectionmanager.Connection.ReadMessage()
 			if err != nil {
 				logrus.Println("ReadMessageErr:", err)
 				return
@@ -104,7 +89,7 @@ func main() {
 
 			if util.Exists("project6svc_update") {
 				logrus.Info("Update file found! Stopping service")
-				network.CloseWebSocket(wsConn)
+				network.CloseWebSocket(connectionmanager.Connection)
 				// waiting (with timeout) for the server to close the connection
 				select {
 				case <-done:
@@ -115,7 +100,7 @@ func main() {
 
 		case <-interrupt:
 			logrus.Println("signal received: interrupt")
-			network.CloseWebSocket(wsConn)
+			network.CloseWebSocket(connectionmanager.Connection)
 			// waiting (with timeout) for the server to close the connection
 			select {
 			case <-done:

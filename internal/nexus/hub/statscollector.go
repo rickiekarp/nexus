@@ -38,7 +38,7 @@ func CollectStats() {
 			jsonMessage, _ := json.Marshal(&messages.Message{
 				Seq:     sequence,
 				Event:   events.Stats,
-				Content: fmt.Sprintf("CONNECTED_CLIENTS: %d", len(Nexus.Clients)),
+				Message: fmt.Sprintf("CONNECTED_CLIENTS: %d", len(Nexus.Clients)),
 			})
 			logrus.Println(string(jsonMessage))
 		}

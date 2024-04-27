@@ -10,6 +10,9 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
+	"git.rickiekarp.net/rickie/home/pkg/nexuslib"
+	"git.rickiekarp.net/rickie/home/pkg/nexuslib/account"
+	"git.rickiekarp.net/rickie/home/pkg/nexuslib/messageconverter"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 )
@@ -66,8 +69,9 @@ func (client *Client) readPump() {
 		msg := messages.Message{
 			Seq:      client.seq,
 			Event:    events.Bye,
-			Content:  client.Id,
-			SenderIP: client.conn.RemoteAddr().String(),
+			Message:  "content",
+			Profile:  client.Id,
+			ClientIP: client.conn.RemoteAddr().String(),
 		}
 
 		// broadcast message when a client is un-registered
@@ -90,15 +94,10 @@ func (client *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+		logrus.Printf("IN: %s", message)
+		var nexusMessage = messageconverter.ConvertToMessage(message)
 
-		var nexusMessage messages.Message
-
-		err = json.Unmarshal([]byte(message), &nexusMessage)
-		if err != nil {
-			logrus.Error(err)
-		}
-
-		client.hub.broadcast <- nexusMessage
+		ProcessEvent(*client, *nexusMessage)
 	}
 }
 
@@ -149,7 +148,7 @@ func (c *Client) SendMessage(message messages.Message, ok bool) {
 		logrus.Error(err)
 		return
 	}
-	logrus.Println("out: " + string(jsonMessage))
+	logrus.Println("OUT: " + string(jsonMessage))
 
 	w.Write(jsonMessage)
 
@@ -166,14 +165,34 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	nexusClientId := r.Header.Get("Sec-WebSocket-Protocol")
-	if nexusClientId == "" {
+	nexusProtocol := r.Header.Get("Sec-WebSocket-Protocol")
+	if nexusProtocol == "" {
 		w.WriteHeader(400)
 		return
 	}
 
-	clientAddress := strings.Split(conn.RemoteAddr().String(), ":")
+	nexusClientVersion := r.Header.Get(nexuslib.HeaderNexusClientVersion)
+	if nexusClientVersion == "" {
+		w.WriteHeader(400)
+		return
+	}
 
+	// generate account for new client if necessary
+	nexusClientId := r.Header.Get(nexuslib.HeaderNexusProfileId)
+	if nexusClientId == "" {
+		logrus.Println("Creating profile for new connection:", conn.RemoteAddr().String())
+		newProfile, err := account.Generate()
+		//TODO: persist newly created profile in Database (chain?)
+		if err != nil {
+			logrus.Error(err)
+			w.WriteHeader(500)
+			return
+		}
+		nexusClientId = newProfile.Id
+	}
+
+	// create new client
+	clientAddress := strings.Split(conn.RemoteAddr().String(), ":")
 	client := &Client{
 		seq:  1,
 		hub:  h,
@@ -184,8 +203,11 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		Id:   nexusClientId,
 	}
 
+	// register newly created client
 	client.hub.register <- client
+	logrus.Println("CON:", nexusClientId+" - "+client.ip+":"+client.port+" - "+nexusClientVersion)
 
+	// create initial hello message
 	msg := messages.Message{
 		Seq: client.seq,
 		Data: &messages.MessageData{
@@ -193,15 +215,14 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 			MinClientVersion: &config.NexusConf.Project6.MinClientVersion,
 			P6Module:         config.NexusConf.GetModulesForClient(client.Id)},
 		Event:    events.Hello,
-		Content:  client.Id,
-		SenderIP: client.conn.RemoteAddr().String(),
+		Profile:  client.Id,
+		ClientIP: client.conn.RemoteAddr().String(),
 	}
 
-	// broadcast message when client is registered
+	// broadcast message after client is registered
 	client.hub.broadcast <- msg
 
-	// Allow collection of memory referenced by the caller by doing all work in
-	// new goroutines.
+	// Allow collection of memory referenced by the caller by doing all work in new goroutines
 	go client.writePump()
 	go client.readPump()
 }

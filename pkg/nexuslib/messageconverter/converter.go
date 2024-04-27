@@ -1,4 +1,4 @@
-package eventmanager
+package messageconverter
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func convertToMessage(receivedMessageBytes []byte) *messages.Message {
+func ConvertToMessage(receivedMessageBytes []byte) *messages.Message {
 	var nexusMessage messages.Message
 	err := json.Unmarshal([]byte(receivedMessageBytes), &nexusMessage)
 	if err != nil {
