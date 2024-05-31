@@ -1,5 +1,5 @@
 #! /bin/bash
-echo "Software Install Script for Ubuntu 23.10"
+echo "Software Install Script for Ubuntu 24.04"
 echo "Author: Rickie Karp"
 
 idx=0
@@ -72,7 +72,7 @@ install_software()
 install_dev_software()
 {
 	echo "Installing development software..."
-	sudo apt install -y git openjdk-17-jdk virtualbox virtualbox-qt adb jmeter jmeter-http
+	sudo apt install -y git openjdk-17-jdk virtualbox virtualbox-qt adb
 
 	# Install Docker
 	sudo apt install -y docker.io docker-compose
