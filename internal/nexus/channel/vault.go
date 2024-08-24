@@ -9,7 +9,6 @@ import (
 )
 
 func FetchVault(w http.ResponseWriter, r *http.Request) {
-	logrus.Print("Call:FetchVault")
 
 	vaultType, hasType := r.Header["X-Vault-Type"]
 	if !hasType {
@@ -33,6 +32,7 @@ func FetchVault(w http.ResponseWriter, r *http.Request) {
 	}
 
 	keyFileToFetch := "filestorage/vault/" + vaultType[0] + "/" + keyFormat[0] + "/" + key[0] + "." + keyFormat[0]
+	logrus.Debug("Call:FetchVault:", keyFileToFetch)
 
 	if !util.Exists(keyFileToFetch) {
 		logrus.Error("File does not exist: ", keyFileToFetch)

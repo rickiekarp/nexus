@@ -2,7 +2,7 @@ package channel
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -107,7 +107,7 @@ func ScheduleWeatherUpdate() {
 					continue
 				}
 
-				body, err := ioutil.ReadAll(resp.Body)
+				body, err := io.ReadAll(resp.Body)
 				if err != nil {
 					logrus.Error(err)
 					continue
@@ -119,8 +119,6 @@ func ScheduleWeatherUpdate() {
 					logrus.Error("Could not unmarshal weather data! ", err)
 					continue
 				}
-
-				//logrus.Info(res)
 
 				metric := map[string]float64{
 					"main.temp":       res.Main.Temp,
