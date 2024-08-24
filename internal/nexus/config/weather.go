@@ -1,7 +1,7 @@
 package config
 
 import (
-	"io/ioutil"
+	"os"
 
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
@@ -21,7 +21,7 @@ type WeatherApiConf struct {
 func ReadWeatherConfig() error {
 
 	// read configfile
-	yamlFile, err := ioutil.ReadFile(ConfigBaseDir + "weather.yaml")
+	yamlFile, err := os.ReadFile(ConfigBaseDir + "weather.yaml")
 	if err != nil {
 		logrus.Error("yamlFile.Get err: ", err)
 		return err

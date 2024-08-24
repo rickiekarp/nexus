@@ -2,7 +2,6 @@ package sys
 
 import (
 	"errors"
-	"io/ioutil"
 	"os"
 	"strconv"
 	"syscall"
@@ -41,7 +40,7 @@ func GetExclusiveLock(lockFile string, timeoutInSeconds int, shouldTryToRestart 
 
 // If filename is a lock file, returns the PID of the process locking it
 func GetLockFilePid(filename string) (pid int, err error) {
-	contents, err := ioutil.ReadFile(filename)
+	contents, err := os.ReadFile(filename)
 	if err != nil {
 		return
 	}

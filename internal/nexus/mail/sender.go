@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/smtp"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -59,7 +59,7 @@ func newMessage(s, b string) *Message {
 }
 
 func (m *Message) attachFile(src string) error {
-	b, err := ioutil.ReadFile(src)
+	b, err := os.ReadFile(src)
 	if err != nil {
 		logrus.Error(err)
 		return err

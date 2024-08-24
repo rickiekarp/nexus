@@ -3,7 +3,8 @@ package network
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
+	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
@@ -20,7 +21,7 @@ func Post(url string, headers map[string]string, class interface{}) error {
 	}
 
 	for k, v := range headers {
-		logrus.Printf("key[%s] value[%s]\n", k, v)
+		logrus.Debug(fmt.Sprintf("key[%s] value[%s]\n", k, v))
 		req.Header.Set(k, v)
 	}
 
@@ -39,7 +40,7 @@ func Get(url string) {
 		logrus.Error(err)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		logrus.Error(err)
 	}

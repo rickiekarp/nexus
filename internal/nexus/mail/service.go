@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -15,7 +15,7 @@ import (
 )
 
 func Notify(w http.ResponseWriter, r *http.Request) {
-	logrus.Print("called NotifyEndpoint")
+	logrus.Print("Call:Notify")
 
 	isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
 	if !isValidToken {
@@ -23,7 +23,7 @@ func Notify(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		logrus.Error(err)
 		w.WriteHeader(500)
@@ -58,7 +58,7 @@ func Notify(w http.ResponseWriter, r *http.Request) {
 }
 
 func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
-	logrus.Print("called NotifyRemindersEndpoint")
+	logrus.Print("Call:NotifyRemindersEndpoint")
 
 	isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
 	if !isValidToken {
@@ -71,7 +71,6 @@ func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	reminderData := GetActiveRemindersForUser(userId)
 	if len(*reminderData) == 0 {
-		logrus.Info("No reminder data found for userId ", userId)
 		return
 	}
 

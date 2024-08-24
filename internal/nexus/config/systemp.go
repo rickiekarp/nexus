@@ -1,7 +1,7 @@
 package config
 
 import (
-	"io/ioutil"
+	"os"
 
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
@@ -21,7 +21,7 @@ type SysTempConf struct {
 func ReadSysTempConfig() error {
 
 	// read configfile
-	yamlFile, err := ioutil.ReadFile(ConfigBaseDir + "systemp.yaml")
+	yamlFile, err := os.ReadFile(ConfigBaseDir + "systemp.yaml")
 	if err != nil {
 		logrus.Error("yamlFile.Get err: ", err)
 		return err

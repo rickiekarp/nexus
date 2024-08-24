@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -29,7 +28,7 @@ func InitNetwork() {
 	}
 
 	if util.Exists(config.NexusConf.NexusChain.Storage.Path + "/node") {
-		content, err := ioutil.ReadFile(config.NexusConf.NexusChain.Storage.Path + "/node")
+		content, err := os.ReadFile(config.NexusConf.NexusChain.Storage.Path + "/node")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -122,7 +121,7 @@ func (n *PoSNetwork) AddNewNode(stake int64) {
 }
 
 func (n *PoSNetwork) AddNodeByAddress(address string) error {
-	content, err := ioutil.ReadFile(config.NexusConf.NexusChain.Storage.Path + "/node")
+	content, err := os.ReadFile(config.NexusConf.NexusChain.Storage.Path + "/node")
 	if err != nil {
 		return err
 	}
