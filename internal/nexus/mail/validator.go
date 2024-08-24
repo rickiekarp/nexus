@@ -14,12 +14,12 @@ func checkNotificationToken(w http.ResponseWriter, r *http.Request, tokenToValid
 		isTokenInSystem := CheckNotificationTokenExistence(val[0])
 		if !isTokenInSystem {
 			logrus.Info("X-Notification-Token key header is present with value ", val[0], ", but not found in the system!")
-			w.WriteHeader(401)
+			w.WriteHeader(http.StatusUnauthorized)
 			return false
 		}
 	} else {
 		logrus.Info("X-Notification-Token missing!")
-		w.WriteHeader(401)
+		w.WriteHeader(http.StatusUnauthorized)
 		return false
 	}
 	return true

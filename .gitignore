@@ -18,5 +18,8 @@ data/monitoring
 #blockchain data
 nexusdata
 
+#storage for files
+filestorage
+
 # test data
 *.dat

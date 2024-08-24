@@ -22,9 +22,9 @@ func Login(w http.ResponseWriter, req *http.Request) {
 
 	isSuccess := doLogin(req, *user)
 	if isSuccess {
-		w.WriteHeader(204)
+		w.WriteHeader(http.StatusNoContent)
 	} else {
-		w.WriteHeader(401)
+		w.WriteHeader(http.StatusUnauthorized)
 	}
 }
 
