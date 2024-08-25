@@ -31,6 +31,16 @@ func FetchVault(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	token, hasToken := r.Header["X-Vault-Token"]
+	if !hasToken {
+		logrus.Warn("X-Vault-Token missing!")
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	//todo: validate token
+	logrus.Info(token)
+
 	keyFileToFetch := "filestorage/vault/" + vaultType[0] + "/" + keyFormat[0] + "/" + key[0] + "." + keyFormat[0]
 	logrus.Info("Call:FetchVault:", keyFileToFetch)
 
