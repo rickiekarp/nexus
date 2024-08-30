@@ -84,7 +84,7 @@ func ReadNexusConfig() error {
 
 	database.Databases = NexusConf.Databases
 	database.ConLogin = models.DatabaseConnection{Name: "login"}
-	database.ConDataHome = models.DatabaseConnection{Name: "data_home"}
+	database.ConDataHome = models.DatabaseConnection{Name: "home"}
 
 	return nil
 }

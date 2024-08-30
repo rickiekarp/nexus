@@ -57,7 +57,7 @@ func ConnectDatabase(database models.DatabaseConnection) bool {
 	}
 
 	switch database.Name {
-	case "data_home":
+	case "home":
 		ConDataHome.Connection = connection
 	case "login":
 		ConLogin.Connection = connection

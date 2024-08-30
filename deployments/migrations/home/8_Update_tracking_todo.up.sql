@@ -1,2 +1,2 @@
-ALTER TABLE tracking_todo
+ALTER TABLE todo
 ADD COLUMN reminder_startdate TIMESTAMP default CURRENT_TIMESTAMP AFTER reminder_interval;
