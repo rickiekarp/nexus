@@ -20,8 +20,8 @@ create table location_junction(
    city_id     int NOT NULL,
    country_id  int NOT NULL
 );
-ALTER TABLE location_junction ADD CONSTRAINT city_id_fk FOREIGN KEY (city_id) REFERENCES home.location_city (id);
-ALTER TABLE location_junction ADD CONSTRAINT country_id_fk FOREIGN KEY (country_id) REFERENCES home.location_country (id);
+ALTER TABLE location_junction ADD CONSTRAINT city_id_fk FOREIGN KEY (city_id) REFERENCES nexus.location_city (id);
+ALTER TABLE location_junction ADD CONSTRAINT country_id_fk FOREIGN KEY (country_id) REFERENCES nexus.location_country (id);
 insert into location_junction (city_id, country_id) VALUES (1, 1);
 insert into location_junction (city_id, country_id) VALUES (2, 1);
 insert into location_junction (city_id, country_id) VALUES (3, 1);

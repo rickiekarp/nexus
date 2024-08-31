@@ -22,7 +22,7 @@ docker-compose -f deployments/docker-compose.yml up
 cd deployments/migrations
 make getimage
 make migrate HOST=database DATABASE=login DBUSER=root DBPASS=root
-make migrate HOST=database DATABASE=home DBUSER=root DBPASS=root
+make migrate HOST=database DATABASE=nexus DBUSER=root DBPASS=root
 ```
 
 ## Set up IDE

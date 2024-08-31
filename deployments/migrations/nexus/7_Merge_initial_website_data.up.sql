@@ -1,0 +1,1 @@
+insert into contact (name, email) values ('Rickie Karp', 'contact@rickiekarp.net');
