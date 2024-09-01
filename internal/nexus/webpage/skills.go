@@ -30,11 +30,11 @@ func ServeSkills(w http.ResponseWriter, r *http.Request) {
 
 func GetActiveSkills() *[]Skill {
 	// check if the database is available
-	if !database.CheckDatabaseConnection(database.ConDataHome) {
+	if !database.CheckDatabaseConnection(database.ConDataNexus) {
 		return nil
 	}
 
-	rows, err := database.ConDataHome.Connection.Query(SELECT_ACTIVE_SKILLS)
+	rows, err := database.ConDataNexus.Connection.Query(SELECT_ACTIVE_SKILLS)
 	if err != nil {
 		logrus.Error(err)
 		return nil

@@ -38,11 +38,11 @@ where c.contact_id = 1 ORDER BY e.experience_id desc limit 1`
 
 func GetContactInformation() *Contact {
 	// check if the database is available
-	if !database.CheckDatabaseConnection(database.ConDataHome) {
+	if !database.CheckDatabaseConnection(database.ConDataNexus) {
 		return nil
 	}
 
-	rows, err := database.ConDataHome.Connection.Query(FIND_FIRST_CONTACT)
+	rows, err := database.ConDataNexus.Connection.Query(FIND_FIRST_CONTACT)
 	if err != nil {
 		logrus.Error(err)
 		return nil

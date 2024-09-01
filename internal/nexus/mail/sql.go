@@ -23,22 +23,22 @@ type ReminderData struct {
 
 const GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT = "SELECT content FROM applicationsettings where identifier = 'notificationtoken'"
 
-const SELECT_REMINDER_LIST = `select * from tracking_todo 
+const SELECT_REMINDER_LIST = `select * from reminders 
 where users_id = ? 
 AND dayofweek(curdate())-1 = reminder_day 
 OR (reminder_senddate IS NULL OR date(now()) >= date(reminder_senddate) + interval reminder_interval day) 
 AND reminder_enddate > now() 
 AND isDeleted = false`
 
-const UPDATE_REMINDER_SENDDATE = "update tracking_todo set reminder_senddate = now(), lastUpdated = now() where id = ?"
+const UPDATE_REMINDER_SENDDATE = "update reminders set reminder_senddate = now(), lastUpdated = now() where id = ?"
 
 func GetActiveRemindersForUser(userId int) *[]ReminderData {
 	// check if the database is available
-	if !database.CheckDatabaseConnection(database.ConDataHome) {
+	if !database.CheckDatabaseConnection(database.ConDataNexus) {
 		return nil
 	}
 
-	rows, err := database.ConDataHome.Connection.Query(SELECT_REMINDER_LIST, userId)
+	rows, err := database.ConDataNexus.Connection.Query(SELECT_REMINDER_LIST, userId)
 	if err != nil {
 		logrus.Error(err)
 		return nil
@@ -75,11 +75,11 @@ func GetActiveRemindersForUser(userId int) *[]ReminderData {
 
 func SetReminderSendDateForReminderId(reminderId int) error {
 	// check if the database is available
-	if !database.CheckDatabaseConnection(database.ConDataHome) {
+	if !database.CheckDatabaseConnection(database.ConDataNexus) {
 		return nil
 	}
 
-	_, err := database.ConDataHome.Connection.Exec(UPDATE_REMINDER_SENDDATE, reminderId)
+	_, err := database.ConDataNexus.Connection.Exec(UPDATE_REMINDER_SENDDATE, reminderId)
 	if err != nil {
 		logrus.Error(err)
 		return err
@@ -89,11 +89,11 @@ func SetReminderSendDateForReminderId(reminderId int) error {
 
 func getApplicationSettingsNotificationTokenContent() *[]NotificationToken {
 	// check if the database is available
-	if !database.CheckDatabaseConnection(database.ConDataHome) {
+	if !database.CheckDatabaseConnection(database.ConDataNexus) {
 		return nil
 	}
 
-	rows, err := database.ConDataHome.Connection.Query(GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT)
+	rows, err := database.ConDataNexus.Connection.Query(GET_APPLICATION_SETTINGS_NOTIFICATIONTOKEN_CONTENT)
 	if err != nil {
 		logrus.Error(err)
 		return nil

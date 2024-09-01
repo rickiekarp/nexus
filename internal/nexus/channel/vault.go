@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	"git.rickiekarp.net/rickie/home/internal/nexus/vault"
 	"git.rickiekarp.net/rickie/home/pkg/util"
 	"github.com/sirupsen/logrus"
 )
@@ -38,11 +39,22 @@ func FetchVault(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//todo: validate token
-	logrus.Info(token)
+	logrus.Info("API:FetchVault:ValidateKey ", key[0])
+	vaultEntry := vault.FetchVaultEntry(key[0], token[0])
+	if vaultEntry == nil {
+		logrus.Warn("Key not found in vault: ", key[0])
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	if !vaultEntry.IsValidToken() {
+		logrus.Warn("Key not not valid: ", key[0])
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
 
 	keyFileToFetch := "filestorage/vault/" + vaultType[0] + "/" + keyFormat[0] + "/" + key[0] + "." + keyFormat[0]
-	logrus.Info("Call:FetchVault:", keyFileToFetch)
+	logrus.Info("API:FetchVault:GetKey ", keyFileToFetch)
 
 	if !util.Exists(keyFileToFetch) {
 		logrus.Error("File does not exist: ", keyFileToFetch)
