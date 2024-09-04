@@ -27,7 +27,7 @@ const SELECT_REMINDER_LIST = `select * from reminders
 where users_id = ? 
 AND dayofweek(curdate())-1 = reminder_day 
 OR (reminder_senddate IS NULL OR date(now()) >= date(reminder_senddate) + interval reminder_interval day) 
-AND reminder_enddate > now() 
+AND (reminder_enddate > now() OR reminder_enddate IS NULL)
 AND isDeleted = false`
 
 const UPDATE_REMINDER_SENDDATE = "update reminders set reminder_senddate = now(), lastUpdated = now() where id = ?"
