@@ -48,7 +48,9 @@ func defineApiEndpoints(r *mux.Router) {
 	r.HandleFunc("/modules/weather/start", channel.StartWeatherMonitorEndpoint).Methods("GET")
 	r.HandleFunc("/modules/weather/status", channel.WeatherMonitorStatusEndpoint).Methods("GET")
 
-	r.HandleFunc("/vault/fetch", channel.FetchVault).Methods("GET")
+	r.HandleFunc("/vault/fetch", channel.FetchVaultFile).Methods("GET")
+	r.HandleFunc("/vault/v1/fetch/file", channel.FetchVaultFile).Methods("GET")
+	r.HandleFunc("/vault/v1/fetch/key", channel.FetchVaultKey).Methods("GET")
 
 	// monitoring
 	r.HandleFunc("/monitoring/notifyUptime", NotifyUptimeEndpoint).Methods("POST")

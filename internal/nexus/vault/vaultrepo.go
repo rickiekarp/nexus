@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const FIND_BY_IDENTIFIER = `SELECT * FROM vault v WHERE identifier = ? and token = ?`
+const FIND_BY_IDENTIFIER_AND_TYPE = `SELECT id, identifier, token, type, validUntil, lastAccess, createdAt FROM vault v WHERE identifier = ? and type = ?`
 const UPDATE_KEY_ACCESSED = `UPDATE vault SET lastAccess = unix_timestamp() WHERE id = ?`
 
 func UpdateVaultKeyAccessed(fetchedVaultEntry VaultEntry) bool {
@@ -30,22 +30,22 @@ func UpdateVaultKeyAccessed(fetchedVaultEntry VaultEntry) bool {
 	return true
 }
 
-func FetchVaultEntry(identifier string, token string) *VaultEntry {
+func FetchVaultEntry(identifier string, entryType string) *VaultEntry {
 	if !database.CheckDatabaseConnection(database.ConDataNexus) {
 		return nil
 	}
 
 	var fetchedUser VaultEntry
-	if err := database.ConDataNexus.Connection.QueryRow(FIND_BY_IDENTIFIER, identifier, token).Scan(
+	if err := database.ConDataNexus.Connection.QueryRow(FIND_BY_IDENTIFIER_AND_TYPE, identifier, entryType).Scan(
 		&fetchedUser.Id,
 		&fetchedUser.Identifier,
 		&fetchedUser.Token,
+		&fetchedUser.Type,
 		&fetchedUser.ValidUntil,
 		&fetchedUser.LastAccess,
 		&fetchedUser.CreatedAt,
 	); err == nil {
 	} else if err == sql.ErrNoRows {
-		logrus.Error(err)
 		return nil
 	} else {
 		logrus.Error(err)

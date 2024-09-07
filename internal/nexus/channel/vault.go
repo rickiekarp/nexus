@@ -9,7 +9,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func FetchVault(w http.ResponseWriter, r *http.Request) {
+func FetchVaultFile(w http.ResponseWriter, r *http.Request) {
 
 	vaultType, hasType := r.Header["X-Vault-Type"]
 	if !hasType {
@@ -40,14 +40,14 @@ func FetchVault(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logrus.Info("API:FetchVault:ValidateKey ", key[0])
-	vaultEntry := vault.FetchVaultEntry(key[0], token[0])
+	vaultEntry := vault.FetchVaultEntry(key[0], "file")
 	if vaultEntry == nil {
 		logrus.Warn("Key not found in vault: ", key[0])
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
-	if !vaultEntry.IsValidToken() {
+	if !vaultEntry.IsTokenSame(token[0]) || !vaultEntry.IsTokenValidUntil() {
 		logrus.Warn("Key not not valid: ", key[0])
 		w.WriteHeader(http.StatusUnauthorized)
 		return
@@ -72,4 +72,9 @@ func FetchVault(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/octet-stream")
 	w.Write(fileBytes)
+}
+
+func FetchVaultKey(w http.ResponseWriter, r *http.Request) {
+	logrus.Info("STUB: API:FetchVaultKey")
+	w.WriteHeader(http.StatusOK)
 }

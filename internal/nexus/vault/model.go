@@ -5,14 +5,19 @@ import (
 )
 
 type VaultEntry struct {
-	Id         int    `json:"id"`
-	Identifier string `json:"identifier"`
-	Token      string `json:"token"`
-	ValidUntil *int64 `json:"validUntil"`
-	LastAccess *int64 `json:"lastAccess"`
-	CreatedAt  int64  `json:"createdAt"`
+	Id         int     `json:"id"`
+	Identifier string  `json:"identifier"`
+	Token      string  `json:"token"`
+	Type       *string `json:"type"`
+	ValidUntil *int64  `json:"validUntil"`
+	LastAccess *int64  `json:"lastAccess"`
+	CreatedAt  int64   `json:"createdAt"`
 }
 
-func (ve *VaultEntry) IsValidToken() bool {
+func (ve *VaultEntry) IsTokenSame(token string) bool {
+	return ve.Token == token
+}
+
+func (ve *VaultEntry) IsTokenValidUntil() bool {
 	return ve.ValidUntil == nil || *ve.ValidUntil > time.Now().Unix()
 }
