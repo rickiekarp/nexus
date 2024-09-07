@@ -7,4 +7,4 @@ CREATE TABLE vault(
    lastAccess       int unsigned       NULL default NULL,
    createdAt        int unsigned       NULL default UNIX_TIMESTAMP()
 );
-CREATE  INDEX i_identifier ON vault(identifier);
+CREATE INDEX i_identifier ON vault(identifier);

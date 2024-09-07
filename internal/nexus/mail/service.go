@@ -17,7 +17,7 @@ import (
 func Notify(w http.ResponseWriter, r *http.Request) {
 	logrus.Print("API:Notify")
 
-	isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
+	isValidToken := checkNotificationToken(w, r)
 	if !isValidToken {
 		logrus.Error("Token invalid: X-Notification-Token")
 		return
@@ -60,7 +60,7 @@ func Notify(w http.ResponseWriter, r *http.Request) {
 func NotifyRemindersEndpoint(w http.ResponseWriter, r *http.Request) {
 	logrus.Print("API:NotifyRemindersEndpoint")
 
-	isValidToken := checkNotificationToken(w, r, "X-Notification-Token")
+	isValidToken := checkNotificationToken(w, r)
 	if !isValidToken {
 		return
 	}

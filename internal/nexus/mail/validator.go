@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func checkNotificationToken(w http.ResponseWriter, r *http.Request, tokenToValidate string) bool {
+func checkNotificationToken(w http.ResponseWriter, r *http.Request) bool {
 	val, ok := r.Header["X-Notification-Token"]
 	if ok {
 		// check if token is present in the database
