@@ -7,6 +7,8 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
 	"git.rickiekarp.net/rickie/home/internal/nexus/mail"
+	"git.rickiekarp.net/rickie/home/internal/nexus/subsystems/monitoring"
+	"git.rickiekarp.net/rickie/home/internal/nexus/subsystems/vault"
 	"git.rickiekarp.net/rickie/home/internal/nexus/users"
 	"git.rickiekarp.net/rickie/home/internal/nexus/webpage"
 	"github.com/gorilla/mux"
@@ -48,10 +50,10 @@ func defineApiEndpoints(r *mux.Router) {
 	r.HandleFunc("/modules/weather/start", channel.StartWeatherMonitorEndpoint).Methods("GET")
 	r.HandleFunc("/modules/weather/status", channel.WeatherMonitorStatusEndpoint).Methods("GET")
 
-	r.HandleFunc("/vault/v1/fetch/file", channel.FetchVaultFile).Methods("GET")
-	r.HandleFunc("/vault/v1/fetch/key", channel.FetchVaultKey).Methods("GET")
+	r.HandleFunc("/vault/v1/fetch/file", vault.FetchVaultFile).Methods("GET")
+	r.HandleFunc("/vault/v1/fetch/key", vault.FetchVaultKey).Methods("GET")
 
 	// monitoring
-	r.HandleFunc("/monitoring/notifyUptime", NotifyUptimeEndpoint).Methods("POST")
-	r.HandleFunc("/monitoring/notifyTemperature", NotifyTemperatureEndpoint).Methods("POST")
+	r.HandleFunc("/monitoring/notifyUptime", monitoring.NotifyUptimeEndpoint).Methods("POST")
+	r.HandleFunc("/monitoring/notifyTemperature", monitoring.NotifyTemperatureEndpoint).Methods("POST")
 }

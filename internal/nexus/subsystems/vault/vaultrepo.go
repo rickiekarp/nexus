@@ -10,7 +10,7 @@ import (
 const FIND_BY_IDENTIFIER_AND_TYPE = `SELECT id, identifier, token, type, validUntil, lastAccess, createdAt FROM vault v WHERE identifier = ? and type = ?`
 const UPDATE_KEY_ACCESSED = `UPDATE vault SET lastAccess = unix_timestamp() WHERE id = ?`
 
-func UpdateVaultKeyAccessed(fetchedVaultEntry VaultEntry) bool {
+func updateVaultKeyAccessed(fetchedVaultEntry VaultEntry) bool {
 	if !database.CheckDatabaseConnection(database.ConDataNexus) {
 		return false
 	}
@@ -30,7 +30,7 @@ func UpdateVaultKeyAccessed(fetchedVaultEntry VaultEntry) bool {
 	return true
 }
 
-func FetchVaultEntry(identifier string, entryType string) *VaultEntry {
+func fetchVaultEntry(identifier string, entryType string) *VaultEntry {
 	if !database.CheckDatabaseConnection(database.ConDataNexus) {
 		return nil
 	}
@@ -57,7 +57,7 @@ func FetchVaultEntry(identifier string, entryType string) *VaultEntry {
 		return nil
 	}
 
-	if !UpdateVaultKeyAccessed(fetchedUser) {
+	if !updateVaultKeyAccessed(fetchedUser) {
 		logrus.Warn("Could not update lastAccess for token, rejecting access")
 		return nil
 	}

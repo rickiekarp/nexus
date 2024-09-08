@@ -14,10 +14,10 @@ type VaultEntry struct {
 	CreatedAt  int64   `json:"createdAt"`
 }
 
-func (ve *VaultEntry) IsTokenSame(token string) bool {
+func (ve *VaultEntry) isTokenSame(token string) bool {
 	return ve.Token == token
 }
 
-func (ve *VaultEntry) IsTokenValidUntil() bool {
+func (ve *VaultEntry) isTokenValidUntil() bool {
 	return ve.ValidUntil == nil || *ve.ValidUntil > time.Now().Unix()
 }
