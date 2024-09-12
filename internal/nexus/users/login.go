@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const FIND_BY_TOKEN = `SELECT u.id, u.username, u.type, u.enabled FROM users u JOIN user_roles ur ON u.id = ur.users_id JOIN roles r ON r.id = ur.roles_id WHERE token = ?`
+const FIND_BY_TOKEN = `SELECT u.id, u.username, u.type, u.enabled FROM users u WHERE u.token = ?`
 const DO_LOGIN = `UPDATE login SET lastLoginDate = now(), lastLoginIP = ? WHERE users_id = ?`
 
 func Login(w http.ResponseWriter, req *http.Request) {

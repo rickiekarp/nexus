@@ -26,7 +26,7 @@ type User struct {
 }
 
 const INSERT = `CALL createUser(?, ?, ?, true)`
-const FIND_BY_NAME = `SELECT u.id, u.username, u.password, u.token, u.type, u.enabled FROM users u JOIN user_roles ur ON u.id = ur.users_id JOIN roles r ON r.id = ur.roles_id WHERE username = ?`
+const FIND_BY_NAME = `SELECT u.id, u.username, u.password, u.token, u.type, u.enabled FROM users u WHERE u.username = ?`
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -67,7 +67,7 @@ func registerUser(credentials Credentials) *User {
 	rows, err := database.ConLogin.Connection.Query(INSERT,
 		credentials.UserName,
 		utils.GenerateStrongPasswordHash(credentials.Password),
-		2, // user role (1 = ADMIN, 2 = USER)
+		2, // user role (1 = ADMIN, 2 = USER, 3 = TOOLUSER)
 	)
 
 	if err != nil {
