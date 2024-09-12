@@ -36,8 +36,8 @@ DROP TABLE IF EXISTS token;
 CREATE TABLE token(
    id 		          int unsigned      auto_increment   PRIMARY KEY,
    user_id          int unsigned      NOT NULL UNIQUE,
-   access_token     varchar(50)       NULL default NULL,
-   refresh_token    varchar(50)       NULL default NULL,
+   access_token     varchar(100)       NULL default NULL,
+   refresh_token    varchar(100)       NULL default NULL,
    expiry           TIMESTAMP         NULL default NULL,
    CONSTRAINT token_user_id_fk FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
