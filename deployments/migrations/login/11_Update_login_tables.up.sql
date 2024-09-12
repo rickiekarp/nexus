@@ -21,9 +21,13 @@ CREATE PROCEDURE createUser(
     IN $usertype tinyint(3), 
     IN $enabled boolean)
 BEGIN
+    DECLARE userid INT DEFAULT 0;
+
     INSERT INTO users (username, password, type, enabled, dateCreated) values ($name, $password, $usertype, $enabled, now());
-    INSERT INTO token (user_id)
-        SELECT LAST_INSERT_ID();
+    SELECT LAST_INSERT_ID()	INTO userid;
+
+    INSERT INTO token (user_id) values (userid);
+    INSERT INTO login (users_id) values (userid);
 
     -- update token_id for new user
     UPDATE users

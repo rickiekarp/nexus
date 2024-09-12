@@ -20,7 +20,7 @@ type Token struct {
 	Token string `json:"token"`
 }
 
-const UPDATE = `UPDATE users SET token = ?, lastUpdated = now() WHERE id = ?`
+const UPDATE = `UPDATE token SET access_token = ?, lastUpdated = now() WHERE user_id = ?`
 
 func Authorize(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

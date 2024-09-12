@@ -26,7 +26,7 @@ type User struct {
 }
 
 const INSERT = `CALL createUser(?, ?, ?, true)`
-const FIND_BY_NAME = `SELECT u.id, u.username, u.password, u.token, u.type, u.enabled FROM users u WHERE u.username = ?`
+const FIND_BY_NAME = `SELECT u.id, u.username, u.password, t.access_token AS token, u.type, u.enabled FROM users u JOIN token t on u.id = t.user_id WHERE u.username = ?`
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
