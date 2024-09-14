@@ -1,6 +1,3 @@
 [submodule "deployments/module-deployment"]
 	path = deployments/module-deployment
 	url = git@git.rickiekarp.net:rickie/module-deployment.git
-[submodule "docs"]
-	path = docs
-	url = git@git.rickiekarp.net:rickie/docs.git
