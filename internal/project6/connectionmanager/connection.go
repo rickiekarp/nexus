@@ -6,8 +6,8 @@ import (
 	"net/url"
 
 	"git.rickiekarp.net/rickie/home/internal/project6/config"
-	"git.rickiekarp.net/rickie/home/pkg/nexuslib"
 	"git.rickiekarp.net/rickie/home/pkg/nexuslib/account"
+	nexuslib "git.rickiekarp.net/rickie/nexus-corelib"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 )

@@ -10,9 +10,9 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
-	"git.rickiekarp.net/rickie/home/pkg/nexuslib"
 	"git.rickiekarp.net/rickie/home/pkg/nexuslib/account"
 	"git.rickiekarp.net/rickie/home/pkg/nexuslib/messageconverter"
+	nexuslib "git.rickiekarp.net/rickie/nexus-corelib"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 )
