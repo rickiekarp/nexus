@@ -12,6 +12,7 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/hubqueue"
 	globalConfig "git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/http"
 	"github.com/sirupsen/logrus"
@@ -77,7 +78,7 @@ func main() {
 	apiServer := api.GetServer(config.NexusConf.ServerAddr)
 
 	logrus.Info("Starting service: HubQueue")
-	go hub.StartHubQueue()
+	go hubqueue.StartHubQueue()
 
 	logrus.Info("Starting service: API server on ", config.NexusConf.ServerAddr)
 	go http.StartApiServer(apiServer)

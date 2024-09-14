@@ -5,6 +5,7 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/hubqueue"
 	"git.rickiekarp.net/rickie/home/internal/nexus/mail"
 	"git.rickiekarp.net/rickie/home/internal/nexus/subsystems/monitoring"
 	"git.rickiekarp.net/rickie/home/internal/nexus/subsystems/vault"
@@ -21,7 +22,7 @@ func defineApiEndpoints(r *mux.Router) {
 	r.HandleFunc("/hub/v1/preferences", hub.PatchPreferencesChanged).Methods("PATCH")
 	r.HandleFunc("/hub/v1/send", hub.SendMessage).Methods("POST")
 	r.HandleFunc("/hub/v1/broadcast", hub.BroadcastMessage).Methods("POST")
-	r.HandleFunc("/hub/v1/queue/push", hub.PushToQueue).Methods("POST")
+	r.HandleFunc("/hub/v1/queue/push", hubqueue.PushToQueue).Methods("POST")
 
 	// blockchain
 	if config.NexusConf.NexusChain.Enabled {

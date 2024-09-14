@@ -1,13 +1,9 @@
 package queue
 
-type MyQueueElement struct {
-	Metric int64 // whatever you want
-}
-
 const MAX_QUEUE_SIZE = 512
 
 type Queue struct {
-	content   [MAX_QUEUE_SIZE]MyQueueElement
+	content   [MAX_QUEUE_SIZE]HubQueueEventMessage
 	readHead  int
 	writeHead int
 	Size      int64
@@ -17,7 +13,7 @@ func NewQueue() *Queue {
 	return &Queue{}
 }
 
-func (q *Queue) Push(e MyQueueElement) bool {
+func (q *Queue) Push(e HubQueueEventMessage) bool {
 	if q.Size >= MAX_QUEUE_SIZE {
 		return false
 	}
@@ -27,12 +23,12 @@ func (q *Queue) Push(e MyQueueElement) bool {
 	return true
 }
 
-func (q *Queue) Pop() (MyQueueElement, bool) {
+func (q *Queue) Pop() (HubQueueEventMessage, bool) {
 	if q.Size <= 0 {
-		return MyQueueElement{1}, false
+		return HubQueueEventMessage{}, false
 	}
 	result := q.content[q.readHead]
-	q.content[q.readHead] = MyQueueElement{}
+	q.content[q.readHead] = HubQueueEventMessage{}
 	q.readHead = (q.readHead + 1) % MAX_QUEUE_SIZE
 	q.Size--
 	return result, true

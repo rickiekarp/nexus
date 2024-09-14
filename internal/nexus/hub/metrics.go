@@ -13,23 +13,6 @@ import (
 
 const statsMetricPrefix = "nexus.stats"
 
-func sendHubQueueSizeMetric(sequence int64, size int64) {
-	if config.NexusConf.Graphite.Enabled {
-		graphite.SendMetric(
-			map[string]float64{
-				"hubQueueSize": float64(size),
-			},
-			statsMetricPrefix)
-	} else {
-		jsonMessage, _ := json.Marshal(&messages.Message{
-			Seq:     sequence,
-			Event:   events.Stats,
-			Message: fmt.Sprintf("HUB_QUEUE_SIZE: %d", size),
-		})
-		logrus.Println(string(jsonMessage))
-	}
-}
-
 func sendClientConnectionsMetric(sequence int64, clientConnections int) {
 	if config.NexusConf.Graphite.Enabled {
 		graphite.SendMetric(
@@ -42,6 +25,23 @@ func sendClientConnectionsMetric(sequence int64, clientConnections int) {
 			Seq:     sequence,
 			Event:   events.Stats,
 			Message: fmt.Sprintf("CONNECTED_CLIENTS: %d", len(Nexus.Clients)),
+		})
+		logrus.Println(string(jsonMessage))
+	}
+}
+
+func SendHubQueueSizeMetric(sequence int64, size int64) {
+	if config.NexusConf.Graphite.Enabled {
+		graphite.SendMetric(
+			map[string]float64{
+				"hubQueueSize": float64(size),
+			},
+			statsMetricPrefix)
+	} else {
+		jsonMessage, _ := json.Marshal(&messages.Message{
+			Seq:     sequence,
+			Event:   events.Stats,
+			Message: fmt.Sprintf("HUB_QUEUE_SIZE: %d", size),
 		})
 		logrus.Println(string(jsonMessage))
 	}

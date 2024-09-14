@@ -13,6 +13,7 @@ var Databases []models.Database
 
 var ConLogin models.DatabaseConnection
 var ConDataNexus models.DatabaseConnection
+var ConStorage models.DatabaseConnection
 
 func GetConnection(username, password, url, database string) (*sql.DB, error) {
 	con, err := sql.Open("mysql", fmt.Sprintf(
@@ -57,10 +58,12 @@ func ConnectDatabase(database models.DatabaseConnection) bool {
 	}
 
 	switch database.Name {
-	case "nexus":
-		ConDataNexus.Connection = connection
 	case "login":
 		ConLogin.Connection = connection
+	case "nexus":
+		ConDataNexus.Connection = connection
+	case "storage":
+		ConStorage.Connection = connection
 	}
 	return true
 }
