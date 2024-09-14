@@ -64,7 +64,6 @@ type weatherApiData struct {
 
 func ScheduleWeatherUpdate() {
 
-	logrus.Info("Loading weather monitoring config")
 	err := config.ReadWeatherConfig()
 	if err != nil {
 		logrus.Error("There was an error reading the weather config")
@@ -72,9 +71,10 @@ func ScheduleWeatherUpdate() {
 	}
 
 	if !config.WeatherConf.Enabled {
-		logrus.Info("Weather monitoring is disabled!")
 		return
 	}
+
+	logrus.Info("Starting service: WeatherUpdate")
 
 	var apiUrls []string
 	for _, value := range config.WeatherConf.CityIds {

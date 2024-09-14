@@ -75,13 +75,18 @@ func main() {
 	}
 
 	apiServer := api.GetServer(config.NexusConf.ServerAddr)
-	logrus.Info("Starting API server on ", config.NexusConf.ServerAddr)
+
+	logrus.Info("Starting service: HubQueue")
+	go hub.StartHubQueue()
+
+	logrus.Info("Starting service: API server on ", config.NexusConf.ServerAddr)
 	go http.StartApiServer(apiServer)
 
-	go channel.ScheduleWeatherUpdate()
+	logrus.Info("Starting service: MetricsCollector")
+	go hub.StartMetricsCollector()
 
-	// start monitoring
-	go hub.CollectStats()
+	logrus.Info("Checking additonal service availability")
+	go channel.ScheduleWeatherUpdate()
 
 	// The program will wait here until it gets the expected signal
 	logrus.Info("Started Nexus, awaiting SIGINT or SIGTERM")
