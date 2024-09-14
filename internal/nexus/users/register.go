@@ -12,7 +12,7 @@ import (
 type Contact struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Role     string `json:"role"`
+	Job      string `json:"role"`
 	Location string `json:"location"`
 }
 
@@ -26,7 +26,7 @@ type User struct {
 }
 
 const INSERT = `CALL createUser(?, ?, ?, true)`
-const FIND_BY_NAME = `SELECT u.id, u.username, u.password, t.access_token AS token, u.type, u.enabled FROM users u JOIN token t on u.id = t.user_id WHERE u.username = ?`
+const FIND_BY_NAME = `SELECT u.id, u.username, u.password, t.access_token AS token, u.role_id, u.enabled FROM users u JOIN token t on u.id = t.user_id WHERE u.username = ?`
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
