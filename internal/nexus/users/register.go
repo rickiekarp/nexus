@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"git.rickiekarp.net/rickie/home/pkg/database"
-	"git.rickiekarp.net/rickie/home/pkg/utils"
+	"git.rickiekarp.net/rickie/home/pkg/util"
 	"github.com/sirupsen/logrus"
 )
 
@@ -66,7 +66,7 @@ func registerUser(credentials Credentials) *User {
 
 	rows, err := database.ConLogin.Connection.Query(INSERT,
 		credentials.UserName,
-		utils.GenerateStrongPasswordHash(credentials.Password),
+		util.GenerateStrongPasswordHash(credentials.Password),
 		2, // user role (1 = ADMIN, 2 = USER, 3 = TOOLUSER)
 	)
 

@@ -1,7 +1,6 @@
-package utils
+package util
 
 import (
-	"crypto/rand"
 	"crypto/sha1"
 	"encoding/hex"
 
@@ -15,12 +14,4 @@ func GenerateStrongPasswordHash(password string) string {
 
 func toHex(array []byte) string {
 	return hex.EncodeToString(array)
-}
-
-func RandomAlphabetic(length int) string {
-	b := make([]byte, length)
-	if _, err := rand.Read(b); err != nil {
-		return ""
-	}
-	return hex.EncodeToString(b)
 }

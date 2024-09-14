@@ -1,11 +1,10 @@
-package routes
+package hub
 
 import (
 	"encoding/json"
 	"net/http"
 
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 	"github.com/sirupsen/logrus"
@@ -30,7 +29,7 @@ func PatchPreferencesChanged(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// broadcast preferences_changed event
-	for client := range hub.Nexus.Clients {
+	for client := range Nexus.Clients {
 		msg := messages.Message{
 			Event: events.PreferencesChanged,
 			Data: &messages.MessageData{

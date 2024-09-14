@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"git.rickiekarp.net/rickie/home/pkg/database"
-	"git.rickiekarp.net/rickie/home/pkg/utils"
+	"git.rickiekarp.net/rickie/home/pkg/util"
 	"github.com/sirupsen/logrus"
 )
 
@@ -60,7 +60,7 @@ func findUser(credentials Credentials) *User {
 	if retrievedUser != nil {
 		if retrievedUser.IsAccountEnabled {
 			// validate credentials
-			if utils.GenerateStrongPasswordHash(credentials.Password) == *retrievedUser.Password {
+			if util.GenerateStrongPasswordHash(credentials.Password) == *retrievedUser.Password {
 				return retrievedUser
 			} else {
 				logrus.Error("Wrong password for user: ", retrievedUser.Id)
@@ -80,7 +80,7 @@ func issueToken(userId int) *Token {
 	// Issue a token (can be a random String persisted to a database or a JWT token)
 	// The issued token must be associated to a user
 	// Return the issued token
-	randomBytes := utils.RandomAlphabetic(25)
+	randomBytes := util.RandomAlphabetic(25)
 	token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprint(userId) + ":" + randomBytes))
 
 	wasUpdated := updateUserToken(userId, token)

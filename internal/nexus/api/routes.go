@@ -1,7 +1,6 @@
 package api
 
 import (
-	"git.rickiekarp.net/rickie/home/internal/nexus/api/routes"
 	"git.rickiekarp.net/rickie/home/internal/nexus/blockchain"
 	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
@@ -16,12 +15,13 @@ import (
 
 // defineApiEndpoints defines all routes the Router can handle
 func defineApiEndpoints(r *mux.Router) {
-	r.HandleFunc("/", routes.ServeHome)
-	r.HandleFunc("/ws", routes.ServeWebSocket)
-	r.HandleFunc("/version", routes.ServeVersion).Methods("GET")
-	r.HandleFunc("/hub/v1/preferences", routes.PatchPreferencesChanged).Methods("PATCH")
+	r.HandleFunc("/", serveRoot)
+	r.HandleFunc("/ws", serveWebSocket)
+	r.HandleFunc("/version", serveVersion).Methods("GET")
+	r.HandleFunc("/hub/v1/preferences", hub.PatchPreferencesChanged).Methods("PATCH")
 	r.HandleFunc("/hub/v1/send", hub.SendMessage).Methods("POST")
 	r.HandleFunc("/hub/v1/broadcast", hub.BroadcastMessage).Methods("POST")
+	r.HandleFunc("/hub/v1/queue/push", hub.PushToQueue).Methods("POST")
 
 	// blockchain
 	if config.NexusConf.NexusChain.Enabled {
