@@ -7,8 +7,7 @@ CREATE TABLE filelist(
    mtime            int unsigned     NOT NULL DEFAULT 0,
    checksum         varchar(255)     NOT NULL,
    inserttime       int unsigned     NOT NULL DEFAULT UNIX_TIMESTAMP(),
-   CONSTRAINT `u_checksum` UNIQUE(`checksum`),
-   CONSTRAINT `u_file_properties` UNIQUE(`size`, `mtime`)
+   CONSTRAINT `u_checksum` UNIQUE(`checksum`)
 );
 CREATE INDEX idx_name ON filelist(name);
 CREATE INDEX idx_checksum ON filelist(checksum);

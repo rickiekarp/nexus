@@ -11,7 +11,7 @@ var HubQueue *queue.Queue
 
 func StartHubQueue() {
 
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(60 * time.Second)
 	defer ticker.Stop()
 
 	HubQueue = queue.NewQueue()
