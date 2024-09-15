@@ -30,7 +30,8 @@ func processMessage(message queue.HubQueueEventMessage) error {
 		if file == nil {
 			InsertFile(*res)
 		} else {
-			logrus.Info("File already exists in storage: ", *file.Id, " - ", file.Checksum)
+			logrus.Info("Updating existing file in storage: ", *file.Id, " - ", file.Checksum)
+			UpdateFileIteration(*file)
 		}
 
 	default:

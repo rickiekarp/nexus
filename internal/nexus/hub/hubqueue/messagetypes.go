@@ -12,17 +12,18 @@ type IQueueEventMessage interface {
 }
 
 type FileStorageEventMessage struct {
-	Id         *int64 `json:"id,omitempty"`
-	Path       string `json:"path,omitempty"`
-	Name       string `json:"name,omitempty"`
-	Size       int64  `json:"size,omitempty"`
-	Mtime      int64  `json:"mtime,omitempty"`
-	Checksum   string `json:"checksum,omitempty"`
-	Inserttime int64  `json:"inserttime"`
+	Id             *int64 `json:"id,omitempty"`
+	Path           string `json:"path,omitempty"`
+	Name           string `json:"name,omitempty"`
+	Size           int64  `json:"size,omitempty"`
+	Mtime          int64  `json:"mtime,omitempty"`
+	Checksum       string `json:"checksum,omitempty"`
+	Inserttime     int64
+	AdditionalData *[]FileStorageAdditionalDataEventMessage
 }
 
 type FileStorageAdditionalDataEventMessage struct {
-	FilesId  string `json:"files_id,omitempty"`
+	FilesId  *int64 `json:"files_id,omitempty"`
 	Property string `json:"property,omitempty"`
 	Value    string `json:"value,omitempty"`
 }
