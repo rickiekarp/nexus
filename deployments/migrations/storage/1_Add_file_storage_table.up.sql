@@ -1,5 +1,5 @@
--- Files table
-CREATE TABLE files(
+-- Filelist table
+CREATE TABLE filelist(
    id 		        bigint unsigned  auto_increment   PRIMARY KEY,
    path             varchar(4000)    NULL default NULL,
    name             varchar(255)     NOT NULL,
@@ -10,15 +10,15 @@ CREATE TABLE files(
    CONSTRAINT `u_checksum` UNIQUE(`checksum`),
    CONSTRAINT `u_file_properties` UNIQUE(`size`, `mtime`)
 );
-CREATE INDEX idx_name ON files(name);
-CREATE INDEX idx_checksum ON files(checksum);
+CREATE INDEX idx_name ON filelist(name);
+CREATE INDEX idx_checksum ON filelist(checksum);
 
--- Files table
-CREATE TABLE files_additional_data(
+-- Filelist additional data table
+CREATE TABLE filelist_additional_data(
    id 		       bigint unsigned  auto_increment   PRIMARY KEY,
-   files_id 	    bigint unsigned      NOT NULL DEFAULT 0,
+   file_id 	    bigint unsigned      NOT NULL DEFAULT 0,
    property        varchar(100)         NULL default NULL,
    value           varchar(100)         NOT NULL,
-   CONSTRAINT `u_properties` UNIQUE(`files_id`, `property`),
-   CONSTRAINT files_fk FOREIGN KEY (files_id) REFERENCES files (id) ON DELETE CASCADE ON UPDATE CASCADE
+   CONSTRAINT `u_properties` UNIQUE(`file_id`, `property`),
+   CONSTRAINT file_id_fk FOREIGN KEY (file_id) REFERENCES filelist (id) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -9,8 +9,8 @@ CREATE PROCEDURE insertFileToStorage(
 BEGIN
     DECLARE fileid BIGINT unsigned DEFAULT 0;
 
-    INSERT INTO files (path, name, size, mtime, checksum) values ($path, $name, $size, $mtime, $checksum);
+    INSERT INTO filelist (path, name, size, mtime, checksum) values ($path, $name, $size, $mtime, $checksum);
     SELECT LAST_INSERT_ID()	INTO fileid;
 
-    INSERT INTO files_additional_data (file_id, property, value) values (fileid, "iteration", "1");
+    INSERT INTO filelist_additional_data (file_id, property, value) values (fileid, "iteration", "1");
 END ;

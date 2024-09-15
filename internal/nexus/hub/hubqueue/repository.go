@@ -8,9 +8,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.checksum, f.inserttime, fad.property, fad.value FROM files f JOIN files_additional_data fad ON f.id = fad.files_id WHERE f.checksum = ?`
+const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.checksum, f.inserttime, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.checksum = ?`
 const INSERT = `CALL insertFileToStorage(?, ?, ?, ?, ?)`
-const UPDATE_ITERATION = `UPDATE files_additional_data set value = ? WHERE files_id = ? AND property = "iteration"`
+const UPDATE_ITERATION = `UPDATE filelist_additional_data set value = ? WHERE file_id = ? AND property = "iteration"`
 
 func FindFileInStorage(checksum string) *FileStorageEventMessage {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
