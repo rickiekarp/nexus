@@ -2,6 +2,8 @@ package hub
 
 import (
 	"time"
+
+	"git.rickiekarp.net/rickie/home/internal/nexus/hub/hubqueue"
 )
 
 func StartMetricsCollector() {
@@ -20,5 +22,11 @@ func StartMetricsCollector() {
 		// report client connections metric
 		clientConnections := len(Nexus.Clients)
 		sendClientConnectionsMetric(sequence, clientConnections)
+
+		// report HubQueue metric
+		if hubqueue.HubQueue != nil {
+			hubQueueSize := hubqueue.HubQueue.Size
+			SendHubQueueSizeMetric(sequence, int64(hubQueueSize))
+		}
 	}
 }

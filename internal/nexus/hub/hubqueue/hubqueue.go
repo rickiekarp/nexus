@@ -3,9 +3,7 @@ package hubqueue
 import (
 	"time"
 
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
 	"git.rickiekarp.net/rickie/home/pkg/queue"
-	"git.rickiekarp.net/rickie/home/pkg/util"
 	"github.com/sirupsen/logrus"
 )
 
@@ -13,26 +11,26 @@ var HubQueue *queue.Queue
 
 func StartHubQueue() {
 
-	ticker := time.NewTicker(6 * time.Second)
+	ticker := time.NewTicker(10 * time.Second)
 	defer ticker.Stop()
 
 	HubQueue = queue.NewQueue()
-	var sequence int64 = 0
+	elementsToProcess := queue.QUEUE_PROCESSING_BATCH_COUNT
 
 	for {
 		_, ok := <-ticker.C
 		if !ok {
 			break
 		}
-		sequence += 1
 
 		if !HubQueue.IsEmpty() {
-			elementsToProcess := util.RandomInt64(1, 10)
 			if elementsToProcess > HubQueue.Size {
 				elementsToProcess = HubQueue.Size
+			} else {
+				elementsToProcess = queue.QUEUE_PROCESSING_BATCH_COUNT
 			}
 			logrus.Println("Processing", elementsToProcess, "of", HubQueue.Size, "HubQueue elements")
-			for i := int64(0); i < elementsToProcess; i++ {
+			for i := 0; i < elementsToProcess; i++ {
 				elem, _ := HubQueue.Pop()
 				err := processMessage(elem)
 				if err != nil {
@@ -41,7 +39,5 @@ func StartHubQueue() {
 				}
 			}
 		}
-
-		hub.SendHubQueueSizeMetric(sequence, HubQueue.Size)
 	}
 }
