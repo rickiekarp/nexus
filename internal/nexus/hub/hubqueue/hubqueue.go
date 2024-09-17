@@ -15,7 +15,6 @@ func StartHubQueue() {
 	defer ticker.Stop()
 
 	HubQueue = queue.NewQueue()
-	elementsToProcess := queue.QUEUE_PROCESSING_BATCH_COUNT
 
 	for {
 		_, ok := <-ticker.C
@@ -24,6 +23,7 @@ func StartHubQueue() {
 		}
 
 		if !HubQueue.IsEmpty() {
+			elementsToProcess := queue.QUEUE_PROCESSING_BATCH_COUNT
 			if elementsToProcess > HubQueue.Size {
 				elementsToProcess = HubQueue.Size
 			} else {

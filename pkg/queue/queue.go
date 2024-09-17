@@ -1,6 +1,6 @@
 package queue
 
-const MAX_QUEUE_SIZE = 32384
+const MAX_QUEUE_SIZE = 129536
 const QUEUE_PROCESSING_BATCH_COUNT = 100
 
 type Queue struct {
