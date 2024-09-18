@@ -5,7 +5,7 @@ GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 BUILD_PATH=build
 BINARY_NAME=app
-DEPLOY_DIR=/mnt/raid2/nodes/raspberrypi/deployment/
+DEPLOY_DIR=/mnt/raid2/nodes/raspberrypi/deployment/nexus/
 
 # Nexus
 
@@ -15,15 +15,14 @@ buildNexusARM64v7:
 		-X git.rickiekarp.net/rickie/home/internal/nexus/config.Build=$(shell git rev-parse HEAD) \
 		-X git.rickiekarp.net/rickie/home/internal/nexus/config.ConfigBaseDir=data/config/ \
 		-X git.rickiekarp.net/rickie/home/internal/nexus/config.ResourcesBaseDir=data/assets/web/" \
-		-o $(BUILD_PATH)/output/nexus/$(BINARY_NAME) \
-		cmd/nexus/main.go
-		mkdir -p $(BUILD_PATH)/output/nexus/data/assets/web
-		cp -r web/nexus/* $(BUILD_PATH)/output/nexus/data/assets/web
-		cp -r deployments/module-deployment/values/nexus/prod/* $(BUILD_PATH)/output/nexus/data/
-		cp deployments/docker/Dockerfile_goscratch build/output/nexus/Dockerfile
+		-o $(BUILD_PATH)/$(BINARY_NAME) main.go
+		mkdir -p $(BUILD_PATH)/data/assets/web
+		cp -r web/nexus/* $(BUILD_PATH)/data/assets/web
+		cp -r deployments/module-deployment/values/nexus/prod/* $(BUILD_PATH)/data/
+		cp deployments/docker/Dockerfile_goscratch build/Dockerfile
 
 deployNexus:
-		rsync -rlvpt --delete build/output/nexus pi:$(DEPLOY_DIR)
+		rsync -rlvpt --delete build/* pi:$(DEPLOY_DIR)
 
 # Other
 
