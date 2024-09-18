@@ -24,15 +24,15 @@ func (q *Queue) Push(e HubQueueEventMessage) bool {
 	return true
 }
 
-func (q *Queue) Pop() (HubQueueEventMessage, bool) {
+func (q *Queue) Pop() (*HubQueueEventMessage, bool) {
 	if q.Size <= 0 {
-		return HubQueueEventMessage{}, false
+		return nil, false
 	}
 	result := q.content[q.readHead]
 	q.content[q.readHead] = HubQueueEventMessage{}
 	q.readHead = (q.readHead + 1) % MAX_QUEUE_SIZE
 	q.Size--
-	return result, true
+	return &result, true
 }
 
 func (q *Queue) IsEmpty() bool {

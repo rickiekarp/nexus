@@ -8,8 +8,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.checksum, f.inserttime, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.checksum = ?`
-const INSERT = `CALL insertFileToStorage(?, ?, ?, ?, ?)`
+const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.checksum = ?`
+const INSERT = `CALL insertFileToStorage(?, ?, ?, ?, ?, ?)`
 const UPDATE_ITERATION = `CALL updateFileIterationInStorage(?, ?)`
 
 func FindFileInStorage(checksum string) *FileStorageEventMessage {
@@ -36,7 +36,9 @@ func FindFileInStorage(checksum string) *FileStorageEventMessage {
 			&storageEntry.Size,
 			&storageEntry.Mtime,
 			&storageEntry.Checksum,
+			&storageEntry.Owner,
 			&storageEntry.Inserttime,
+			&storageEntry.Lastupdate,
 			&additionalData.Property,
 			&additionalData.Value,
 		)
@@ -63,6 +65,7 @@ func InsertFile(fileStorageEventMessage FileStorageEventMessage) bool {
 		fileStorageEventMessage.Size,
 		fileStorageEventMessage.Mtime,
 		fileStorageEventMessage.Checksum,
+		fileStorageEventMessage.Owner,
 	)
 
 	if err != nil {
@@ -87,6 +90,10 @@ func UpdateFileIteration(fileStorageEventMessage FileStorageEventMessage) bool {
 	if fileStorageEventMessage.AdditionalData != nil {
 		data := *fileStorageEventMessage.AdditionalData
 		iterationsProperty := findIterationsProperty(data)
+		if iterationsProperty == nil {
+			logrus.Warn("no `iteration` property found for entry: ", fileStorageEventMessage.Checksum)
+			return false
+		}
 		iterations, err := strconv.Atoi(iterationsProperty.Value)
 		if err != nil {
 			logrus.Error(err)

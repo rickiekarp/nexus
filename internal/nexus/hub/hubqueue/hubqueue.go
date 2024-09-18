@@ -31,11 +31,13 @@ func StartHubQueue() {
 			}
 			logrus.Println("Processing", elementsToProcess, "of", HubQueue.Size, "HubQueue elements")
 			for i := 0; i < elementsToProcess; i++ {
-				elem, _ := HubQueue.Pop()
-				err := processMessage(elem)
-				if err != nil {
-					logrus.Error(err)
-					continue
+				elem, wasPopped := HubQueue.Pop()
+				if wasPopped {
+					err := processMessage(*elem)
+					if err != nil {
+						logrus.Error(err)
+						continue
+					}
 				}
 			}
 		}
