@@ -1,7 +1,7 @@
 package queue
 
 const MAX_QUEUE_SIZE = 129536
-const QUEUE_PROCESSING_BATCH_COUNT = 100
+const QUEUE_PROCESSING_BATCH_COUNT = 250
 
 type Queue struct {
 	content   [MAX_QUEUE_SIZE]HubQueueEventMessage
