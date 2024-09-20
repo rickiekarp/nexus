@@ -24,13 +24,6 @@ func FetchFileGuard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// validate
-	if len(requestMessage.Type) == 0 {
-		logrus.Warn("No type parameter provided")
-		w.WriteHeader(400)
-		return
-	}
-
 	var responseMessage *FileGuardianEventMessage = nil
 
 	// we take the Source from the client and look if it exists as a target already
@@ -48,6 +41,13 @@ func FetchFileGuard(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(retrySourceMessage)
 			return
 		} else {
+
+			if len(requestMessage.Type) == 0 {
+				logrus.Warn("No type parameter provided")
+				w.WriteHeader(400)
+				return
+			}
+
 			// generate Target hash
 			requestMessage.Target = generateTarget(requestMessage.Source, requestMessage.Type, requestMessage.Context)
 			// try to insert
@@ -58,7 +58,6 @@ func FetchFileGuard(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
-
 			json.NewEncoder(w).Encode(responseMessage)
 		}
 	} else {
