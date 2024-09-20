@@ -4,6 +4,7 @@ import (
 	"git.rickiekarp.net/rickie/home/internal/nexus/blockchain"
 	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
+	"git.rickiekarp.net/rickie/home/internal/nexus/fileguardian"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub/hubqueue"
 	"git.rickiekarp.net/rickie/home/internal/nexus/mail"
@@ -53,6 +54,8 @@ func defineApiEndpoints(r *mux.Router) {
 
 	r.HandleFunc("/vault/v1/fetch/file", vault.FetchVaultFile).Methods("GET")
 	r.HandleFunc("/vault/v1/fetch/key", vault.FetchVaultKey).Methods("GET")
+
+	r.HandleFunc("/fileguardian/v1/fetch", fileguardian.FetchFileGuard).Methods("POST")
 
 	// monitoring
 	r.HandleFunc("/monitoring/notifyUptime", monitoring.NotifyUptimeEndpoint).Methods("POST")
