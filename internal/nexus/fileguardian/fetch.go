@@ -48,6 +48,13 @@ func FetchFileGuard(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			// do not insert a new fileguardian entry if check parameter is present
+			param := r.URL.Query().Get("check")
+			if len(param) > 0 {
+				w.WriteHeader(http.StatusOK)
+				return
+			}
+
 			// generate Target hash
 			requestMessage.Target = generateTarget(requestMessage.Source, requestMessage.Type, requestMessage.Context)
 			// try to insert
