@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 
+	"git.rickiekarp.net/rickie/home/internal/nexus/storage"
+	"git.rickiekarp.net/rickie/home/pkg/models/nexusmodel"
 	"git.rickiekarp.net/rickie/home/pkg/queue"
 	"github.com/sirupsen/logrus"
 )
@@ -14,7 +16,7 @@ func processMessage(message queue.HubQueueEventMessage) error {
 	switch message.Event {
 	case FilestoreAdd:
 		// convert
-		res, err := convertEventMessage(message, FileStorageEventMessage{})
+		res, err := convertEventMessage(message, nexusmodel.FileStorageEventMessage{})
 		if err != nil {
 			logrus.Error(err)
 			return err
@@ -26,12 +28,12 @@ func processMessage(message queue.HubQueueEventMessage) error {
 		}
 
 		// process
-		file := FindFileInStorage(res.Checksum)
+		file := storage.FindFileInStorage(res.Checksum)
 		if file == nil {
-			InsertFile(*res)
+			storage.InsertFile(*res)
 		} else {
 			logrus.Info("Updating existing file in storage: ", *file.Id, " - ", file.Checksum)
-			UpdateFileIteration(*file)
+			storage.UpdateFileIteration(*file)
 		}
 
 	default:

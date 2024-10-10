@@ -1,18 +1,19 @@
-package hubqueue
+package storage
 
 import (
 	"database/sql"
 	"strconv"
 
 	"git.rickiekarp.net/rickie/home/pkg/database"
+	"git.rickiekarp.net/rickie/home/pkg/models/nexusmodel"
 	"github.com/sirupsen/logrus"
 )
 
 const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.checksum = ?`
-const INSERT = `CALL insertFileToStorage(?, ?, ?, ?, ?, ?)`
+const INSERT_FILE_TO_STORAGE = `CALL insertFileToStorage(?, ?, ?, ?, ?, ?)`
 const UPDATE_ITERATION = `CALL updateFileIterationInStorage(?, ?)`
 
-func FindFileInStorage(checksum string) *FileStorageEventMessage {
+func FindFileInStorage(checksum string) *nexusmodel.FileStorageEventMessage {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return nil
 	}
@@ -25,10 +26,10 @@ func FindFileInStorage(checksum string) *FileStorageEventMessage {
 		return nil
 	}
 
-	storageEntry := FileStorageEventMessage{AdditionalData: &[]FileStorageAdditionalDataEventMessage{}}
+	storageEntry := nexusmodel.FileStorageEventMessage{AdditionalData: &[]nexusmodel.FileStorageAdditionalDataEventMessage{}}
 
 	for i := 0; rows.Next(); i++ {
-		additionalData := FileStorageAdditionalDataEventMessage{}
+		additionalData := nexusmodel.FileStorageAdditionalDataEventMessage{}
 		rows.Scan(
 			&storageEntry.Id,
 			&storageEntry.Path,
@@ -54,12 +55,12 @@ func FindFileInStorage(checksum string) *FileStorageEventMessage {
 	return &storageEntry
 }
 
-func InsertFile(fileStorageEventMessage FileStorageEventMessage) bool {
+func InsertFile(fileStorageEventMessage nexusmodel.FileStorageEventMessage) bool {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return false
 	}
 
-	rows, err := database.ConStorage.Connection.Query(INSERT,
+	rows, err := database.ConStorage.Connection.Query(INSERT_FILE_TO_STORAGE,
 		fileStorageEventMessage.Path,
 		fileStorageEventMessage.Name,
 		fileStorageEventMessage.Size,
@@ -82,7 +83,7 @@ func InsertFile(fileStorageEventMessage FileStorageEventMessage) bool {
 	return true
 }
 
-func UpdateFileIteration(fileStorageEventMessage FileStorageEventMessage) bool {
+func UpdateFileIteration(fileStorageEventMessage nexusmodel.FileStorageEventMessage) bool {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return false
 	}
@@ -122,7 +123,7 @@ func UpdateFileIteration(fileStorageEventMessage FileStorageEventMessage) bool {
 	return false
 }
 
-func findIterationsProperty(data []FileStorageAdditionalDataEventMessage) *FileStorageAdditionalDataEventMessage {
+func findIterationsProperty(data []nexusmodel.FileStorageAdditionalDataEventMessage) *nexusmodel.FileStorageAdditionalDataEventMessage {
 	for i := 0; i < len(data); i++ {
 		if data[i].Property == "iteration" {
 			return &data[i]
