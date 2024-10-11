@@ -10,15 +10,27 @@ import (
 )
 
 const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.filehash, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.checksum = ?`
+const FIND_BY_FILEHASH = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.filehash, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.filehash = ? order by f.id desc limit 1`
 const INSERT_FILE_TO_STORAGE = `CALL insertFileToStorage(?, ?, ?, ?, ?, ?, ?)`
 const UPDATE_ITERATION = `CALL updateFileIterationInStorage(?, ?)`
 
-func FindFileInStorage(checksum string) *nexusmodel.FileStorageEventMessage {
+func FindFileInStorageByChecksum(checksum string) *nexusmodel.FileStorageEventMessage {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return nil
 	}
+	return findFileInStorage(FIND_BY_CHECKSUM, checksum)
+}
 
-	rows, err := database.ConStorage.Connection.Query(FIND_BY_CHECKSUM, checksum)
+func FindFileInStorageByFileHash(fileHash string) *nexusmodel.FileStorageEventMessage {
+	if !database.CheckDatabaseConnection(database.ConStorage) {
+		return nil
+	}
+	return findFileInStorage(FIND_BY_FILEHASH, fileHash)
+}
+
+func findFileInStorage(baseQuery string, lookupValue string) *nexusmodel.FileStorageEventMessage {
+
+	rows, err := database.ConStorage.Connection.Query(baseQuery, lookupValue)
 	if err == sql.ErrNoRows {
 		return nil
 	} else if err != nil {

@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	FilestoreAdd       queue.QueueEventType = "filestore_add"
-	FilestoreAddExtras queue.QueueEventType = "filestore_add_extras"
+	FilestoreAdd                  queue.QueueEventType = "filestore_add"
+	FilestoreAdditionalDataUpdate queue.QueueEventType = "filestore_additional_data_update"
 )
 
 type IQueueEventMessage interface {

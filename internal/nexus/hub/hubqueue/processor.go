@@ -16,26 +16,29 @@ func processMessage(message queue.HubQueueEventMessage) error {
 	switch message.Event {
 	case FilestoreAdd:
 		// convert
-		res, err := convertEventMessage(message, nexusmodel.FileStorageEventMessage{})
+		fileEvent, err := convertEventMessage(message, nexusmodel.FileStorageEventMessage{})
 		if err != nil {
 			logrus.Error(err)
 			return err
 		}
 
 		// set checksums for message
-		fileChecksum := string(res.Sha1())
-		res.FileHash = &fileChecksum
-		checksum := util.CalcSha1(res.Path + "/" + *res.FileHash)
-		res.Checksum = &checksum
+		fileChecksum := string(fileEvent.Sha1())
+		fileEvent.FileHash = &fileChecksum
+		checksum := util.CalcSha1(fileEvent.Path + "/" + *fileEvent.FileHash)
+		fileEvent.Checksum = &checksum
 
 		// process
-		file := storage.FindFileInStorage(*res.Checksum)
+		file := storage.FindFileInStorageByChecksum(*fileEvent.Checksum)
 		if file == nil {
-			storage.InsertFile(*res)
+			storage.InsertFile(*fileEvent)
 		} else {
 			logrus.Info("Updating existing file in storage: ", *file.Id, " - ", *file.Checksum)
 			storage.UpdateFileIteration(*file)
 		}
+
+	case FilestoreAdditionalDataUpdate:
+		logrus.Warn("not implemented yet")
 
 	default:
 		logrus.Warn("ignoring invalid HubQueue event: ", message)
