@@ -2,11 +2,11 @@ package hubqueue
 
 import (
 	"encoding/json"
-	"errors"
 
 	"git.rickiekarp.net/rickie/home/internal/nexus/storage"
 	"git.rickiekarp.net/rickie/home/pkg/models/nexusmodel"
 	"git.rickiekarp.net/rickie/home/pkg/queue"
+	"git.rickiekarp.net/rickie/home/pkg/util"
 	"github.com/sirupsen/logrus"
 )
 
@@ -23,12 +23,16 @@ func processMessage(message queue.HubQueueEventMessage) error {
 		}
 
 		// validate
-		if len(res.Checksum) == 0 {
-			return errors.New("no checksum given")
+		if res.Checksum == nil || len(*res.Checksum) == 0 {
+			fileChecksum := string(res.Sha1())
+			checksum := util.CalcSha1(util.CalcSha1(res.Path) + "/" + fileChecksum)
+			res.Checksum = &checksum
+		} else {
+			logrus.Warn("Checksum still present for id: ", res.Id)
 		}
 
 		// process
-		file := storage.FindFileInStorage(res.Checksum)
+		file := storage.FindFileInStorage(*res.Checksum)
 		if file == nil {
 			storage.InsertFile(*res)
 		} else {

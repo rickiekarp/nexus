@@ -15,3 +15,10 @@ func GenerateStrongPasswordHash(password string) string {
 func toHex(array []byte) string {
 	return hex.EncodeToString(array)
 }
+
+func CalcSha1(text string) string {
+	h := sha1.New()
+	h.Write([]byte(text))
+	sha1_hash := hex.EncodeToString(h.Sum(nil))
+	return sha1_hash
+}
