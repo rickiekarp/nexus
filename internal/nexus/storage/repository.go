@@ -9,8 +9,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.checksum = ?`
-const INSERT_FILE_TO_STORAGE = `CALL insertFileToStorage(?, ?, ?, ?, ?, ?)`
+const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.filehash, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.checksum = ?`
+const INSERT_FILE_TO_STORAGE = `CALL insertFileToStorage(?, ?, ?, ?, ?, ?, ?)`
 const UPDATE_ITERATION = `CALL updateFileIterationInStorage(?, ?)`
 
 func FindFileInStorage(checksum string) *nexusmodel.FileStorageEventMessage {
@@ -36,6 +36,7 @@ func FindFileInStorage(checksum string) *nexusmodel.FileStorageEventMessage {
 			&storageEntry.Name,
 			&storageEntry.Size,
 			&storageEntry.Mtime,
+			&storageEntry.FileHash,
 			&storageEntry.Checksum,
 			&storageEntry.Owner,
 			&storageEntry.Inserttime,
@@ -65,6 +66,7 @@ func InsertFile(fileStorageEventMessage nexusmodel.FileStorageEventMessage) bool
 		fileStorageEventMessage.Name,
 		fileStorageEventMessage.Size,
 		fileStorageEventMessage.Mtime,
+		fileStorageEventMessage.FileHash,
 		fileStorageEventMessage.Checksum,
 		fileStorageEventMessage.Owner,
 	)

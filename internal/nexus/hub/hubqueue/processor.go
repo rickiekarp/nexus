@@ -22,21 +22,18 @@ func processMessage(message queue.HubQueueEventMessage) error {
 			return err
 		}
 
-		// validate
-		if res.Checksum == nil || len(*res.Checksum) == 0 {
-			fileChecksum := string(res.Sha1())
-			checksum := util.CalcSha1(util.CalcSha1(res.Path) + "/" + fileChecksum)
-			res.Checksum = &checksum
-		} else {
-			logrus.Warn("Checksum still present for id: ", res.Id)
-		}
+		// set checksums for message
+		fileChecksum := string(res.Sha1())
+		res.FileHash = &fileChecksum
+		checksum := util.CalcSha1(res.Path + "/" + *res.FileHash)
+		res.Checksum = &checksum
 
 		// process
 		file := storage.FindFileInStorage(*res.Checksum)
 		if file == nil {
 			storage.InsertFile(*res)
 		} else {
-			logrus.Info("Updating existing file in storage: ", *file.Id, " - ", file.Checksum)
+			logrus.Info("Updating existing file in storage: ", *file.Id, " - ", *file.Checksum)
 			storage.UpdateFileIteration(*file)
 		}
 

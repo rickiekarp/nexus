@@ -12,6 +12,7 @@ type FileStorageEventMessage struct {
 	Name           string                                   `json:"name,omitempty"`
 	Size           int64                                    `json:"size,omitempty"`
 	Mtime          int64                                    `json:"mtime,omitempty"`
+	FileHash       *string                                  `json:"filehash,omitempty"`
 	Checksum       *string                                  `json:"checksum,omitempty"`
 	Owner          *string                                  `json:"owner,omitempty"`
 	Inserttime     *int64                                   `json:"inserttime,omitempty"`
