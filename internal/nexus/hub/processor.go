@@ -1,10 +1,10 @@
 package hub
 
 import (
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
+	"git.rickiekarp.net/rickie/nexusform"
 )
 
-func ProcessEvent(client Client, nexusMessage messages.Message) {
+func ProcessEvent(client Client, nexusMessage nexusform.HubMessage) {
 
 	// todo check target of message
 

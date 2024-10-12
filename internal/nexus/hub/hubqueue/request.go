@@ -4,14 +4,14 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/pkg/queue"
+	"git.rickiekarp.net/rickie/nexusform"
 	"github.com/sirupsen/logrus"
 )
 
 func PushToQueue(w http.ResponseWriter, r *http.Request) {
 
 	// deserialize message
-	var message queue.HubQueueEventMessage
+	var message nexusform.HubQueueEventMessage
 	err := json.NewDecoder(r.Body).Decode(&message)
 	if err != nil {
 		logrus.Error(err)

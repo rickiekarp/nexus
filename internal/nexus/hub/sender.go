@@ -4,8 +4,7 @@ import (
 	"io"
 	"net/http"
 
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
+	"git.rickiekarp.net/rickie/nexusform"
 	"github.com/sirupsen/logrus"
 )
 
@@ -18,9 +17,9 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 			BroadcastMessage(w, r)
 		} else {
 			// TODO: create proper message
-			msg := messages.Message{
+			msg := nexusform.HubMessage{
 				Seq:      999,
-				Event:    events.Message,
+				Event:    nexusform.Message,
 				Message:  string("TEST"),
 				ClientIP: "1.2.3.4",
 			}
@@ -33,7 +32,7 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func SendMessageToClient(message messages.Message, clientId string) {
+func SendMessageToClient(message nexusform.HubMessage, clientId string) {
 	if clientId == "broadcast" {
 		Nexus.broadcast <- message
 	} else {
@@ -59,9 +58,9 @@ func BroadcastMessage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for client := range Nexus.Clients {
-		msg := messages.Message{
+		msg := nexusform.HubMessage{
 			Seq:      client.seq,
-			Event:    events.Message,
+			Event:    nexusform.Message,
 			Message:  string(body),
 			ClientIP: client.conn.RemoteAddr().String(),
 		}

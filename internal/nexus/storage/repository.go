@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"git.rickiekarp.net/rickie/home/pkg/database"
-	"git.rickiekarp.net/rickie/home/pkg/models/nexusmodel"
+	"git.rickiekarp.net/rickie/nexusform"
 	"github.com/sirupsen/logrus"
 )
 
@@ -14,21 +14,21 @@ const FIND_BY_FILEHASH = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.fileha
 const INSERT_FILE_TO_STORAGE = `CALL insertFileToStorage(?, ?, ?, ?, ?, ?, ?)`
 const UPDATE_ITERATION = `CALL updateFileIterationInStorage(?, ?)`
 
-func FindFileInStorageByChecksum(checksum string) *nexusmodel.FileStorageEventMessage {
+func FindFileInStorageByChecksum(checksum string) *nexusform.FileListEntry {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return nil
 	}
 	return findFileInStorage(FIND_BY_CHECKSUM, checksum)
 }
 
-func FindFileInStorageByFileHash(fileHash string) *nexusmodel.FileStorageEventMessage {
+func FindFileInStorageByFileHash(fileHash string) *nexusform.FileListEntry {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return nil
 	}
 	return findFileInStorage(FIND_BY_FILEHASH, fileHash)
 }
 
-func findFileInStorage(baseQuery string, lookupValue string) *nexusmodel.FileStorageEventMessage {
+func findFileInStorage(baseQuery string, lookupValue string) *nexusform.FileListEntry {
 
 	rows, err := database.ConStorage.Connection.Query(baseQuery, lookupValue)
 	if err == sql.ErrNoRows {
@@ -38,10 +38,10 @@ func findFileInStorage(baseQuery string, lookupValue string) *nexusmodel.FileSto
 		return nil
 	}
 
-	storageEntry := nexusmodel.FileStorageEventMessage{AdditionalData: &[]nexusmodel.FileStorageAdditionalDataEventMessage{}}
+	storageEntry := nexusform.FileListEntry{AdditionalData: &[]nexusform.FileListEntryAdditionalData{}}
 
 	for i := 0; rows.Next(); i++ {
-		additionalData := nexusmodel.FileStorageAdditionalDataEventMessage{}
+		additionalData := nexusform.FileListEntryAdditionalData{}
 		rows.Scan(
 			&storageEntry.Id,
 			&storageEntry.Path,
@@ -68,7 +68,7 @@ func findFileInStorage(baseQuery string, lookupValue string) *nexusmodel.FileSto
 	return &storageEntry
 }
 
-func InsertFile(fileStorageEventMessage nexusmodel.FileStorageEventMessage) bool {
+func InsertFile(fileStorageEventMessage nexusform.FileListEntry) bool {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return false
 	}
@@ -97,7 +97,7 @@ func InsertFile(fileStorageEventMessage nexusmodel.FileStorageEventMessage) bool
 	return true
 }
 
-func UpdateFileIteration(fileStorageEventMessage nexusmodel.FileStorageEventMessage) bool {
+func UpdateFileIteration(fileStorageEventMessage nexusform.FileListEntry) bool {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return false
 	}
@@ -137,7 +137,7 @@ func UpdateFileIteration(fileStorageEventMessage nexusmodel.FileStorageEventMess
 	return false
 }
 
-func findIterationsProperty(data []nexusmodel.FileStorageAdditionalDataEventMessage) *nexusmodel.FileStorageAdditionalDataEventMessage {
+func findIterationsProperty(data []nexusform.FileListEntryAdditionalData) *nexusform.FileListEntryAdditionalData {
 	for i := 0; i < len(data); i++ {
 		if data[i].Property == "iteration" {
 			return &data[i]

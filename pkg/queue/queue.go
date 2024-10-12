@@ -1,10 +1,12 @@
 package queue
 
+import "git.rickiekarp.net/rickie/nexusform"
+
 const MAX_QUEUE_SIZE = 129536
 const QUEUE_PROCESSING_BATCH_COUNT = 250
 
 type Queue struct {
-	content   [MAX_QUEUE_SIZE]HubQueueEventMessage
+	content   [MAX_QUEUE_SIZE]nexusform.HubQueueEventMessage
 	readHead  int
 	writeHead int
 	Size      int
@@ -14,7 +16,7 @@ func NewQueue() *Queue {
 	return &Queue{}
 }
 
-func (q *Queue) Push(e HubQueueEventMessage) bool {
+func (q *Queue) Push(e nexusform.HubQueueEventMessage) bool {
 	if q.Size >= MAX_QUEUE_SIZE {
 		return false
 	}
@@ -24,12 +26,12 @@ func (q *Queue) Push(e HubQueueEventMessage) bool {
 	return true
 }
 
-func (q *Queue) Pop() (*HubQueueEventMessage, bool) {
+func (q *Queue) Pop() (*nexusform.HubQueueEventMessage, bool) {
 	if q.Size <= 0 {
 		return nil, false
 	}
 	result := q.content[q.readHead]
-	q.content[q.readHead] = HubQueueEventMessage{}
+	q.content[q.readHead] = nexusform.HubQueueEventMessage{}
 	q.readHead = (q.readHead + 1) % MAX_QUEUE_SIZE
 	q.Size--
 	return &result, true

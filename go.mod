@@ -11,7 +11,8 @@ require (
 )
 
 require (
-	git.rickiekarp.net/rickie/nexus-corelib v0.0.1
+	git.rickiekarp.net/rickie/nexuscore v0.0.3
+	git.rickiekarp.net/rickie/nexusform v0.0.5
 	github.com/gorilla/websocket v1.5.0
 	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 )

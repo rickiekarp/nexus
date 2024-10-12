@@ -5,9 +5,8 @@ import (
 	"fmt"
 
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 	"git.rickiekarp.net/rickie/home/pkg/integrations/graphite"
+	"git.rickiekarp.net/rickie/nexusform"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,9 +20,9 @@ func sendClientConnectionsMetric(sequence int64, clientConnections int) {
 			},
 			statsMetricPrefix)
 	} else {
-		jsonMessage, _ := json.Marshal(&messages.Message{
+		jsonMessage, _ := json.Marshal(&nexusform.HubMessage{
 			Seq:     sequence,
-			Event:   events.Stats,
+			Event:   nexusform.Stats,
 			Message: fmt.Sprintf("CONNECTED_CLIENTS: %d", len(Nexus.Clients)),
 		})
 		logrus.Println(string(jsonMessage))
@@ -38,9 +37,9 @@ func SendHubQueueSizeMetric(sequence int64, size int64) {
 			},
 			statsMetricPrefix)
 	} else {
-		jsonMessage, _ := json.Marshal(&messages.Message{
+		jsonMessage, _ := json.Marshal(&nexusform.HubMessage{
 			Seq:     sequence,
-			Event:   events.Stats,
+			Event:   nexusform.Stats,
 			Message: fmt.Sprintf("HUB_QUEUE_SIZE: %d", size),
 		})
 		logrus.Println(string(jsonMessage))

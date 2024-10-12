@@ -5,15 +5,14 @@ import (
 	"net/http"
 
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
+	"git.rickiekarp.net/rickie/nexusform"
 	"github.com/sirupsen/logrus"
 )
 
 func PatchPreferencesChanged(w http.ResponseWriter, r *http.Request) {
 
 	// deserialize message
-	var message messages.Message
+	var message nexusform.HubMessage
 	_ = json.NewDecoder(r.Body).Decode(&message)
 
 	if message.Data == nil {
@@ -30,9 +29,9 @@ func PatchPreferencesChanged(w http.ResponseWriter, r *http.Request) {
 
 	// broadcast preferences_changed event
 	for client := range Nexus.Clients {
-		msg := messages.Message{
-			Event: events.PreferencesChanged,
-			Data: &messages.MessageData{
+		msg := nexusform.HubMessage{
+			Event: nexusform.PreferencesChanged,
+			Data: &nexusform.HubMessageData{
 				ServerVersion:    config.Version,
 				MinClientVersion: &config.NexusConf.Project6.MinClientVersion},
 		}

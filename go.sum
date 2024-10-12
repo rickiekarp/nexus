@@ -1,5 +1,7 @@
-git.rickiekarp.net/rickie/nexus-corelib v0.0.1 h1:x+nxmkZsh1nNB/IPR39ZOBVxBSEQVtCZVZkJ8zo15IU=
-git.rickiekarp.net/rickie/nexus-corelib v0.0.1/go.mod h1:4679nUZGPCpb39/vUIWsN1NTIKfiCHR5ISSi+v9njFE=
+git.rickiekarp.net/rickie/nexuscore v0.0.3 h1:q+OZ+8ffQtaHyrws2fbDgUBrp9AfdOih00eEVS7gqZQ=
+git.rickiekarp.net/rickie/nexuscore v0.0.3/go.mod h1:9AIRb903ZRrxK3yj/pGZ4vT1g3Y5Ri2MuXSAPO5uPd8=
+git.rickiekarp.net/rickie/nexusform v0.0.5 h1:xQA+KpWdoJBF8V73hCo3jxhbppbgi4PKzq0ClO1RA3Y=
+git.rickiekarp.net/rickie/nexusform v0.0.5/go.mod h1:eThnM1IguU06JlH4uFfpdNT/Gwj0531rlydGCwQQvX4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

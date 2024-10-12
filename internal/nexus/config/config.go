@@ -6,7 +6,7 @@ import (
 	"git.rickiekarp.net/rickie/home/pkg/database"
 	"git.rickiekarp.net/rickie/home/pkg/integrations/graphite"
 	"git.rickiekarp.net/rickie/home/pkg/models"
-	"git.rickiekarp.net/rickie/home/pkg/models/nexusmodel"
+	"git.rickiekarp.net/rickie/nexusform"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
@@ -37,8 +37,8 @@ type NexusConfig struct {
 	} `yaml:"mail"`
 	Databases []models.Database `yaml:"databases"`
 	Project6  struct {
-		MinClientVersion string                `yaml:"minClientVersion"`
-		Modules          []nexusmodel.P6Module `yaml:"modules"`
+		MinClientVersion string               `yaml:"minClientVersion"`
+		Modules          []nexusform.P6Module `yaml:"modules"`
 	}
 	NexusChain struct {
 		Enabled  bool `yaml:"enabled"`
@@ -90,8 +90,8 @@ func ReadNexusConfig() error {
 	return nil
 }
 
-func (n *NexusConfig) GetModulesForClient(clientId string) []nexusmodel.P6Module {
-	var clientModules = []nexusmodel.P6Module{}
+func (n *NexusConfig) GetModulesForClient(clientId string) []nexusform.P6Module {
+	var clientModules = []nexusform.P6Module{}
 	for _, module := range n.Project6.Modules {
 		if module.Target == clientId {
 			clientModules = append(clientModules, module)

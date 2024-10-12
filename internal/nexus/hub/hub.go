@@ -1,6 +1,6 @@
 package hub
 
-import "git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
+import "git.rickiekarp.net/rickie/nexusform"
 
 var Nexus *Hub
 
@@ -10,7 +10,7 @@ type Hub struct {
 	Clients map[*Client]bool
 
 	// Inbound messages from the clients
-	broadcast chan messages.Message
+	broadcast chan nexusform.HubMessage
 
 	// Register requests from the clients
 	register chan *Client
@@ -21,7 +21,7 @@ type Hub struct {
 
 func NewHub() *Hub {
 	return &Hub{
-		broadcast:  make(chan messages.Message),
+		broadcast:  make(chan nexusform.HubMessage),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		Clients:    make(map[*Client]bool),

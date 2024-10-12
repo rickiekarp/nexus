@@ -8,11 +8,9 @@ import (
 	"time"
 
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub/events"
-	"git.rickiekarp.net/rickie/home/internal/nexus/hub/messages"
 	"git.rickiekarp.net/rickie/home/pkg/nexuslib/account"
-	"git.rickiekarp.net/rickie/home/pkg/nexuslib/messageconverter"
-	nexuslib "git.rickiekarp.net/rickie/nexus-corelib"
+	"git.rickiekarp.net/rickie/nexuscore"
+	"git.rickiekarp.net/rickie/nexusform"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 )
@@ -50,7 +48,7 @@ type Client struct {
 	port string
 
 	// Buffered channel of outbound messages.
-	Send chan messages.Message
+	Send chan nexusform.HubMessage
 
 	Id string
 
@@ -66,9 +64,9 @@ func (client *Client) readPump() {
 	defer func() {
 		client.hub.unregister <- client
 
-		msg := messages.Message{
+		msg := nexusform.HubMessage{
 			Seq:      client.seq,
-			Event:    events.Bye,
+			Event:    nexusform.Bye,
 			Message:  "content",
 			Profile:  client.Id,
 			ClientIP: client.conn.RemoteAddr().String(),
@@ -95,7 +93,7 @@ func (client *Client) readPump() {
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 		logrus.Printf("IN: %s", message)
-		var nexusMessage = messageconverter.ConvertToMessage(message)
+		var nexusMessage = nexusform.ConvertBytesToHubMessage(message)
 
 		ProcessEvent(*client, *nexusMessage)
 	}
@@ -128,7 +126,7 @@ func (c *Client) writePump() {
 	}
 }
 
-func (c *Client) SendMessage(message messages.Message, ok bool) {
+func (c *Client) SendMessage(message nexusform.HubMessage, ok bool) {
 	c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 	if !ok {
 		// The hub closed the channel.
@@ -171,14 +169,14 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	nexusClientVersion := r.Header.Get(nexuslib.HeaderNexusClientVersion)
+	nexusClientVersion := r.Header.Get(nexuscore.HeaderNexusClientVersion)
 	if nexusClientVersion == "" {
 		w.WriteHeader(400)
 		return
 	}
 
 	// generate account for new client if necessary
-	nexusClientId := r.Header.Get(nexuslib.HeaderNexusProfileId)
+	nexusClientId := r.Header.Get(nexuscore.HeaderNexusProfileId)
 	if nexusClientId == "" {
 		logrus.Println("Creating profile for new connection:", conn.RemoteAddr().String())
 		newProfile, err := account.Generate()
@@ -199,7 +197,7 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		conn: conn,
 		ip:   clientAddress[0],
 		port: clientAddress[1],
-		Send: make(chan messages.Message, 256),
+		Send: make(chan nexusform.HubMessage, 256),
 		Id:   nexusClientId,
 	}
 
@@ -208,13 +206,13 @@ func (h *Hub) ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 	logrus.Println("CON:", nexusClientId+" - "+client.ip+":"+client.port+" - "+nexusClientVersion)
 
 	// create initial hello message
-	msg := messages.Message{
+	msg := nexusform.HubMessage{
 		Seq: client.seq,
-		Data: &messages.MessageData{
+		Data: &nexusform.HubMessageData{
 			ServerVersion:    config.Version,
 			MinClientVersion: &config.NexusConf.Project6.MinClientVersion,
 			P6Module:         config.NexusConf.GetModulesForClient(client.Id)},
-		Event:    events.Hello,
+		Event:    nexusform.Hello,
 		Profile:  client.Id,
 		ClientIP: client.conn.RemoteAddr().String(),
 	}
