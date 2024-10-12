@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	git.rickiekarp.net/rickie/goutilkit v0.0.1
 	git.rickiekarp.net/rickie/nexuscore v0.0.3
 	git.rickiekarp.net/rickie/nexusform v0.0.5
 	github.com/gorilla/websocket v1.5.0

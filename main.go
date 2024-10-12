@@ -7,13 +7,13 @@ import (
 	"os/signal"
 	"syscall"
 
+	"git.rickiekarp.net/rickie/goutilkit"
 	"git.rickiekarp.net/rickie/home/internal/nexus/api"
 	"git.rickiekarp.net/rickie/home/internal/nexus/blockchain"
 	"git.rickiekarp.net/rickie/home/internal/nexus/channel"
 	"git.rickiekarp.net/rickie/home/internal/nexus/config"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub"
 	"git.rickiekarp.net/rickie/home/internal/nexus/hub/hubqueue"
-	globalConfig "git.rickiekarp.net/rickie/home/pkg/config"
 	"git.rickiekarp.net/rickie/home/pkg/http"
 	"github.com/sirupsen/logrus"
 )
@@ -25,7 +25,7 @@ func init() {
 	flag.Parse()
 
 	if *printHelp {
-		globalConfig.PrintUsage()
+		goutilkit.PrintUsage()
 	}
 
 	if *printVersion {
