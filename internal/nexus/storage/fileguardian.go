@@ -11,13 +11,14 @@ import (
 	"time"
 
 	"git.rickiekarp.net/rickie/home/pkg/database"
+	"git.rickiekarp.net/rickie/nexusform"
 	"github.com/sirupsen/logrus"
 )
 
 func FetchFileGuard(w http.ResponseWriter, r *http.Request) {
 	logrus.Info("CALL:API:FetchFileGuard")
 
-	var requestMessage *FileGuardianEventMessage
+	var requestMessage *nexusform.FileGuardianEntry
 	_ = json.NewDecoder(r.Body).Decode(&requestMessage)
 
 	logrus.Info(requestMessage)
@@ -28,7 +29,7 @@ func FetchFileGuard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var responseMessage *FileGuardianEventMessage = nil
+	var responseMessage *nexusform.FileGuardianEntry = nil
 
 	// we take the Source from the client and look if it exists as a target already
 	responseMessage = FindFileGuardianEntry(requestMessage.Source, requestMessage.Context, false)
@@ -83,7 +84,7 @@ const FIND_FG_BY_SOURCE = `select id, type, source, target, context, inserttime 
 const FIND_FG_BY_TARGET = `select id, type, source, target, context, inserttime from fileguardian where target = ? and context = ?`
 const INSERT = `insert into fileguardian (type, source, target, context) values (?, ?, ?, ?);`
 
-func FindFileGuardianEntry(name string, context string, isSource bool) *FileGuardianEventMessage {
+func FindFileGuardianEntry(name string, context string, isSource bool) *nexusform.FileGuardianEntry {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return nil
 	}
@@ -103,7 +104,7 @@ func FindFileGuardianEntry(name string, context string, isSource bool) *FileGuar
 		return nil
 	}
 
-	storageEntry := FileGuardianEventMessage{}
+	storageEntry := nexusform.FileGuardianEntry{}
 
 	for i := 0; rows.Next(); i++ {
 		rows.Scan(
@@ -124,7 +125,7 @@ func FindFileGuardianEntry(name string, context string, isSource bool) *FileGuar
 	return &storageEntry
 }
 
-func InsertFileGuard(fileGuard FileGuardianEventMessage) bool {
+func InsertFileGuard(fileGuard nexusform.FileGuardianEntry) bool {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
 		return false
 	}
@@ -162,13 +163,4 @@ func generateTarget(source string, entryType string, context string) string {
 		return fmt.Sprintf("%x", getMd5Sum(context+"-"+entryType+"-"+source, time.Now().UTC().Nanosecond())) + ".fgd"
 	}
 	return ""
-}
-
-type FileGuardianEventMessage struct {
-	Id         *int64 `json:"id,omitempty"`
-	Type       string `json:"type,omitempty"`
-	Source     string `json:"source,omitempty"`
-	Target     string `json:"target,omitempty"`
-	Context    string `json:"context,omitempty"`
-	Inserttime *int64 `json:"inserttime,omitempty"`
 }
