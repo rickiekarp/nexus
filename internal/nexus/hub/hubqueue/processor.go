@@ -22,7 +22,7 @@ func processMessage(message nexusform.HubQueueEventMessage) error {
 		// set checksums for message
 		fileChecksum := string(fileEvent.Sha1())
 		fileEvent.FileHash = &fileChecksum
-		checksum := util.CalcSha1(fileEvent.Path + "/" + *fileEvent.FileHash)
+		checksum := generateChecksum(fileEvent.Path, *fileEvent.FileHash)
 		fileEvent.Checksum = &checksum
 
 		// process
@@ -42,4 +42,8 @@ func processMessage(message nexusform.HubQueueEventMessage) error {
 	}
 
 	return nil
+}
+
+func generateChecksum(filePath string, fileHash string) string {
+	return util.CalcSha1(filePath + "/" + fileHash)
 }
