@@ -10,7 +10,7 @@ import (
 )
 
 const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.filehash, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.checksum = ?`
-const FIND_BY_FILEHASH = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.filehash, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.filehash = ? order by f.id desc limit 1`
+const FIND_BY_FILEHASH = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.filehash, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.filehash = ? order by f.lastupdate desc limit 1`
 const INSERT_FILE_TO_STORAGE = `CALL insertFileToStorage(?, ?, ?, ?, ?, ?, ?)`
 const UPDATE_ITERATION = `CALL updateFileIterationInStorage(?, ?)`
 const ADD_UPDATE_PROPERTY = `INSERT INTO filelist_additional_data VALUES (?,?,?) ON DUPLICATE KEY UPDATE value = ?`
