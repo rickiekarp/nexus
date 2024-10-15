@@ -13,6 +13,7 @@ const FIND_BY_CHECKSUM = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.fileha
 const FIND_BY_FILEHASH = `SELECT f.id, f.path, f.name, f.size, f.mtime, f.filehash, f.checksum, f.owner, f.inserttime, f.lastupdate, fad.property, fad.value FROM filelist f JOIN filelist_additional_data fad ON f.id = fad.file_id WHERE f.filehash = ? order by f.id desc limit 1`
 const INSERT_FILE_TO_STORAGE = `CALL insertFileToStorage(?, ?, ?, ?, ?, ?, ?)`
 const UPDATE_ITERATION = `CALL updateFileIterationInStorage(?, ?)`
+const ADD_UPDATE_PROPERTY = `INSERT INTO filelist_additional_data VALUES (?,?,?) ON DUPLICATE KEY UPDATE value = ?`
 
 func FindFileInStorageByChecksum(checksum string) *nexusform.FileListEntry {
 	if !database.CheckDatabaseConnection(database.ConStorage) {
@@ -81,6 +82,32 @@ func InsertFile(fileStorageEventMessage nexusform.FileListEntry) bool {
 		fileStorageEventMessage.FileHash,
 		fileStorageEventMessage.Checksum,
 		fileStorageEventMessage.Owner,
+	)
+
+	if err != nil {
+		logrus.Error(err)
+		return false
+	}
+	defer rows.Close()
+
+	if err := rows.Err(); err != nil {
+		logrus.Error(err)
+		return false
+	}
+
+	return true
+}
+
+func InsertOrUpdateProperty(propertyData nexusform.FileListEntryAdditionalData) bool {
+	if !database.CheckDatabaseConnection(database.ConStorage) {
+		return false
+	}
+
+	rows, err := database.ConStorage.Connection.Query(ADD_UPDATE_PROPERTY,
+		propertyData.FilesId,
+		propertyData.Property,
+		propertyData.Value,
+		propertyData.Value,
 	)
 
 	if err != nil {

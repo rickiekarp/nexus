@@ -58,6 +58,7 @@ func defineApiEndpoints(r *mux.Router) {
 	r.HandleFunc("/fileguardian/v1/fetch", storage.FetchFileGuard).Methods("POST") // DEPRECATED
 
 	r.HandleFunc("/storage/v1/filelist/fetch", storage.FetchFilelistEntry).Methods("GET")
+	r.HandleFunc("/storage/v1/filelist/properties/add", storage.AddFileProperty).Methods("POST")
 	r.HandleFunc("/storage/v1/fileguardian/fetch", storage.FetchFileGuard).Methods("POST")
 
 	// monitoring
