@@ -10,7 +10,6 @@ driveA="/media/rickie/archive1/"
 if [ -d "$driveA" ]; then
   echo "Starting backup to $driveA!"
   rsync -rlvpt --delete \
-    --exclude 'applications/cloud/data/player' \
     --exclude 'applications/gogs' \
     --exclude 'applications/graphite' \
     --exclude 'applications/mysql' \
